@@ -1,0 +1,52 @@
+/*
+ * Copyright 2013 Los Alamos National Security, LLC.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import "database.proto";
+
+package haven.client;
+
+message command {
+    enum concurrency_type {
+        READ_WRITE = 1;
+        READ_ONLY = 2;
+    }
+
+    required concurrency_type type = 3 [default = READ_WRITE];
+    required log_command command = 4;
+}
+
+message command_result {
+    required bool success = 1;
+    optional append_entry data = 2;
+}
+
+message heartbeat_update {
+    required int64 id = 1;
+    repeated string watched_keys = 2;
+}
+
+message heartbeat_result {
+    required int64 timeout = 1;
+    required int64 last_log_index = 2;
+    required int64 last_log_term = 2;
+
+    optional haven.database.log_entries updated_entries = 2;
+}
+
+service client {
+    rpc heartbeat(heartbeat_update) returns (heartbeat_result);
+    rpc operation(command) returns (command_result);
+}
