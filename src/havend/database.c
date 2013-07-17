@@ -14,8 +14,14 @@
  * limitations under the License.
  */
 
+#include <limits.h>
+#include <string.h>
+#include <netdb.h>
+
 #include "log.h"
 #include "database.h"
+
+#define HAVEN_INTERNAL_DB_PREFIX "__internal_state#"
 
 /** The stream to send log messages to. */
 extern FILE* HAVEN_debug_stream;
@@ -35,7 +41,9 @@ void HAVEN_init_internal_database(HAVEN_server_context_t* ctx)
         return;
     }
 
-    /* TODO: determine and set internal db id. */
+    internal_db->id = (char*) malloc(sizeof(char)*NAME_MAX);
+    strcpy(internal_db->id, HAVEN_INTERNAL_DB_PREFIX);
+    strncpy(internal_db->id + strlen(HAVEN_INTERNAL_DB_PREFIX), ctx->local_id, HOST_NAME_MAX);
 
     internal_db->options = leveldb_options_create();
     leveldb_options_set_create_if_missing(internal_db->options, 1);
@@ -64,10 +72,11 @@ int HAVEN_destroy_internal_database(HAVEN_server_context_t* ctx)
 
     if(db_err != NULL) {
         LOG(HAVEN_LOG_ERR, "Could not destroy the local database. %s", db_err);
-        return -1;
+        return HAVEN_ERROR;
     }
 
     leveldb_free(db_err);
+    return HAVEN_SUCCESS;
 }
 
 /* EOF */

@@ -22,6 +22,9 @@
 
 #define HAVEN_DEFAULT_STATE_DIRECTORY "/var/lib/haven";
 
+#define HAVEN_SUCCESS (1)
+#define HAVEN_ERROR (-1)
+
 typedef struct HAVEN_server_internal_database_t {
     char* id;
     leveldb_t* db;
