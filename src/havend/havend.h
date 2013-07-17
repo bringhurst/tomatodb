@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include <leveldb/c.h>
 
-#define HAVEN_DEFAULT_STATE_DIRECTORY "/var/lib/haven";
+#define HAVEN_DEFAULT_STATE_DIRECTORY "/var/lib/haven"
 
 #define HAVEN_SUCCESS (1)
 #define HAVEN_ERROR (-1)
@@ -36,6 +36,7 @@ typedef struct HAVEN_server_internal_database_t {
 typedef struct HAVEN_server_context_t {
     HAVEN_server_internal_database_t* internal_database;
     char* local_id;
+    char* local_state_path;
 } HAVEN_server_context_t;
 
 int HAVEN_get_local_machine_id(char** hostname);

@@ -49,14 +49,14 @@ int HAVEN_get_local_machine_id(char** hostname)
 
     if ((gai_result = getaddrinfo(localname, "http", &hints, &info)) != 0) {
         LOG(HAVEN_LOG_ERR, "Failed to get hostname information. %s", gai_strerror(gai_result));
-        return -1;
+        return HAVEN_ERROR;
     }
 
     *hostname = (char*) malloc(sizeof(char)*HOST_NAME_MAX);
     strncpy(*hostname, info->ai_canonname, HOST_NAME_MAX);
     freeaddrinfo(info);
 
-    return 0;
+    return HAVEN_SUCCESS;
 }
 
 void HAVEN_free_context(HAVEN_server_context_t* ctx)
@@ -72,7 +72,7 @@ int main(void) {
     HAVEN_debug_stream = stdout;
     HAVEN_debug_level = HAVEN_LOG_DBG;
 
-    if(HAVEN_get_local_machine_id(&ctx->local_id) != 0) {
+    if(HAVEN_get_local_machine_id(&ctx->local_id) != HAVEN_SUCCESS) {
         LOG(HAVEN_LOG_ERR, "Could not determine local machine ID.");
         exit(EXIT_FAILURE);
     }

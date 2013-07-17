@@ -41,9 +41,10 @@ void HAVEN_init_internal_database(HAVEN_server_context_t* ctx)
         return;
     }
 
-    internal_db->id = (char*) malloc(sizeof(char)*NAME_MAX);
-    strcpy(internal_db->id, HAVEN_INTERNAL_DB_PREFIX);
-    strncpy(internal_db->id + strlen(HAVEN_INTERNAL_DB_PREFIX), ctx->local_id, HOST_NAME_MAX);
+    /* FIXME: check for overflow. */
+    internal_db->id = (char*) malloc(sizeof(char)*PATH_MAX);
+    sprintf(internal_db->id, "%s/%s%s", HAVEN_DEFAULT_STATE_DIRECTORY, \
+            HAVEN_INTERNAL_DB_PREFIX, ctx->local_id);
 
     internal_db->options = leveldb_options_create();
     leveldb_options_set_create_if_missing(internal_db->options, 1);
