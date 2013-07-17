@@ -18,11 +18,20 @@
  */
 
 #include <stdio.h>
+#include <leveldb/c.h>
 
-#include "havend.h"
+#include "common.h"
 
-void HAVEN_init_internal_database(HAVEN_server_context_t* ctx);
-void HAVEN_close_internal_database(HAVEN_server_context_t* ctx);
-int HAVEN_destroy_internal_database(HAVEN_server_context_t* ctx);
+typedef struct HAVEN_db_t {
+    char* path;
+    leveldb_t* handle;
+    leveldb_options_t* options;
+    leveldb_readoptions_t* read_options;
+    leveldb_writeoptions_t* write_options;
+} HAVEN_db_t;
+
+int HAVEN_init_db(HAVEN_db_t** db, char* path);
+void HAVEN_close_db(HAVEN_db_t* db);
+int HAVEN_destroy_db(HAVEN_db_t* db);
 
 #endif /* __HAVEN_DATABASE_H */

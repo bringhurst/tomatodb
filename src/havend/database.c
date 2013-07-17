@@ -21,7 +21,9 @@
 #include "log.h"
 #include "database.h"
 
-#define HAVEN_INTERNAL_DB_PREFIX "__internal_state#"
+#define HAVEN_CONFIG_DB_PREFIX "/config"
+#define HAVEN_LOG_DB_PREFIX    "/log"
+#define HAVEN_GROUP_DB_PREFIX  "/group"
 
 /** The stream to send log messages to. */
 extern FILE* HAVEN_debug_stream;
@@ -29,50 +31,48 @@ extern FILE* HAVEN_debug_stream;
 /** The log level to output. */
 extern HAVEN_loglevel HAVEN_debug_level;
 
-void HAVEN_init_internal_database(HAVEN_server_context_t* ctx)
+int HAVEN_init_db(HAVEN_db_t** db, char* path)
 {
     char* db_err = NULL;
 
-    HAVEN_server_internal_database_t* internal_db = \
-        (HAVEN_server_internal_database_t*) malloc(sizeof(HAVEN_server_internal_database_t));
+    HAVEN_db_t* new_db = \
+        (HAVEN_db_t*) malloc(sizeof(HAVEN_db_t));
 
-    if(!internal_db) {
-        LOG(HAVEN_LOG_ERR, "Could not initialize memory for the internal database.");
-        return;
+    if(!new_db) {
+        LOG(HAVEN_LOG_ERR, "Could not initialize memory for a new database.");
+        return HAVEN_ERROR;
     }
 
-    /* FIXME: check for overflow. */
-    internal_db->id = (char*) malloc(sizeof(char)*PATH_MAX);
-    sprintf(internal_db->id, "%s/%s%s", HAVEN_DEFAULT_STATE_DIRECTORY, \
-            HAVEN_INTERNAL_DB_PREFIX, ctx->local_id);
-
-    internal_db->options = leveldb_options_create();
-    leveldb_options_set_create_if_missing(internal_db->options, 1);
-    internal_db->db = leveldb_open(internal_db->options, internal_db->id, &db_err);
+    new_db->options = leveldb_options_create();
+    leveldb_options_set_create_if_missing(new_db->options, 1);
+    new_db->handle = leveldb_open(new_db->options, path, &db_err);
 
     if(db_err != NULL) {
         LOG(HAVEN_LOG_ERR, "Could not open the local database. %s", db_err);
-        exit(EXIT_FAILURE);
+        return HAVEN_ERROR;
     }
 
-    ctx->internal_database = internal_db;
+    new_db->path = path;
+    *db = new_db;
+
     leveldb_free(db_err);
+    return HAVEN_SUCCESS;
 }
 
-void HAVEN_close_internal_database(HAVEN_server_context_t* ctx)
+void HAVEN_close_db(HAVEN_db_t* db)
 {
-    leveldb_close(ctx->internal_database->db);
+    leveldb_close(db->handle);
 }
 
-int HAVEN_destroy_internal_database(HAVEN_server_context_t* ctx)
+int HAVEN_destroy_db(HAVEN_db_t* db)
 {
     char* db_err = NULL;
-    HAVEN_server_internal_database_t* db = ctx->internal_database;
 
-    leveldb_destroy_db(db->options, db->id, &db_err);
+    leveldb_destroy_db(db->options, db->path, &db_err);
 
     if(db_err != NULL) {
-        LOG(HAVEN_LOG_ERR, "Could not destroy the local database. %s", db_err);
+        LOG(HAVEN_LOG_ERR, "Could not destroy the database at `%s'. %s", \
+                db->path, db_err);
         return HAVEN_ERROR;
     }
 

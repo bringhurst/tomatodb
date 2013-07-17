@@ -59,15 +59,15 @@ int HAVEN_get_local_machine_id(char** hostname)
     return HAVEN_SUCCESS;
 }
 
-void HAVEN_free_context(HAVEN_server_context_t* ctx)
+void HAVEN_free_context(HAVEN_ctx_t* ctx)
 {
     /* FIXME: properly free this thing. */
     free(ctx);
 }
 
 int main(void) {
-    HAVEN_server_context_t* ctx = \
-        (HAVEN_server_context_t*) malloc(sizeof(HAVEN_server_context_t));
+    HAVEN_ctx_t* ctx = \
+        (HAVEN_ctx_t*) malloc(sizeof(HAVEN_ctx_t));
 
     HAVEN_debug_stream = stdout;
     HAVEN_debug_level = HAVEN_LOG_DBG;
@@ -79,11 +79,11 @@ int main(void) {
 
     LOG(HAVEN_LOG_INFO, "Using `%s' for local machine id.", ctx->local_id);
 
-    HAVEN_init_internal_database(ctx);
+    HAVEN_init_db(&ctx->config_db, ctx->local_id);
     HAVEN_init_rpc_services(ctx);
     HAVEN_init_consensus_loop(ctx);
 
-    HAVEN_close_internal_database(ctx);
+    HAVEN_close_db(ctx->config_db);
     HAVEN_free_context(ctx);
 
     exit(EXIT_SUCCESS);

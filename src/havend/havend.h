@@ -18,28 +18,23 @@
  */
 
 #include <stdlib.h>
-#include <leveldb/c.h>
 
-#define HAVEN_DEFAULT_STATE_DIRECTORY "/var/lib/haven"
+#include "database.h"
 
-#define HAVEN_SUCCESS (1)
-#define HAVEN_ERROR (-1)
+#define HAVEN_BASE_STATE_DIR "/var/lib/haven"
 
-typedef struct HAVEN_server_internal_database_t {
-    char* id;
-    leveldb_t* db;
-    leveldb_options_t* options;
-    leveldb_readoptions_t* read_options;
-    leveldb_writeoptions_t* write_options;
-} HAVEN_server_internal_database_t;
+#define HAVEN_CONFIG_DB_PREFIX "/config"
+#define HAVEN_LOG_DB_PREFIX    "/log"
+#define HAVEN_GROUP_DB_PREFIX  "/group"
 
-typedef struct HAVEN_server_context_t {
-    HAVEN_server_internal_database_t* internal_database;
+typedef struct HAVEN_ctx_t {
+    HAVEN_db_t* config_db;
+    HAVEN_db_t* log_db;
     char* local_id;
     char* local_state_path;
-} HAVEN_server_context_t;
+} HAVEN_ctx_t;
 
 int HAVEN_get_local_machine_id(char** hostname);
-void HAVEN_free_context(HAVEN_server_context_t* ctx);
+void HAVEN_free_context(HAVEN_ctx_t* ctx);
 
 #endif /* __HAVEN_HAVEND_H */

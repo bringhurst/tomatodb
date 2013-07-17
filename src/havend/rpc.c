@@ -23,7 +23,7 @@ extern FILE* HAVEN_debug_stream;
 /** The log level to output. */
 extern HAVEN_loglevel HAVEN_debug_level;
 
-void HAVEN_init_rpc_services(HAVEN_server_context_t* ctx) {
+void HAVEN_init_rpc_services(HAVEN_ctx_t* ctx) {
     LOG(HAVEN_LOG_ERR, "RPC is not implemented yet.");
 }
 

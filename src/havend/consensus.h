@@ -21,6 +21,6 @@
 
 #include "havend.h"
 
-void HAVEN_init_consensus_loop(HAVEN_server_context_t* ctx);
+void HAVEN_init_consensus_loop(HAVEN_ctx_t* ctx);
 
 #endif /* __HAVEN_CONSENSUS_H */
