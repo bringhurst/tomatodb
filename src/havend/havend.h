@@ -21,8 +21,6 @@
 
 #include "database.h"
 
-#define HAVEN_BASE_STATE_DIR "/var/lib/haven"
-
 #define HAVEN_CONFIG_DB_PREFIX "/config"
 #define HAVEN_LOG_DB_PREFIX    "/log"
 #define HAVEN_GROUP_DB_PREFIX  "/group"

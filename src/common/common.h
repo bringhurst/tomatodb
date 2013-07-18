@@ -1,5 +1,5 @@
-#ifndef __HAVEN_COMMON_H
-#define __HAVEN_COMMON_H
+#ifndef __HAVEN_COMMON_COMMON_H
+#define __HAVEN_COMMON_COMMON_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -17,7 +17,11 @@
  * limitations under the License.
  */
 
+#define HAVEN_BASE_STATE_DIR "/var/lib/haven"
+
 #define HAVEN_SUCCESS (1)
 #define HAVEN_ERROR (-1)
 
-#endif /* __HAVEN_COMMON_H */
+int HAVEN_ensure_directory_exists(char* path);
+
+#endif /* __HAVEN_COMMON_COMMON_H */

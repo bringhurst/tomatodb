@@ -65,6 +65,15 @@ void HAVEN_free_context(HAVEN_ctx_t* ctx)
     free(ctx);
 }
 
+int HAVEN_prepare_config_db(HAVEN_ctx_t* ctx)
+{
+
+
+    HAVEN_BASE_STATE_DIR
+
+    HAVEN_init_db(&ctx->config_db, ctx->local_id);
+}
+
 int main(void) {
     HAVEN_ctx_t* ctx = \
         (HAVEN_ctx_t*) malloc(sizeof(HAVEN_ctx_t));
@@ -79,7 +88,8 @@ int main(void) {
 
     LOG(HAVEN_LOG_INFO, "Using `%s' for local machine id.", ctx->local_id);
 
-    HAVEN_init_db(&ctx->config_db, ctx->local_id);
+    HAVEN_prepare_config_db(ctx);
+
     HAVEN_init_rpc_services(ctx);
     HAVEN_init_consensus_loop(ctx);
 
