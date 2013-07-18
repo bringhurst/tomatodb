@@ -70,10 +70,10 @@ int HAVEN_prepare_config_db(HAVEN_ctx_t* ctx)
 {
     char* config_db_path = (char*) malloc(sizeof(char) * PATH_MAX);
     int offset;
+    int result;
+
     offset = sprintf(config_db_path, "%s%s", \
             HAVEN_BASE_STATE_DIR, HAVEN_CONFIG_DB_PREFIX);
-
-    LOG(HAVEN_LOG_DBG, "Using base path of `%s'.", config_db_path);
 
     if(HAVEN_ensure_directory_exists(config_db_path) != HAVEN_SUCCESS) {
         LOG(HAVEN_LOG_ERR, "Failed to create directory structure when preparing the config DB.");
@@ -81,10 +81,10 @@ int HAVEN_prepare_config_db(HAVEN_ctx_t* ctx)
     }
 
     sprintf(config_db_path+offset, "/%s", ctx->local_id);
+    result = HAVEN_init_db(&ctx->config_db, config_db_path);
 
-    LOG(HAVEN_LOG_DBG, "Using full path of `%s'.", config_db_path);
-
-    return HAVEN_init_db(&ctx->config_db, config_db_path);
+    free(config_db_path);
+    return result;
 }
 
 int main(void) {
