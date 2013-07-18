@@ -11,3 +11,5 @@ havend_SOURCES = \
 				database.c \
 				rpc.c \
 				havend.c
+havend_LDADD = \
+				../common/libhaven_common.la

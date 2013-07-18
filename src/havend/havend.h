@@ -34,5 +34,6 @@ typedef struct HAVEN_ctx_t {
 
 int HAVEN_get_local_machine_id(char** hostname);
 void HAVEN_free_context(HAVEN_ctx_t* ctx);
+int HAVEN_prepare_config_db(HAVEN_ctx_t* ctx);
 
 #endif /* __HAVEN_HAVEND_H */

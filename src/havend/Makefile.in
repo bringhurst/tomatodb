@@ -71,7 +71,7 @@ PROGRAMS = $(bin_PROGRAMS)
 am_havend_OBJECTS = consensus.$(OBJEXT) database.$(OBJEXT) \
 	rpc.$(OBJEXT) havend.$(OBJEXT)
 havend_OBJECTS = $(am_havend_OBJECTS)
-havend_LDADD = $(LDADD)
+havend_DEPENDENCIES = ../common/libhaven_common.la
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -241,6 +241,9 @@ havend_SOURCES = \
 				database.c \
 				rpc.c \
 				havend.c
+
+havend_LDADD = \
+				../common/libhaven_common.la
 
 all: all-am
 
