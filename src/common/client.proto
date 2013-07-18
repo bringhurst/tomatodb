@@ -25,12 +25,11 @@ message command {
     }
 
     required concurrency_type type = 3 [default = READ_WRITE];
-    required log_command command = 4;
+    required haven.database.log_command command = 4;
 }
 
 message command_result {
     required bool success = 1;
-    optional append_entry data = 2;
 }
 
 message heartbeat_update {
@@ -41,9 +40,9 @@ message heartbeat_update {
 message heartbeat_result {
     required int64 timeout = 1;
     required int64 last_log_index = 2;
-    required int64 last_log_term = 2;
+    required int64 last_log_term = 3;
 
-    optional haven.database.log_entries updated_entries = 2;
+    optional haven.database.append_entries updated_entries = 4;
 }
 
 service client {

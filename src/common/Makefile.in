@@ -67,10 +67,10 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 libhaven_common_la_DEPENDENCIES =
-am_libhaven_common_la_OBJECTS = libhaven_common_la-admin.pb-c.lo \
+am_libhaven_common_la_OBJECTS = libhaven_common_la-database.pb-c.lo \
+	libhaven_common_la-admin.pb-c.lo \
 	libhaven_common_la-client.pb-c.lo \
-	libhaven_common_la-consensus.pb-c.lo \
-	libhaven_common_la-database.pb-c.lo
+	libhaven_common_la-consensus.pb-c.lo
 libhaven_common_la_OBJECTS = $(am_libhaven_common_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -242,10 +242,10 @@ INCLUDES = \
 
 noinst_LTLIBRARIES = libhaven_common.la
 libhaven_common_la_SOURCES = \
+							database.pb-c.c \
 							admin.pb-c.c \
 							client.pb-c.c \
-							consensus.pb-c.c \
-							database.pb-c.c
+							consensus.pb-c.c
 
 libhaven_common_la_LIBADD = \
 							$(protobuf-c_LIBS) \
@@ -335,6 +335,13 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
 
+libhaven_common_la-database.pb-c.lo: database.pb-c.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_la_CFLAGS) $(CFLAGS) -MT libhaven_common_la-database.pb-c.lo -MD -MP -MF $(DEPDIR)/libhaven_common_la-database.pb-c.Tpo -c -o libhaven_common_la-database.pb-c.lo `test -f 'database.pb-c.c' || echo '$(srcdir)/'`database.pb-c.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhaven_common_la-database.pb-c.Tpo $(DEPDIR)/libhaven_common_la-database.pb-c.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='database.pb-c.c' object='libhaven_common_la-database.pb-c.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_la_CFLAGS) $(CFLAGS) -c -o libhaven_common_la-database.pb-c.lo `test -f 'database.pb-c.c' || echo '$(srcdir)/'`database.pb-c.c
+
 libhaven_common_la-admin.pb-c.lo: admin.pb-c.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_la_CFLAGS) $(CFLAGS) -MT libhaven_common_la-admin.pb-c.lo -MD -MP -MF $(DEPDIR)/libhaven_common_la-admin.pb-c.Tpo -c -o libhaven_common_la-admin.pb-c.lo `test -f 'admin.pb-c.c' || echo '$(srcdir)/'`admin.pb-c.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhaven_common_la-admin.pb-c.Tpo $(DEPDIR)/libhaven_common_la-admin.pb-c.Plo
@@ -355,13 +362,6 @@ libhaven_common_la-consensus.pb-c.lo: consensus.pb-c.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='consensus.pb-c.c' object='libhaven_common_la-consensus.pb-c.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_la_CFLAGS) $(CFLAGS) -c -o libhaven_common_la-consensus.pb-c.lo `test -f 'consensus.pb-c.c' || echo '$(srcdir)/'`consensus.pb-c.c
-
-libhaven_common_la-database.pb-c.lo: database.pb-c.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_la_CFLAGS) $(CFLAGS) -MT libhaven_common_la-database.pb-c.lo -MD -MP -MF $(DEPDIR)/libhaven_common_la-database.pb-c.Tpo -c -o libhaven_common_la-database.pb-c.lo `test -f 'database.pb-c.c' || echo '$(srcdir)/'`database.pb-c.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhaven_common_la-database.pb-c.Tpo $(DEPDIR)/libhaven_common_la-database.pb-c.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='database.pb-c.c' object='libhaven_common_la-database.pb-c.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_la_CFLAGS) $(CFLAGS) -c -o libhaven_common_la-database.pb-c.lo `test -f 'database.pb-c.c' || echo '$(srcdir)/'`database.pb-c.c
 
 mostlyclean-libtool:
 	-rm -f *.lo

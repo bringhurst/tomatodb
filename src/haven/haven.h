@@ -26,7 +26,7 @@
 #include <ctype.h>
 #include <inttypes.h>
 
-#include "havenctl_peer.h"
+#include "peer.h"
 
 typedef struct {
     char*  remote_hostname;

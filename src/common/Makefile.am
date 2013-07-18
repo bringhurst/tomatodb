@@ -10,10 +10,10 @@ INCLUDES = \
 noinst_LTLIBRARIES = libhaven_common.la
 
 libhaven_common_la_SOURCES = \
+							database.pb-c.c \
 							admin.pb-c.c \
 							client.pb-c.c \
-							consensus.pb-c.c \
-							database.pb-c.c
+							consensus.pb-c.c
 
 libhaven_common_la_LIBADD = \
 							$(protobuf-c_LIBS) \

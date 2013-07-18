@@ -53,7 +53,7 @@ build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/common.mk
-bin_PROGRAMS = havend$(EXEEXT) havenctl$(EXEEXT)
+bin_PROGRAMS = havend$(EXEEXT)
 subdir = src/havend
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
@@ -68,19 +68,13 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_havenctl_OBJECTS = havenctl-admin.pb-c.$(OBJEXT) \
-	havenctl-havenctl_peer.$(OBJEXT) havenctl-havenctl.$(OBJEXT)
-havenctl_OBJECTS = $(am_havenctl_OBJECTS)
-havenctl_DEPENDENCIES =
+am_havend_OBJECTS = consensus.$(OBJEXT) database.$(OBJEXT) \
+	rpc.$(OBJEXT) havend.$(OBJEXT)
+havend_OBJECTS = $(am_havend_OBJECTS)
+havend_LDADD = $(LDADD)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
-am_havend_OBJECTS = havend-admin.pb-c.$(OBJEXT) \
-	havend-database.pb-c.$(OBJEXT) havend-consensus.pb-c.$(OBJEXT) \
-	havend-consensus.$(OBJEXT) havend-database.$(OBJEXT) \
-	havend-rpc.$(OBJEXT) havend-havend.$(OBJEXT)
-havend_OBJECTS = $(am_havend_OBJECTS)
-havend_DEPENDENCIES =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/auxdir/depcomp
 am__depfiles_maybe = depfiles
@@ -107,8 +101,8 @@ am__v_CCLD_0 = @echo "  CCLD  " $@;
 AM_V_GEN = $(am__v_GEN_@AM_V@)
 am__v_GEN_ = $(am__v_GEN_@AM_DEFAULT_V@)
 am__v_GEN_0 = @echo "  GEN   " $@;
-SOURCES = $(havenctl_SOURCES) $(havend_SOURCES)
-DIST_SOURCES = $(havenctl_SOURCES) $(havend_SOURCES)
+SOURCES = $(havend_SOURCES)
+DIST_SOURCES = $(havend_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -238,37 +232,15 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CFLAGS = -std=gnu99 -ggdb -W -pedantic -Wall -Wextra -Wformat=2 -Winit-self -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wuninitialized -Wunknown-pragmas -Wstrict-aliasing -Wfloat-equal -Wundef -Wbad-function-cast -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wredundant-decls -Winline -Wdisabled-optimization -Wshadow -Wwrite-strings
-AM_CPPFLAGS = -I$(top_srcdir)/src/common
-havenctl_SOURCES = \
-				   admin.pb-c.c \
-				   havenctl_peer.c \
-				   havenctl.c
-
-havenctl_LDADD = \
-	$(protobuf-c_LIBS) \
-	$(leveldb_LIBS)
-
-havenctl_CPPFLAGS = \
-    $(protobuf-c_CFLAGS) \
-    $(leveldb_CFLAGS)
+INCLUDES = \
+		   -I$(top_srcdir) \
+		   -I$(top_srcdir)/src/common
 
 havend_SOURCES = \
-				admin.pb-c.c \
-				database.pb-c.c \
-				client.pb-c \
-				consensus.pb-c.c \
                 consensus.c \
 				database.c \
 				rpc.c \
 				havend.c
-
-havend_LDADD = \
-	$(protobuf-c_LIBS) \
-	$(leveldb_LIBS)
-
-havend_CPPFLAGS = \
-    $(protobuf-c_CFLAGS) \
-    $(leveldb_CFLAGS)
 
 all: all-am
 
@@ -351,9 +323,6 @@ clean-binPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
-havenctl$(EXEEXT): $(havenctl_OBJECTS) $(havenctl_DEPENDENCIES) $(EXTRA_havenctl_DEPENDENCIES) 
-	@rm -f havenctl$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(havenctl_OBJECTS) $(havenctl_LDADD) $(LIBS)
 havend$(EXEEXT): $(havend_OBJECTS) $(havend_DEPENDENCIES) $(EXTRA_havend_DEPENDENCIES) 
 	@rm -f havend$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(havend_OBJECTS) $(havend_LDADD) $(LIBS)
@@ -364,16 +333,10 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/havenctl-admin.pb-c.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/havenctl-havenctl.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/havenctl-havenctl_peer.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/havend-admin.pb-c.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/havend-consensus.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/havend-consensus.pb-c.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/havend-database.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/havend-database.pb-c.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/havend-havend.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/havend-rpc.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/consensus.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/database.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/havend.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rpc.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -395,146 +358,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
-
-havenctl-admin.pb-c.o: admin.pb-c.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havenctl_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT havenctl-admin.pb-c.o -MD -MP -MF $(DEPDIR)/havenctl-admin.pb-c.Tpo -c -o havenctl-admin.pb-c.o `test -f 'admin.pb-c.c' || echo '$(srcdir)/'`admin.pb-c.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/havenctl-admin.pb-c.Tpo $(DEPDIR)/havenctl-admin.pb-c.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='admin.pb-c.c' object='havenctl-admin.pb-c.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havenctl_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o havenctl-admin.pb-c.o `test -f 'admin.pb-c.c' || echo '$(srcdir)/'`admin.pb-c.c
-
-havenctl-admin.pb-c.obj: admin.pb-c.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havenctl_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT havenctl-admin.pb-c.obj -MD -MP -MF $(DEPDIR)/havenctl-admin.pb-c.Tpo -c -o havenctl-admin.pb-c.obj `if test -f 'admin.pb-c.c'; then $(CYGPATH_W) 'admin.pb-c.c'; else $(CYGPATH_W) '$(srcdir)/admin.pb-c.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/havenctl-admin.pb-c.Tpo $(DEPDIR)/havenctl-admin.pb-c.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='admin.pb-c.c' object='havenctl-admin.pb-c.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havenctl_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o havenctl-admin.pb-c.obj `if test -f 'admin.pb-c.c'; then $(CYGPATH_W) 'admin.pb-c.c'; else $(CYGPATH_W) '$(srcdir)/admin.pb-c.c'; fi`
-
-havenctl-havenctl_peer.o: havenctl_peer.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havenctl_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT havenctl-havenctl_peer.o -MD -MP -MF $(DEPDIR)/havenctl-havenctl_peer.Tpo -c -o havenctl-havenctl_peer.o `test -f 'havenctl_peer.c' || echo '$(srcdir)/'`havenctl_peer.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/havenctl-havenctl_peer.Tpo $(DEPDIR)/havenctl-havenctl_peer.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='havenctl_peer.c' object='havenctl-havenctl_peer.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havenctl_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o havenctl-havenctl_peer.o `test -f 'havenctl_peer.c' || echo '$(srcdir)/'`havenctl_peer.c
-
-havenctl-havenctl_peer.obj: havenctl_peer.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havenctl_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT havenctl-havenctl_peer.obj -MD -MP -MF $(DEPDIR)/havenctl-havenctl_peer.Tpo -c -o havenctl-havenctl_peer.obj `if test -f 'havenctl_peer.c'; then $(CYGPATH_W) 'havenctl_peer.c'; else $(CYGPATH_W) '$(srcdir)/havenctl_peer.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/havenctl-havenctl_peer.Tpo $(DEPDIR)/havenctl-havenctl_peer.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='havenctl_peer.c' object='havenctl-havenctl_peer.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havenctl_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o havenctl-havenctl_peer.obj `if test -f 'havenctl_peer.c'; then $(CYGPATH_W) 'havenctl_peer.c'; else $(CYGPATH_W) '$(srcdir)/havenctl_peer.c'; fi`
-
-havenctl-havenctl.o: havenctl.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havenctl_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT havenctl-havenctl.o -MD -MP -MF $(DEPDIR)/havenctl-havenctl.Tpo -c -o havenctl-havenctl.o `test -f 'havenctl.c' || echo '$(srcdir)/'`havenctl.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/havenctl-havenctl.Tpo $(DEPDIR)/havenctl-havenctl.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='havenctl.c' object='havenctl-havenctl.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havenctl_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o havenctl-havenctl.o `test -f 'havenctl.c' || echo '$(srcdir)/'`havenctl.c
-
-havenctl-havenctl.obj: havenctl.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havenctl_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT havenctl-havenctl.obj -MD -MP -MF $(DEPDIR)/havenctl-havenctl.Tpo -c -o havenctl-havenctl.obj `if test -f 'havenctl.c'; then $(CYGPATH_W) 'havenctl.c'; else $(CYGPATH_W) '$(srcdir)/havenctl.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/havenctl-havenctl.Tpo $(DEPDIR)/havenctl-havenctl.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='havenctl.c' object='havenctl-havenctl.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havenctl_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o havenctl-havenctl.obj `if test -f 'havenctl.c'; then $(CYGPATH_W) 'havenctl.c'; else $(CYGPATH_W) '$(srcdir)/havenctl.c'; fi`
-
-havend-admin.pb-c.o: admin.pb-c.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT havend-admin.pb-c.o -MD -MP -MF $(DEPDIR)/havend-admin.pb-c.Tpo -c -o havend-admin.pb-c.o `test -f 'admin.pb-c.c' || echo '$(srcdir)/'`admin.pb-c.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/havend-admin.pb-c.Tpo $(DEPDIR)/havend-admin.pb-c.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='admin.pb-c.c' object='havend-admin.pb-c.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o havend-admin.pb-c.o `test -f 'admin.pb-c.c' || echo '$(srcdir)/'`admin.pb-c.c
-
-havend-admin.pb-c.obj: admin.pb-c.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT havend-admin.pb-c.obj -MD -MP -MF $(DEPDIR)/havend-admin.pb-c.Tpo -c -o havend-admin.pb-c.obj `if test -f 'admin.pb-c.c'; then $(CYGPATH_W) 'admin.pb-c.c'; else $(CYGPATH_W) '$(srcdir)/admin.pb-c.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/havend-admin.pb-c.Tpo $(DEPDIR)/havend-admin.pb-c.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='admin.pb-c.c' object='havend-admin.pb-c.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o havend-admin.pb-c.obj `if test -f 'admin.pb-c.c'; then $(CYGPATH_W) 'admin.pb-c.c'; else $(CYGPATH_W) '$(srcdir)/admin.pb-c.c'; fi`
-
-havend-database.pb-c.o: database.pb-c.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT havend-database.pb-c.o -MD -MP -MF $(DEPDIR)/havend-database.pb-c.Tpo -c -o havend-database.pb-c.o `test -f 'database.pb-c.c' || echo '$(srcdir)/'`database.pb-c.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/havend-database.pb-c.Tpo $(DEPDIR)/havend-database.pb-c.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='database.pb-c.c' object='havend-database.pb-c.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o havend-database.pb-c.o `test -f 'database.pb-c.c' || echo '$(srcdir)/'`database.pb-c.c
-
-havend-database.pb-c.obj: database.pb-c.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT havend-database.pb-c.obj -MD -MP -MF $(DEPDIR)/havend-database.pb-c.Tpo -c -o havend-database.pb-c.obj `if test -f 'database.pb-c.c'; then $(CYGPATH_W) 'database.pb-c.c'; else $(CYGPATH_W) '$(srcdir)/database.pb-c.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/havend-database.pb-c.Tpo $(DEPDIR)/havend-database.pb-c.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='database.pb-c.c' object='havend-database.pb-c.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o havend-database.pb-c.obj `if test -f 'database.pb-c.c'; then $(CYGPATH_W) 'database.pb-c.c'; else $(CYGPATH_W) '$(srcdir)/database.pb-c.c'; fi`
-
-havend-consensus.pb-c.o: consensus.pb-c.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT havend-consensus.pb-c.o -MD -MP -MF $(DEPDIR)/havend-consensus.pb-c.Tpo -c -o havend-consensus.pb-c.o `test -f 'consensus.pb-c.c' || echo '$(srcdir)/'`consensus.pb-c.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/havend-consensus.pb-c.Tpo $(DEPDIR)/havend-consensus.pb-c.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='consensus.pb-c.c' object='havend-consensus.pb-c.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o havend-consensus.pb-c.o `test -f 'consensus.pb-c.c' || echo '$(srcdir)/'`consensus.pb-c.c
-
-havend-consensus.pb-c.obj: consensus.pb-c.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT havend-consensus.pb-c.obj -MD -MP -MF $(DEPDIR)/havend-consensus.pb-c.Tpo -c -o havend-consensus.pb-c.obj `if test -f 'consensus.pb-c.c'; then $(CYGPATH_W) 'consensus.pb-c.c'; else $(CYGPATH_W) '$(srcdir)/consensus.pb-c.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/havend-consensus.pb-c.Tpo $(DEPDIR)/havend-consensus.pb-c.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='consensus.pb-c.c' object='havend-consensus.pb-c.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o havend-consensus.pb-c.obj `if test -f 'consensus.pb-c.c'; then $(CYGPATH_W) 'consensus.pb-c.c'; else $(CYGPATH_W) '$(srcdir)/consensus.pb-c.c'; fi`
-
-havend-consensus.o: consensus.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT havend-consensus.o -MD -MP -MF $(DEPDIR)/havend-consensus.Tpo -c -o havend-consensus.o `test -f 'consensus.c' || echo '$(srcdir)/'`consensus.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/havend-consensus.Tpo $(DEPDIR)/havend-consensus.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='consensus.c' object='havend-consensus.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o havend-consensus.o `test -f 'consensus.c' || echo '$(srcdir)/'`consensus.c
-
-havend-consensus.obj: consensus.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT havend-consensus.obj -MD -MP -MF $(DEPDIR)/havend-consensus.Tpo -c -o havend-consensus.obj `if test -f 'consensus.c'; then $(CYGPATH_W) 'consensus.c'; else $(CYGPATH_W) '$(srcdir)/consensus.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/havend-consensus.Tpo $(DEPDIR)/havend-consensus.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='consensus.c' object='havend-consensus.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o havend-consensus.obj `if test -f 'consensus.c'; then $(CYGPATH_W) 'consensus.c'; else $(CYGPATH_W) '$(srcdir)/consensus.c'; fi`
-
-havend-database.o: database.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT havend-database.o -MD -MP -MF $(DEPDIR)/havend-database.Tpo -c -o havend-database.o `test -f 'database.c' || echo '$(srcdir)/'`database.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/havend-database.Tpo $(DEPDIR)/havend-database.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='database.c' object='havend-database.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o havend-database.o `test -f 'database.c' || echo '$(srcdir)/'`database.c
-
-havend-database.obj: database.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT havend-database.obj -MD -MP -MF $(DEPDIR)/havend-database.Tpo -c -o havend-database.obj `if test -f 'database.c'; then $(CYGPATH_W) 'database.c'; else $(CYGPATH_W) '$(srcdir)/database.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/havend-database.Tpo $(DEPDIR)/havend-database.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='database.c' object='havend-database.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o havend-database.obj `if test -f 'database.c'; then $(CYGPATH_W) 'database.c'; else $(CYGPATH_W) '$(srcdir)/database.c'; fi`
-
-havend-rpc.o: rpc.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT havend-rpc.o -MD -MP -MF $(DEPDIR)/havend-rpc.Tpo -c -o havend-rpc.o `test -f 'rpc.c' || echo '$(srcdir)/'`rpc.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/havend-rpc.Tpo $(DEPDIR)/havend-rpc.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='rpc.c' object='havend-rpc.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o havend-rpc.o `test -f 'rpc.c' || echo '$(srcdir)/'`rpc.c
-
-havend-rpc.obj: rpc.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT havend-rpc.obj -MD -MP -MF $(DEPDIR)/havend-rpc.Tpo -c -o havend-rpc.obj `if test -f 'rpc.c'; then $(CYGPATH_W) 'rpc.c'; else $(CYGPATH_W) '$(srcdir)/rpc.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/havend-rpc.Tpo $(DEPDIR)/havend-rpc.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='rpc.c' object='havend-rpc.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o havend-rpc.obj `if test -f 'rpc.c'; then $(CYGPATH_W) 'rpc.c'; else $(CYGPATH_W) '$(srcdir)/rpc.c'; fi`
-
-havend-havend.o: havend.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT havend-havend.o -MD -MP -MF $(DEPDIR)/havend-havend.Tpo -c -o havend-havend.o `test -f 'havend.c' || echo '$(srcdir)/'`havend.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/havend-havend.Tpo $(DEPDIR)/havend-havend.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='havend.c' object='havend-havend.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o havend-havend.o `test -f 'havend.c' || echo '$(srcdir)/'`havend.c
-
-havend-havend.obj: havend.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT havend-havend.obj -MD -MP -MF $(DEPDIR)/havend-havend.Tpo -c -o havend-havend.obj `if test -f 'havend.c'; then $(CYGPATH_W) 'havend.c'; else $(CYGPATH_W) '$(srcdir)/havend.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/havend-havend.Tpo $(DEPDIR)/havend-havend.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='havend.c' object='havend-havend.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(havend_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o havend-havend.obj `if test -f 'havend.c'; then $(CYGPATH_W) 'havend.c'; else $(CYGPATH_W) '$(srcdir)/havend.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -747,9 +570,6 @@ uninstall-am: uninstall-binPROGRAMS
 	pdf pdf-am ps ps-am tags uninstall uninstall-am \
 	uninstall-binPROGRAMS
 
-
-%.pb-c.c: %.proto
-	protoc-c $< --c_out=.
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

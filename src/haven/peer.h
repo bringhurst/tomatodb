@@ -1,5 +1,5 @@
-#ifndef __HAVEN_HAVENCTL_PEER_H
-#define __HAVEN_HAVENCTL_PEER_H
+#ifndef __HAVEN_HAVEN_PEER_H
+#define __HAVEN_HAVEN_PEER_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -20,7 +20,7 @@
 #include "config.h"
 #include "log.h"
 
-#include "havenctl.h"
+#include "haven.h"
 #include "admin.pb-c.h"
 
 #include <strings.h>
@@ -44,4 +44,4 @@ void HAVEN_set_address(char* hostname, \
 int HAVEN_tcp_client(char* hostname, \
                      short port);
 
-#endif /* __HAVEN_HAVENCTL_PEER_H */
+#endif /* __HAVEN_HAVEN_PEER_H */

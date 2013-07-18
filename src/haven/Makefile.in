@@ -68,9 +68,9 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_haven_OBJECTS = haven-haven.$(OBJEXT)
+am_haven_OBJECTS = peer.$(OBJEXT) haven.$(OBJEXT)
 haven_OBJECTS = $(am_haven_OBJECTS)
-haven_DEPENDENCIES =
+haven_DEPENDENCIES = ../common/libhaven_common.la
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -231,17 +231,16 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CFLAGS = -std=gnu99 -ggdb -W -pedantic -Wall -Wextra -Wformat=2 -Winit-self -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wuninitialized -Wunknown-pragmas -Wstrict-aliasing -Wfloat-equal -Wundef -Wbad-function-cast -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wredundant-decls -Winline -Wdisabled-optimization -Wshadow -Wwrite-strings
-AM_CPPFLAGS = -I$(top_srcdir)/src/common
+INCLUDES = \
+		-I$(top_srcdir) \
+		-I$(top_srcdir)/src/common
+
 haven_SOURCES = \
-				   haven.c
+				peer.c \
+				haven.c
 
 haven_LDADD = \
-	$(protobuf-c_LIBS) \
-	$(leveldb_LIBS)
-
-haven_CPPFLAGS = \
-    $(protobuf-c_CFLAGS) \
-    $(leveldb_CFLAGS)
+			../common/libhaven_common.la
 
 all: all-am
 
@@ -334,7 +333,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/haven-haven.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/haven.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/peer.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -356,20 +356,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
-
-haven-haven.o: haven.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(haven_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT haven-haven.o -MD -MP -MF $(DEPDIR)/haven-haven.Tpo -c -o haven-haven.o `test -f 'haven.c' || echo '$(srcdir)/'`haven.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/haven-haven.Tpo $(DEPDIR)/haven-haven.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='haven.c' object='haven-haven.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(haven_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o haven-haven.o `test -f 'haven.c' || echo '$(srcdir)/'`haven.c
-
-haven-haven.obj: haven.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(haven_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT haven-haven.obj -MD -MP -MF $(DEPDIR)/haven-haven.Tpo -c -o haven-haven.obj `if test -f 'haven.c'; then $(CYGPATH_W) 'haven.c'; else $(CYGPATH_W) '$(srcdir)/haven.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/haven-haven.Tpo $(DEPDIR)/haven-haven.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='haven.c' object='haven-haven.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(haven_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o haven-haven.obj `if test -f 'haven.c'; then $(CYGPATH_W) 'haven.c'; else $(CYGPATH_W) '$(srcdir)/haven.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

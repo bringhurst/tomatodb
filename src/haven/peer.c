@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "havenctl_peer.h"
+#include "peer.h"
 
 /** The strem to send log messages to. */
 extern FILE* HAVEN_debug_stream;
