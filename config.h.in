@@ -12,6 +12,9 @@
 /* Define to 1 if you have the `protobuf-c' library (-lprotobuf-c). */
 #undef HAVE_LIBPROTOBUF_C
 
+/* Define to 1 if you have the `zmq' library (-lzmq). */
+#undef HAVE_LIBZMQ
+
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
 

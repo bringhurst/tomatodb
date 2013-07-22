@@ -31,8 +31,11 @@ LT_INIT
 AC_CHECK_LIB([leveldb], [leveldb_open], [], \
              [AC_MSG_ERROR([leveldb_open was not found in LevelDB])])
 
-AC_CHECK_LIB([protobuf-c], [protobuf_c_rpc_server_new], [], \
-             [AC_MSG_ERROR([protobuf_c_rpc_server_new was not found in ProtoBuf-C])])
+AC_CHECK_LIB([protobuf-c], [protobuf_c_message_unpack], [], \
+             [AC_MSG_ERROR([protobuf_c_message_unpack was not found in ProtoBuf-C])])
+
+AC_CHECK_LIB([zmq], [zmq_socket], [], \
+             [AC_MSG_ERROR([zmq_socket was not found in ZeroMQ])])
 
 # Checks for header files.
 

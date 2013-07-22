@@ -9,6 +9,8 @@ INCLUDES = \
 
 noinst_LTLIBRARIES = libhaven_common.la
 
+libhaven_common_la_LDFLAGS = $(LIB_LDFLAGS)
+
 libhaven_common_la_SOURCES = \
 							common.c \
 							database.pb-c.c \
@@ -18,10 +20,10 @@ libhaven_common_la_SOURCES = \
 
 libhaven_common_la_LIBADD = \
 							$(protobuf-c_LIBS) \
-							$(leveldb_LIBS)
-
-libhaven_common_la_LDFLAGS = $(LIB_LDFLAGS)
+							$(leveldb_LIBS) \
+							$(zmq_LIBS)
 
 libhaven_common_la_CFLAGS = \
 							$(protobuf-c_CFLAGS) \
-							$(leveldb_CFLAGS)
+							$(leveldb_CFLAGS) \
+							$(zmq_CFLAGS)
