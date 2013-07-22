@@ -1,5 +1,5 @@
-#ifndef __HAVEN_RPC_H
-#define __HAVEN_RPC_H
+#ifndef __HAVEN_SERVER_H
+#define __HAVEN_SERVER_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -21,6 +21,6 @@
 
 #include "havend.h"
 
-void HAVEN_init_rpc_services(HAVEN_ctx_t* ctx);
+void HAVEN_init_server_loop(HAVEN_ctx_t* ctx);
 
-#endif /* __HAVEN_RPC_H */
+#endif /* __HAVEN_SERVER_H */

@@ -9,8 +9,7 @@ bin_PROGRAMS = havend
 havend_SOURCES = \
 				 settings.c \
 				 consensus.c \
-				 database.c \
-				 rpc.c \
+				 server.c \
 				 havend.c
 
 havend_LDADD = \
