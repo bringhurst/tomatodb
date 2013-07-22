@@ -7,9 +7,11 @@ INCLUDES = \
 bin_PROGRAMS = havend
 
 havend_SOURCES = \
-                consensus.c \
-				database.c \
-				rpc.c \
-				havend.c
+				 settings.c \
+				 consensus.c \
+				 database.c \
+				 rpc.c \
+				 havend.c
+
 havend_LDADD = \
 				../common/libhaven_common.la

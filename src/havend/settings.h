@@ -1,5 +1,5 @@
-#ifndef __HAVEN_COMMON_COMMON_H
-#define __HAVEN_COMMON_COMMON_H
+#ifndef __HAVEN_SETTINGS_H
+#define __HAVEN_SETTINGS_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -17,19 +17,9 @@
  * limitations under the License.
  */
 
-#define HAVEN_BASE_STATE_DIR "/var/lib/haven"
+#include "havend.h"
 
-#define HAVEN_SUCCESS (1)
-#define HAVEN_ERROR (-1)
+int HAVEN_get_local_machine_id(char** hostname);
+int HAVEN_prepare_config_db(HAVEN_ctx_t* ctx);
 
-#ifndef _POSIX_HOST_NAME_MAX
-#define _POSIX_HOST_NAME_MAX 255
-#endif
-
-#ifndef _POSIX_PATH_MAX
-#define _POSIX_PATH_MAX 4096
-#endif
-
-int HAVEN_ensure_directory_exists(char* path);
-
-#endif /* __HAVEN_COMMON_COMMON_H */
+#endif /* __HAVEN_SETTINGS_H */

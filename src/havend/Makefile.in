@@ -68,8 +68,8 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_havend_OBJECTS = consensus.$(OBJEXT) database.$(OBJEXT) \
-	rpc.$(OBJEXT) havend.$(OBJEXT)
+am_havend_OBJECTS = settings.$(OBJEXT) consensus.$(OBJEXT) \
+	database.$(OBJEXT) rpc.$(OBJEXT) havend.$(OBJEXT)
 havend_OBJECTS = $(am_havend_OBJECTS)
 havend_DEPENDENCIES = ../common/libhaven_common.la
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -237,10 +237,11 @@ INCLUDES = \
 		   -I$(top_srcdir)/src/common
 
 havend_SOURCES = \
-                consensus.c \
-				database.c \
-				rpc.c \
-				havend.c
+				 settings.c \
+				 consensus.c \
+				 database.c \
+				 rpc.c \
+				 havend.c
 
 havend_LDADD = \
 				../common/libhaven_common.la
@@ -340,6 +341,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/database.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/havend.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rpc.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/settings.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
