@@ -59,7 +59,7 @@ int main(void) {
     HAVEN_prepare_settings_db(ctx);
     HAVEN_init_server_loop(ctx);
 
-    HAVEN_close_db(ctx->config_db);
+    HAVEN_close_db(ctx->settings_db);
     HAVEN_free_context(ctx);
 
     exit(EXIT_SUCCESS);

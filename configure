@@ -15265,13 +15265,13 @@ else
 fi
 
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for zmq_socket in -lzmq" >&5
-$as_echo_n "checking for zmq_socket in -lzmq... " >&6; }
-if ${ac_cv_lib_zmq_zmq_socket+:} false; then :
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for ev_io_start in -lev" >&5
+$as_echo_n "checking for ev_io_start in -lev... " >&6; }
+if ${ac_cv_lib_ev_ev_io_start+:} false; then :
   $as_echo_n "(cached) " >&6
 else
   ac_check_lib_save_LIBS=$LIBS
-LIBS="-lzmq  $LIBS"
+LIBS="-lev  $LIBS"
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
@@ -15281,36 +15281,36 @@ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 #ifdef __cplusplus
 extern "C"
 #endif
-char zmq_socket ();
+char ev_io_start ();
 int
 main ()
 {
-return zmq_socket ();
+return ev_io_start ();
   ;
   return 0;
 }
 _ACEOF
 if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_lib_zmq_zmq_socket=yes
+  ac_cv_lib_ev_ev_io_start=yes
 else
-  ac_cv_lib_zmq_zmq_socket=no
+  ac_cv_lib_ev_ev_io_start=no
 fi
 rm -f core conftest.err conftest.$ac_objext \
     conftest$ac_exeext conftest.$ac_ext
 LIBS=$ac_check_lib_save_LIBS
 fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_zmq_zmq_socket" >&5
-$as_echo "$ac_cv_lib_zmq_zmq_socket" >&6; }
-if test "x$ac_cv_lib_zmq_zmq_socket" = xyes; then :
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_ev_ev_io_start" >&5
+$as_echo "$ac_cv_lib_ev_ev_io_start" >&6; }
+if test "x$ac_cv_lib_ev_ev_io_start" = xyes; then :
   cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBZMQ 1
+#define HAVE_LIBEV 1
 _ACEOF
 
-  LIBS="-lzmq $LIBS"
+  LIBS="-lev $LIBS"
 
 else
   \
-             as_fn_error $? "zmq_socket was not found in ZeroMQ" "$LINENO" 5
+             as_fn_error $? "ev_io_start was not found in LibEv" "$LINENO" 5
 fi
 
 

@@ -34,8 +34,8 @@ AC_CHECK_LIB([leveldb], [leveldb_open], [], \
 AC_CHECK_LIB([protobuf-c], [protobuf_c_message_unpack], [], \
              [AC_MSG_ERROR([protobuf_c_message_unpack was not found in ProtoBuf-C])])
 
-AC_CHECK_LIB([zmq], [zmq_socket], [], \
-             [AC_MSG_ERROR([zmq_socket was not found in ZeroMQ])])
+AC_CHECK_LIB([ev], [ev_io_start], [], \
+             [AC_MSG_ERROR([ev_io_start was not found in LibEv])])
 
 # Checks for header files.
 
