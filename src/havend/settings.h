@@ -20,6 +20,6 @@
 #include "havend.h"
 
 int HAVEN_get_local_machine_id(char** hostname);
-int HAVEN_prepare_config_db(HAVEN_ctx_t* ctx);
+int HAVEN_prepare_settings_db(HAVEN_ctx_t* ctx);
 
 #endif /* __HAVEN_SETTINGS_H */

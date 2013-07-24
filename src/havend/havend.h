@@ -21,12 +21,12 @@
 
 #include "database.h"
 
-#define HAVEN_CONFIG_DB_PREFIX "/config"
+#define HAVEN_SETTINGS_DB_PREFIX "/settings"
 #define HAVEN_LOG_DB_PREFIX    "/log"
 #define HAVEN_GROUP_DB_PREFIX  "/group"
 
 typedef struct HAVEN_ctx_t {
-    HAVEN_db_t* config_db;
+    HAVEN_db_t* settings_db;
     HAVEN_db_t* log_db;
     char* local_id;
     char* local_state_path;

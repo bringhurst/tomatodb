@@ -56,7 +56,7 @@ int main(void) {
 
     LOG(HAVEN_LOG_INFO, "Using `%s' for local machine id.", ctx->local_id);
 
-    HAVEN_prepare_config_db(ctx);
+    HAVEN_prepare_settings_db(ctx);
     HAVEN_init_server_loop(ctx);
 
     HAVEN_close_db(ctx->config_db);

@@ -56,24 +56,24 @@ int HAVEN_get_local_machine_id(char** hostname)
     return HAVEN_SUCCESS;
 }
 
-int HAVEN_prepare_config_db(HAVEN_ctx_t* ctx)
+int HAVEN_prepare_settings_db(HAVEN_ctx_t* ctx)
 {
-    char* config_db_path = (char*) malloc(sizeof(char) * _POSIX_PATH_MAX);
+    char* settings_db_path = (char*) malloc(sizeof(char) * _POSIX_PATH_MAX);
     int offset;
     int result;
 
-    offset = sprintf(config_db_path, "%s%s", \
-            HAVEN_BASE_STATE_DIR, HAVEN_CONFIG_DB_PREFIX);
+    offset = sprintf(settings_db_path, "%s%s", \
+            HAVEN_BASE_STATE_DIR, HAVEN_SETTINGS_DB_PREFIX);
 
-    if(HAVEN_ensure_directory_exists(config_db_path) != HAVEN_SUCCESS) {
-        LOG(HAVEN_LOG_ERR, "Failed to create directory structure when preparing the config DB.");
+    if(HAVEN_ensure_directory_exists(settings_db_path) != HAVEN_SUCCESS) {
+        LOG(HAVEN_LOG_ERR, "Failed to create directory structure when preparing the settings DB.");
         return HAVEN_ERROR;
     }
 
-    sprintf(config_db_path+offset, "/%s", ctx->local_id);
-    result = HAVEN_init_db(&ctx->config_db, config_db_path);
+    sprintf(settings_db_path+offset, "/%s", ctx->local_id);
+    result = HAVEN_init_db(&ctx->settings_db, settings_db_path);
 
-    free(config_db_path);
+    free(settings_db_path);
     return result;
 }
 
