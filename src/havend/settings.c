@@ -18,12 +18,9 @@
 #include "log.h"
 #include "common.h"
 
+#include <uuid/uuid.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <unistd.h>
-#include <netdb.h>
 
 /** The debug stream to write log messages to. */
 extern FILE* HAVEN_debug_stream;
@@ -31,33 +28,31 @@ extern FILE* HAVEN_debug_stream;
 /** The log level to write messages for. */
 extern HAVEN_loglevel HAVEN_debug_level;
 
-int HAVEN_get_local_machine_id(char** hostname)
+int HAVEN_get_local_machine_uuid(HAVEN_ctx_t* ctx)
 {
-    struct addrinfo hints, *info;
-    int gai_result;
-    char localname[_POSIX_HOST_NAME_MAX];
+    int result = uuid_generate_time_safe(ctx->local_uuid);
+    char* uuid_string = (char*) malloc(sizeof(char) * UUID_STR_LEN);
 
-    gethostname(localname, _POSIX_HOST_NAME_MAX);
+    // TODO: store the generated uuid in a file and read if it exists.
 
-    memset(&hints, 0, sizeof hints);
-    hints.ai_family = AF_UNSPEC; /*either IPV4 or IPV6*/
-    hints.ai_socktype = SOCK_STREAM;
-    hints.ai_flags = AI_CANONNAME;
-
-    if ((gai_result = getaddrinfo(localname, "http", &hints, &info)) != 0) {
-        LOG(HAVEN_LOG_ERR, "Failed to get hostname information. %s", gai_strerror(gai_result));
+    if(result != 0)  {
+        LOG(HAVEN_LOG_ERR, "Could not safely generate a UUID. " \
+                           "Please file a bug report with hardware details.");
         return HAVEN_ERROR;
     }
 
-    *hostname = (char*) malloc(sizeof(char) * _POSIX_HOST_NAME_MAX);
-    strncpy(*hostname, info->ai_canonname, _POSIX_HOST_NAME_MAX);
-    freeaddrinfo(info);
+    uuid_unparse(ctx->local_uuid, uuid_string);
+    printf("generated uuid is `%s'.\n", uuid_string);
+    free(uuid_string);
+
+    exit(EXIT_FAILURE); // TODO: use existing uuid if exists already.
 
     return HAVEN_SUCCESS;
 }
 
 int HAVEN_prepare_settings_db(HAVEN_ctx_t* ctx)
 {
+    /****
     char* settings_db_path = (char*) malloc(sizeof(char) * _POSIX_PATH_MAX);
     int offset;
     int result;
@@ -70,11 +65,13 @@ int HAVEN_prepare_settings_db(HAVEN_ctx_t* ctx)
         return HAVEN_ERROR;
     }
 
-    sprintf(settings_db_path+offset, "/%s", ctx->local_id);
+    sprintf(settings_db_path+offset, "/%s", ctx->local_uuid);
     result = HAVEN_init_db(&ctx->settings_db, settings_db_path);
 
     free(settings_db_path);
     return result;
+    ***/
+    return HAVEN_ERROR;
 }
 
 /* EOF */

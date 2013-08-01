@@ -34,8 +34,8 @@ AC_CHECK_LIB([leveldb], [leveldb_open], [], \
 AC_CHECK_LIB([protobuf-c], [protobuf_c_message_unpack], [], \
              [AC_MSG_ERROR([protobuf_c_message_unpack was not found in ProtoBuf-C])])
 
-AC_CHECK_LIB([ev], [ev_io_start], [], \
-             [AC_MSG_ERROR([ev_io_start was not found in LibEv])])
+AC_CHECK_LIB([uuid], [uuid_generate_time_safe], [], \
+             [AC_MSG_ERROR([uuid_generate_time_safe was not found in libuuid])])
 
 # Checks for header files.
 

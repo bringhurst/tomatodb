@@ -17,9 +17,10 @@
  * limitations under the License.
  */
 
-#include <stdlib.h>
-
 #include "database.h"
+
+#include <stdlib.h>
+#include <uuid/uuid.h>
 
 #define HAVEN_SETTINGS_DB_PREFIX "/settings"
 #define HAVEN_LOG_DB_PREFIX    "/log"
@@ -28,7 +29,7 @@
 typedef struct HAVEN_ctx_t {
     HAVEN_db_t* settings_db;
     HAVEN_db_t* log_db;
-    char* local_id;
+    uuid_t local_uuid;
     char* local_state_path;
 } HAVEN_ctx_t;
 

@@ -49,12 +49,12 @@ int main(void) {
     HAVEN_debug_stream = stdout;
     HAVEN_debug_level = HAVEN_LOG_DBG;
 
-    if(HAVEN_get_local_machine_id(&ctx->local_id) != HAVEN_SUCCESS) {
-        LOG(HAVEN_LOG_ERR, "Could not determine local machine ID.");
+    if(HAVEN_get_local_machine_uuid(ctx) != HAVEN_SUCCESS) {
+        LOG(HAVEN_LOG_ERR, "Could not determine local machine UUID.");
         exit(EXIT_FAILURE);
     }
 
-    LOG(HAVEN_LOG_INFO, "Using `%s' for local machine id.", ctx->local_id);
+    LOG(HAVEN_LOG_INFO, "Using `%s' for local machine id.", ctx->local_uuid);
 
     HAVEN_prepare_settings_db(ctx);
     HAVEN_init_server_loop(ctx);

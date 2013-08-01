@@ -22,9 +22,12 @@ libhaven_common_la_SOURCES = \
 libhaven_common_la_LIBADD = \
 							$(protobuf-c_LIBS) \
 							$(leveldb_LIBS) \
+							$(uuid_LIBS) \
 							$(zmq_LIBS)
+
 
 libhaven_common_la_CFLAGS = \
 							$(protobuf-c_CFLAGS) \
 							$(leveldb_CFLAGS) \
+							$(uuid_CFLAGS) \
 							$(zmq_CFLAGS)
