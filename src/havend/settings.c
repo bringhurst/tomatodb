@@ -42,7 +42,7 @@ int HAVEN_get_local_machine_uuid(HAVEN_ctx_t* ctx)
         result = HAVEN_get_uuid_from_file(ctx, uuid_file_path);
     }
     else {
-        result = HAVEN_configure_new_uuid(ctx);
+        result = HAVEN_configure_new_uuid(ctx, uuid_file_path);
     }
 
     free(uuid_file_path);
@@ -51,41 +51,51 @@ int HAVEN_get_local_machine_uuid(HAVEN_ctx_t* ctx)
 
 int HAVEN_get_uuid_from_file(HAVEN_ctx_t* ctx, char* uuid_file_path)
 {
-    size_t bytes_read = 0;
     char* buf = (char*) malloc(sizeof(char) * UUID_STR_LEN);
     FILE* fh = fopen(uuid_file_path, "rd");
+    char* uuid_string = (char*) malloc(sizeof(char) * UUID_STR_LEN);
 
     if(fh == NULL) {
-        LOG(HAVEN_LOG_ERR, "Could not open uuid file at `%s'.", uuid_file_path);
+        LOG(HAVEN_LOG_ERR, "Could not open UUID settings file at `%s'.", uuid_file_path);
         return HAVEN_ERROR;
     }
 
-    do {
-        bytes_read = fread(buf + bytes_read, 1, sizeof(char) * UUID_STR_LEN, fh);
-    }
-    while(bytes_read < UUID_STR_LEN || feof(fh));
+    fread(buf, 1, sizeof(char) * UUID_STR_LEN, fh);
 
     if(ferror(fh) != 0) {
-        LOG(HAVEN_LOG_ERR, "An error occured while reading the uuid data file.");
+        LOG(HAVEN_LOG_ERR, "An error occured while reading the UUID settings file.");
         return HAVEN_ERROR;
     }
 
     if(uuid_parse(buf, ctx->local_uuid) != 0) {
-        LOG(HAVEN_LOG_ERR, "An error occured while parsing the uuid data file.");
+        LOG(HAVEN_LOG_ERR, \
+            "An error occured while parsing the local UUID settings file at `%s' ",
+            uuid_file_path);
+        LOG(HAVEN_LOG_ERR, \
+            "The file may be corrupt or has been incorrectly modified.");
         return HAVEN_ERROR;
     }
 
+    uuid_unparse(ctx->local_uuid, uuid_string);
+    LOG(HAVEN_LOG_INFO, "Using existing UUID of `%s' for the local host identifier.", uuid_string);
+
     fclose(fh);
     free(buf);
+    free(uuid_string);
     return HAVEN_SUCCESS;
 }
 
-int HAVEN_configure_new_uuid(HAVEN_ctx_t* ctx)
+int HAVEN_configure_new_uuid(HAVEN_ctx_t* ctx, char* uuid_file_path)
 {
     int result = uuid_generate_time_safe(ctx->local_uuid);
     char* uuid_string = (char*) malloc(sizeof(char) * UUID_STR_LEN);
+    FILE * fh = fopen(uuid_file_path, "w");
 
-    // TODO: store the generated uuid in a file and read if it exists.
+    if(fh == NULL) {
+        LOG(HAVEN_LOG_ERR, "Could not open the local uuid settings file at `%s'.", \
+            uuid_file_path);
+        return HAVEN_ERROR;
+    }
 
     if(result != 0)  {
         LOG(HAVEN_LOG_ERR, "Could not safely generate a new UUID. " \
@@ -94,7 +104,14 @@ int HAVEN_configure_new_uuid(HAVEN_ctx_t* ctx)
     }
 
     uuid_unparse(ctx->local_uuid, uuid_string);
-    printf("generated uuid is `%s'.\n", uuid_string);
+    fwrite(uuid_string, 1, sizeof(char) * UUID_STR_LEN, fh);
+
+    if(ferror(fh) != 0) {
+        LOG(HAVEN_LOG_ERR, "An error occured while writing the uuid data file.");
+        return HAVEN_ERROR;
+    }
+
+    LOG(HAVEN_LOG_INFO, "Generated new local uuid of `%s'.", uuid_string);
 
     free(uuid_string);
     return HAVEN_SUCCESS;
@@ -103,8 +120,8 @@ int HAVEN_configure_new_uuid(HAVEN_ctx_t* ctx)
 int HAVEN_prepare_settings_db(HAVEN_ctx_t* ctx)
 {
     char* settings_db_path = (char*) malloc(sizeof(char) * _POSIX_PATH_MAX);
-    int offset;
-    int result;
+    char* uuid_string = (char*) malloc(sizeof(char) * UUID_STR_LEN);
+    int offset, result;
 
     offset = sprintf(settings_db_path, "%s%s", \
                      HAVEN_BASE_STATE_DIR, HAVEN_SETTINGS_DB_PREFIX);
@@ -114,10 +131,13 @@ int HAVEN_prepare_settings_db(HAVEN_ctx_t* ctx)
         return HAVEN_ERROR;
     }
 
-    sprintf(settings_db_path + offset, "/%s", ctx->local_uuid);
+    uuid_unparse(ctx->local_uuid, uuid_string);
+    sprintf(settings_db_path + offset, "/%s", uuid_string);
     result = HAVEN_init_db(&ctx->settings_db, settings_db_path);
 
     free(settings_db_path);
+    free(uuid_string);
+
     return result;
 }
 

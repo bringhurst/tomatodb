@@ -55,8 +55,6 @@ int main(void)
         exit(EXIT_FAILURE);
     }
 
-    LOG(HAVEN_LOG_INFO, "Using `%s' for local machine id.", ctx->local_uuid);
-
     HAVEN_prepare_settings_db(ctx);
     HAVEN_init_server_loop(ctx);
 
