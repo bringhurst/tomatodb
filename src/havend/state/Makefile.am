@@ -3,6 +3,14 @@ include $(top_srcdir)/common.mk
 %.machine.c: %.rl
 	ragel -M -C -o $@ $< 
 
+%.dot: %.rl
+	ragel -p -V $< -o $@
+
+%.png: %.dot
+	dot -Tpng $< > $@
+
+png: client.png quorum.png idle.png
+
 INCLUDES = \
            -I$(top_srcdir) \
            -I$(top_srcdir)/src/common

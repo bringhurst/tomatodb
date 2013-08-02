@@ -541,6 +541,14 @@ uninstall-am:
 %.machine.c: %.rl
 	ragel -M -C -o $@ $< 
 
+%.dot: %.rl
+	ragel -p -V $< -o $@
+
+%.png: %.dot
+	dot -Tpng $< > $@
+
+png: client.png quorum.png idle.png
+
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
