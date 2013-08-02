@@ -21,6 +21,7 @@
 #include <netdb.h>
 #include <string.h>
 
+#include "config.h"
 #include "havend.h"
 #include "log.h"
 
@@ -50,6 +51,9 @@ int main(void)
     HAVEN_debug_stream = stdout;
     HAVEN_debug_level = HAVEN_LOG_DBG;
 
+    LOG(HAVEN_LOG_INFO, "Hello! %s-%s is starting up.", \
+        PACKAGE_NAME, PACKAGE_VERSION);
+
     if(HAVEN_get_local_machine_uuid(ctx) != HAVEN_SUCCESS) {
         LOG(HAVEN_LOG_ERR, "Could not determine local machine UUID.");
         exit(EXIT_FAILURE);
@@ -60,6 +64,9 @@ int main(void)
 
     HAVEN_close_db(ctx->settings_db);
     HAVEN_free_context(ctx);
+
+    LOG(HAVEN_LOG_INFO, "Goodbye! %s-%s is shutting down.", \
+        PACKAGE_NAME, PACKAGE_VERSION);
 
     exit(EXIT_SUCCESS);
 }
