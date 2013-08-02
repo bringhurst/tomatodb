@@ -27,21 +27,41 @@ fi
 # Use libtool.
 LT_INIT
 
-# Checks for libraries.
+# Checks for required libraries.
 AC_CHECK_LIB([leveldb], [leveldb_open], [], \
-             [AC_MSG_ERROR([leveldb_open was not found in LevelDB])])
+             [AC_MSG_ERROR([Function leveldb_open was not found in LevelDB. \
+                            Is libleveldb-dev installed?])])
 
-AC_CHECK_LIB([protobuf-c], [protobuf_c_message_unpack], [], \
-             [AC_MSG_ERROR([protobuf_c_message_unpack was not found in ProtoBuf-C])])
+AC_CHECK_LIB([protobuf-c], [protobuf_c_message_pack], [], \
+             [AC_MSG_ERROR([Function protobuf_c_message_pack was not found \
+                            in ProtoBuf-C. Is libprotobuf-c0-dev installed?])])
 
 AC_CHECK_LIB([uuid], [uuid_generate_time_safe], [], \
-             [AC_MSG_ERROR([uuid_generate_time_safe was not found in libuuid])])
+             [AC_MSG_ERROR([Function uuid_generate_time_safe was not found \
+                            in libuuid. Is uuid-dev installed?])])
+
+AC_CHECK_LIB([ev], [ev_io_start], [], \
+             [AC_MSG_ERROR([Function ev_io_start was not found in libev. \
+                            Is libev-dev installed?])])
 
 # Checks for header files.
+AC_CHECK_HEADERS([arpa/inet.h fcntl.h inttypes.h limits.h netdb.h \
+                  netinet/in.h stdlib.h string.h strings.h sys/socket.h \
+                  sys/time.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
+AC_TYPE_INT32_T
+AC_TYPE_INT64_T
+AC_TYPE_PID_T
+AC_TYPE_SIZE_T
+AC_TYPE_UINT32_T
+AC_TYPE_UINT8_T
 
 # Checks for library functions.
+AC_FUNC_MALLOC
+AC_FUNC_REALLOC
+AC_CHECK_FUNCS([bzero gethostbyname gettimeofday memmove memset mkdir socket \
+                strcasecmp strerror strrchr strtoul])
 
 AC_CONFIG_FILES([Makefile                  \
                  src/Makefile              \
