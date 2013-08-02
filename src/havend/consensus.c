@@ -23,7 +23,8 @@ extern FILE* HAVEN_debug_stream;
 /** The log level to output. */
 extern HAVEN_loglevel HAVEN_debug_level;
 
-void HAVEN_init_consensus_loop(HAVEN_ctx_t* ctx) {
+void HAVEN_init_consensus_loop(HAVEN_ctx_t* ctx)
+{
     LOG(HAVEN_LOG_ERR, "Consensus is not implemented yet.");
 }
 

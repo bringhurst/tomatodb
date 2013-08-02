@@ -20,8 +20,11 @@
 #include "havend.h"
 
 #define UUID_STR_LEN (36 + 1)
+#define LOCAL_UUID_SETTINGS_PATH "/local_uuid"
 
 int HAVEN_get_local_machine_uuid(HAVEN_ctx_t* ctx);
+int HAVEN_get_uuid_from_file(HAVEN_ctx_t* ctx, char* uuid_file_path);
+int HAVEN_configure_new_uuid(HAVEN_ctx_t* ctx);
 int HAVEN_prepare_settings_db(HAVEN_ctx_t* ctx);
 
 #endif /* __HAVEN_SETTINGS_H */
