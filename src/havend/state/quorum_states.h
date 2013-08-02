@@ -1,0 +1,12 @@
+#ifndef __HAVEN_QUORUM_STATES_H
+#define __HAVEN_QUORUM_STATES_H
+
+typedef enum HAVEN_quorum_states {
+    HANDLE_LOG_APPEND = 0,
+    HEARTBEAT_TIMEOUT = 1,
+    ELECTION_TIMEOUT = 2,
+    ELECTION_SUCCESS = 3,
+    DISCOVERED_HIGHER_TERM = 4
+} HAVEN_quorum_states;
+
+#endif /* __HAVEN_QUORUM_STATES_H */

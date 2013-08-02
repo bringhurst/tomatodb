@@ -1,14 +1,6 @@
 %%{
-    machine Consensus;
-
-    import "consensus_states.h";
-
-    Following := (
-
-    )
-
-    Campaigning := (
-
+    machine Quorum;
+    import "quorum_states.h";
 
     Role := (
         start: ( HANDLE_LOG_APPEND -> Following ),
@@ -19,7 +11,6 @@
         ),
 
         Campaigning: (
-            /* TODO */
             ELECTION_TIMEOUT -> Campaigning |
             ELECTION_SUCCESS -> Coordinating |
             DISCOVERED_HIGHER_TERM -> Following
@@ -27,13 +18,7 @@
 
         Coordinating: (
             DISCOVERED_HIGHER_TERM -> Following
-        ),
+        )
 
-    ) <err(error);
-
-
-
-
-main := (Role)*;
-
+    );
 }%%
