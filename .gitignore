@@ -10,6 +10,7 @@
 *.lo
 Makefile
 *.o
-/src/haven/haven
 /src/havend/havend
+!/src/havend/task/Makefile
+/src/haven/haven
 stamp-h1
