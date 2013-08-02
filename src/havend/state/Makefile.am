@@ -1,7 +1,7 @@
 include $(top_srcdir)/common.mk
 
 %.machine.c: %.rl
-	ragel -o $@ $< 
+	ragel -M -C -o $@ $< 
 
 INCLUDES = \
            -I$(top_srcdir) \

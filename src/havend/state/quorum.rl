@@ -2,7 +2,7 @@
     machine Quorum;
     import "quorum_states.h";
 
-    Role := (
+    Role = (
         start: ( HANDLE_LOG_APPEND -> Following ),
 
         Following: (
@@ -19,6 +19,7 @@
         Coordinating: (
             DISCOVERED_HIGHER_TERM -> Following
         )
-
     );
+
+    main := ( Role %{ printf("\n"); } )*;
 }%%
