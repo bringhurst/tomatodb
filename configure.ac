@@ -43,14 +43,15 @@ AC_CHECK_LIB([uuid], [uuid_generate_time_safe], [], \
 
 # Checks for library functions.
 
-AC_CONFIG_FILES([Makefile              \
-                 src/Makefile          \
-                 src/common/Makefile   \
-                 src/haven/Makefile    \
-                 src/havend/Makefile   \
-                 doc/Makefile          \
-                 doc/man/Makefile      \
-                 doc/man/man1/Makefile \
+AC_CONFIG_FILES([Makefile                  \
+                 src/Makefile              \
+                 src/common/Makefile       \
+                 src/haven/Makefile        \
+                 src/havend/Makefile       \
+                 src/havend/state/Makefile \
+                 doc/Makefile              \
+                 doc/man/Makefile          \
+                 doc/man/man1/Makefile     \
 ])
 
 AC_OUTPUT

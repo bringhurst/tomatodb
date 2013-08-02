@@ -1,6 +1,6 @@
 include $(top_srcdir)/common.mk
 
-SUBDIRS = task
+SUBDIRS = task state
 
 INCLUDES = \
 		   -I$(top_srcdir) \

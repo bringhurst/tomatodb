@@ -15320,7 +15320,7 @@ fi
 
 # Checks for library functions.
 
-ac_config_files="$ac_config_files Makefile src/Makefile src/common/Makefile src/haven/Makefile src/havend/Makefile doc/Makefile doc/man/Makefile doc/man/man1/Makefile"
+ac_config_files="$ac_config_files Makefile src/Makefile src/common/Makefile src/haven/Makefile src/havend/Makefile src/havend/state/Makefile doc/Makefile doc/man/Makefile doc/man/man1/Makefile"
 
 
 cat >confcache <<\_ACEOF
@@ -16428,6 +16428,7 @@ do
     "src/common/Makefile") CONFIG_FILES="$CONFIG_FILES src/common/Makefile" ;;
     "src/haven/Makefile") CONFIG_FILES="$CONFIG_FILES src/haven/Makefile" ;;
     "src/havend/Makefile") CONFIG_FILES="$CONFIG_FILES src/havend/Makefile" ;;
+    "src/havend/state/Makefile") CONFIG_FILES="$CONFIG_FILES src/havend/state/Makefile" ;;
     "doc/Makefile") CONFIG_FILES="$CONFIG_FILES doc/Makefile" ;;
     "doc/man/Makefile") CONFIG_FILES="$CONFIG_FILES doc/man/Makefile" ;;
     "doc/man/man1/Makefile") CONFIG_FILES="$CONFIG_FILES doc/man/man1/Makefile" ;;
