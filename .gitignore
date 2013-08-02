@@ -1,3 +1,4 @@
+*.a
 /autom4te.cache
 /config.h
 /config.h.in~
@@ -12,5 +13,8 @@ Makefile
 *.o
 /src/havend/havend
 !/src/havend/task/Makefile
+/src/havend/task/primes
+/src/havend/task/tcpproxy
+/src/havend/task/testdelay
 /src/haven/haven
 stamp-h1

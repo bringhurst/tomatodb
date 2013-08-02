@@ -71,7 +71,8 @@ PROGRAMS = $(bin_PROGRAMS)
 am_havend_OBJECTS = settings.$(OBJEXT) consensus.$(OBJEXT) \
 	server.$(OBJEXT) havend.$(OBJEXT)
 havend_OBJECTS = $(am_havend_OBJECTS)
-havend_DEPENDENCIES = ../common/libhaven_common.la
+havend_DEPENDENCIES = ../common/libhaven_common.la \
+	state/libhavend_state.la task/libtask.a
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -282,7 +283,9 @@ havend_SOURCES = \
 		 havend.c
 
 havend_LDADD = \
-		../common/libhaven_common.la
+		../common/libhaven_common.la \
+                state/libhavend_state.la \
+		task/libtask.a
 
 all: all-recursive
 
@@ -724,7 +727,6 @@ uninstall-am: uninstall-binPROGRAMS
 	tags tags-recursive uninstall uninstall-am \
 	uninstall-binPROGRAMS
 
-		task/libtask.a
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
