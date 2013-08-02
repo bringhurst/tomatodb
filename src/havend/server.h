@@ -21,6 +21,6 @@
 
 #include "havend.h"
 
-void HAVEN_init_server_loop(HAVEN_ctx_t* ctx);
+int HAVEN_init_server_loop(HAVEN_ctx_t* ctx);
 
 #endif /* __HAVEN_SERVER_H */

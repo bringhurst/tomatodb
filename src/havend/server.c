@@ -23,9 +23,12 @@ extern FILE* HAVEN_debug_stream;
 /** The log level to output. */
 extern HAVEN_loglevel HAVEN_debug_level;
 
-void HAVEN_init_server_loop(HAVEN_ctx_t* ctx)
+int HAVEN_init_server_loop(HAVEN_ctx_t* ctx)
 {
     LOG(HAVEN_LOG_ERR, "Server loop is not implemented yet.");
+    // TODO
+
+    return HAVEN_SUCCESS;
 }
 
 /* EOF */

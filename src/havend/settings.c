@@ -60,7 +60,10 @@ int HAVEN_get_uuid_from_file(HAVEN_ctx_t* ctx, char* uuid_file_path)
         return HAVEN_ERROR;
     }
 
-    fread(buf, 1, sizeof(char) * UUID_STR_LEN, fh);
+    if(fread(buf, 1, sizeof(char) * UUID_STR_LEN, fh) != UUID_STR_LEN) {
+        LOG(HAVEN_LOG_ERR, "Failed to read a complete UUID settings file. This is probably a bug.");
+        return HAVEN_ERROR;
+    }
 
     if(ferror(fh) != 0) {
         LOG(HAVEN_LOG_ERR, "An error occured while reading the UUID settings file.");

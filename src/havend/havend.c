@@ -55,12 +55,19 @@ int main(void)
         PACKAGE_NAME, PACKAGE_VERSION);
 
     if(HAVEN_get_local_machine_uuid(ctx) != HAVEN_SUCCESS) {
-        LOG(HAVEN_LOG_ERR, "Could not determine local machine UUID.");
+        LOG(HAVEN_LOG_ERR, "Could not create or determine local machine UUID.");
         exit(EXIT_FAILURE);
     }
 
-    HAVEN_prepare_settings_db(ctx);
-    HAVEN_init_server_loop(ctx);
+    if(HAVEN_prepare_settings_db(ctx) != HAVEN_SUCCESS) {
+        LOG(HAVEN_LOG_ERR, "Could not prepare the local settings database.");
+        exit(EXIT_FAILURE);
+    }
+
+    if(HAVEN_init_server_loop(ctx) != HAVEN_SUCCESS) {
+        LOG(HAVEN_LOG_ERR, "The primary server loop failed.");
+        exit(EXIT_FAILURE);
+    }
 
     HAVEN_close_db(ctx->settings_db);
     HAVEN_free_context(ctx);
