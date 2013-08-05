@@ -13,7 +13,8 @@ png: client.png consensus.png newbie.png
 
 INCLUDES = \
            -I$(top_srcdir) \
-           -I$(top_srcdir)/src/common
+           -I$(top_srcdir)/src/common \
+           -I$(top_srcdir)/src/havend
 
 noinst_LTLIBRARIES = libhavend_state.la
 

@@ -17,6 +17,8 @@
  * limitations under the License.
  */
 
+#include "havend.h"
+
 typedef void (*HAVEN_action_cb)(HAVEN_ctx_t* ctx);
 
 typedef struct HAVEN_state_actions_t {
@@ -45,6 +47,6 @@ typedef struct HAVEN_state_actions_t {
 //    HAVEN_action_cb HAVEN_client_handle_consensus_query_cb;
 //    HAVEN_action_cb HAVEN_client_exit_cb;
 
-} HAVEN_ctx_t;
+} HAVEN_state_actions_t;
 
 #endif /* __HAVEN_HAVEND_STATE_H */

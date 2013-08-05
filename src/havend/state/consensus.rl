@@ -1,6 +1,9 @@
+
+#include "consensus_machine.h"
+
 %%{
     machine Consensus;
-    import "consensus_machine.h";
+    import "consensus_events.h";
 
     action consensus_error {
         HAVEN_consensus_error_cb();
