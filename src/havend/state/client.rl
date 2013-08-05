@@ -1,6 +1,6 @@
 %%{
     machine Client;
-    import "client_events.h";
+    import "client_machine.h";
 
     action client_error {
         HAVEN_client_error_cb();

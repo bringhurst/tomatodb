@@ -1,6 +1,6 @@
 include $(top_srcdir)/common.mk
 
-%.machine.c: %.rl
+%_machine.c: %.rl
 	ragel -G2 -C -o $@ $< 
 
 %.dot: %.rl
@@ -20,14 +20,14 @@ noinst_LTLIBRARIES = libhavend_state.la
 libhavend_state_la_LDFLAGS = $(LIB_LDFLAGS)
 
 libhavend_state_la_SOURCES = \
-			client.machine.c \
-			consensus.machine.c \
-			newbie.machine.c
+			client_machine.c \
+			consensus_machine.c \
+			newbie_machine.c
 
 libhavend_state_la_LIBADD =
 libhavend_state_la_CFLAGS =
 
 CLEANFILES = \
-			 client.machine.c \
-			 consensus.machine.c \
-			 newbie.machine.c
+			 client_machine.c \
+			 consensus_machine.c \
+			 newbie_machine.c

@@ -1,6 +1,6 @@
 %%{
     machine Newbie;
-    import "newbie_events.h";
+    import "newbie_machine.h";
 
     action newbie_setup {
         HAVEN_newbie_setup_cb();
@@ -55,4 +55,5 @@ Newbie := (
     include Consensus "consensus.rl";
 }%%
 
+//**************** BEGIN DATA
 %% write data;

@@ -67,9 +67,9 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 libhavend_state_la_DEPENDENCIES =
-am_libhavend_state_la_OBJECTS = libhavend_state_la-client.machine.lo \
-	libhavend_state_la-consensus.machine.lo \
-	libhavend_state_la-newbie.machine.lo
+am_libhavend_state_la_OBJECTS = libhavend_state_la-client_machine.lo \
+	libhavend_state_la-consensus_machine.lo \
+	libhavend_state_la-newbie_machine.lo
 libhavend_state_la_OBJECTS = $(am_libhavend_state_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -242,16 +242,16 @@ INCLUDES = \
 noinst_LTLIBRARIES = libhavend_state.la
 libhavend_state_la_LDFLAGS = $(LIB_LDFLAGS)
 libhavend_state_la_SOURCES = \
-			client.machine.c \
-			consensus.machine.c \
-			newbie.machine.c
+			client_machine.c \
+			consensus_machine.c \
+			newbie_machine.c
 
 libhavend_state_la_LIBADD = 
 libhavend_state_la_CFLAGS = 
 CLEANFILES = \
-			 client.machine.c \
-			 consensus.machine.c \
-			 newbie.machine.c
+			 client_machine.c \
+			 consensus_machine.c \
+			 newbie_machine.c
 
 all: all-am
 
@@ -306,9 +306,9 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhavend_state_la-client.machine.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhavend_state_la-consensus.machine.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhavend_state_la-newbie.machine.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhavend_state_la-client_machine.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhavend_state_la-consensus_machine.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhavend_state_la-newbie_machine.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -331,26 +331,26 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
 
-libhavend_state_la-client.machine.lo: client.machine.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhavend_state_la_CFLAGS) $(CFLAGS) -MT libhavend_state_la-client.machine.lo -MD -MP -MF $(DEPDIR)/libhavend_state_la-client.machine.Tpo -c -o libhavend_state_la-client.machine.lo `test -f 'client.machine.c' || echo '$(srcdir)/'`client.machine.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhavend_state_la-client.machine.Tpo $(DEPDIR)/libhavend_state_la-client.machine.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='client.machine.c' object='libhavend_state_la-client.machine.lo' libtool=yes @AMDEPBACKSLASH@
+libhavend_state_la-client_machine.lo: client_machine.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhavend_state_la_CFLAGS) $(CFLAGS) -MT libhavend_state_la-client_machine.lo -MD -MP -MF $(DEPDIR)/libhavend_state_la-client_machine.Tpo -c -o libhavend_state_la-client_machine.lo `test -f 'client_machine.c' || echo '$(srcdir)/'`client_machine.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhavend_state_la-client_machine.Tpo $(DEPDIR)/libhavend_state_la-client_machine.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='client_machine.c' object='libhavend_state_la-client_machine.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhavend_state_la_CFLAGS) $(CFLAGS) -c -o libhavend_state_la-client.machine.lo `test -f 'client.machine.c' || echo '$(srcdir)/'`client.machine.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhavend_state_la_CFLAGS) $(CFLAGS) -c -o libhavend_state_la-client_machine.lo `test -f 'client_machine.c' || echo '$(srcdir)/'`client_machine.c
 
-libhavend_state_la-consensus.machine.lo: consensus.machine.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhavend_state_la_CFLAGS) $(CFLAGS) -MT libhavend_state_la-consensus.machine.lo -MD -MP -MF $(DEPDIR)/libhavend_state_la-consensus.machine.Tpo -c -o libhavend_state_la-consensus.machine.lo `test -f 'consensus.machine.c' || echo '$(srcdir)/'`consensus.machine.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhavend_state_la-consensus.machine.Tpo $(DEPDIR)/libhavend_state_la-consensus.machine.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='consensus.machine.c' object='libhavend_state_la-consensus.machine.lo' libtool=yes @AMDEPBACKSLASH@
+libhavend_state_la-consensus_machine.lo: consensus_machine.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhavend_state_la_CFLAGS) $(CFLAGS) -MT libhavend_state_la-consensus_machine.lo -MD -MP -MF $(DEPDIR)/libhavend_state_la-consensus_machine.Tpo -c -o libhavend_state_la-consensus_machine.lo `test -f 'consensus_machine.c' || echo '$(srcdir)/'`consensus_machine.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhavend_state_la-consensus_machine.Tpo $(DEPDIR)/libhavend_state_la-consensus_machine.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='consensus_machine.c' object='libhavend_state_la-consensus_machine.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhavend_state_la_CFLAGS) $(CFLAGS) -c -o libhavend_state_la-consensus.machine.lo `test -f 'consensus.machine.c' || echo '$(srcdir)/'`consensus.machine.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhavend_state_la_CFLAGS) $(CFLAGS) -c -o libhavend_state_la-consensus_machine.lo `test -f 'consensus_machine.c' || echo '$(srcdir)/'`consensus_machine.c
 
-libhavend_state_la-newbie.machine.lo: newbie.machine.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhavend_state_la_CFLAGS) $(CFLAGS) -MT libhavend_state_la-newbie.machine.lo -MD -MP -MF $(DEPDIR)/libhavend_state_la-newbie.machine.Tpo -c -o libhavend_state_la-newbie.machine.lo `test -f 'newbie.machine.c' || echo '$(srcdir)/'`newbie.machine.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhavend_state_la-newbie.machine.Tpo $(DEPDIR)/libhavend_state_la-newbie.machine.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='newbie.machine.c' object='libhavend_state_la-newbie.machine.lo' libtool=yes @AMDEPBACKSLASH@
+libhavend_state_la-newbie_machine.lo: newbie_machine.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhavend_state_la_CFLAGS) $(CFLAGS) -MT libhavend_state_la-newbie_machine.lo -MD -MP -MF $(DEPDIR)/libhavend_state_la-newbie_machine.Tpo -c -o libhavend_state_la-newbie_machine.lo `test -f 'newbie_machine.c' || echo '$(srcdir)/'`newbie_machine.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhavend_state_la-newbie_machine.Tpo $(DEPDIR)/libhavend_state_la-newbie_machine.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='newbie_machine.c' object='libhavend_state_la-newbie_machine.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhavend_state_la_CFLAGS) $(CFLAGS) -c -o libhavend_state_la-newbie.machine.lo `test -f 'newbie.machine.c' || echo '$(srcdir)/'`newbie.machine.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhavend_state_la_CFLAGS) $(CFLAGS) -c -o libhavend_state_la-newbie_machine.lo `test -f 'newbie_machine.c' || echo '$(srcdir)/'`newbie_machine.c
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -562,7 +562,7 @@ uninstall-am:
 	pdf pdf-am ps ps-am tags uninstall uninstall-am
 
 
-%.machine.c: %.rl
+%_machine.c: %.rl
 	ragel -G2 -C -o $@ $< 
 
 %.dot: %.rl
