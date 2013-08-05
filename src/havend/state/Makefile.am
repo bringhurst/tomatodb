@@ -1,7 +1,7 @@
 include $(top_srcdir)/common.mk
 
 %.machine.c: %.rl
-	ragel -M -C -o $@ $< 
+	ragel -G2 -C -o $@ $< 
 
 %.dot: %.rl
 	ragel -p -V $< -o $@
@@ -9,7 +9,7 @@ include $(top_srcdir)/common.mk
 %.png: %.dot
 	dot -Tpng $< > $@
 
-png: client.png quorum.png newbie.png
+png: client.png consensus.png newbie.png
 
 INCLUDES = \
            -I$(top_srcdir) \
@@ -21,13 +21,13 @@ libhavend_state_la_LDFLAGS = $(LIB_LDFLAGS)
 
 libhavend_state_la_SOURCES = \
 			client.machine.c \
-			newbie.machine.c \
-			quorum.machine.c
+			consensus.machine.c \
+			newbie.machine.c
 
 libhavend_state_la_LIBADD =
 libhavend_state_la_CFLAGS =
 
 CLEANFILES = \
 			 client.machine.c \
-			 newbie.machine.c \
-			 quorum.machine.c
+			 consensus.machine.c \
+			 newbie.machine.c

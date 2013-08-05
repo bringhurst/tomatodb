@@ -50,4 +50,9 @@ Newbie := (
         )
 
     ) <err(newbie_error);
+
+    include Client "client.rl";
+    include Consensus "consensus.rl";
 }%%
+
+%% write data;

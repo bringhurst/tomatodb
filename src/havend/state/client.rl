@@ -1,10 +1,15 @@
 %%{
     machine Client;
-    import "client_states.h";
+    import "client_events.h";
 
-    Client = (
-        start: ( IDLE -> start )
-    );
+    action client_error {
+        HAVEN_client_error_cb();
+    }
 
-    main := ( Client %{ printf("\n"); } )*;
+Client := (
+        RegisteringWithLocationService: (
+            REGISTERED @client_error
+        )
+
+    ) <err(client_error);
 }%%
