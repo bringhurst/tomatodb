@@ -26,3 +26,8 @@ libhavend_state_la_SOURCES = \
 
 libhavend_state_la_LIBADD =
 libhavend_state_la_CFLAGS =
+
+CLEANFILES = \
+			 client.machine.c \
+			 idle.machine.c \
+			 quorum.machine.c
