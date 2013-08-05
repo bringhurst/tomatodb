@@ -68,7 +68,7 @@ CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 libhavend_state_la_DEPENDENCIES =
 am_libhavend_state_la_OBJECTS = libhavend_state_la-client.machine.lo \
-	libhavend_state_la-idle.machine.lo \
+	libhavend_state_la-newbie.machine.lo \
 	libhavend_state_la-quorum.machine.lo
 libhavend_state_la_OBJECTS = $(am_libhavend_state_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -243,14 +243,14 @@ noinst_LTLIBRARIES = libhavend_state.la
 libhavend_state_la_LDFLAGS = $(LIB_LDFLAGS)
 libhavend_state_la_SOURCES = \
 			client.machine.c \
-			idle.machine.c \
+			newbie.machine.c \
 			quorum.machine.c
 
 libhavend_state_la_LIBADD = 
 libhavend_state_la_CFLAGS = 
 CLEANFILES = \
 			 client.machine.c \
-			 idle.machine.c \
+			 newbie.machine.c \
 			 quorum.machine.c
 
 all: all-am
@@ -307,7 +307,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhavend_state_la-client.machine.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhavend_state_la-idle.machine.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhavend_state_la-newbie.machine.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhavend_state_la-quorum.machine.Plo@am__quote@
 
 .c.o:
@@ -338,12 +338,12 @@ libhavend_state_la-client.machine.lo: client.machine.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhavend_state_la_CFLAGS) $(CFLAGS) -c -o libhavend_state_la-client.machine.lo `test -f 'client.machine.c' || echo '$(srcdir)/'`client.machine.c
 
-libhavend_state_la-idle.machine.lo: idle.machine.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhavend_state_la_CFLAGS) $(CFLAGS) -MT libhavend_state_la-idle.machine.lo -MD -MP -MF $(DEPDIR)/libhavend_state_la-idle.machine.Tpo -c -o libhavend_state_la-idle.machine.lo `test -f 'idle.machine.c' || echo '$(srcdir)/'`idle.machine.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhavend_state_la-idle.machine.Tpo $(DEPDIR)/libhavend_state_la-idle.machine.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='idle.machine.c' object='libhavend_state_la-idle.machine.lo' libtool=yes @AMDEPBACKSLASH@
+libhavend_state_la-newbie.machine.lo: newbie.machine.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhavend_state_la_CFLAGS) $(CFLAGS) -MT libhavend_state_la-newbie.machine.lo -MD -MP -MF $(DEPDIR)/libhavend_state_la-newbie.machine.Tpo -c -o libhavend_state_la-newbie.machine.lo `test -f 'newbie.machine.c' || echo '$(srcdir)/'`newbie.machine.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhavend_state_la-newbie.machine.Tpo $(DEPDIR)/libhavend_state_la-newbie.machine.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='newbie.machine.c' object='libhavend_state_la-newbie.machine.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhavend_state_la_CFLAGS) $(CFLAGS) -c -o libhavend_state_la-idle.machine.lo `test -f 'idle.machine.c' || echo '$(srcdir)/'`idle.machine.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhavend_state_la_CFLAGS) $(CFLAGS) -c -o libhavend_state_la-newbie.machine.lo `test -f 'newbie.machine.c' || echo '$(srcdir)/'`newbie.machine.c
 
 libhavend_state_la-quorum.machine.lo: quorum.machine.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhavend_state_la_CFLAGS) $(CFLAGS) -MT libhavend_state_la-quorum.machine.lo -MD -MP -MF $(DEPDIR)/libhavend_state_la-quorum.machine.Tpo -c -o libhavend_state_la-quorum.machine.lo `test -f 'quorum.machine.c' || echo '$(srcdir)/'`quorum.machine.c
@@ -571,7 +571,7 @@ uninstall-am:
 %.png: %.dot
 	dot -Tpng $< > $@
 
-png: client.png quorum.png idle.png
+png: client.png quorum.png newbie.png
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

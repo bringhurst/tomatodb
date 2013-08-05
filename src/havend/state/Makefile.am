@@ -9,7 +9,7 @@ include $(top_srcdir)/common.mk
 %.png: %.dot
 	dot -Tpng $< > $@
 
-png: client.png quorum.png idle.png
+png: client.png quorum.png newbie.png
 
 INCLUDES = \
            -I$(top_srcdir) \
@@ -21,7 +21,7 @@ libhavend_state_la_LDFLAGS = $(LIB_LDFLAGS)
 
 libhavend_state_la_SOURCES = \
 			client.machine.c \
-			idle.machine.c \
+			newbie.machine.c \
 			quorum.machine.c
 
 libhavend_state_la_LIBADD =
@@ -29,5 +29,5 @@ libhavend_state_la_CFLAGS =
 
 CLEANFILES = \
 			 client.machine.c \
-			 idle.machine.c \
+			 newbie.machine.c \
 			 quorum.machine.c
