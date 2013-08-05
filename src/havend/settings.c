@@ -61,7 +61,8 @@ int HAVEN_get_uuid_from_file(HAVEN_ctx_t* ctx, char* uuid_file_path)
     }
 
     if(fread(buf, 1, sizeof(char) * UUID_STR_LEN, fh) != UUID_STR_LEN) {
-        LOG(HAVEN_LOG_ERR, "Failed to read a complete UUID settings file. This is probably a bug.");
+        LOG(HAVEN_LOG_ERR, "Failed to read a complete UUID settings file at `%s'. " \
+                "The settings file may be corrupt.", uuid_file_path);
         return HAVEN_ERROR;
     }
 
@@ -90,10 +91,20 @@ int HAVEN_get_uuid_from_file(HAVEN_ctx_t* ctx, char* uuid_file_path)
 
 int HAVEN_configure_new_uuid(HAVEN_ctx_t* ctx, char* uuid_file_path)
 {
+    FILE * fh = NULL;
     int result = uuid_generate_time_safe(ctx->local_uuid);
     char* uuid_string = (char*) malloc(sizeof(char) * UUID_STR_LEN);
-    FILE * fh = fopen(uuid_file_path, "w");
+    char* uuid_dir_path = (char*) malloc(sizeof(char) * _POSIX_PATH_MAX);
 
+    sprintf(uuid_dir_path, "%s%s", \
+            HAVEN_BASE_STATE_DIR, HAVEN_SETTINGS_DB_PREFIX);
+
+    if(HAVEN_ensure_directory_exists(uuid_dir_path) != HAVEN_SUCCESS) {
+        LOG(HAVEN_LOG_ERR, "Failed to create directory structure when preparing the UUID settings file.");
+        return HAVEN_ERROR;
+    }
+
+    fh = fopen(uuid_file_path, "w");
     if(fh == NULL) {
         LOG(HAVEN_LOG_ERR, "Could not open the local uuid settings file at `%s'.", \
             uuid_file_path);
@@ -103,6 +114,14 @@ int HAVEN_configure_new_uuid(HAVEN_ctx_t* ctx, char* uuid_file_path)
     if(result != 0)  {
         LOG(HAVEN_LOG_ERR, "Could not safely generate a new UUID. " \
             "Please ensure that uuidd(8) is installed and working.");
+        if(unlink(uuid_file_path) == 0) {
+            LOG(HAVEN_LOG_ERR, "Removed incomplete UUID settings file at `%s'.",
+                    uuid_file_path);
+        } else {
+            LOG(HAVEN_LOG_ERR, "Failed to remove incomplete UUID settings file at `%s'.",
+                    uuid_file_path);
+        }
+
         return HAVEN_ERROR;
     }
 
