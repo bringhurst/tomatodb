@@ -31,6 +31,8 @@
 #include "server.h"
 #include "settings.h"
 
+#include "task/task.h"
+
 /** The debug stream to write log messages to. */
 FILE* HAVEN_debug_stream;
 
@@ -43,7 +45,7 @@ void HAVEN_free_context(HAVEN_ctx_t* ctx)
     free(ctx);
 }
 
-int main(void)
+void taskmain(int argc, char *argv[])
 {
     HAVEN_ctx_t* ctx = \
                        (HAVEN_ctx_t*) malloc(sizeof(HAVEN_ctx_t));
