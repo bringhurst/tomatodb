@@ -18,16 +18,18 @@
  */
 
 #include <stddef.h>
+#include <stdint.h>
 
 typedef struct HAVEN_xarray_t {
     size_t size;
-    void* data;
+    intptr_t** data;
+    int index;
 } HAVEN_xarray_t;
 
 int HAVEN_xarray_init(HAVEN_xarray_t** array, size_t initial_size);
 int HAVEN_xarray_free(HAVEN_xarray_t* array);
 int HAVEN_xarray_realloc(HAVEN_xarray_t* array, size_t new_size);
 int HAVEN_xarray_push(HAVEN_xarray_t* array, void* data);
-int HAVEN_xarray_pop(HAVEN_xarray_t* array, void* data);
+int HAVEN_xarray_pop(HAVEN_xarray_t* array, void** data);
 
 #endif /* __HAVEN_COMMON_XARRAY_H */
