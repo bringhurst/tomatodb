@@ -30,6 +30,8 @@ extern HAVEN_loglevel HAVEN_debug_level;
 
 int HAVEN_server_accept(HAVEN_server_t* server)
 {
+    // TODO: create connection task.
+    //
     // TODO: netaccept
     //
     // TODO: pass to server instance
