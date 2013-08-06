@@ -15,17 +15,47 @@
  */
 
 #include "xarray.h"
+#include "common.h"
+#include "log.h"
+
+#include <stdlib.h>
+
+/** The debug stream to write log messages to. */
+extern FILE* HAVEN_debug_stream;
+
+/** The log level to write messages for. */
+extern HAVEN_loglevel HAVEN_debug_level;
 
 int HAVEN_xarray_init(HAVEN_xarray_t** array, size_t initial_size)
 {
+    *array = (HAVEN_xarray_t*) malloc(sizeof(HAVEN_xarray_t));
+    (*array)->data = (void*) malloc(sizeof(void*) * initial_size);
+
+    if(*array == NULL || (*array)->data == NULL) {
+        LOG(HAVEN_LOG_ERR, "Failed to allocate memory for a dynamic array.");
+        return HAVEN_ERROR;
+    }
+
+    (*array)->size = initial_size;
+    return HAVEN_SUCCESS;
 }
 
 int HAVEN_xarray_free(HAVEN_xarray_t* array)
 {
+    LOG(HAVEN_LOG_WARN, "Failed to free a dynamic array.");
+    return HAVEN_ERROR;
 }
 
 int HAVEN_xarray_realloc(HAVEN_xarray_t* array, size_t new_size)
 {
+    array->data = (void*) realloc(array->data, sizeof(void*) * new_size);
+
+    if(array->data == NULL) {
+        LOG(HAVEN_LOG_ERR, "Failed to re-allocate memory for a dynamic array.");
+        return HAVEN_ERROR;
+    }
+
+    return HAVEN_SUCCESS;
 }
 
 int HAVEN_xarray_push(HAVEN_xarray_t* array, void* data)
