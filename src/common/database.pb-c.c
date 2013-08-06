@@ -7,643 +7,620 @@
 
 #include "database.pb-c.h"
 void   haven__database__log_command__init
-                     (Haven__Database__LogCommand         *message)
+(Haven__Database__LogCommand*         message)
 {
-  static Haven__Database__LogCommand init_value = HAVEN__DATABASE__LOG_COMMAND__INIT;
-  *message = init_value;
+    static Haven__Database__LogCommand init_value = HAVEN__DATABASE__LOG_COMMAND__INIT;
+    *message = init_value;
 }
 size_t haven__database__log_command__get_packed_size
-                     (const Haven__Database__LogCommand *message)
+(const Haven__Database__LogCommand* message)
 {
-  PROTOBUF_C_ASSERT (message->base.descriptor == &haven__database__log_command__descriptor);
-  return protobuf_c_message_get_packed_size ((const ProtobufCMessage*)(message));
+    PROTOBUF_C_ASSERT(message->base.descriptor == &haven__database__log_command__descriptor);
+    return protobuf_c_message_get_packed_size((const ProtobufCMessage*)(message));
 }
 size_t haven__database__log_command__pack
-                     (const Haven__Database__LogCommand *message,
-                      uint8_t       *out)
+(const Haven__Database__LogCommand* message,
+ uint8_t*       out)
 {
-  PROTOBUF_C_ASSERT (message->base.descriptor == &haven__database__log_command__descriptor);
-  return protobuf_c_message_pack ((const ProtobufCMessage*)message, out);
+    PROTOBUF_C_ASSERT(message->base.descriptor == &haven__database__log_command__descriptor);
+    return protobuf_c_message_pack((const ProtobufCMessage*)message, out);
 }
 size_t haven__database__log_command__pack_to_buffer
-                     (const Haven__Database__LogCommand *message,
-                      ProtobufCBuffer *buffer)
+(const Haven__Database__LogCommand* message,
+ ProtobufCBuffer* buffer)
 {
-  PROTOBUF_C_ASSERT (message->base.descriptor == &haven__database__log_command__descriptor);
-  return protobuf_c_message_pack_to_buffer ((const ProtobufCMessage*)message, buffer);
+    PROTOBUF_C_ASSERT(message->base.descriptor == &haven__database__log_command__descriptor);
+    return protobuf_c_message_pack_to_buffer((const ProtobufCMessage*)message, buffer);
 }
-Haven__Database__LogCommand *
-       haven__database__log_command__unpack
-                     (ProtobufCAllocator  *allocator,
-                      size_t               len,
-                      const uint8_t       *data)
+Haven__Database__LogCommand*
+haven__database__log_command__unpack
+(ProtobufCAllocator*  allocator,
+ size_t               len,
+ const uint8_t*       data)
 {
-  return (Haven__Database__LogCommand *)
-     protobuf_c_message_unpack (&haven__database__log_command__descriptor,
-                                allocator, len, data);
+    return (Haven__Database__LogCommand*)
+           protobuf_c_message_unpack(&haven__database__log_command__descriptor,
+                                     allocator, len, data);
 }
 void   haven__database__log_command__free_unpacked
-                     (Haven__Database__LogCommand *message,
-                      ProtobufCAllocator *allocator)
+(Haven__Database__LogCommand* message,
+ ProtobufCAllocator* allocator)
 {
-  PROTOBUF_C_ASSERT (message->base.descriptor == &haven__database__log_command__descriptor);
-  protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
+    PROTOBUF_C_ASSERT(message->base.descriptor == &haven__database__log_command__descriptor);
+    protobuf_c_message_free_unpacked((ProtobufCMessage*)message, allocator);
 }
 void   haven__database__append_entry__init
-                     (Haven__Database__AppendEntry         *message)
+(Haven__Database__AppendEntry*         message)
 {
-  static Haven__Database__AppendEntry init_value = HAVEN__DATABASE__APPEND_ENTRY__INIT;
-  *message = init_value;
+    static Haven__Database__AppendEntry init_value = HAVEN__DATABASE__APPEND_ENTRY__INIT;
+    *message = init_value;
 }
 size_t haven__database__append_entry__get_packed_size
-                     (const Haven__Database__AppendEntry *message)
+(const Haven__Database__AppendEntry* message)
 {
-  PROTOBUF_C_ASSERT (message->base.descriptor == &haven__database__append_entry__descriptor);
-  return protobuf_c_message_get_packed_size ((const ProtobufCMessage*)(message));
+    PROTOBUF_C_ASSERT(message->base.descriptor == &haven__database__append_entry__descriptor);
+    return protobuf_c_message_get_packed_size((const ProtobufCMessage*)(message));
 }
 size_t haven__database__append_entry__pack
-                     (const Haven__Database__AppendEntry *message,
-                      uint8_t       *out)
+(const Haven__Database__AppendEntry* message,
+ uint8_t*       out)
 {
-  PROTOBUF_C_ASSERT (message->base.descriptor == &haven__database__append_entry__descriptor);
-  return protobuf_c_message_pack ((const ProtobufCMessage*)message, out);
+    PROTOBUF_C_ASSERT(message->base.descriptor == &haven__database__append_entry__descriptor);
+    return protobuf_c_message_pack((const ProtobufCMessage*)message, out);
 }
 size_t haven__database__append_entry__pack_to_buffer
-                     (const Haven__Database__AppendEntry *message,
-                      ProtobufCBuffer *buffer)
+(const Haven__Database__AppendEntry* message,
+ ProtobufCBuffer* buffer)
 {
-  PROTOBUF_C_ASSERT (message->base.descriptor == &haven__database__append_entry__descriptor);
-  return protobuf_c_message_pack_to_buffer ((const ProtobufCMessage*)message, buffer);
+    PROTOBUF_C_ASSERT(message->base.descriptor == &haven__database__append_entry__descriptor);
+    return protobuf_c_message_pack_to_buffer((const ProtobufCMessage*)message, buffer);
 }
-Haven__Database__AppendEntry *
-       haven__database__append_entry__unpack
-                     (ProtobufCAllocator  *allocator,
-                      size_t               len,
-                      const uint8_t       *data)
+Haven__Database__AppendEntry*
+haven__database__append_entry__unpack
+(ProtobufCAllocator*  allocator,
+ size_t               len,
+ const uint8_t*       data)
 {
-  return (Haven__Database__AppendEntry *)
-     protobuf_c_message_unpack (&haven__database__append_entry__descriptor,
-                                allocator, len, data);
+    return (Haven__Database__AppendEntry*)
+           protobuf_c_message_unpack(&haven__database__append_entry__descriptor,
+                                     allocator, len, data);
 }
 void   haven__database__append_entry__free_unpacked
-                     (Haven__Database__AppendEntry *message,
-                      ProtobufCAllocator *allocator)
+(Haven__Database__AppendEntry* message,
+ ProtobufCAllocator* allocator)
 {
-  PROTOBUF_C_ASSERT (message->base.descriptor == &haven__database__append_entry__descriptor);
-  protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
+    PROTOBUF_C_ASSERT(message->base.descriptor == &haven__database__append_entry__descriptor);
+    protobuf_c_message_free_unpacked((ProtobufCMessage*)message, allocator);
 }
 void   haven__database__append_entries__init
-                     (Haven__Database__AppendEntries         *message)
+(Haven__Database__AppendEntries*         message)
 {
-  static Haven__Database__AppendEntries init_value = HAVEN__DATABASE__APPEND_ENTRIES__INIT;
-  *message = init_value;
+    static Haven__Database__AppendEntries init_value = HAVEN__DATABASE__APPEND_ENTRIES__INIT;
+    *message = init_value;
 }
 size_t haven__database__append_entries__get_packed_size
-                     (const Haven__Database__AppendEntries *message)
+(const Haven__Database__AppendEntries* message)
 {
-  PROTOBUF_C_ASSERT (message->base.descriptor == &haven__database__append_entries__descriptor);
-  return protobuf_c_message_get_packed_size ((const ProtobufCMessage*)(message));
+    PROTOBUF_C_ASSERT(message->base.descriptor == &haven__database__append_entries__descriptor);
+    return protobuf_c_message_get_packed_size((const ProtobufCMessage*)(message));
 }
 size_t haven__database__append_entries__pack
-                     (const Haven__Database__AppendEntries *message,
-                      uint8_t       *out)
+(const Haven__Database__AppendEntries* message,
+ uint8_t*       out)
 {
-  PROTOBUF_C_ASSERT (message->base.descriptor == &haven__database__append_entries__descriptor);
-  return protobuf_c_message_pack ((const ProtobufCMessage*)message, out);
+    PROTOBUF_C_ASSERT(message->base.descriptor == &haven__database__append_entries__descriptor);
+    return protobuf_c_message_pack((const ProtobufCMessage*)message, out);
 }
 size_t haven__database__append_entries__pack_to_buffer
-                     (const Haven__Database__AppendEntries *message,
-                      ProtobufCBuffer *buffer)
+(const Haven__Database__AppendEntries* message,
+ ProtobufCBuffer* buffer)
 {
-  PROTOBUF_C_ASSERT (message->base.descriptor == &haven__database__append_entries__descriptor);
-  return protobuf_c_message_pack_to_buffer ((const ProtobufCMessage*)message, buffer);
+    PROTOBUF_C_ASSERT(message->base.descriptor == &haven__database__append_entries__descriptor);
+    return protobuf_c_message_pack_to_buffer((const ProtobufCMessage*)message, buffer);
 }
-Haven__Database__AppendEntries *
-       haven__database__append_entries__unpack
-                     (ProtobufCAllocator  *allocator,
-                      size_t               len,
-                      const uint8_t       *data)
+Haven__Database__AppendEntries*
+haven__database__append_entries__unpack
+(ProtobufCAllocator*  allocator,
+ size_t               len,
+ const uint8_t*       data)
 {
-  return (Haven__Database__AppendEntries *)
-     protobuf_c_message_unpack (&haven__database__append_entries__descriptor,
-                                allocator, len, data);
+    return (Haven__Database__AppendEntries*)
+           protobuf_c_message_unpack(&haven__database__append_entries__descriptor,
+                                     allocator, len, data);
 }
 void   haven__database__append_entries__free_unpacked
-                     (Haven__Database__AppendEntries *message,
-                      ProtobufCAllocator *allocator)
+(Haven__Database__AppendEntries* message,
+ ProtobufCAllocator* allocator)
 {
-  PROTOBUF_C_ASSERT (message->base.descriptor == &haven__database__append_entries__descriptor);
-  protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
+    PROTOBUF_C_ASSERT(message->base.descriptor == &haven__database__append_entries__descriptor);
+    protobuf_c_message_free_unpacked((ProtobufCMessage*)message, allocator);
 }
 void   haven__database__catch_up__init
-                     (Haven__Database__CatchUp         *message)
+(Haven__Database__CatchUp*         message)
 {
-  static Haven__Database__CatchUp init_value = HAVEN__DATABASE__CATCH_UP__INIT;
-  *message = init_value;
+    static Haven__Database__CatchUp init_value = HAVEN__DATABASE__CATCH_UP__INIT;
+    *message = init_value;
 }
 size_t haven__database__catch_up__get_packed_size
-                     (const Haven__Database__CatchUp *message)
+(const Haven__Database__CatchUp* message)
 {
-  PROTOBUF_C_ASSERT (message->base.descriptor == &haven__database__catch_up__descriptor);
-  return protobuf_c_message_get_packed_size ((const ProtobufCMessage*)(message));
+    PROTOBUF_C_ASSERT(message->base.descriptor == &haven__database__catch_up__descriptor);
+    return protobuf_c_message_get_packed_size((const ProtobufCMessage*)(message));
 }
 size_t haven__database__catch_up__pack
-                     (const Haven__Database__CatchUp *message,
-                      uint8_t       *out)
+(const Haven__Database__CatchUp* message,
+ uint8_t*       out)
 {
-  PROTOBUF_C_ASSERT (message->base.descriptor == &haven__database__catch_up__descriptor);
-  return protobuf_c_message_pack ((const ProtobufCMessage*)message, out);
+    PROTOBUF_C_ASSERT(message->base.descriptor == &haven__database__catch_up__descriptor);
+    return protobuf_c_message_pack((const ProtobufCMessage*)message, out);
 }
 size_t haven__database__catch_up__pack_to_buffer
-                     (const Haven__Database__CatchUp *message,
-                      ProtobufCBuffer *buffer)
+(const Haven__Database__CatchUp* message,
+ ProtobufCBuffer* buffer)
 {
-  PROTOBUF_C_ASSERT (message->base.descriptor == &haven__database__catch_up__descriptor);
-  return protobuf_c_message_pack_to_buffer ((const ProtobufCMessage*)message, buffer);
+    PROTOBUF_C_ASSERT(message->base.descriptor == &haven__database__catch_up__descriptor);
+    return protobuf_c_message_pack_to_buffer((const ProtobufCMessage*)message, buffer);
 }
-Haven__Database__CatchUp *
-       haven__database__catch_up__unpack
-                     (ProtobufCAllocator  *allocator,
-                      size_t               len,
-                      const uint8_t       *data)
+Haven__Database__CatchUp*
+haven__database__catch_up__unpack
+(ProtobufCAllocator*  allocator,
+ size_t               len,
+ const uint8_t*       data)
 {
-  return (Haven__Database__CatchUp *)
-     protobuf_c_message_unpack (&haven__database__catch_up__descriptor,
-                                allocator, len, data);
+    return (Haven__Database__CatchUp*)
+           protobuf_c_message_unpack(&haven__database__catch_up__descriptor,
+                                     allocator, len, data);
 }
 void   haven__database__catch_up__free_unpacked
-                     (Haven__Database__CatchUp *message,
-                      ProtobufCAllocator *allocator)
+(Haven__Database__CatchUp* message,
+ ProtobufCAllocator* allocator)
 {
-  PROTOBUF_C_ASSERT (message->base.descriptor == &haven__database__catch_up__descriptor);
-  protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
+    PROTOBUF_C_ASSERT(message->base.descriptor == &haven__database__catch_up__descriptor);
+    protobuf_c_message_free_unpacked((ProtobufCMessage*)message, allocator);
 }
 void   haven__database__catch_up_result__init
-                     (Haven__Database__CatchUpResult         *message)
+(Haven__Database__CatchUpResult*         message)
 {
-  static Haven__Database__CatchUpResult init_value = HAVEN__DATABASE__CATCH_UP_RESULT__INIT;
-  *message = init_value;
+    static Haven__Database__CatchUpResult init_value = HAVEN__DATABASE__CATCH_UP_RESULT__INIT;
+    *message = init_value;
 }
 size_t haven__database__catch_up_result__get_packed_size
-                     (const Haven__Database__CatchUpResult *message)
+(const Haven__Database__CatchUpResult* message)
 {
-  PROTOBUF_C_ASSERT (message->base.descriptor == &haven__database__catch_up_result__descriptor);
-  return protobuf_c_message_get_packed_size ((const ProtobufCMessage*)(message));
+    PROTOBUF_C_ASSERT(message->base.descriptor == &haven__database__catch_up_result__descriptor);
+    return protobuf_c_message_get_packed_size((const ProtobufCMessage*)(message));
 }
 size_t haven__database__catch_up_result__pack
-                     (const Haven__Database__CatchUpResult *message,
-                      uint8_t       *out)
+(const Haven__Database__CatchUpResult* message,
+ uint8_t*       out)
 {
-  PROTOBUF_C_ASSERT (message->base.descriptor == &haven__database__catch_up_result__descriptor);
-  return protobuf_c_message_pack ((const ProtobufCMessage*)message, out);
+    PROTOBUF_C_ASSERT(message->base.descriptor == &haven__database__catch_up_result__descriptor);
+    return protobuf_c_message_pack((const ProtobufCMessage*)message, out);
 }
 size_t haven__database__catch_up_result__pack_to_buffer
-                     (const Haven__Database__CatchUpResult *message,
-                      ProtobufCBuffer *buffer)
+(const Haven__Database__CatchUpResult* message,
+ ProtobufCBuffer* buffer)
 {
-  PROTOBUF_C_ASSERT (message->base.descriptor == &haven__database__catch_up_result__descriptor);
-  return protobuf_c_message_pack_to_buffer ((const ProtobufCMessage*)message, buffer);
+    PROTOBUF_C_ASSERT(message->base.descriptor == &haven__database__catch_up_result__descriptor);
+    return protobuf_c_message_pack_to_buffer((const ProtobufCMessage*)message, buffer);
 }
-Haven__Database__CatchUpResult *
-       haven__database__catch_up_result__unpack
-                     (ProtobufCAllocator  *allocator,
-                      size_t               len,
-                      const uint8_t       *data)
+Haven__Database__CatchUpResult*
+haven__database__catch_up_result__unpack
+(ProtobufCAllocator*  allocator,
+ size_t               len,
+ const uint8_t*       data)
 {
-  return (Haven__Database__CatchUpResult *)
-     protobuf_c_message_unpack (&haven__database__catch_up_result__descriptor,
-                                allocator, len, data);
+    return (Haven__Database__CatchUpResult*)
+           protobuf_c_message_unpack(&haven__database__catch_up_result__descriptor,
+                                     allocator, len, data);
 }
 void   haven__database__catch_up_result__free_unpacked
-                     (Haven__Database__CatchUpResult *message,
-                      ProtobufCAllocator *allocator)
+(Haven__Database__CatchUpResult* message,
+ ProtobufCAllocator* allocator)
 {
-  PROTOBUF_C_ASSERT (message->base.descriptor == &haven__database__catch_up_result__descriptor);
-  protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);
+    PROTOBUF_C_ASSERT(message->base.descriptor == &haven__database__catch_up_result__descriptor);
+    protobuf_c_message_free_unpacked((ProtobufCMessage*)message, allocator);
 }
-const ProtobufCEnumValue haven__database__log_command__command_type__enum_values_by_number[3] =
-{
-  { "PUT", "HAVEN__DATABASE__LOG_COMMAND__COMMAND_TYPE__PUT", 4 },
-  { "GET", "HAVEN__DATABASE__LOG_COMMAND__COMMAND_TYPE__GET", 5 },
-  { "DELETE", "HAVEN__DATABASE__LOG_COMMAND__COMMAND_TYPE__DELETE", 6 },
+const ProtobufCEnumValue haven__database__log_command__command_type__enum_values_by_number[3] = {
+    { "PUT", "HAVEN__DATABASE__LOG_COMMAND__COMMAND_TYPE__PUT", 4 },
+    { "GET", "HAVEN__DATABASE__LOG_COMMAND__COMMAND_TYPE__GET", 5 },
+    { "DELETE", "HAVEN__DATABASE__LOG_COMMAND__COMMAND_TYPE__DELETE", 6 },
 };
 static const ProtobufCIntRange haven__database__log_command__command_type__value_ranges[] = {
-{4, 0},{0, 3}
+    {4, 0}, {0, 3}
 };
-const ProtobufCEnumValueIndex haven__database__log_command__command_type__enum_values_by_name[3] =
-{
-  { "DELETE", 2 },
-  { "GET", 1 },
-  { "PUT", 0 },
+const ProtobufCEnumValueIndex haven__database__log_command__command_type__enum_values_by_name[3] = {
+    { "DELETE", 2 },
+    { "GET", 1 },
+    { "PUT", 0 },
 };
-const ProtobufCEnumDescriptor haven__database__log_command__command_type__descriptor =
-{
-  PROTOBUF_C_ENUM_DESCRIPTOR_MAGIC,
-  "haven.database.log_command.command_type",
-  "command_type",
-  "Haven__Database__LogCommand__CommandType",
-  "haven.database",
-  3,
-  haven__database__log_command__command_type__enum_values_by_number,
-  3,
-  haven__database__log_command__command_type__enum_values_by_name,
-  1,
-  haven__database__log_command__command_type__value_ranges,
-  NULL,NULL,NULL,NULL   /* reserved[1234] */
+const ProtobufCEnumDescriptor haven__database__log_command__command_type__descriptor = {
+    PROTOBUF_C_ENUM_DESCRIPTOR_MAGIC,
+    "haven.database.log_command.command_type",
+    "command_type",
+    "Haven__Database__LogCommand__CommandType",
+    "haven.database",
+    3,
+    haven__database__log_command__command_type__enum_values_by_number,
+    3,
+    haven__database__log_command__command_type__enum_values_by_name,
+    1,
+    haven__database__log_command__command_type__value_ranges,
+    NULL, NULL, NULL, NULL /* reserved[1234] */
 };
-static const ProtobufCFieldDescriptor haven__database__log_command__field_descriptors[4] =
-{
-  {
-    "type",
-    7,
-    PROTOBUF_C_LABEL_REQUIRED,
-    PROTOBUF_C_TYPE_ENUM,
-    0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(Haven__Database__LogCommand, type),
-    &haven__database__log_command__command_type__descriptor,
-    NULL,
-    0,            /* packed */
-    0,NULL,NULL    /* reserved1,reserved2, etc */
-  },
-  {
-    "key",
-    8,
-    PROTOBUF_C_LABEL_REQUIRED,
-    PROTOBUF_C_TYPE_BYTES,
-    0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(Haven__Database__LogCommand, key),
-    NULL,
-    NULL,
-    0,            /* packed */
-    0,NULL,NULL    /* reserved1,reserved2, etc */
-  },
-  {
-    "revision",
-    9,
-    PROTOBUF_C_LABEL_OPTIONAL,
-    PROTOBUF_C_TYPE_INT64,
-    PROTOBUF_C_OFFSETOF(Haven__Database__LogCommand, has_revision),
-    PROTOBUF_C_OFFSETOF(Haven__Database__LogCommand, revision),
-    NULL,
-    NULL,
-    0,            /* packed */
-    0,NULL,NULL    /* reserved1,reserved2, etc */
-  },
-  {
-    "value",
-    10,
-    PROTOBUF_C_LABEL_OPTIONAL,
-    PROTOBUF_C_TYPE_BYTES,
-    PROTOBUF_C_OFFSETOF(Haven__Database__LogCommand, has_value),
-    PROTOBUF_C_OFFSETOF(Haven__Database__LogCommand, value),
-    NULL,
-    NULL,
-    0,            /* packed */
-    0,NULL,NULL    /* reserved1,reserved2, etc */
-  },
+static const ProtobufCFieldDescriptor haven__database__log_command__field_descriptors[4] = {
+    {
+        "type",
+        7,
+        PROTOBUF_C_LABEL_REQUIRED,
+        PROTOBUF_C_TYPE_ENUM,
+        0,   /* quantifier_offset */
+        PROTOBUF_C_OFFSETOF(Haven__Database__LogCommand, type),
+        &haven__database__log_command__command_type__descriptor,
+        NULL,
+        0,            /* packed */
+        0, NULL, NULL  /* reserved1,reserved2, etc */
+    },
+    {
+        "key",
+        8,
+        PROTOBUF_C_LABEL_REQUIRED,
+        PROTOBUF_C_TYPE_BYTES,
+        0,   /* quantifier_offset */
+        PROTOBUF_C_OFFSETOF(Haven__Database__LogCommand, key),
+        NULL,
+        NULL,
+        0,            /* packed */
+        0, NULL, NULL  /* reserved1,reserved2, etc */
+    },
+    {
+        "revision",
+        9,
+        PROTOBUF_C_LABEL_OPTIONAL,
+        PROTOBUF_C_TYPE_INT64,
+        PROTOBUF_C_OFFSETOF(Haven__Database__LogCommand, has_revision),
+        PROTOBUF_C_OFFSETOF(Haven__Database__LogCommand, revision),
+        NULL,
+        NULL,
+        0,            /* packed */
+        0, NULL, NULL  /* reserved1,reserved2, etc */
+    },
+    {
+        "value",
+        10,
+        PROTOBUF_C_LABEL_OPTIONAL,
+        PROTOBUF_C_TYPE_BYTES,
+        PROTOBUF_C_OFFSETOF(Haven__Database__LogCommand, has_value),
+        PROTOBUF_C_OFFSETOF(Haven__Database__LogCommand, value),
+        NULL,
+        NULL,
+        0,            /* packed */
+        0, NULL, NULL  /* reserved1,reserved2, etc */
+    },
 };
 static const unsigned haven__database__log_command__field_indices_by_name[] = {
-  1,   /* field[1] = key */
-  2,   /* field[2] = revision */
-  0,   /* field[0] = type */
-  3,   /* field[3] = value */
+    1,   /* field[1] = key */
+    2,   /* field[2] = revision */
+    0,   /* field[0] = type */
+    3,   /* field[3] = value */
 };
-static const ProtobufCIntRange haven__database__log_command__number_ranges[1 + 1] =
-{
-  { 7, 0 },
-  { 0, 4 }
+static const ProtobufCIntRange haven__database__log_command__number_ranges[1 + 1] = {
+    { 7, 0 },
+    { 0, 4 }
 };
-const ProtobufCMessageDescriptor haven__database__log_command__descriptor =
-{
-  PROTOBUF_C_MESSAGE_DESCRIPTOR_MAGIC,
-  "haven.database.log_command",
-  "LogCommand",
-  "Haven__Database__LogCommand",
-  "haven.database",
-  sizeof(Haven__Database__LogCommand),
-  4,
-  haven__database__log_command__field_descriptors,
-  haven__database__log_command__field_indices_by_name,
-  1,  haven__database__log_command__number_ranges,
-  (ProtobufCMessageInit) haven__database__log_command__init,
-  NULL,NULL,NULL    /* reserved[123] */
+const ProtobufCMessageDescriptor haven__database__log_command__descriptor = {
+    PROTOBUF_C_MESSAGE_DESCRIPTOR_MAGIC,
+    "haven.database.log_command",
+    "LogCommand",
+    "Haven__Database__LogCommand",
+    "haven.database",
+    sizeof(Haven__Database__LogCommand),
+    4,
+    haven__database__log_command__field_descriptors,
+    haven__database__log_command__field_indices_by_name,
+    1,  haven__database__log_command__number_ranges,
+    (ProtobufCMessageInit) haven__database__log_command__init,
+    NULL, NULL, NULL  /* reserved[123] */
 };
-static const ProtobufCFieldDescriptor haven__database__append_entry__field_descriptors[3] =
-{
-  {
-    "term",
-    1,
-    PROTOBUF_C_LABEL_REQUIRED,
-    PROTOBUF_C_TYPE_INT64,
-    0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(Haven__Database__AppendEntry, term),
-    NULL,
-    NULL,
-    0,            /* packed */
-    0,NULL,NULL    /* reserved1,reserved2, etc */
-  },
-  {
-    "index",
-    2,
-    PROTOBUF_C_LABEL_REQUIRED,
-    PROTOBUF_C_TYPE_INT64,
-    0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(Haven__Database__AppendEntry, index),
-    NULL,
-    NULL,
-    0,            /* packed */
-    0,NULL,NULL    /* reserved1,reserved2, etc */
-  },
-  {
-    "command",
-    3,
-    PROTOBUF_C_LABEL_REQUIRED,
-    PROTOBUF_C_TYPE_MESSAGE,
-    0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(Haven__Database__AppendEntry, command),
-    &haven__database__log_command__descriptor,
-    NULL,
-    0,            /* packed */
-    0,NULL,NULL    /* reserved1,reserved2, etc */
-  },
+static const ProtobufCFieldDescriptor haven__database__append_entry__field_descriptors[3] = {
+    {
+        "term",
+        1,
+        PROTOBUF_C_LABEL_REQUIRED,
+        PROTOBUF_C_TYPE_INT64,
+        0,   /* quantifier_offset */
+        PROTOBUF_C_OFFSETOF(Haven__Database__AppendEntry, term),
+        NULL,
+        NULL,
+        0,            /* packed */
+        0, NULL, NULL  /* reserved1,reserved2, etc */
+    },
+    {
+        "index",
+        2,
+        PROTOBUF_C_LABEL_REQUIRED,
+        PROTOBUF_C_TYPE_INT64,
+        0,   /* quantifier_offset */
+        PROTOBUF_C_OFFSETOF(Haven__Database__AppendEntry, index),
+        NULL,
+        NULL,
+        0,            /* packed */
+        0, NULL, NULL  /* reserved1,reserved2, etc */
+    },
+    {
+        "command",
+        3,
+        PROTOBUF_C_LABEL_REQUIRED,
+        PROTOBUF_C_TYPE_MESSAGE,
+        0,   /* quantifier_offset */
+        PROTOBUF_C_OFFSETOF(Haven__Database__AppendEntry, command),
+        &haven__database__log_command__descriptor,
+        NULL,
+        0,            /* packed */
+        0, NULL, NULL  /* reserved1,reserved2, etc */
+    },
 };
 static const unsigned haven__database__append_entry__field_indices_by_name[] = {
-  2,   /* field[2] = command */
-  1,   /* field[1] = index */
-  0,   /* field[0] = term */
+    2,   /* field[2] = command */
+    1,   /* field[1] = index */
+    0,   /* field[0] = term */
 };
-static const ProtobufCIntRange haven__database__append_entry__number_ranges[1 + 1] =
-{
-  { 1, 0 },
-  { 0, 3 }
+static const ProtobufCIntRange haven__database__append_entry__number_ranges[1 + 1] = {
+    { 1, 0 },
+    { 0, 3 }
 };
-const ProtobufCMessageDescriptor haven__database__append_entry__descriptor =
-{
-  PROTOBUF_C_MESSAGE_DESCRIPTOR_MAGIC,
-  "haven.database.append_entry",
-  "AppendEntry",
-  "Haven__Database__AppendEntry",
-  "haven.database",
-  sizeof(Haven__Database__AppendEntry),
-  3,
-  haven__database__append_entry__field_descriptors,
-  haven__database__append_entry__field_indices_by_name,
-  1,  haven__database__append_entry__number_ranges,
-  (ProtobufCMessageInit) haven__database__append_entry__init,
-  NULL,NULL,NULL    /* reserved[123] */
+const ProtobufCMessageDescriptor haven__database__append_entry__descriptor = {
+    PROTOBUF_C_MESSAGE_DESCRIPTOR_MAGIC,
+    "haven.database.append_entry",
+    "AppendEntry",
+    "Haven__Database__AppendEntry",
+    "haven.database",
+    sizeof(Haven__Database__AppendEntry),
+    3,
+    haven__database__append_entry__field_descriptors,
+    haven__database__append_entry__field_indices_by_name,
+    1,  haven__database__append_entry__number_ranges,
+    (ProtobufCMessageInit) haven__database__append_entry__init,
+    NULL, NULL, NULL  /* reserved[123] */
 };
 static const protobuf_c_boolean haven__database__append_entries__is_transaction__default_value = 0;
-static const ProtobufCFieldDescriptor haven__database__append_entries__field_descriptors[2] =
-{
-  {
-    "is_transaction",
-    3,
-    PROTOBUF_C_LABEL_REQUIRED,
-    PROTOBUF_C_TYPE_BOOL,
-    0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(Haven__Database__AppendEntries, is_transaction),
-    NULL,
-    &haven__database__append_entries__is_transaction__default_value,
-    0,            /* packed */
-    0,NULL,NULL    /* reserved1,reserved2, etc */
-  },
-  {
-    "entries",
-    11,
-    PROTOBUF_C_LABEL_REPEATED,
-    PROTOBUF_C_TYPE_MESSAGE,
-    PROTOBUF_C_OFFSETOF(Haven__Database__AppendEntries, n_entries),
-    PROTOBUF_C_OFFSETOF(Haven__Database__AppendEntries, entries),
-    &haven__database__append_entry__descriptor,
-    NULL,
-    0,            /* packed */
-    0,NULL,NULL    /* reserved1,reserved2, etc */
-  },
+static const ProtobufCFieldDescriptor haven__database__append_entries__field_descriptors[2] = {
+    {
+        "is_transaction",
+        3,
+        PROTOBUF_C_LABEL_REQUIRED,
+        PROTOBUF_C_TYPE_BOOL,
+        0,   /* quantifier_offset */
+        PROTOBUF_C_OFFSETOF(Haven__Database__AppendEntries, is_transaction),
+        NULL,
+        &haven__database__append_entries__is_transaction__default_value,
+        0,            /* packed */
+        0, NULL, NULL  /* reserved1,reserved2, etc */
+    },
+    {
+        "entries",
+        11,
+        PROTOBUF_C_LABEL_REPEATED,
+        PROTOBUF_C_TYPE_MESSAGE,
+        PROTOBUF_C_OFFSETOF(Haven__Database__AppendEntries, n_entries),
+        PROTOBUF_C_OFFSETOF(Haven__Database__AppendEntries, entries),
+        &haven__database__append_entry__descriptor,
+        NULL,
+        0,            /* packed */
+        0, NULL, NULL  /* reserved1,reserved2, etc */
+    },
 };
 static const unsigned haven__database__append_entries__field_indices_by_name[] = {
-  1,   /* field[1] = entries */
-  0,   /* field[0] = is_transaction */
+    1,   /* field[1] = entries */
+    0,   /* field[0] = is_transaction */
 };
-static const ProtobufCIntRange haven__database__append_entries__number_ranges[2 + 1] =
-{
-  { 3, 0 },
-  { 11, 1 },
-  { 0, 2 }
+static const ProtobufCIntRange haven__database__append_entries__number_ranges[2 + 1] = {
+    { 3, 0 },
+    { 11, 1 },
+    { 0, 2 }
 };
-const ProtobufCMessageDescriptor haven__database__append_entries__descriptor =
-{
-  PROTOBUF_C_MESSAGE_DESCRIPTOR_MAGIC,
-  "haven.database.append_entries",
-  "AppendEntries",
-  "Haven__Database__AppendEntries",
-  "haven.database",
-  sizeof(Haven__Database__AppendEntries),
-  2,
-  haven__database__append_entries__field_descriptors,
-  haven__database__append_entries__field_indices_by_name,
-  2,  haven__database__append_entries__number_ranges,
-  (ProtobufCMessageInit) haven__database__append_entries__init,
-  NULL,NULL,NULL    /* reserved[123] */
-};
-static const ProtobufCFieldDescriptor haven__database__catch_up__field_descriptors[3] =
-{
-  {
-    "candidate_id",
-    1,
-    PROTOBUF_C_LABEL_REQUIRED,
-    PROTOBUF_C_TYPE_INT64,
-    0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(Haven__Database__CatchUp, candidate_id),
-    NULL,
-    NULL,
-    0,            /* packed */
-    0,NULL,NULL    /* reserved1,reserved2, etc */
-  },
-  {
-    "last_log_term",
+const ProtobufCMessageDescriptor haven__database__append_entries__descriptor = {
+    PROTOBUF_C_MESSAGE_DESCRIPTOR_MAGIC,
+    "haven.database.append_entries",
+    "AppendEntries",
+    "Haven__Database__AppendEntries",
+    "haven.database",
+    sizeof(Haven__Database__AppendEntries),
     2,
-    PROTOBUF_C_LABEL_REQUIRED,
-    PROTOBUF_C_TYPE_INT64,
-    0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(Haven__Database__CatchUp, last_log_term),
-    NULL,
-    NULL,
-    0,            /* packed */
-    0,NULL,NULL    /* reserved1,reserved2, etc */
-  },
-  {
-    "last_log_index",
-    3,
-    PROTOBUF_C_LABEL_REQUIRED,
-    PROTOBUF_C_TYPE_INT64,
-    0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(Haven__Database__CatchUp, last_log_index),
-    NULL,
-    NULL,
-    0,            /* packed */
-    0,NULL,NULL    /* reserved1,reserved2, etc */
-  },
+    haven__database__append_entries__field_descriptors,
+    haven__database__append_entries__field_indices_by_name,
+    2,  haven__database__append_entries__number_ranges,
+    (ProtobufCMessageInit) haven__database__append_entries__init,
+    NULL, NULL, NULL  /* reserved[123] */
+};
+static const ProtobufCFieldDescriptor haven__database__catch_up__field_descriptors[3] = {
+    {
+        "candidate_id",
+        1,
+        PROTOBUF_C_LABEL_REQUIRED,
+        PROTOBUF_C_TYPE_INT64,
+        0,   /* quantifier_offset */
+        PROTOBUF_C_OFFSETOF(Haven__Database__CatchUp, candidate_id),
+        NULL,
+        NULL,
+        0,            /* packed */
+        0, NULL, NULL  /* reserved1,reserved2, etc */
+    },
+    {
+        "last_log_term",
+        2,
+        PROTOBUF_C_LABEL_REQUIRED,
+        PROTOBUF_C_TYPE_INT64,
+        0,   /* quantifier_offset */
+        PROTOBUF_C_OFFSETOF(Haven__Database__CatchUp, last_log_term),
+        NULL,
+        NULL,
+        0,            /* packed */
+        0, NULL, NULL  /* reserved1,reserved2, etc */
+    },
+    {
+        "last_log_index",
+        3,
+        PROTOBUF_C_LABEL_REQUIRED,
+        PROTOBUF_C_TYPE_INT64,
+        0,   /* quantifier_offset */
+        PROTOBUF_C_OFFSETOF(Haven__Database__CatchUp, last_log_index),
+        NULL,
+        NULL,
+        0,            /* packed */
+        0, NULL, NULL  /* reserved1,reserved2, etc */
+    },
 };
 static const unsigned haven__database__catch_up__field_indices_by_name[] = {
-  0,   /* field[0] = candidate_id */
-  2,   /* field[2] = last_log_index */
-  1,   /* field[1] = last_log_term */
+    0,   /* field[0] = candidate_id */
+    2,   /* field[2] = last_log_index */
+    1,   /* field[1] = last_log_term */
 };
-static const ProtobufCIntRange haven__database__catch_up__number_ranges[1 + 1] =
-{
-  { 1, 0 },
-  { 0, 3 }
+static const ProtobufCIntRange haven__database__catch_up__number_ranges[1 + 1] = {
+    { 1, 0 },
+    { 0, 3 }
 };
-const ProtobufCMessageDescriptor haven__database__catch_up__descriptor =
-{
-  PROTOBUF_C_MESSAGE_DESCRIPTOR_MAGIC,
-  "haven.database.catch_up",
-  "CatchUp",
-  "Haven__Database__CatchUp",
-  "haven.database",
-  sizeof(Haven__Database__CatchUp),
-  3,
-  haven__database__catch_up__field_descriptors,
-  haven__database__catch_up__field_indices_by_name,
-  1,  haven__database__catch_up__number_ranges,
-  (ProtobufCMessageInit) haven__database__catch_up__init,
-  NULL,NULL,NULL    /* reserved[123] */
+const ProtobufCMessageDescriptor haven__database__catch_up__descriptor = {
+    PROTOBUF_C_MESSAGE_DESCRIPTOR_MAGIC,
+    "haven.database.catch_up",
+    "CatchUp",
+    "Haven__Database__CatchUp",
+    "haven.database",
+    sizeof(Haven__Database__CatchUp),
+    3,
+    haven__database__catch_up__field_descriptors,
+    haven__database__catch_up__field_indices_by_name,
+    1,  haven__database__catch_up__number_ranges,
+    (ProtobufCMessageInit) haven__database__catch_up__init,
+    NULL, NULL, NULL  /* reserved[123] */
 };
-const ProtobufCEnumValue haven__database__catch_up_result__catch_up_type__enum_values_by_number[2] =
-{
-  { "LOG_ENTRIES", "HAVEN__DATABASE__CATCH_UP_RESULT__CATCH_UP_TYPE__LOG_ENTRIES", 1 },
-  { "SNAPSHOT_REPLACEMENT", "HAVEN__DATABASE__CATCH_UP_RESULT__CATCH_UP_TYPE__SNAPSHOT_REPLACEMENT", 2 },
+const ProtobufCEnumValue haven__database__catch_up_result__catch_up_type__enum_values_by_number[2] = {
+    { "LOG_ENTRIES", "HAVEN__DATABASE__CATCH_UP_RESULT__CATCH_UP_TYPE__LOG_ENTRIES", 1 },
+    { "SNAPSHOT_REPLACEMENT", "HAVEN__DATABASE__CATCH_UP_RESULT__CATCH_UP_TYPE__SNAPSHOT_REPLACEMENT", 2 },
 };
 static const ProtobufCIntRange haven__database__catch_up_result__catch_up_type__value_ranges[] = {
-{1, 0},{0, 2}
+    {1, 0}, {0, 2}
 };
-const ProtobufCEnumValueIndex haven__database__catch_up_result__catch_up_type__enum_values_by_name[2] =
-{
-  { "LOG_ENTRIES", 0 },
-  { "SNAPSHOT_REPLACEMENT", 1 },
+const ProtobufCEnumValueIndex haven__database__catch_up_result__catch_up_type__enum_values_by_name[2] = {
+    { "LOG_ENTRIES", 0 },
+    { "SNAPSHOT_REPLACEMENT", 1 },
 };
-const ProtobufCEnumDescriptor haven__database__catch_up_result__catch_up_type__descriptor =
-{
-  PROTOBUF_C_ENUM_DESCRIPTOR_MAGIC,
-  "haven.database.catch_up_result.catch_up_type",
-  "catch_up_type",
-  "Haven__Database__CatchUpResult__CatchUpType",
-  "haven.database",
-  2,
-  haven__database__catch_up_result__catch_up_type__enum_values_by_number,
-  2,
-  haven__database__catch_up_result__catch_up_type__enum_values_by_name,
-  1,
-  haven__database__catch_up_result__catch_up_type__value_ranges,
-  NULL,NULL,NULL,NULL   /* reserved[1234] */
+const ProtobufCEnumDescriptor haven__database__catch_up_result__catch_up_type__descriptor = {
+    PROTOBUF_C_ENUM_DESCRIPTOR_MAGIC,
+    "haven.database.catch_up_result.catch_up_type",
+    "catch_up_type",
+    "Haven__Database__CatchUpResult__CatchUpType",
+    "haven.database",
+    2,
+    haven__database__catch_up_result__catch_up_type__enum_values_by_number,
+    2,
+    haven__database__catch_up_result__catch_up_type__enum_values_by_name,
+    1,
+    haven__database__catch_up_result__catch_up_type__value_ranges,
+    NULL, NULL, NULL, NULL /* reserved[1234] */
 };
-static const ProtobufCFieldDescriptor haven__database__catch_up_result__field_descriptors[4] =
-{
-  {
-    "current_term",
-    3,
-    PROTOBUF_C_LABEL_REQUIRED,
-    PROTOBUF_C_TYPE_INT64,
-    0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(Haven__Database__CatchUpResult, current_term),
-    NULL,
-    NULL,
-    0,            /* packed */
-    0,NULL,NULL    /* reserved1,reserved2, etc */
-  },
-  {
-    "type",
-    4,
-    PROTOBUF_C_LABEL_REQUIRED,
-    PROTOBUF_C_TYPE_ENUM,
-    0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(Haven__Database__CatchUpResult, type),
-    &haven__database__catch_up_result__catch_up_type__descriptor,
-    NULL,
-    0,            /* packed */
-    0,NULL,NULL    /* reserved1,reserved2, etc */
-  },
-  {
-    "entries",
-    5,
-    PROTOBUF_C_LABEL_OPTIONAL,
-    PROTOBUF_C_TYPE_MESSAGE,
-    0,   /* quantifier_offset */
-    PROTOBUF_C_OFFSETOF(Haven__Database__CatchUpResult, entries),
-    &haven__database__append_entries__descriptor,
-    NULL,
-    0,            /* packed */
-    0,NULL,NULL    /* reserved1,reserved2, etc */
-  },
-  {
-    "snapshot",
-    6,
-    PROTOBUF_C_LABEL_REPEATED,
-    PROTOBUF_C_TYPE_BYTES,
-    PROTOBUF_C_OFFSETOF(Haven__Database__CatchUpResult, n_snapshot),
-    PROTOBUF_C_OFFSETOF(Haven__Database__CatchUpResult, snapshot),
-    NULL,
-    NULL,
-    0,            /* packed */
-    0,NULL,NULL    /* reserved1,reserved2, etc */
-  },
+static const ProtobufCFieldDescriptor haven__database__catch_up_result__field_descriptors[4] = {
+    {
+        "current_term",
+        3,
+        PROTOBUF_C_LABEL_REQUIRED,
+        PROTOBUF_C_TYPE_INT64,
+        0,   /* quantifier_offset */
+        PROTOBUF_C_OFFSETOF(Haven__Database__CatchUpResult, current_term),
+        NULL,
+        NULL,
+        0,            /* packed */
+        0, NULL, NULL  /* reserved1,reserved2, etc */
+    },
+    {
+        "type",
+        4,
+        PROTOBUF_C_LABEL_REQUIRED,
+        PROTOBUF_C_TYPE_ENUM,
+        0,   /* quantifier_offset */
+        PROTOBUF_C_OFFSETOF(Haven__Database__CatchUpResult, type),
+        &haven__database__catch_up_result__catch_up_type__descriptor,
+        NULL,
+        0,            /* packed */
+        0, NULL, NULL  /* reserved1,reserved2, etc */
+    },
+    {
+        "entries",
+        5,
+        PROTOBUF_C_LABEL_OPTIONAL,
+        PROTOBUF_C_TYPE_MESSAGE,
+        0,   /* quantifier_offset */
+        PROTOBUF_C_OFFSETOF(Haven__Database__CatchUpResult, entries),
+        &haven__database__append_entries__descriptor,
+        NULL,
+        0,            /* packed */
+        0, NULL, NULL  /* reserved1,reserved2, etc */
+    },
+    {
+        "snapshot",
+        6,
+        PROTOBUF_C_LABEL_REPEATED,
+        PROTOBUF_C_TYPE_BYTES,
+        PROTOBUF_C_OFFSETOF(Haven__Database__CatchUpResult, n_snapshot),
+        PROTOBUF_C_OFFSETOF(Haven__Database__CatchUpResult, snapshot),
+        NULL,
+        NULL,
+        0,            /* packed */
+        0, NULL, NULL  /* reserved1,reserved2, etc */
+    },
 };
 static const unsigned haven__database__catch_up_result__field_indices_by_name[] = {
-  0,   /* field[0] = current_term */
-  2,   /* field[2] = entries */
-  3,   /* field[3] = snapshot */
-  1,   /* field[1] = type */
+    0,   /* field[0] = current_term */
+    2,   /* field[2] = entries */
+    3,   /* field[3] = snapshot */
+    1,   /* field[1] = type */
 };
-static const ProtobufCIntRange haven__database__catch_up_result__number_ranges[1 + 1] =
-{
-  { 3, 0 },
-  { 0, 4 }
+static const ProtobufCIntRange haven__database__catch_up_result__number_ranges[1 + 1] = {
+    { 3, 0 },
+    { 0, 4 }
 };
-const ProtobufCMessageDescriptor haven__database__catch_up_result__descriptor =
-{
-  PROTOBUF_C_MESSAGE_DESCRIPTOR_MAGIC,
-  "haven.database.catch_up_result",
-  "CatchUpResult",
-  "Haven__Database__CatchUpResult",
-  "haven.database",
-  sizeof(Haven__Database__CatchUpResult),
-  4,
-  haven__database__catch_up_result__field_descriptors,
-  haven__database__catch_up_result__field_indices_by_name,
-  1,  haven__database__catch_up_result__number_ranges,
-  (ProtobufCMessageInit) haven__database__catch_up_result__init,
-  NULL,NULL,NULL    /* reserved[123] */
+const ProtobufCMessageDescriptor haven__database__catch_up_result__descriptor = {
+    PROTOBUF_C_MESSAGE_DESCRIPTOR_MAGIC,
+    "haven.database.catch_up_result",
+    "CatchUpResult",
+    "Haven__Database__CatchUpResult",
+    "haven.database",
+    sizeof(Haven__Database__CatchUpResult),
+    4,
+    haven__database__catch_up_result__field_descriptors,
+    haven__database__catch_up_result__field_indices_by_name,
+    1,  haven__database__catch_up_result__number_ranges,
+    (ProtobufCMessageInit) haven__database__catch_up_result__init,
+    NULL, NULL, NULL  /* reserved[123] */
 };
-static const ProtobufCMethodDescriptor haven__database__database__method_descriptors[1] =
-{
-  { "follower_catch_up", &haven__database__catch_up__descriptor, &haven__database__catch_up_result__descriptor },
+static const ProtobufCMethodDescriptor haven__database__database__method_descriptors[1] = {
+    { "follower_catch_up", &haven__database__catch_up__descriptor, &haven__database__catch_up_result__descriptor },
 };
 const unsigned haven__database__database__method_indices_by_name[] = {
-  0         /* follower_catch_up */
+    0         /* follower_catch_up */
 };
-const ProtobufCServiceDescriptor haven__database__database__descriptor =
-{
-  PROTOBUF_C_SERVICE_DESCRIPTOR_MAGIC,
-  "haven.database.database",
-  "follower_catch_up",
-  "Haven__Database__Database",
-  "haven.database",
-  1,
-  haven__database__database__method_descriptors,
-  haven__database__database__method_indices_by_name
+const ProtobufCServiceDescriptor haven__database__database__descriptor = {
+    PROTOBUF_C_SERVICE_DESCRIPTOR_MAGIC,
+    "haven.database.database",
+    "follower_catch_up",
+    "Haven__Database__Database",
+    "haven.database",
+    1,
+    haven__database__database__method_descriptors,
+    haven__database__database__method_indices_by_name
 };
-void haven__database__database__follower_catch_up(ProtobufCService *service,
-                                                  const Haven__Database__CatchUp *input,
-                                                  Haven__Database__CatchUpResult_Closure closure,
-                                                  void *closure_data)
+void haven__database__database__follower_catch_up(ProtobufCService* service,
+        const Haven__Database__CatchUp* input,
+        Haven__Database__CatchUpResult_Closure closure,
+        void* closure_data)
 {
-  PROTOBUF_C_ASSERT (service->descriptor == &haven__database__database__descriptor);
-  service->invoke(service, 0, (const ProtobufCMessage *) input, (ProtobufCClosure) closure, closure_data);
+    PROTOBUF_C_ASSERT(service->descriptor == &haven__database__database__descriptor);
+    service->invoke(service, 0, (const ProtobufCMessage*) input, (ProtobufCClosure) closure, closure_data);
 }
-void haven__database__database__init (Haven__Database__Database_Service *service,
-                                      Haven__Database__Database_ServiceDestroy destroy)
+void haven__database__database__init(Haven__Database__Database_Service* service,
+                                     Haven__Database__Database_ServiceDestroy destroy)
 {
-  protobuf_c_service_generated_init (&service->base,
-                                     &haven__database__database__descriptor,
-                                     (ProtobufCServiceDestroy) destroy);
+    protobuf_c_service_generated_init(&service->base,
+                                      &haven__database__database__descriptor,
+                                      (ProtobufCServiceDestroy) destroy);
 }

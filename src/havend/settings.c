@@ -62,7 +62,7 @@ int HAVEN_get_uuid_from_file(HAVEN_ctx_t* ctx, char* uuid_file_path)
 
     if(fread(buf, 1, sizeof(char) * UUID_STR_LEN, fh) != UUID_STR_LEN) {
         LOG(HAVEN_LOG_ERR, "Failed to read a complete UUID settings file at `%s'. " \
-                "The settings file may be corrupt.", uuid_file_path);
+            "The settings file may be corrupt.", uuid_file_path);
         return HAVEN_ERROR;
     }
 
@@ -91,7 +91,7 @@ int HAVEN_get_uuid_from_file(HAVEN_ctx_t* ctx, char* uuid_file_path)
 
 int HAVEN_configure_new_uuid(HAVEN_ctx_t* ctx, char* uuid_file_path)
 {
-    FILE * fh = NULL;
+    FILE* fh = NULL;
     int result = uuid_generate_time_safe(ctx->local_uuid);
     char* uuid_string = (char*) malloc(sizeof(char) * UUID_STR_LEN);
     char* uuid_dir_path = (char*) malloc(sizeof(char) * _POSIX_PATH_MAX);
@@ -105,6 +105,7 @@ int HAVEN_configure_new_uuid(HAVEN_ctx_t* ctx, char* uuid_file_path)
     }
 
     fh = fopen(uuid_file_path, "w");
+
     if(fh == NULL) {
         LOG(HAVEN_LOG_ERR, "Could not open the local uuid settings file at `%s'.", \
             uuid_file_path);
@@ -114,12 +115,14 @@ int HAVEN_configure_new_uuid(HAVEN_ctx_t* ctx, char* uuid_file_path)
     if(result != 0)  {
         LOG(HAVEN_LOG_ERR, "Could not safely generate a new UUID. " \
             "Please ensure that uuidd(8) is installed and working.");
+
         if(unlink(uuid_file_path) == 0) {
             LOG(HAVEN_LOG_ERR, "Removed incomplete UUID settings file at `%s'.",
-                    uuid_file_path);
-        } else {
+                uuid_file_path);
+        }
+        else {
             LOG(HAVEN_LOG_ERR, "Failed to remove incomplete UUID settings file at `%s'.",
-                    uuid_file_path);
+                uuid_file_path);
         }
 
         return HAVEN_ERROR;

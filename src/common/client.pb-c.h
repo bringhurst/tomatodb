@@ -18,181 +18,176 @@ typedef struct _Haven__Client__HeartbeatResult Haven__Client__HeartbeatResult;
 /* --- enums --- */
 
 typedef enum _Haven__Client__Command__ConcurrencyType {
-  HAVEN__CLIENT__COMMAND__CONCURRENCY_TYPE__READ_WRITE = 1,
-  HAVEN__CLIENT__COMMAND__CONCURRENCY_TYPE__READ_ONLY = 2
+    HAVEN__CLIENT__COMMAND__CONCURRENCY_TYPE__READ_WRITE = 1,
+    HAVEN__CLIENT__COMMAND__CONCURRENCY_TYPE__READ_ONLY = 2
 } Haven__Client__Command__ConcurrencyType;
 
 /* --- messages --- */
 
-struct  _Haven__Client__Command
-{
-  ProtobufCMessage base;
-  Haven__Client__Command__ConcurrencyType type;
-  Haven__Database__LogCommand *command;
+struct  _Haven__Client__Command {
+    ProtobufCMessage base;
+    Haven__Client__Command__ConcurrencyType type;
+    Haven__Database__LogCommand* command;
 };
 #define HAVEN__CLIENT__COMMAND__INIT \
- { PROTOBUF_C_MESSAGE_INIT (&haven__client__command__descriptor) \
-    , HAVEN__CLIENT__COMMAND__CONCURRENCY_TYPE__READ_WRITE, NULL }
+    { PROTOBUF_C_MESSAGE_INIT (&haven__client__command__descriptor) \
+        , HAVEN__CLIENT__COMMAND__CONCURRENCY_TYPE__READ_WRITE, NULL }
 
 
-struct  _Haven__Client__CommandResult
-{
-  ProtobufCMessage base;
-  protobuf_c_boolean success;
+struct  _Haven__Client__CommandResult {
+    ProtobufCMessage base;
+    protobuf_c_boolean success;
 };
 #define HAVEN__CLIENT__COMMAND_RESULT__INIT \
- { PROTOBUF_C_MESSAGE_INIT (&haven__client__command_result__descriptor) \
-    , 0 }
+    { PROTOBUF_C_MESSAGE_INIT (&haven__client__command_result__descriptor) \
+        , 0 }
 
 
-struct  _Haven__Client__HeartbeatUpdate
-{
-  ProtobufCMessage base;
-  int64_t id;
-  size_t n_watched_keys;
-  char **watched_keys;
+struct  _Haven__Client__HeartbeatUpdate {
+    ProtobufCMessage base;
+    int64_t id;
+    size_t n_watched_keys;
+    char** watched_keys;
 };
 #define HAVEN__CLIENT__HEARTBEAT_UPDATE__INIT \
- { PROTOBUF_C_MESSAGE_INIT (&haven__client__heartbeat_update__descriptor) \
-    , 0, 0,NULL }
+    { PROTOBUF_C_MESSAGE_INIT (&haven__client__heartbeat_update__descriptor) \
+        , 0, 0,NULL }
 
 
-struct  _Haven__Client__HeartbeatResult
-{
-  ProtobufCMessage base;
-  int64_t timeout;
-  int64_t last_log_index;
-  int64_t last_log_term;
-  Haven__Database__AppendEntries *updated_entries;
+struct  _Haven__Client__HeartbeatResult {
+    ProtobufCMessage base;
+    int64_t timeout;
+    int64_t last_log_index;
+    int64_t last_log_term;
+    Haven__Database__AppendEntries* updated_entries;
 };
 #define HAVEN__CLIENT__HEARTBEAT_RESULT__INIT \
- { PROTOBUF_C_MESSAGE_INIT (&haven__client__heartbeat_result__descriptor) \
-    , 0, 0, 0, NULL }
+    { PROTOBUF_C_MESSAGE_INIT (&haven__client__heartbeat_result__descriptor) \
+        , 0, 0, 0, NULL }
 
 
 /* Haven__Client__Command methods */
 void   haven__client__command__init
-                     (Haven__Client__Command         *message);
+(Haven__Client__Command*         message);
 size_t haven__client__command__get_packed_size
-                     (const Haven__Client__Command   *message);
+(const Haven__Client__Command*   message);
 size_t haven__client__command__pack
-                     (const Haven__Client__Command   *message,
-                      uint8_t             *out);
+(const Haven__Client__Command*   message,
+ uint8_t*             out);
 size_t haven__client__command__pack_to_buffer
-                     (const Haven__Client__Command   *message,
-                      ProtobufCBuffer     *buffer);
-Haven__Client__Command *
-       haven__client__command__unpack
-                     (ProtobufCAllocator  *allocator,
-                      size_t               len,
-                      const uint8_t       *data);
+(const Haven__Client__Command*   message,
+ ProtobufCBuffer*     buffer);
+Haven__Client__Command*
+haven__client__command__unpack
+(ProtobufCAllocator*  allocator,
+ size_t               len,
+ const uint8_t*       data);
 void   haven__client__command__free_unpacked
-                     (Haven__Client__Command *message,
-                      ProtobufCAllocator *allocator);
+(Haven__Client__Command* message,
+ ProtobufCAllocator* allocator);
 /* Haven__Client__CommandResult methods */
 void   haven__client__command_result__init
-                     (Haven__Client__CommandResult         *message);
+(Haven__Client__CommandResult*         message);
 size_t haven__client__command_result__get_packed_size
-                     (const Haven__Client__CommandResult   *message);
+(const Haven__Client__CommandResult*   message);
 size_t haven__client__command_result__pack
-                     (const Haven__Client__CommandResult   *message,
-                      uint8_t             *out);
+(const Haven__Client__CommandResult*   message,
+ uint8_t*             out);
 size_t haven__client__command_result__pack_to_buffer
-                     (const Haven__Client__CommandResult   *message,
-                      ProtobufCBuffer     *buffer);
-Haven__Client__CommandResult *
-       haven__client__command_result__unpack
-                     (ProtobufCAllocator  *allocator,
-                      size_t               len,
-                      const uint8_t       *data);
+(const Haven__Client__CommandResult*   message,
+ ProtobufCBuffer*     buffer);
+Haven__Client__CommandResult*
+haven__client__command_result__unpack
+(ProtobufCAllocator*  allocator,
+ size_t               len,
+ const uint8_t*       data);
 void   haven__client__command_result__free_unpacked
-                     (Haven__Client__CommandResult *message,
-                      ProtobufCAllocator *allocator);
+(Haven__Client__CommandResult* message,
+ ProtobufCAllocator* allocator);
 /* Haven__Client__HeartbeatUpdate methods */
 void   haven__client__heartbeat_update__init
-                     (Haven__Client__HeartbeatUpdate         *message);
+(Haven__Client__HeartbeatUpdate*         message);
 size_t haven__client__heartbeat_update__get_packed_size
-                     (const Haven__Client__HeartbeatUpdate   *message);
+(const Haven__Client__HeartbeatUpdate*   message);
 size_t haven__client__heartbeat_update__pack
-                     (const Haven__Client__HeartbeatUpdate   *message,
-                      uint8_t             *out);
+(const Haven__Client__HeartbeatUpdate*   message,
+ uint8_t*             out);
 size_t haven__client__heartbeat_update__pack_to_buffer
-                     (const Haven__Client__HeartbeatUpdate   *message,
-                      ProtobufCBuffer     *buffer);
-Haven__Client__HeartbeatUpdate *
-       haven__client__heartbeat_update__unpack
-                     (ProtobufCAllocator  *allocator,
-                      size_t               len,
-                      const uint8_t       *data);
+(const Haven__Client__HeartbeatUpdate*   message,
+ ProtobufCBuffer*     buffer);
+Haven__Client__HeartbeatUpdate*
+haven__client__heartbeat_update__unpack
+(ProtobufCAllocator*  allocator,
+ size_t               len,
+ const uint8_t*       data);
 void   haven__client__heartbeat_update__free_unpacked
-                     (Haven__Client__HeartbeatUpdate *message,
-                      ProtobufCAllocator *allocator);
+(Haven__Client__HeartbeatUpdate* message,
+ ProtobufCAllocator* allocator);
 /* Haven__Client__HeartbeatResult methods */
 void   haven__client__heartbeat_result__init
-                     (Haven__Client__HeartbeatResult         *message);
+(Haven__Client__HeartbeatResult*         message);
 size_t haven__client__heartbeat_result__get_packed_size
-                     (const Haven__Client__HeartbeatResult   *message);
+(const Haven__Client__HeartbeatResult*   message);
 size_t haven__client__heartbeat_result__pack
-                     (const Haven__Client__HeartbeatResult   *message,
-                      uint8_t             *out);
+(const Haven__Client__HeartbeatResult*   message,
+ uint8_t*             out);
 size_t haven__client__heartbeat_result__pack_to_buffer
-                     (const Haven__Client__HeartbeatResult   *message,
-                      ProtobufCBuffer     *buffer);
-Haven__Client__HeartbeatResult *
-       haven__client__heartbeat_result__unpack
-                     (ProtobufCAllocator  *allocator,
-                      size_t               len,
-                      const uint8_t       *data);
+(const Haven__Client__HeartbeatResult*   message,
+ ProtobufCBuffer*     buffer);
+Haven__Client__HeartbeatResult*
+haven__client__heartbeat_result__unpack
+(ProtobufCAllocator*  allocator,
+ size_t               len,
+ const uint8_t*       data);
 void   haven__client__heartbeat_result__free_unpacked
-                     (Haven__Client__HeartbeatResult *message,
-                      ProtobufCAllocator *allocator);
+(Haven__Client__HeartbeatResult* message,
+ ProtobufCAllocator* allocator);
 /* --- per-message closures --- */
 
 typedef void (*Haven__Client__Command_Closure)
-                 (const Haven__Client__Command *message,
-                  void *closure_data);
+(const Haven__Client__Command* message,
+ void* closure_data);
 typedef void (*Haven__Client__CommandResult_Closure)
-                 (const Haven__Client__CommandResult *message,
-                  void *closure_data);
+(const Haven__Client__CommandResult* message,
+ void* closure_data);
 typedef void (*Haven__Client__HeartbeatUpdate_Closure)
-                 (const Haven__Client__HeartbeatUpdate *message,
-                  void *closure_data);
+(const Haven__Client__HeartbeatUpdate* message,
+ void* closure_data);
 typedef void (*Haven__Client__HeartbeatResult_Closure)
-                 (const Haven__Client__HeartbeatResult *message,
-                  void *closure_data);
+(const Haven__Client__HeartbeatResult* message,
+ void* closure_data);
 
 /* --- services --- */
 
 typedef struct _Haven__Client__Client_Service Haven__Client__Client_Service;
-struct _Haven__Client__Client_Service
-{
-  ProtobufCService base;
-  void (*heartbeat)(Haven__Client__Client_Service *service,
-                    const Haven__Client__HeartbeatUpdate *input,
-                    Haven__Client__HeartbeatResult_Closure closure,
-                    void *closure_data);
-  void (*operation)(Haven__Client__Client_Service *service,
-                    const Haven__Client__Command *input,
-                    Haven__Client__CommandResult_Closure closure,
-                    void *closure_data);
+struct _Haven__Client__Client_Service {
+    ProtobufCService base;
+    void (*heartbeat)(Haven__Client__Client_Service* service,
+                      const Haven__Client__HeartbeatUpdate* input,
+                      Haven__Client__HeartbeatResult_Closure closure,
+                      void* closure_data);
+    void (*operation)(Haven__Client__Client_Service* service,
+                      const Haven__Client__Command* input,
+                      Haven__Client__CommandResult_Closure closure,
+                      void* closure_data);
 };
-typedef void (*Haven__Client__Client_ServiceDestroy)(Haven__Client__Client_Service *);
-void haven__client__client__init (Haven__Client__Client_Service *service,
-                                  Haven__Client__Client_ServiceDestroy destroy);
+typedef void (*Haven__Client__Client_ServiceDestroy)(Haven__Client__Client_Service*);
+void haven__client__client__init(Haven__Client__Client_Service* service,
+                                 Haven__Client__Client_ServiceDestroy destroy);
 #define HAVEN__CLIENT__CLIENT__BASE_INIT \
     { &haven__client__client__descriptor, protobuf_c_service_invoke_internal, NULL }
 #define HAVEN__CLIENT__CLIENT__INIT(function_prefix__) \
     { HAVEN__CLIENT__CLIENT__BASE_INIT,\
-      function_prefix__ ## heartbeat,\
-      function_prefix__ ## operation  }
-void haven__client__client__heartbeat(ProtobufCService *service,
-                                      const Haven__Client__HeartbeatUpdate *input,
+        function_prefix__ ## heartbeat,\
+        function_prefix__ ## operation  }
+void haven__client__client__heartbeat(ProtobufCService* service,
+                                      const Haven__Client__HeartbeatUpdate* input,
                                       Haven__Client__HeartbeatResult_Closure closure,
-                                      void *closure_data);
-void haven__client__client__operation(ProtobufCService *service,
-                                      const Haven__Client__Command *input,
+                                      void* closure_data);
+void haven__client__client__operation(ProtobufCService* service,
+                                      const Haven__Client__Command* input,
                                       Haven__Client__CommandResult_Closure closure,
-                                      void *closure_data);
+                                      void* closure_data);
 
 /* --- descriptors --- */
 

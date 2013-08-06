@@ -36,7 +36,7 @@ int HAVEN_init_db(HAVEN_db_t** db, char* path)
     char* db_err = NULL;
 
     HAVEN_db_t* new_db = \
-        (HAVEN_db_t*) malloc(sizeof(HAVEN_db_t));
+                         (HAVEN_db_t*) malloc(sizeof(HAVEN_db_t));
 
     if(!new_db) {
         LOG(HAVEN_LOG_ERR, "Could not initialize memory for a new database.");
@@ -72,7 +72,7 @@ int HAVEN_destroy_db(HAVEN_db_t* db)
 
     if(db_err != NULL) {
         LOG(HAVEN_LOG_ERR, "Could not destroy the database at `%s'. %s", \
-                db->path, db_err);
+            db->path, db_err);
         return HAVEN_ERROR;
     }
 

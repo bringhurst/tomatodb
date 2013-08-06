@@ -49,6 +49,7 @@ int HAVEN_ensure_directory_exists(char* path)
             return HAVEN_ERROR;
         }
     }
+
     if(S_ISDIR(s.st_mode)) {
         return HAVEN_SUCCESS;
     }

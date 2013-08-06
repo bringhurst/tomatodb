@@ -45,10 +45,9 @@ void HAVEN_free_context(HAVEN_ctx_t* ctx)
     free(ctx);
 }
 
-void taskmain(int argc, char *argv[])
+void taskmain(int argc, char* argv[])
 {
-    HAVEN_ctx_t* ctx = \
-                       (HAVEN_ctx_t*) malloc(sizeof(HAVEN_ctx_t));
+    HAVEN_ctx_t* ctx = (HAVEN_ctx_t*) malloc(sizeof(HAVEN_ctx_t));
 
     HAVEN_debug_stream = stdout;
     HAVEN_debug_level = HAVEN_LOG_DBG;
