@@ -12,8 +12,8 @@ Channel *c;
 void
 delaytask(void *v)
 {
-	taskdelay((int)v);
-	printf("awake after %d ms\n", (int)v);
+	taskdelay((int)(intptr_t)v);
+	printf("awake after %d ms\n", (int)(intptr_t)v);
 	chansendul(c, 0);
 }
 
@@ -28,7 +28,7 @@ taskmain(int argc, char **argv)
 	for(i=1; i<argc; i++){
 		n++;
 		printf("x");
-		taskcreate(delaytask, (void*)atoi(argv[i]), STACK);
+		taskcreate(delaytask, (void*)(intptr_t)atoi(argv[i]), STACK);
 	}
 
 	/* wait for n tasks to finish */
