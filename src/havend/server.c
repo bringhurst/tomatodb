@@ -32,7 +32,7 @@ int HAVEN_init_server_loop(HAVEN_ctx_t* ctx)
         return HAVEN_ERROR;
     }
 
-
+    HAVEN_server_t* server = HAVEN_xarray_peek(ctx->server_queue);
 
     HAVEN_xarray_free(ctx->server_queue);
     return HAVEN_SUCCESS;

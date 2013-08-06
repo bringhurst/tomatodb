@@ -79,6 +79,10 @@ int HAVEN_xarray_push(HAVEN_xarray_t* array, void* data)
     return HAVEN_SUCCESS;
 }
 
+void* HAVEN_xarray_peek(HAVEN_xarray_t* array) {
+    return array->data[array->index - 1];
+}
+
 int HAVEN_xarray_pop(HAVEN_xarray_t* array, void** data)
 {
     if(array->index * 2 + 1 < array->size) {

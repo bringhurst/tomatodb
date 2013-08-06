@@ -31,5 +31,6 @@ int HAVEN_xarray_free(HAVEN_xarray_t* array);
 int HAVEN_xarray_realloc(HAVEN_xarray_t* array, size_t new_size);
 int HAVEN_xarray_push(HAVEN_xarray_t* array, void* data);
 int HAVEN_xarray_pop(HAVEN_xarray_t* array, void** data);
+void* HAVEN_xarray_peek(HAVEN_xarray_t* array);
 
 #endif /* __HAVEN_COMMON_XARRAY_H */
