@@ -27,6 +27,9 @@
 #define HAVEN_LOG_DB_PREFIX    "/log"
 #define HAVEN_GROUP_DB_PREFIX  "/group"
 
+#define DEFAULT_LISTEN_ADDRESS "127.0.0.1"
+#define DEFAULT_LISTEN_PORT    (7854)
+
 typedef struct HAVEN_ctx_t {
     HAVEN_db_t* log_db;
     HAVEN_db_t* settings_db;
@@ -38,9 +41,10 @@ typedef struct HAVEN_ctx_t {
     uuid_t local_uuid;
 } HAVEN_ctx_t;
 
-void HAVEN_free_context(HAVEN_ctx_t* ctx);
+int HAVEN_context_init(HAVEN_ctx_t** ctx);
+void HAVEN_context_free(HAVEN_ctx_t* ctx);
 void HAVEN_print_version(void);
-void HAVEN_print_usage(char** argv);
+void HAVEN_print_usage(void);
 int HAVEN_handle_havend_cli_args(HAVEN_ctx_t* ctx, int argc, char* argv[]);
 
 #endif /* __HAVEN_HAVEND_H */

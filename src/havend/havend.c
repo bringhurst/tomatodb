@@ -41,7 +41,24 @@ FILE* HAVEN_debug_stream;
 /** The log level to write messages for. */
 HAVEN_loglevel HAVEN_debug_level;
 
-void HAVEN_free_context(HAVEN_ctx_t* ctx)
+int HAVEN_context_init(HAVEN_ctx_t** ctx)
+{
+    *ctx = (HAVEN_ctx_t*) malloc(sizeof(HAVEN_ctx_t));
+
+    if(*ctx == NULL) {
+        LOG(HAVEN_LOG_ERR, "Malloc failed when allocating a context.");
+        return HAVEN_ERROR;
+    }
+
+    (*ctx)->listen_addr = (char*) malloc(sizeof(char) * _POSIX_HOST_NAME_MAX);
+    strcpy((*ctx)->listen_addr, DEFAULT_LISTEN_ADDRESS);
+
+    (*ctx)->listen_port = DEFAULT_LISTEN_PORT;
+
+    return HAVEN_SUCCESS;
+}
+
+void HAVEN_context_free(HAVEN_ctx_t* ctx)
 {
     /* FIXME: properly free this thing. */
     free(ctx);
@@ -58,10 +75,10 @@ void HAVEN_print_version()
 /**
  * Print a usage message.
  */
-void HAVEN_print_usage(char** argv)
+void HAVEN_print_usage()
 {
-    printf("usage: %s [-hv] [--debug=<level>] [--listen-address=<addr>] [--listen-port=<port>]\n", \
-           argv[0]);
+    printf("usage: havend [-hv] [--listen-address=<addr>] [--listen-port=<port>]\n" \
+           "              [--debug=<fatal,err,warn,info,dbg>]\n");
     fflush(stdout);
 }
 
@@ -79,9 +96,15 @@ int HAVEN_handle_havend_cli_args(HAVEN_ctx_t* ctx, int argc, char* argv[])
     };
 
     /* Parse options */
-    while((c = getopt_long(argc, argv, "d:a:p:hv", \
+    while((c = getopt_long(argc, argv, "a:d:p:hv", \
                            long_options, &option_index)) != -1) {
         switch(c) {
+
+            case 'a':
+                strncpy(ctx->listen_addr, optarg, _POSIX_HOST_NAME_MAX);
+                LOG(HAVEN_LOG_INFO, "Listen address set to `%s'.", ctx->listen_addr);
+                break;
+
             case 'd':
 
                 if(strncmp(optarg, "fatal", 5) == 0) {
@@ -111,8 +134,13 @@ int HAVEN_handle_havend_cli_args(HAVEN_ctx_t* ctx, int argc, char* argv[])
 
                 break;
 
+            case 'p':
+                ctx->listen_port = atoi(optarg);
+                LOG(HAVEN_LOG_INFO, "Listen port set to `%d'.", ctx->listen_port);
+                break;
+
             case 'h':
-                HAVEN_print_usage(argv);
+                HAVEN_print_usage();
                 taskexit(EXIT_SUCCESS);
                 break;
 
@@ -125,16 +153,16 @@ int HAVEN_handle_havend_cli_args(HAVEN_ctx_t* ctx, int argc, char* argv[])
             default:
 
                 if(optopt == 'd' || optopt == 'a' || optopt == 'p') {
-                    HAVEN_print_usage(argv);
+                    HAVEN_print_usage();
                     fprintf(stderr, "Option -%c requires an argument.\n", \
                             optopt);
                 }
                 else if(isprint(optopt)) {
-                    HAVEN_print_usage(argv);
+                    HAVEN_print_usage();
                     fprintf(stderr, "Unknown option `-%c'.\n", optopt);
                 }
                 else {
-                    HAVEN_print_usage(argv);
+                    HAVEN_print_usage();
                     fprintf(stderr,
                             "Unknown option character `\\x%x'.\n",
                             optopt);
@@ -150,13 +178,23 @@ int HAVEN_handle_havend_cli_args(HAVEN_ctx_t* ctx, int argc, char* argv[])
 
 void taskmain(int argc, char* argv[])
 {
-    HAVEN_ctx_t* ctx = (HAVEN_ctx_t*) malloc(sizeof(HAVEN_ctx_t));
+    HAVEN_ctx_t* ctx = NULL;
 
     HAVEN_debug_stream = stdout;
     HAVEN_debug_level = HAVEN_LOG_INFO;
 
+    if(HAVEN_handle_havend_cli_args(ctx, argc, argv) != HAVEN_SUCCESS) {
+        LOG(HAVEN_LOG_ERR, "Failed to properly handle command line arguments.");
+        taskexit(EXIT_FAILURE);
+    }
+
     LOG(HAVEN_LOG_INFO, "Hello! %s-%s is starting up.", \
         PACKAGE_NAME, PACKAGE_VERSION);
+
+    if(HAVEN_context_init(&ctx) != HAVEN_SUCCESS) {
+        LOG(HAVEN_LOG_ERR, "Could not allocate the primary context.");
+        taskexit(EXIT_FAILURE);
+    }
 
     if(HAVEN_get_local_machine_uuid(ctx) != HAVEN_SUCCESS) {
         LOG(HAVEN_LOG_ERR, "Could not create or determine local machine UUID.");
@@ -168,18 +206,13 @@ void taskmain(int argc, char* argv[])
         taskexit(EXIT_FAILURE);
     }
 
-    if(HAVEN_handle_havend_cli_args(ctx, argc, argv) != HAVEN_SUCCESS) {
-        LOG(HAVEN_LOG_ERR, "Failed to properly handle command line arguments.");
-        taskexit(EXIT_FAILURE);
-    }
-
     if(HAVEN_init_server_loop(ctx) != HAVEN_SUCCESS) {
         LOG(HAVEN_LOG_ERR, "The primary server loop failed.");
         taskexit(EXIT_FAILURE);
     }
 
     HAVEN_close_db(ctx->settings_db);
-    HAVEN_free_context(ctx);
+    HAVEN_context_free(ctx);
 
     LOG(HAVEN_LOG_INFO, "Goodbye! %s-%s is shutting down.", \
         PACKAGE_NAME, PACKAGE_VERSION);
