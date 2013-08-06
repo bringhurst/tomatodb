@@ -34,8 +34,6 @@ int HAVEN_server_accept(HAVEN_server_t* server)
     //
     // TODO: netaccept
     //
-    // TODO: pass to server instance
-    //
     // TODO: pass server instance to state machine
 
     LOG(HAVEN_LOG_ERR, "Server accept is not implemented.");
