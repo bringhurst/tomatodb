@@ -29,7 +29,7 @@ typedef struct HAVEN_xarray_t {
 int HAVEN_xarray_init(HAVEN_xarray_t** array, size_t initial_size);
 int HAVEN_xarray_free(HAVEN_xarray_t* array);
 int HAVEN_xarray_realloc(HAVEN_xarray_t* array, size_t new_size);
-int HAVEN_xarray_push(HAVEN_xarray_t* array, void* data);
-int HAVEN_xarray_pop(HAVEN_xarray_t* array, void** data);
+int HAVEN_xarray_push(HAVEN_xarray_t* array, intptr_t* data);
+int HAVEN_xarray_pop(HAVEN_xarray_t* array, intptr_t** data);
 
 #endif /* __HAVEN_COMMON_XARRAY_H */

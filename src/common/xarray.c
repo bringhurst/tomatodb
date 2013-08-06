@@ -50,7 +50,7 @@ int HAVEN_xarray_free(HAVEN_xarray_t* array)
 
 int HAVEN_xarray_realloc(HAVEN_xarray_t* array, size_t new_size)
 {
-    array->data = (void*) realloc(array->data, sizeof(void*) * new_size);
+    array->data = (void*) realloc(array->data, sizeof(intptr_t*) * new_size);
 
     if(array->data == NULL) {
         LOG(HAVEN_LOG_ERR, "Failed to re-allocate memory for a dynamic array.");
@@ -61,10 +61,10 @@ int HAVEN_xarray_realloc(HAVEN_xarray_t* array, size_t new_size)
     return HAVEN_SUCCESS;
 }
 
-int HAVEN_xarray_push(HAVEN_xarray_t* array, void* data)
+int HAVEN_xarray_push(HAVEN_xarray_t* array, intptr_t* data)
 {
-    if(array->size < array->index + 1) {
-        if(HAVEN_xarray_realloc(array, array->size * 2) != HAVEN_SUCCESS) {
+    if(array->size < sizeof(intptr_t*) * array->index + 1) {
+        if(HAVEN_xarray_realloc(array, sizeof(intptr_t*) * array->size * 2) != HAVEN_SUCCESS) {
             LOG(HAVEN_LOG_ERR, "Failed to re-allocate memory for a dynamic array while pushing.");
             return HAVEN_ERROR;
         }
@@ -76,7 +76,7 @@ int HAVEN_xarray_push(HAVEN_xarray_t* array, void* data)
     return HAVEN_SUCCESS;
 }
 
-int HAVEN_xarray_pop(HAVEN_xarray_t* array, void** data)
+int HAVEN_xarray_pop(HAVEN_xarray_t* array, intptr_t** data)
 {
     if(array->index * 2 + 1 < array->size) {
         if(HAVEN_xarray_realloc(array, array->size / 2) != HAVEN_SUCCESS) {
