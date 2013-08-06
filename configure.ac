@@ -21,7 +21,13 @@ AC_PROG_RANLIB
 # Check for protobuf-c command.
 AC_CHECK_PROG(PROTOBUF_C_CHECK,protoc-c,yes)
 if test x"$PROTOBUF_C_CHECK" != x"yes" ; then
-    AC_MSG_ERROR([Could not find the protoc-c command.])
+    AC_MSG_ERROR([Could not find the protoc-c command. Is protobuf-c-compiler installed?])
+fi
+
+# Check for ragel command.
+AC_CHECK_PROG(RAGEL_CHECK,ragel,yes)
+if test x"$RAGEL_CHECK" != x"yes" ; then
+    AC_MSG_ERROR([Could not find the ragel command. Is ragel installed?])
 fi
 
 # Use libtool.

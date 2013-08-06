@@ -18,7 +18,7 @@
 #include "log.h"
 #include "xarray.h"
 
-/** The strem to send log messages to. */
+/** The stream to send log messages to. */
 extern FILE* HAVEN_debug_stream;
 
 /** The log level to output. */
@@ -26,7 +26,11 @@ extern HAVEN_loglevel HAVEN_debug_level;
 
 int HAVEN_init_server_loop(HAVEN_ctx_t* ctx)
 {
-    HAVEN_xarray_init(&(ctx->server_queue), SERVER_QUEUE_SIZE);
+    if(HAVEN_xarray_init(&(ctx->server_queue), \
+                INITIAL_SERVER_QUEUE_SIZE) != HAVEN_SUCCESS) {
+        LOG(HAVEN_LOG_ERR, "Couldn't not initialize server queue.");
+        return HAVEN_ERROR;
+    }
 
 
 

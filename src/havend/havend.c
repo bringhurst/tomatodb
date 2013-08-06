@@ -65,6 +65,8 @@ void taskmain(int argc, char* argv[])
         exit(EXIT_FAILURE);
     }
 
+    // TODO: handle command line args?
+
     if(HAVEN_init_server_loop(ctx) != HAVEN_SUCCESS) {
         LOG(HAVEN_LOG_ERR, "The primary server loop failed.");
         exit(EXIT_FAILURE);

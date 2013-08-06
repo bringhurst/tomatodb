@@ -17,7 +17,7 @@
 #include "consensus.h"
 #include "log.h"
 
-/** The strem to send log messages to. */
+/** The stream to send log messages to. */
 extern FILE* HAVEN_debug_stream;
 
 /** The log level to output. */
