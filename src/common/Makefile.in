@@ -68,7 +68,7 @@ CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 libhaven_common_la_DEPENDENCIES =
 am_libhaven_common_la_OBJECTS = libhaven_common_la-common.lo \
-	libhaven_common_la-database.lo \
+	libhaven_common_la-xarray.lo libhaven_common_la-database.lo \
 	libhaven_common_la-database.pb-c.lo \
 	libhaven_common_la-admin.pb-c.lo \
 	libhaven_common_la-client.pb-c.lo \
@@ -246,6 +246,7 @@ noinst_LTLIBRARIES = libhaven_common.la
 libhaven_common_la_LDFLAGS = $(LIB_LDFLAGS)
 libhaven_common_la_SOURCES = \
 							common.c \
+							xarray.c \
 							database.c \
 							database.pb-c.c \
 							admin.pb-c.c \
@@ -323,6 +324,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhaven_common_la-consensus.pb-c.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhaven_common_la-database.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhaven_common_la-database.pb-c.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhaven_common_la-xarray.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -351,6 +353,13 @@ libhaven_common_la-common.lo: common.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='common.c' object='libhaven_common_la-common.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_la_CFLAGS) $(CFLAGS) -c -o libhaven_common_la-common.lo `test -f 'common.c' || echo '$(srcdir)/'`common.c
+
+libhaven_common_la-xarray.lo: xarray.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_la_CFLAGS) $(CFLAGS) -MT libhaven_common_la-xarray.lo -MD -MP -MF $(DEPDIR)/libhaven_common_la-xarray.Tpo -c -o libhaven_common_la-xarray.lo `test -f 'xarray.c' || echo '$(srcdir)/'`xarray.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhaven_common_la-xarray.Tpo $(DEPDIR)/libhaven_common_la-xarray.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='xarray.c' object='libhaven_common_la-xarray.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_la_CFLAGS) $(CFLAGS) -c -o libhaven_common_la-xarray.lo `test -f 'xarray.c' || echo '$(srcdir)/'`xarray.c
 
 libhaven_common_la-database.lo: database.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_la_CFLAGS) $(CFLAGS) -MT libhaven_common_la-database.lo -MD -MP -MF $(DEPDIR)/libhaven_common_la-database.Tpo -c -o libhaven_common_la-database.lo `test -f 'database.c' || echo '$(srcdir)/'`database.c
