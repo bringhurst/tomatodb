@@ -18,21 +18,51 @@
 #include "log.h"
 #include "xarray.h"
 
+#include "task/task.h"
+
+#include <stdbool.h>
+
 /** The stream to send log messages to. */
 extern FILE* HAVEN_debug_stream;
 
 /** The log level to output. */
 extern HAVEN_loglevel HAVEN_debug_level;
 
+int HAVEN_server_accept(HAVEN_server_t* server)
+{
+    // TODO: netaccept
+    //
+    // TODO: pass to server instance
+    //
+    // TODO: pass server instance to state machine
+
+    LOG(HAVEN_LOG_ERR, "Server accept is not implemented.");
+    return HAVEN_SUCCESS;
+}
+
 int HAVEN_init_server_loop(HAVEN_ctx_t* ctx)
 {
+    bool RUNNING = true;
+
     if(HAVEN_xarray_init(&(ctx->server_queue), \
                          INITIAL_SERVER_QUEUE_SIZE) != HAVEN_SUCCESS) {
         LOG(HAVEN_LOG_ERR, "Couldn't not initialize server queue.");
         return HAVEN_ERROR;
     }
 
-    HAVEN_server_t* server = HAVEN_xarray_peek(ctx->server_queue);
+    ctx->listen_fd = netannounce(TCP, ctx->listen_addr, ctx->listen_port);
+
+    while(RUNNING) {
+        HAVEN_server_t* server = HAVEN_xarray_peek(ctx->server_queue);
+
+        // TODO: setup server struct
+        
+        if(HAVEN_server_accept(server) != HAVEN_SUCCESS) {
+            LOG(HAVEN_LOG_INFO, "Failed to accept a new client.");
+        }
+
+        RUNNING = false;
+    }
 
     HAVEN_xarray_free(ctx->server_queue);
     return HAVEN_SUCCESS;

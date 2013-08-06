@@ -24,11 +24,10 @@
 #define INITIAL_SERVER_QUEUE_SIZE (100)
 
 typedef struct HAVEN_server_t {
-    int listen_fd;
-
-
+    HAVEN_ctx_t* ctx;
 } HAVEN_server_t;
 
+int HAVEN_server_accept(HAVEN_server_t* server);
 int HAVEN_init_server_loop(HAVEN_ctx_t* ctx);
 
 #endif /* __HAVEN_SERVER_H */
