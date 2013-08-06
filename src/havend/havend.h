@@ -18,6 +18,7 @@
  */
 
 #include "database.h"
+#include "xarray.h"
 
 #include <stdlib.h>
 #include <uuid/uuid.h>
@@ -29,6 +30,7 @@
 typedef struct HAVEN_ctx_t {
     HAVEN_db_t* settings_db;
     HAVEN_db_t* log_db;
+    HAVEN_xarray_t* server_queue;
     uuid_t local_uuid;
     char* local_state_path;
 } HAVEN_ctx_t;

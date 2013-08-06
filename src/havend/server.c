@@ -16,6 +16,7 @@
 
 #include "server.h"
 #include "log.h"
+#include "xarray.h"
 
 /** The strem to send log messages to. */
 extern FILE* HAVEN_debug_stream;
@@ -25,9 +26,11 @@ extern HAVEN_loglevel HAVEN_debug_level;
 
 int HAVEN_init_server_loop(HAVEN_ctx_t* ctx)
 {
-    LOG(HAVEN_LOG_ERR, "Server loop is not implemented yet.");
-    // TODO
+    HAVEN_xarray_init(&(ctx->server_queue), SERVER_QUEUE_SIZE);
 
+
+
+    HAVEN_xarray_free(ctx->server_queue);
     return HAVEN_SUCCESS;
 }
 

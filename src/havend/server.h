@@ -21,6 +21,8 @@
 
 #include "havend.h"
 
+#define SERVER_QUEUE_SIZE (100000)
+
 int HAVEN_init_server_loop(HAVEN_ctx_t* ctx);
 
 #endif /* __HAVEN_SERVER_H */

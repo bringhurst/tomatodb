@@ -44,8 +44,9 @@ int HAVEN_xarray_init(HAVEN_xarray_t** array, size_t initial_size)
 
 int HAVEN_xarray_free(HAVEN_xarray_t* array)
 {
-    LOG(HAVEN_LOG_WARN, "Failed to free a dynamic array.");
-    return HAVEN_ERROR;
+    //FIXME
+    free(array);
+    return HAVEN_SUCCESS;
 }
 
 int HAVEN_xarray_realloc(HAVEN_xarray_t* array, size_t new_size)
@@ -61,7 +62,7 @@ int HAVEN_xarray_realloc(HAVEN_xarray_t* array, size_t new_size)
     return HAVEN_SUCCESS;
 }
 
-int HAVEN_xarray_push(HAVEN_xarray_t* array, intptr_t* data)
+int HAVEN_xarray_push(HAVEN_xarray_t* array, void* data)
 {
     if(array->size < sizeof(intptr_t*) * array->index + 1) {
         if(HAVEN_xarray_realloc(array, sizeof(intptr_t*) * array->size * 2) != HAVEN_SUCCESS) {
@@ -70,13 +71,15 @@ int HAVEN_xarray_push(HAVEN_xarray_t* array, intptr_t* data)
         }
     }
 
+    LOG(HAVEN_LOG_INFO, "Pushing to index `%d'.", array->index);
+
     array->data[array->index] = data;
     array->index++;
 
     return HAVEN_SUCCESS;
 }
 
-int HAVEN_xarray_pop(HAVEN_xarray_t* array, intptr_t** data)
+int HAVEN_xarray_pop(HAVEN_xarray_t* array, void** data)
 {
     if(array->index * 2 + 1 < array->size) {
         if(HAVEN_xarray_realloc(array, array->size / 2) != HAVEN_SUCCESS) {
@@ -85,7 +88,9 @@ int HAVEN_xarray_pop(HAVEN_xarray_t* array, intptr_t** data)
         }
     }
 
-    *data = array->data[array->index];
+    LOG(HAVEN_LOG_INFO, "Poping from index `%d'.", array->index - 1);
+
+    *data = array->data[array->index - 1];
     array->index--;
 
     return HAVEN_SUCCESS;
