@@ -28,13 +28,19 @@
 #define HAVEN_GROUP_DB_PREFIX  "/group"
 
 typedef struct HAVEN_ctx_t {
-    HAVEN_db_t* settings_db;
     HAVEN_db_t* log_db;
+    HAVEN_db_t* settings_db;
     HAVEN_xarray_t* server_queue;
-    uuid_t local_uuid;
     char* local_state_path;
+    char* listen_addr;
+    int listen_port;
+    int listen_fd;
+    uuid_t local_uuid;
 } HAVEN_ctx_t;
 
 void HAVEN_free_context(HAVEN_ctx_t* ctx);
+void HAVEN_print_version(void);
+void HAVEN_print_usage(char** argv);
+int HAVEN_handle_havend_cli_args(HAVEN_ctx_t* ctx, int argc, char* argv[]);
 
 #endif /* __HAVEN_HAVEND_H */

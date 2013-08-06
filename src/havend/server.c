@@ -27,7 +27,7 @@ extern HAVEN_loglevel HAVEN_debug_level;
 int HAVEN_init_server_loop(HAVEN_ctx_t* ctx)
 {
     if(HAVEN_xarray_init(&(ctx->server_queue), \
-                INITIAL_SERVER_QUEUE_SIZE) != HAVEN_SUCCESS) {
+                         INITIAL_SERVER_QUEUE_SIZE) != HAVEN_SUCCESS) {
         LOG(HAVEN_LOG_ERR, "Couldn't not initialize server queue.");
         return HAVEN_ERROR;
     }
