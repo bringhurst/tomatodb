@@ -1,33 +1,49 @@
 
 #line 1 "consensus.rl"
+/*
+ * Copyright 2013 Los Alamos National Security, LLC.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
+#include "server.h"
 #include "actions.h"
 
 
-#line 54 "consensus.rl"
+#line 70 "consensus.rl"
 
 
 
-#line 12 "consensus_state.c"
-static const int State_start = 1;
-static const int State_first_final = 8;
-static const int State_error = 0;
+#line 28 "consensus_state.c"
+static const int Consensus_start = 1;
+static const int Consensus_first_final = 8;
+static const int Consensus_error = 0;
 
-static const int State_en_Consensus = 1;
+static const int Consensus_en_Consensus = 1;
 
 
-#line 57 "consensus.rl"
+#line 73 "consensus.rl"
 
 int HAVEN_init_consensus_state(HAVEN_state_t *state, HAVEN_state_actions_t *actions)
 {
     int cs;
     
-#line 26 "consensus_state.c"
+#line 42 "consensus_state.c"
 	{
-	 machine->cs = State_start;
+	 machine->cs = Consensus_start;
 	}
 
-#line 62 "consensus.rl"
+#line 78 "consensus.rl"
 }
 
 int HAVEN_exec_consensus_state(HAVEN_state_t *state, HAVEN_server_t* server)
@@ -38,7 +54,7 @@ int HAVEN_exec_consensus_state(HAVEN_state_t *state, HAVEN_server_t* server)
     int cs = machine->cs;
 
     
-#line 42 "consensus_state.c"
+#line 58 "consensus_state.c"
 	{
 	if ( p == pe )
 		goto _test_eof;
@@ -52,12 +68,12 @@ case 1:
 	}
 	goto st0;
 tr4:
-#line 15 "consensus.rl"
+#line 31 "consensus.rl"
 	{
         HAVEN_consensus_error_cb();
     }
 	goto st0;
-#line 61 "consensus_state.c"
+#line 77 "consensus_state.c"
 st0:
  machine->cs = 0;
 	goto _out;
@@ -95,7 +111,7 @@ case 5:
 	}
 	goto tr4;
 tr2:
-#line 11 "consensus.rl"
+#line 27 "consensus.rl"
 	{
         HAVEN_create_location_quorum(server);
     }
@@ -104,7 +120,7 @@ st6:
 	if ( ++p == pe )
 		goto _test_eof6;
 case 6:
-#line 108 "consensus_state.c"
+#line 124 "consensus_state.c"
 	if ( (*p) == 5 )
 		goto st3;
 	goto tr4;
@@ -133,19 +149,19 @@ case 7:
 	case 5: 
 	case 6: 
 	case 7: 
-#line 15 "consensus.rl"
+#line 31 "consensus.rl"
 	{
         HAVEN_consensus_error_cb();
     }
 	break;
-#line 142 "consensus_state.c"
+#line 158 "consensus_state.c"
 	}
 	}
 
 	_out: {}
 	}
 
-#line 72 "consensus.rl"
+#line 88 "consensus.rl"
 }
 
 /* EOF */
