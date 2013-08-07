@@ -1,5 +1,5 @@
-#ifndef __HAVEN_HAVEND_H
-#define __HAVEN_HAVEND_H
+#ifndef __HAVEN__HAVEND_HAVEND_H_
+#define __HAVEN__HAVEND_HAVEND_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -46,4 +46,4 @@ void HAVEN_print_version(void);
 void HAVEN_print_usage(void);
 int HAVEN_handle_havend_cli_args(HAVEN_ctx_t* ctx, int argc, char* argv[]);
 
-#endif /* __HAVEN_HAVEND_H */
+#endif /* __HAVEN__HAVEND_HAVEND_H_ */

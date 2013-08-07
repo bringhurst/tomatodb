@@ -1,5 +1,5 @@
-#ifndef __HAVEN_CONNECTION_H
-#define __HAVEN_CONNECTION_H
+#ifndef __HAVEN__HAVEND_CONNECTION_H_
+#define __HAVEN__HAVEND_CONNECTION_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -33,4 +33,4 @@ typedef struct HAVEN_connection_t {
 
 void HAVEN_connection_task(HAVEN_connection_t* conn);
 
-#endif /* __HAVEN_CONNECTION_H */
+#endif /* __HAVEN__HAVEND_CONNECTION_H_ */

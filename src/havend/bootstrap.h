@@ -1,5 +1,5 @@
-#ifndef __HAVEN_NEWBIE_H
-#define __HAVEN_NEWBIE_H
+#ifndef __HAVEN__HAVEND_BOOTSTRAP_H_
+#define __HAVEN__HAVEND_BOOTSTRAP_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -17,9 +17,8 @@
  * limitations under the License.
  */
 
-#include "newbie.h"
 #include "server.h"
 
-int HAVEN_newbie_listen_and_wait(HAVEN_server_t* server);
+int HAVEN_bootstrap_listen(HAVEN_server_t* server);
 
-#endif /* __HAVEN_NEWBIE_H */
+#endif /* __HAVEN_HAVEND_BOOTSTRAP_H_ */

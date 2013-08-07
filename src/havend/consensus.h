@@ -1,5 +1,5 @@
-#ifndef __HAVEN_CONSENSUS_H
-#define __HAVEN_CONSENSUS_H
+#ifndef __HAVEN__HAVEND_CONSENSUS_H_
+#define __HAVEN__HAVEND_CONSENSUS_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -23,4 +23,4 @@
 
 void HAVEN_init_consensus_loop(HAVEN_ctx_t* ctx);
 
-#endif /* __HAVEN_CONSENSUS_H */
+#endif /* __HAVEN__HAVEND_CONSENSUS_H_ */

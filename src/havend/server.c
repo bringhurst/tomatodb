@@ -17,7 +17,7 @@
 #include "server.h"
 #include "log.h"
 #include "xarray.h"
-#include "newbie.h"
+#include "bootstrap.h"
 #include "settings.h"
 
 #include "task/task.h"
@@ -33,9 +33,9 @@ extern HAVEN_loglevel HAVEN_debug_level;
 
 int HAVEN_server_task(HAVEN_server_t* server)
 {
-    // TODO: add server to newbie state machine.
+    // TODO: add server to bootstrap state machine.
 
-    int new_state = HAVEN_newbie_listen_and_wait(server);
+    int new_state = HAVEN_bootstrap_listen(server);
 
     return HAVEN_SUCCESS;
 }
@@ -62,10 +62,13 @@ int HAVEN_init_server_queue(HAVEN_ctx_t* ctx)
 
         HAVEN_server_t* bootstrap_server = \
             (HAVEN_server_t*) malloc(sizeof(HAVEN_server_t));
+
         if(bootstrap_server == NULL) {
             LOG(HAVEN_LOG_ERR, "Could not allocate the bootstrap server.");
             return HAVEN_ERROR;
         }
+
+        bootstrap_server->ctx = ctx;
 
         if(HAVEN_generate_uuid(&(bootstrap_server->uuid)) != HAVEN_SUCCESS) {
             LOG(HAVEN_LOG_ERR, "Could not create a UUID for the bootstrap server.");
@@ -74,8 +77,6 @@ int HAVEN_init_server_queue(HAVEN_ctx_t* ctx)
 
         uuid_unparse(bootstrap_server->uuid, uuid_string);
         LOG(HAVEN_LOG_INFO, "Using new UUID of `%s' for the bootstrap server.", uuid_string);
-
-        bootstrap_server->ctx = ctx;
 
         if(HAVEN_xarray_push(ctx->server_queue, bootstrap_server) != HAVEN_SUCCESS) {
             LOG(HAVEN_LOG_ERR, "Failed to put bootstrap server on the primary server queue.");

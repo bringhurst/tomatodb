@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "newbie.h"
+#include "bootstrap.h"
 
 #include "connection.h"
 #include "log.h"
@@ -29,7 +29,7 @@ extern FILE* HAVEN_debug_stream;
 /** The log level to output. */
 extern HAVEN_loglevel HAVEN_debug_level;
 
-int HAVEN_newbie_listen_and_wait(HAVEN_server_t* server)
+int HAVEN_bootstrap_listen(HAVEN_server_t* server)
 {
     HAVEN_connection_t* conn = NULL;
     int remote_port, accept_fd = 0;
