@@ -48,7 +48,8 @@ int HAVEN_newbie_listen_and_wait(HAVEN_server_t* server)
         conn->remote_addr = (char*) malloc(sizeof(char) * _POSIX_HOST_NAME_MAX);
         strncpy(conn->remote_addr, remote_addr, _POSIX_HOST_NAME_MAX);
         
-        LOG(HAVEN_LOG_INFO, "Accepted connection from `%s:%d'.", remote_addr, remote_port);
+        LOG(HAVEN_LOG_INFO, "Accepted connection from `%s' on port `%d'.", \
+                remote_addr, remote_port);
         taskcreate((void (*)(void *))HAVEN_connection_task, conn, HAVEN_CONNECTION_STACK_SIZE);
     }
 
