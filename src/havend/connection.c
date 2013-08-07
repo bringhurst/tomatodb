@@ -25,6 +25,7 @@ extern HAVEN_loglevel HAVEN_debug_level;
 
 void HAVEN_connection_task(HAVEN_connection_t* conn)
 {
+    // TODO: pass conn to the state machine.
     LOG(HAVEN_LOG_ERR, "Connection task is not implemented yet.");
 }
 

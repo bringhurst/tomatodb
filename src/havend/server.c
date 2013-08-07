@@ -53,10 +53,6 @@ int HAVEN_server_task(HAVEN_server_t* server)
         taskcreate((void (*)(void *))HAVEN_connection_task, conn, HAVEN_CONNECTION_STACK_SIZE);
     }
 
-    // TODO: netaccept in the connection task.
-    //
-    // TODO: pass server instance to state machine
-
     free(remote_addr);
     LOG(HAVEN_LOG_ERR, "Server accept is not implemented.");
     return HAVEN_SUCCESS;
@@ -120,6 +116,9 @@ int HAVEN_init_server_loop(HAVEN_ctx_t* ctx)
                     server->listen_addr, server->listen_port);
             taskcreate((void (*)(void *))HAVEN_server_task, server, HAVEN_SERVER_STACK_SIZE);
         }
+
+        taskswitch();
+        LOG(HAVEN_LOG_INFO, "Server loop tick.");
     }
 
     free(is_running);
