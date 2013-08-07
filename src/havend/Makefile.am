@@ -10,6 +10,7 @@ bin_PROGRAMS = havend
 
 havend_SOURCES = \
 		 connection.c \
+		 newbie.c \
 		 settings.c \
 		 consensus.c \
 		 server.c \

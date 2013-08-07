@@ -68,8 +68,9 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_havend_OBJECTS = connection.$(OBJEXT) settings.$(OBJEXT) \
-	consensus.$(OBJEXT) server.$(OBJEXT) havend.$(OBJEXT)
+am_havend_OBJECTS = connection.$(OBJEXT) newbie.$(OBJEXT) \
+	settings.$(OBJEXT) consensus.$(OBJEXT) server.$(OBJEXT) \
+	havend.$(OBJEXT)
 havend_OBJECTS = $(am_havend_OBJECTS)
 havend_DEPENDENCIES = ../common/libhaven_common.la \
 	state/libhavend_state.la task/libtask.a
@@ -279,6 +280,7 @@ INCLUDES = \
 
 havend_SOURCES = \
 		 connection.c \
+		 newbie.c \
 		 settings.c \
 		 consensus.c \
 		 server.c \
@@ -383,6 +385,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/connection.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/consensus.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/havend.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/newbie.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/server.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/settings.Po@am__quote@
 
