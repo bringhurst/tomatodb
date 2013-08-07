@@ -139,6 +139,7 @@ int HAVEN_configure_new_uuid(HAVEN_ctx_t* ctx, char* uuid_file_path)
 
     LOG(HAVEN_LOG_INFO, "Generated new process UUID of `%s'.", uuid_string);
 
+    fclose(fh);
     free(uuid_string);
     return HAVEN_SUCCESS;
 }

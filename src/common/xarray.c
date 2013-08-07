@@ -97,6 +97,10 @@ int HAVEN_xarray_pop(HAVEN_xarray_t* array, void** data)
         }
     }
 
+    if(array->index < 1) {
+        return HAVEN_ERROR;
+    }
+
     LOG(HAVEN_LOG_INFO, "Poping from index `%d'.", array->index - 1);
 
     *data = array->data[array->index - 1];
