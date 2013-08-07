@@ -19,21 +19,21 @@
 
 #include "server.h"
 
-#define TRANSITION(ACTION) next = state->actions->ACTION(server)
+#define TRANSITION(ACTION) (next = state->actions->ACTION(server))
 
-typedef void (*HAVEN_action_cb)(HAVEN_server_t* ctx);
+typedef int (*HAVEN_action_cb)(HAVEN_server_t* ctx);
 
 typedef struct HAVEN_state_actions_t {
 
     /* Actions for the consensus machine. */
-    HAVEN_action_cb HAVEN_consensus_init_location_cb;
-    HAVEN_action_cb HAVEN_consensus_init_new_cb;
-    HAVEN_action_cb HAVEN_consensus_join_existing_cb;
-    HAVEN_action_cb HAVEN_consensus_become_follower_cb;
-    HAVEN_action_cb HAVEN_consensus_become_candidate_cb;
-    HAVEN_action_cb HAVEN_consensus_become_leader_cb;
-    HAVEN_action_cb HAVEN_consensus_exit_cb;
-    HAVEN_action_cb HAVEN_consensus_error_cb;
+    HAVEN_action_cb HAVEN_consensus_create_quorum_as_leader;
+    HAVEN_action_cb HAVEN_consensus_create_location_quorum;
+    HAVEN_action_cb HAVEN_consensus_leave_quorum;
+    HAVEN_action_cb HAVEN_consensus_shutdown_server;
+    HAVEN_action_cb HAVEN_consensus_join_existing;
+    HAVEN_action_cb HAVEN_consensus_become_follower;
+    HAVEN_action_cb HAVEN_consensus_become_candidate;
+    HAVEN_action_cb HAVEN_consensus_become_leader;
 
 } HAVEN_state_actions_t;
 

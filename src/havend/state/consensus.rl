@@ -21,10 +21,10 @@
     alphtype int;
     access state->;
 
-    action create_new      { TRANSITION(HAVEN_create_quorum_as_leader) }
-    action create_location { TRANSITION(HAVEN_create_location_quorum) }
-    action leave           { TRANSITION(HAVEN_leave_quorum) }
-    action shutdown        { TRANSITION(HAVEN_shutdown_server) }
+    action create_new      { TRANSITION(HAVEN_consensus_create_quorum_as_leader); }
+    action create_location { TRANSITION(HAVEN_consensus_create_location_quorum); }
+    action leave           { TRANSITION(HAVEN_consensus_leave_quorum); }
+    action shutdown        { TRANSITION(HAVEN_consensus_shutdown_server); }
 
     action error { HAVEN_state_error(); }
 
@@ -72,8 +72,7 @@ Consensus := (
 
 }%%
 
-#include "state.h"
-#include "events.h"
+#include "consensus_state.h"
 
 %% write data;
 

@@ -20,11 +20,10 @@
 #line 73 "consensus.rl"
 
 
-#include "state.h"
-#include "events.h"
+#include "consensus_state.h"
 
 
-#line 28 "consensus_state.c"
+#line 27 "consensus_state.c"
 static const int Consensus_start = 1;
 static const int Consensus_first_final = 10;
 static const int Consensus_error = 0;
@@ -32,19 +31,19 @@ static const int Consensus_error = 0;
 static const int Consensus_en_Consensus = 1;
 
 
-#line 79 "consensus.rl"
+#line 78 "consensus.rl"
 
 int HAVEN_init_consensus_state(HAVEN_state_t *state, HAVEN_state_actions_t *actions)
 {
     int cs;
 
     
-#line 43 "consensus_state.c"
+#line 42 "consensus_state.c"
 	{
 	 state->cs = Consensus_start;
 	}
 
-#line 85 "consensus.rl"
+#line 84 "consensus.rl"
 }
 
 int HAVEN_exec_consensus_state(HAVEN_state_t *state, int event, HAVEN_server_t* server)
@@ -58,7 +57,7 @@ int HAVEN_exec_consensus_state(HAVEN_state_t *state, int event, HAVEN_server_t* 
     const int *eof = event == GONE ? pe : NULL;
 
     
-#line 62 "consensus_state.c"
+#line 61 "consensus_state.c"
 	{
 	if ( p == pe )
 		goto _test_eof;
@@ -75,19 +74,19 @@ tr4:
 #line 29 "consensus.rl"
 	{ HAVEN_state_error(); }
 	goto st0;
-#line 79 "consensus_state.c"
+#line 78 "consensus_state.c"
 st0:
  state->cs = 0;
 	goto _out;
 tr0:
 #line 24 "consensus.rl"
-	{ TRANSITION(HAVEN_create_quorum_as_leader) }
+	{ TRANSITION(HAVEN_consensus_create_quorum_as_leader); }
 	goto st2;
 st2:
 	if ( ++p == pe )
 		goto _test_eof2;
 case 2:
-#line 91 "consensus_state.c"
+#line 90 "consensus_state.c"
 	if ( (*p) == 4 )
 		goto st3;
 	goto tr4;
@@ -120,35 +119,35 @@ case 5:
 	goto tr4;
 tr8:
 #line 26 "consensus.rl"
-	{ TRANSITION(HAVEN_leave_quorum) }
+	{ TRANSITION(HAVEN_consensus_leave_quorum); }
 	goto st6;
 st6:
 	if ( ++p == pe )
 		goto _test_eof6;
 case 6:
-#line 130 "consensus_state.c"
+#line 129 "consensus_state.c"
 	if ( (*p) == 12 )
 		goto tr9;
 	goto tr4;
 tr9:
 #line 27 "consensus.rl"
-	{ TRANSITION(HAVEN_shutdown_server) }
+	{ TRANSITION(HAVEN_consensus_shutdown_server); }
 	goto st7;
 st7:
 	if ( ++p == pe )
 		goto _test_eof7;
 case 7:
-#line 142 "consensus_state.c"
+#line 141 "consensus_state.c"
 	goto tr4;
 tr2:
 #line 25 "consensus.rl"
-	{ TRANSITION(HAVEN_create_location_quorum) }
+	{ TRANSITION(HAVEN_consensus_create_location_quorum); }
 	goto st8;
 st8:
 	if ( ++p == pe )
 		goto _test_eof8;
 case 8:
-#line 152 "consensus_state.c"
+#line 151 "consensus_state.c"
 	if ( (*p) == 3 )
 		goto st3;
 	goto tr4;
@@ -184,14 +183,14 @@ case 9:
 #line 29 "consensus.rl"
 	{ HAVEN_state_error(); }
 	break;
-#line 188 "consensus_state.c"
+#line 187 "consensus_state.c"
 	}
 	}
 
 	_out: {}
 	}
 
-#line 98 "consensus.rl"
+#line 97 "consensus.rl"
 
     return next;
 }
