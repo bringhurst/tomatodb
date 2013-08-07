@@ -50,10 +50,10 @@ int HAVEN_context_init(HAVEN_ctx_t** ctx)
         return HAVEN_ERROR;
     }
 
-    (*ctx)->bootstrap_listen_addr = (char*) malloc(sizeof(char) * _POSIX_HOST_NAME_MAX);
-    strcpy((*ctx)->bootstrap_listen_addr, DEFAULT_BOOTSTRAP_LISTEN_ADDRESS);
+    (*ctx)->listen_addr = (char*) malloc(sizeof(char) * _POSIX_HOST_NAME_MAX);
+    strcpy((*ctx)->listen_addr, DEFAULT_LISTEN_ADDRESS);
 
-    (*ctx)->bootstrap_listen_port = DEFAULT_BOOTSTRAP_LISTEN_PORT;
+    (*ctx)->listen_port = DEFAULT_LISTEN_PORT;
 
     return HAVEN_SUCCESS;
 }
@@ -78,8 +78,8 @@ void HAVEN_print_version()
 void HAVEN_print_usage()
 {
     printf("usage: havend [-hv] [--debug=<fatal,err,warn,info,dbg>]\n"
-           "              [-a <addr> | --bootstrap-listen-address=<addr>]\n"
-           "              [-p <port> | --bootstrap-listen-port=<port>]\n");
+           "              [-a <addr> | --listen-address=<addr>]\n"
+           "              [-p <port> | --listen-port=<port>]\n");
     fflush(stdout);
 }
 
@@ -88,12 +88,12 @@ int HAVEN_handle_havend_cli_args(HAVEN_ctx_t* ctx, int argc, char* argv[])
     int c, option_index = 0;
 
     static struct option long_options[] = {
-        {"debug"                    , required_argument, 0, 'd'},
-        {"bootstrap-listen-address" , required_argument, 0, 'a'},
-        {"bootstrap-listen-port"    , required_argument, 0, 'p'},
-        {"help"                     , no_argument      , 0, 'h'},
-        {"version"                  , no_argument      , 0, 'v'},
-        {0                          , 0                , 0, 0  }
+        {"debug"          , required_argument, 0, 'd'},
+        {"listen-address" , required_argument, 0, 'a'},
+        {"listen-port"    , required_argument, 0, 'p'},
+        {"help"           , no_argument      , 0, 'h'},
+        {"version"        , no_argument      , 0, 'v'},
+        {0                , 0                , 0, 0  }
     };
 
     /* Parse options */
@@ -102,8 +102,8 @@ int HAVEN_handle_havend_cli_args(HAVEN_ctx_t* ctx, int argc, char* argv[])
         switch(c) {
 
             case 'a':
-                strncpy(ctx->bootstrap_listen_addr, optarg, _POSIX_HOST_NAME_MAX);
-                LOG(HAVEN_LOG_INFO, "Listen address set to `%s'.", ctx->bootstrap_listen_addr);
+                strncpy(ctx->listen_addr, optarg, _POSIX_HOST_NAME_MAX);
+                LOG(HAVEN_LOG_INFO, "Listen address set to `%s'.", ctx->listen_addr);
                 break;
 
             case 'd':
@@ -136,8 +136,8 @@ int HAVEN_handle_havend_cli_args(HAVEN_ctx_t* ctx, int argc, char* argv[])
                 break;
 
             case 'p':
-                ctx->bootstrap_listen_port = atoi(optarg);
-                LOG(HAVEN_LOG_INFO, "Listen port set to `%d'.", ctx->bootstrap_listen_port);
+                ctx->listen_port = atoi(optarg);
+                LOG(HAVEN_LOG_INFO, "Listen port set to `%d'.", ctx->listen_port);
                 break;
 
             case 'h':

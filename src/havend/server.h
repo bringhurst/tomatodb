@@ -29,8 +29,6 @@ typedef struct HAVEN_server_t {
     HAVEN_ctx_t* ctx;
     HAVEN_db_t* consensus_db;
     HAVEN_xarray_t* consensus_log;
-    char* listen_addr;
-    int listen_port;
     int listen_fd;
     uuid_t uuid;
 } HAVEN_server_t;

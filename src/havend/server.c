@@ -70,8 +70,6 @@ int HAVEN_init_server_queue(HAVEN_ctx_t* ctx)
             return HAVEN_ERROR;
         }
 
-        bootstrap_server->listen_addr = ctx->bootstrap_listen_addr;
-        bootstrap_server->listen_port = ctx->bootstrap_listen_port;
         bootstrap_server->ctx = ctx;
 
         if(HAVEN_xarray_push(ctx->server_queue, bootstrap_server) != HAVEN_SUCCESS) {
@@ -93,14 +91,15 @@ int HAVEN_init_server_loop(HAVEN_ctx_t* ctx)
         return HAVEN_ERROR;
     }
 
+    ctx->listen_fd = netannounce(TCP, ctx->listen_addr, ctx->listen_port);
+
     while(*is_running) {
         HAVEN_server_t* server = NULL;
 
         if(HAVEN_xarray_pop(ctx->server_queue, (void**)&server) == HAVEN_SUCCESS) {
             LOG(HAVEN_LOG_ERR, "Found a new server on the queue.");
 
-            server->listen_fd = netannounce(TCP, \
-                    server->listen_addr, server->listen_port);
+            server->listen_fd = ctx->listen_fd;
             taskcreate((void (*)(void *))HAVEN_server_task, server, HAVEN_SERVER_STACK_SIZE);
         }
 
