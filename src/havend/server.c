@@ -30,9 +30,9 @@ extern HAVEN_loglevel HAVEN_debug_level;
 
 int HAVEN_server_accept(HAVEN_server_t* server)
 {
-    // TODO: create connection task.
+    // TODO: create a new connection task in the server struct.
     //
-    // TODO: netaccept
+    // TODO: netaccept in the connection task.
     //
     // TODO: pass server instance to state machine
 
@@ -50,10 +50,10 @@ int HAVEN_init_server_loop(HAVEN_ctx_t* ctx)
         return HAVEN_ERROR;
     }
 
-    ctx->listen_fd = netannounce(TCP, ctx->listen_addr, ctx->listen_port);
-
     while(RUNNING) {
+        // FIXME: should this be a pop?
         HAVEN_server_t* server = HAVEN_xarray_peek(ctx->server_queue);
+        server->listen_fd = netannounce(TCP, server->listen_addr, server->listen_port);
 
         // TODO: setup server struct
         

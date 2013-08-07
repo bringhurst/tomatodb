@@ -17,14 +17,21 @@
  * limitations under the License.
  */
 
-#include <stdio.h>
-
 #include "havend.h"
+
+#include <stdio.h>
+#include <uuid/uuid.h>
 
 #define INITIAL_SERVER_QUEUE_SIZE (100)
 
 typedef struct HAVEN_server_t {
     HAVEN_ctx_t* ctx;
+    HAVEN_db_t* consensus_db;
+    HAVEN_xarray_t* consensus_log;
+    char* listen_addr;
+    int listen_port;
+    int listen_fd;
+    uuid_t server_uuid;
 } HAVEN_server_t;
 
 int HAVEN_server_accept(HAVEN_server_t* server);

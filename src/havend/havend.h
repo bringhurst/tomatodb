@@ -27,18 +27,16 @@
 #define HAVEN_LOG_DB_PREFIX    "/log"
 #define HAVEN_GROUP_DB_PREFIX  "/group"
 
-#define DEFAULT_LISTEN_ADDRESS "127.0.0.1"
-#define DEFAULT_LISTEN_PORT    (7854)
+#define DEFAULT_BOOTSTRAP_LISTEN_ADDRESS "127.0.0.1"
+#define DEFAULT_BOOTSTRAP_LISTEN_PORT    (7854)
 
 typedef struct HAVEN_ctx_t {
-    HAVEN_db_t* log_db;
     HAVEN_db_t* settings_db;
     HAVEN_xarray_t* server_queue;
     char* local_state_path;
-    char* listen_addr;
-    int listen_port;
-    int listen_fd;
-    uuid_t local_uuid;
+    char* bootstrap_listen_addr;
+    int bootstrap_listen_port;
+    uuid_t process_uuid;
 } HAVEN_ctx_t;
 
 int HAVEN_context_init(HAVEN_ctx_t** ctx);
