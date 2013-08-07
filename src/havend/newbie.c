@@ -37,6 +37,7 @@ int HAVEN_newbie_listen_and_wait(HAVEN_server_t* server)
 
     // TODO: add conn to server struct so we can free it later on.
 
+    LOG(HAVEN_LOG_INFO, "Waiting for new connections.");
     while((accept_fd = netaccept(server->listen_fd, remote_addr, &remote_port)) >= 0){
         conn = (HAVEN_connection_t*) malloc(sizeof(HAVEN_connection_t));
 
