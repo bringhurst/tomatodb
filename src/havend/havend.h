@@ -18,7 +18,7 @@
  */
 
 #include "database.h"
-#include "xarray.h"
+#include "ut/utarray.h"
 
 #include <stdlib.h>
 #include <uuid/uuid.h>
@@ -32,7 +32,7 @@
 
 typedef struct HAVEN_ctx_t {
     HAVEN_db_t* settings_db;
-    HAVEN_xarray_t* server_queue;
+    UT_array* server_queue;
     char* local_state_path;
     char* listen_addr;
     int listen_port;

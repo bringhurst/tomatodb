@@ -28,10 +28,13 @@
 typedef struct HAVEN_server_t {
     HAVEN_ctx_t* ctx;
     HAVEN_db_t* consensus_db;
-    HAVEN_xarray_t* consensus_log;
+    UT_array* consensus_log;
     int listen_fd;
     uuid_t uuid;
 } HAVEN_server_t;
+
+void UT_HAVEN_server_t_copy(void* _dst, const void* _src);
+void UT_HAVEN_server_t_dtor(void* _elt);
 
 int HAVEN_init_server_queue(HAVEN_ctx_t* ctx);
 int HAVEN_server_task(HAVEN_server_t* server);

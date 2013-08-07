@@ -38,7 +38,8 @@ int HAVEN_bootstrap_listen(HAVEN_server_t* server)
     // TODO: add conn to server struct so we can free it later on.
 
     LOG(HAVEN_LOG_INFO, "Waiting for new connections.");
-    while((accept_fd = netaccept(server->listen_fd, remote_addr, &remote_port)) >= 0){
+
+    while((accept_fd = netaccept(server->listen_fd, remote_addr, &remote_port)) >= 0) {
         conn = (HAVEN_connection_t*) malloc(sizeof(HAVEN_connection_t));
 
         conn->server = server;
@@ -48,10 +49,10 @@ int HAVEN_bootstrap_listen(HAVEN_server_t* server)
         /* FIXME: free this (first need to track conn in the server). */
         conn->remote_addr = (char*) malloc(sizeof(char) * _POSIX_HOST_NAME_MAX);
         strncpy(conn->remote_addr, remote_addr, _POSIX_HOST_NAME_MAX);
-        
+
         LOG(HAVEN_LOG_INFO, "Accepted connection from `%s' on port `%d'.", \
-                remote_addr, remote_port);
-        taskcreate((void (*)(void *))HAVEN_connection_task, conn, HAVEN_CONNECTION_STACK_SIZE);
+            remote_addr, remote_port);
+        taskcreate((void (*)(void*))HAVEN_connection_task, conn, HAVEN_CONNECTION_STACK_SIZE);
     }
 
     free(remote_addr);

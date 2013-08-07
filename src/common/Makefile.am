@@ -13,7 +13,6 @@ libhaven_common_la_LDFLAGS = $(LIB_LDFLAGS)
 
 libhaven_common_la_SOURCES = \
 							common.c \
-							xarray.c \
 							database.c \
 							database.pb-c.c \
 							admin.pb-c.c \
