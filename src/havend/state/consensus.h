@@ -1,5 +1,5 @@
-#ifndef __HAVEN__HAVEND_STATE_CONSENSUS_EVENTS_H
-#define __HAVEN__HAVEND_STATE_CONSENSUS_EVENTS_H
+#ifndef __HAVEN__HAVEND_STATE_CONSENSUS_EVENTS_H_
+#define __HAVEN__HAVEND_STATE_CONSENSUS_EVENTS_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -31,4 +31,4 @@ typedef enum HAVEN_state_events_consensus {
     CREATE_NEW_QUORUM = 10
 } HAVEN_state_events_consensus;
 
-#endif /* __HAVEN_HAVEND_CONSENSUS_EVENTS_H */
+#endif /* __HAVEN__HAVEND_CONSENSUS_EVENTS_H_ */
