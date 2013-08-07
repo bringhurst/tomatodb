@@ -28,7 +28,7 @@ extern FILE* HAVEN_debug_stream;
 /** The log level to output. */
 extern HAVEN_loglevel HAVEN_debug_level;
 
-int HAVEN_server_accept(HAVEN_server_t* server)
+int HAVEN_server_task(HAVEN_server_t* server)
 {
     // TODO: create a new connection task in the server struct.
     //
@@ -80,27 +80,27 @@ int HAVEN_init_server_queue(HAVEN_ctx_t* ctx)
 
 int HAVEN_init_server_loop(HAVEN_ctx_t* ctx)
 {
-    bool RUNNING = true;
+    bool* is_running = (bool*) malloc(sizeof(bool));
+    *is_running = true;
 
     if(HAVEN_init_server_queue(ctx) != HAVEN_SUCCESS) {
         LOG(HAVEN_LOG_ERR, "Couldn't not initialize server queue.");
         return HAVEN_ERROR;
     }
 
-    while(RUNNING) {
-        // FIXME: should this be a pop?
-        HAVEN_server_t* server = HAVEN_xarray_peek(ctx->server_queue);
-        server->listen_fd = netannounce(TCP, server->listen_addr, server->listen_port);
+    while(*is_running) {
+        HAVEN_server_t* server = NULL;
 
-        // TODO: setup server struct
-        
-        if(HAVEN_server_accept(server) != HAVEN_SUCCESS) {
-            LOG(HAVEN_LOG_INFO, "Failed to accept a new client.");
+        if(HAVEN_xarray_pop(ctx->server_queue, (void**)&server) == HAVEN_SUCCESS) {
+            LOG(HAVEN_LOG_ERR, "Found a new server on the queue.");
+
+            server->listen_fd = netannounce(TCP, \
+                    server->listen_addr, server->listen_port);
+            taskcreate((void (*)(void *))HAVEN_server_task, server, /*FIXME*/ 32768);
         }
-
-        RUNNING = false;
     }
 
+    free(is_running);
     HAVEN_xarray_free(ctx->server_queue);
     return HAVEN_SUCCESS;
 }

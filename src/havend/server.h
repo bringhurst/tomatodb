@@ -35,7 +35,7 @@ typedef struct HAVEN_server_t {
 } HAVEN_server_t;
 
 int HAVEN_init_server_queue(HAVEN_ctx_t* ctx);
-int HAVEN_server_accept(HAVEN_server_t* server);
+int HAVEN_server_task(HAVEN_server_t* server);
 int HAVEN_init_server_loop(HAVEN_ctx_t* ctx);
 
 #endif /* __HAVEN_SERVER_H */
