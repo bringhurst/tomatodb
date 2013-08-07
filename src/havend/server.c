@@ -17,10 +17,12 @@
 #include "server.h"
 #include "log.h"
 #include "xarray.h"
+#include "connection.h"
 
 #include "task/task.h"
 
 #include <stdbool.h>
+#include <string.h>
 
 /** The stream to send log messages to. */
 extern FILE* HAVEN_debug_stream;
@@ -30,12 +32,32 @@ extern HAVEN_loglevel HAVEN_debug_level;
 
 int HAVEN_server_task(HAVEN_server_t* server)
 {
-    // TODO: create a new connection task in the server struct.
-    //
+    HAVEN_connection_t* conn = NULL;
+    int remote_port, accept_fd = 0;
+    char* remote_addr = (char*) malloc(sizeof(char) * _POSIX_HOST_NAME_MAX);
+
+    // TODO: add conn to server struct so we can free it later on.
+
+    while((accept_fd = netaccept(server->listen_fd, remote_addr, &remote_port)) >= 0){
+        conn = (HAVEN_connection_t*) malloc(sizeof(HAVEN_connection_t));
+
+        conn->server = server;
+        conn->fd = accept_fd;
+        conn->remote_port = remote_port;
+
+        /* FIXME: free this. */
+        conn->remote_addr = (char*) malloc(sizeof(char) * _POSIX_HOST_NAME_MAX);
+        strncpy(conn->remote_addr, remote_addr, _POSIX_HOST_NAME_MAX);
+
+        LOG(HAVEN_LOG_INFO, "Accepted connection from `%s:%d'.", remote_addr, remote_port);
+        taskcreate((void (*)(void *))HAVEN_connection_task, conn, HAVEN_CONNECTION_STACK_SIZE);
+    }
+
     // TODO: netaccept in the connection task.
     //
     // TODO: pass server instance to state machine
 
+    free(remote_addr);
     LOG(HAVEN_LOG_ERR, "Server accept is not implemented.");
     return HAVEN_SUCCESS;
 }
@@ -96,7 +118,7 @@ int HAVEN_init_server_loop(HAVEN_ctx_t* ctx)
 
             server->listen_fd = netannounce(TCP, \
                     server->listen_addr, server->listen_port);
-            taskcreate((void (*)(void *))HAVEN_server_task, server, /*FIXME*/ 32768);
+            taskcreate((void (*)(void *))HAVEN_server_task, server, HAVEN_SERVER_STACK_SIZE);
         }
     }
 

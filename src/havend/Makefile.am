@@ -9,6 +9,7 @@ INCLUDES = \
 bin_PROGRAMS = havend
 
 havend_SOURCES = \
+		 connection.c \
 		 settings.c \
 		 consensus.c \
 		 server.c \

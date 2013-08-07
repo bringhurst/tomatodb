@@ -1,6 +1,3 @@
-#ifndef __HAVEN_SERVER_H
-#define __HAVEN_SERVER_H
-
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
  *
@@ -17,26 +14,18 @@
  * limitations under the License.
  */
 
-#include "havend.h"
+#include "connection.h"
+#include "log.h"
 
-#include <stdio.h>
-#include <uuid/uuid.h>
+/** The stream to send log messages to. */
+extern FILE* HAVEN_debug_stream;
 
-#define INITIAL_SERVER_QUEUE_SIZE (100)
-#define HAVEN_SERVER_STACK_SIZE (32768)
+/** The log level to output. */
+extern HAVEN_loglevel HAVEN_debug_level;
 
-typedef struct HAVEN_server_t {
-    HAVEN_ctx_t* ctx;
-    HAVEN_db_t* consensus_db;
-    HAVEN_xarray_t* consensus_log;
-    char* listen_addr;
-    int listen_port;
-    int listen_fd;
-    uuid_t server_uuid;
-} HAVEN_server_t;
+void HAVEN_connection_task(HAVEN_connection_t* conn)
+{
+    LOG(HAVEN_LOG_ERR, "Connection task is not implemented yet.");
+}
 
-int HAVEN_init_server_queue(HAVEN_ctx_t* ctx);
-int HAVEN_server_task(HAVEN_server_t* server);
-int HAVEN_init_server_loop(HAVEN_ctx_t* ctx);
-
-#endif /* __HAVEN_SERVER_H */
+/* EOF */

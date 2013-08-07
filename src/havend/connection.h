@@ -1,5 +1,5 @@
-#ifndef __HAVEN_SERVER_H
-#define __HAVEN_SERVER_H
+#ifndef __HAVEN_CONNECTION_H
+#define __HAVEN_CONNECTION_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -18,25 +18,19 @@
  */
 
 #include "havend.h"
+#include "server.h"
 
 #include <stdio.h>
-#include <uuid/uuid.h>
 
-#define INITIAL_SERVER_QUEUE_SIZE (100)
-#define HAVEN_SERVER_STACK_SIZE (32768)
+#define HAVEN_CONNECTION_STACK_SIZE (32768)
 
-typedef struct HAVEN_server_t {
-    HAVEN_ctx_t* ctx;
-    HAVEN_db_t* consensus_db;
-    HAVEN_xarray_t* consensus_log;
-    char* listen_addr;
-    int listen_port;
-    int listen_fd;
-    uuid_t server_uuid;
-} HAVEN_server_t;
+typedef struct HAVEN_connection_t {
+    HAVEN_server_t* server;
+    char* remote_addr;
+    int remote_port;
+    int fd;
+} HAVEN_connection_t;
 
-int HAVEN_init_server_queue(HAVEN_ctx_t* ctx);
-int HAVEN_server_task(HAVEN_server_t* server);
-int HAVEN_init_server_loop(HAVEN_ctx_t* ctx);
+void HAVEN_connection_task(HAVEN_connection_t* conn);
 
-#endif /* __HAVEN_SERVER_H */
+#endif /* __HAVEN_CONNECTION_H */
