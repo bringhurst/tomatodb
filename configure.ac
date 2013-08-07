@@ -18,16 +18,22 @@ AC_PROG_LN_S
 AC_PROG_MAKE_SET
 AC_PROG_RANLIB
 
-# Check for protobuf-c command.
+# Check for the protobuf-c command.
 AC_CHECK_PROG(PROTOBUF_C_CHECK,protoc-c,yes)
 if test x"$PROTOBUF_C_CHECK" != x"yes" ; then
     AC_MSG_ERROR([Could not find the protoc-c command. Is protobuf-c-compiler installed?])
 fi
 
-# Check for ragel command.
+# Check for the ragel command.
 AC_CHECK_PROG(RAGEL_CHECK,ragel,yes)
 if test x"$RAGEL_CHECK" != x"yes" ; then
     AC_MSG_ERROR([Could not find the ragel command. Is ragel installed?])
+fi
+
+# Check for the uuidd command.
+AC_CHECK_PROG(UUIDD_CHECK,uuidd,yes)
+if test x"$UUIDD_CHECK" != x"yes" ; then
+    AC_MSG_ERROR([Could not find the uuidd command. Is uuid-runtime installed?])
 fi
 
 # Use libtool.
