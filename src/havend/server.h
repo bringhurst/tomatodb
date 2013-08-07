@@ -32,7 +32,7 @@ typedef struct HAVEN_server_t {
     char* listen_addr;
     int listen_port;
     int listen_fd;
-    uuid_t server_uuid;
+    uuid_t uuid;
 } HAVEN_server_t;
 
 int HAVEN_init_server_queue(HAVEN_ctx_t* ctx);

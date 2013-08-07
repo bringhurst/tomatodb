@@ -18,6 +18,7 @@
 #include "log.h"
 #include "xarray.h"
 #include "newbie.h"
+#include "settings.h"
 
 #include "task/task.h"
 #include "task/taskimpl.h"
@@ -61,6 +62,11 @@ int HAVEN_init_server_queue(HAVEN_ctx_t* ctx)
             (HAVEN_server_t*) malloc(sizeof(HAVEN_server_t));
         if(bootstrap_server == NULL) {
             LOG(HAVEN_LOG_ERR, "Could not allocate the bootstrap server.");
+            return HAVEN_ERROR;
+        }
+
+        if(HAVEN_generate_uuid(&(bootstrap_server->uuid)) != HAVEN_SUCCESS) {
+            LOG(HAVEN_LOG_ERR, "Could not create a UUID for the bootstrap server.");
             return HAVEN_ERROR;
         }
 
