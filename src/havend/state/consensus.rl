@@ -14,46 +14,44 @@
  * limitations under the License.
  */
 
-#include "server.h"
-#include "state.h"
-
 %%{
     machine Consensus;
-    import "consensus.h";
+    import "events.h";
 
     alphtype int;
     access state->;
 
-    action create_location_quorum {
-        HAVEN_create_location_quorum(server);
-    }
+    action create_new      { TRANSITION(HAVEN_create_quorum_as_leader) }
+    action create_location { TRANSITION(HAVEN_create_location_quorum) }
+    action leave           { TRANSITION(HAVEN_leave_quorum) }
+    action shutdown        { TRANSITION(HAVEN_shutdown_server) }
 
-    action error {
-        HAVEN_state_error();
-    }
+    action error { HAVEN_state_error(); }
 
 Consensus := (
+
         start: (
-            CREATE_REGULAR -> CreateNewQuorum  |
-            CREATE_LOCATION @create_location_quorum -> StartingLocationService  |
-            JOIN -> JoiningExistingQuorum
+            CREATE_NEW @create_new -> CreatingNew  |
+            CREATE_NEW_LOCATION @create_location -> CreatingNewLocation  |
+            JOIN_EXISTING -> JoiningExisting
         ),
 
-        StartingLocationService: (
-            SETUP_LOCATION_SERVICE -> Coordinating
+        CreatingNewLocation: (
+            CREATED_NEW_LOCATION -> Coordinating
         ),
 
-        CreateNewQuorum: (
-            CREATE_NEW_QUORUM -> Coordinating
+        CreatingNew: (
+            CREATED_NEW -> Coordinating
         ),
 
-        JoiningExistingQuorum: (
-            JOIN_EXISTING_QUORUM -> Following
+        JoiningExisting: (
+            JOINED_EXISTING -> Following
         ),
 
         Following: (
             HEARTBEAT_TIMEOUT -> Campaigning |
-            HANDLE_LOG_APPEND -> Following
+            HANDLE_LOG_APPEND -> Following |
+            LEAVE @leave -> Leaving
         ),
 
         Campaigning: (
@@ -64,27 +62,41 @@ Consensus := (
 
         Coordinating: (
             DISCOVERED_HIGHER_TERM -> Following
+        ),
+
+        Leaving: (
+            GONE @shutdown
         )
 
     ) <err(error);
+
 }%%
+
+#include "state.h"
+#include "events.h"
 
 %% write data;
 
 int HAVEN_init_consensus_state(HAVEN_state_t *state, HAVEN_state_actions_t *actions)
 {
     int cs;
+
     %% write init;
 }
 
-int HAVEN_exec_consensus_state(HAVEN_state_t *state, HAVEN_server_t* server)
+int HAVEN_exec_consensus_state(HAVEN_state_t *state, int event, HAVEN_server_t* server)
 {
-    int *p = NULL;
-    int *pe = NULL;
-    int *eof = NULL;
-    int cs = state->cs;
+    int event_queue[2] = {0};
+    event_queue[0] = event;
+    int next = 0;
+
+    const int *p = event_queue;
+    const int *pe = p+1;
+    const int *eof = event == GONE ? pe : NULL;
 
     %% write exec;
+
+    return next;
 }
 
 /* EOF */

@@ -1,5 +1,5 @@
-#ifndef __HAVEN__HAVEND_STATE_CONSENSUS_EVENTS_H_
-#define __HAVEN__HAVEND_STATE_CONSENSUS_EVENTS_H_
+#ifndef __HAVEN__HAVEND_STATE_EVENTS_H_
+#define __HAVEN__HAVEND_STATE_EVENTS_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -17,18 +17,20 @@
  * limitations under the License.
  */
 
-typedef enum HAVEN_state_events_consensus {
-    HANDLE_LOG_APPEND = 0,
-    HEARTBEAT_TIMEOUT = 1,
-    ELECTION_TIMEOUT = 2,
-    ELECTION_SUCCESS = 3,
-    DISCOVERED_HIGHER_TERM = 4,
-    SETUP_LOCATION_SERVICE = 5,
-    JOIN_EXISTING_QUORUM = 6
-    CREATE_REGULAR = 7,
-    CREATE_LOCATION = 8,
-    JOIN = 9,
-    CREATE_NEW_QUORUM = 10
-} HAVEN_state_events_consensus;
+typedef enum HAVEN_state_events {
+    CREATE_NEW=0,
+    CREATE_NEW_LOCATION=1,
+    JOIN_EXISTING=2,
+    CREATED_NEW_LOCATION=3,
+    CREATED_NEW=4,
+    JOINED_EXISTING=5,
+    HEARTBEAT_TIMEOUT=6,
+    HANDLE_LOG_APPEND=7,
+    LEAVE=8,
+    ELECTION_TIMEOUT=9,
+    ELECTION_SUCCESS=10,
+    DISCOVERED_HIGHER_TERM=11,
+    GONE=12
+} HAVEN_state_events;
 
-#endif /* __HAVEN__HAVEND_CONSENSUS_EVENTS_H_ */
+#endif /* __HAVEN__HAVEND_STATE_EVENTS_H_ */

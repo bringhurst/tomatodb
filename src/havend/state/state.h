@@ -17,9 +17,11 @@
  * limitations under the License.
  */
 
-#include "havend.h"
+#include "server.h"
 
-typedef void (*HAVEN_action_cb)(HAVEN_ctx_t* ctx);
+#define TRANSITION(ACTION) next = state->actions->ACTION(server)
+
+typedef void (*HAVEN_action_cb)(HAVEN_server_t* ctx);
 
 typedef struct HAVEN_state_actions_t {
 
