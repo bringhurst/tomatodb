@@ -1,5 +1,5 @@
-#ifndef __HAVEN_HAVEND_STATE_H
-#define __HAVEN_HAVEND_STATE_H
+#ifndef __HAVEN__HAVEND_STATE_ACTIONS_H_
+#define __HAVEN__HAVEND_STATE_ACTIONS_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -23,30 +23,16 @@ typedef void (*HAVEN_action_cb)(HAVEN_ctx_t* ctx);
 
 typedef struct HAVEN_state_actions_t {
 
-    /* Actions for the newbie machine. */
-    HAVEN_action_cb HAVEN_newbie_setup_cb;
-    HAVEN_action_cb HAVEN_newbie_listen_cb;
-    HAVEN_action_cb HAVEN_newbie_exit_cb;
-    HAVEN_action_cb HAVEN_newbie_error_cb;
-
     /* Actions for the consensus machine. */
-//    HAVEN_action_cb HAVEN_consensus_init_location_cb;
-//    HAVEN_action_cb HAVEN_consensus_init_new_cb;
-//    HAVEN_action_cb HAVEN_consensus_join_existing_cb;
-//    HAVEN_action_cb HAVEN_consensus_become_follower_cb;
-//    HAVEN_action_cb HAVEN_consensus_become_candidate_cb;
-//    HAVEN_action_cb HAVEN_consensus_become_leader_cb;
-//    HAVEN_action_cb HAVEN_consensus_exit_cb;
-//    HAVEN_action_cb HAVEN_consensus_error_cb;
-
-    /* Actions for the client machine. */
-//    HAVEN_action_cb HAVEN_client_location_register_cb;
-//    HAVEN_action_cb HAVEN_client_setup_cb;
-//    HAVEN_action_cb HAVEN_client_handle_client_cb;
-//    HAVEN_action_cb HAVEN_client_handle_location_query_cb;
-//    HAVEN_action_cb HAVEN_client_handle_consensus_query_cb;
-//    HAVEN_action_cb HAVEN_client_exit_cb;
+    HAVEN_action_cb HAVEN_consensus_init_location_cb;
+    HAVEN_action_cb HAVEN_consensus_init_new_cb;
+    HAVEN_action_cb HAVEN_consensus_join_existing_cb;
+    HAVEN_action_cb HAVEN_consensus_become_follower_cb;
+    HAVEN_action_cb HAVEN_consensus_become_candidate_cb;
+    HAVEN_action_cb HAVEN_consensus_become_leader_cb;
+    HAVEN_action_cb HAVEN_consensus_exit_cb;
+    HAVEN_action_cb HAVEN_consensus_error_cb;
 
 } HAVEN_state_actions_t;
 
-#endif /* __HAVEN_HAVEND_STATE_H */
+#endif /* __HAVEN__HAVEND_STATE_ACTIONS_H_ */

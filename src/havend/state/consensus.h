@@ -1,7 +1,7 @@
-#ifndef __HAVEN_HAVEND_CONSENSUS_EVENTS_H
-#define __HAVEN_HAVEND_CONSENSUS_EVENTS_H
+#ifndef __HAVEN__HAVEND_STATE_CONSENSUS_EVENTS_H
+#define __HAVEN__HAVEND_STATE_CONSENSUS_EVENTS_H
 
-typedef enum HAVEN_consensus_machine_events {
+typedef enum HAVEN_state_events_consensus {
     HANDLE_LOG_APPEND = 0,
     HEARTBEAT_TIMEOUT = 1,
     ELECTION_TIMEOUT = 2,
@@ -13,6 +13,6 @@ typedef enum HAVEN_consensus_machine_events {
     CREATE_LOCATION = 8,
     JOIN = 9,
     CREATE_NEW_QUORUM = 10
-} HAVEN_consensus_machine_events;
+} HAVEN_state_events_consensus;
 
 #endif /* __HAVEN_HAVEND_CONSENSUS_EVENTS_H */
