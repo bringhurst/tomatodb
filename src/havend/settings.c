@@ -90,10 +90,21 @@ int HAVEN_get_uuid_from_file(HAVEN_ctx_t* ctx, char* uuid_file_path)
     return HAVEN_SUCCESS;
 }
 
+int HAVEN_generate_uuid(uuid_t* uuid)
+{
+    if(uuid_generate_time_safe(*uuid) != 0)  {
+        LOG(HAVEN_LOG_ERR, "Could not safely generate a new UUID. " \
+            "Please ensure that uuidd(8) is installed and working.");
+        return HAVEN_ERROR;
+    }
+
+    return HAVEN_SUCCESS;
+}
+
 int HAVEN_configure_new_uuid(HAVEN_ctx_t* ctx, char* uuid_file_path)
 {
     FILE* fh = NULL;
-    int result = uuid_generate_time_safe(ctx->process_uuid);
+    int result = HAVEN_generate_uuid(&ctx->process_uuid);
     char* uuid_string = (char*) malloc(sizeof(char) * UUID_STR_LEN);
     char* uuid_dir_path = (char*) malloc(sizeof(char) * _POSIX_PATH_MAX);
 
@@ -113,10 +124,7 @@ int HAVEN_configure_new_uuid(HAVEN_ctx_t* ctx, char* uuid_file_path)
         return HAVEN_ERROR;
     }
 
-    if(result != 0)  {
-        LOG(HAVEN_LOG_ERR, "Could not safely generate a new UUID. " \
-            "Please ensure that uuidd(8) is installed and working.");
-
+    if(result != HAVEN_SUCCESS)  {
         if(unlink(uuid_file_path) == 0) {
             LOG(HAVEN_LOG_ERR, "Removed incomplete process UUID file at `%s'.",
                 uuid_file_path);
