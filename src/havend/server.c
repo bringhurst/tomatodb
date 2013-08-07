@@ -42,6 +42,8 @@ int HAVEN_server_task(HAVEN_server_t* server)
 
 int HAVEN_init_server_queue(HAVEN_ctx_t* ctx)
 {
+    char* uuid_string = (char*) malloc(sizeof(char) * UUID_STR_LEN);
+
     if(HAVEN_xarray_init(&(ctx->server_queue), \
                          INITIAL_SERVER_QUEUE_SIZE) != HAVEN_SUCCESS) {
         LOG(HAVEN_LOG_ERR, "Couldn't not initialize server queue array.");
@@ -69,6 +71,9 @@ int HAVEN_init_server_queue(HAVEN_ctx_t* ctx)
             LOG(HAVEN_LOG_ERR, "Could not create a UUID for the bootstrap server.");
             return HAVEN_ERROR;
         }
+
+        uuid_unparse(bootstrap_server->uuid, uuid_string);
+        LOG(HAVEN_LOG_INFO, "Using new UUID of `%s' for the bootstrap server.", uuid_string);
 
         bootstrap_server->ctx = ctx;
 
