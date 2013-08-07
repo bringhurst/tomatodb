@@ -62,6 +62,11 @@ int HAVEN_xarray_realloc(HAVEN_xarray_t* array, size_t new_size)
     return HAVEN_SUCCESS;
 }
 
+size_t HAVEN_xarray_size(HAVEN_xarray_t* array)
+{
+    return array->index + 1;
+}
+
 int HAVEN_xarray_push(HAVEN_xarray_t* array, void* data)
 {
     if(array->size < sizeof(intptr_t*) * array->index + 1) {
