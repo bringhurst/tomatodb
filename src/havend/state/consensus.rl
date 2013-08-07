@@ -15,21 +15,21 @@
  */
 
 #include "server.h"
-#include "actions.h"
+#include "state.h"
 
 %%{
     machine Consensus;
     import "consensus.h";
 
     alphtype int;
-    access machine->;
+    access state->;
 
     action create_location_quorum {
         HAVEN_create_location_quorum(server);
     }
 
-    action consensus_error {
-        HAVEN_consensus_error_cb();
+    action error {
+        HAVEN_state_error();
     }
 
 Consensus := (
@@ -66,7 +66,7 @@ Consensus := (
             DISCOVERED_HIGHER_TERM -> Following
         )
 
-    ) <err(consensus_error);
+    ) <err(error);
 }%%
 
 %% write data;
@@ -82,7 +82,7 @@ int HAVEN_exec_consensus_state(HAVEN_state_t *state, HAVEN_server_t* server)
     int *p = NULL;
     int *pe = NULL;
     int *eof = NULL;
-    int cs = machine->cs;
+    int cs = state->cs;
 
     %% write exec;
 }

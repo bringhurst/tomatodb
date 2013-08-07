@@ -17,7 +17,7 @@
  */
 
 #include "server.h"
-#include "actions.h"
+#include "state.h"
 
 
 #line 70 "consensus.rl"
@@ -40,7 +40,7 @@ int HAVEN_init_consensus_state(HAVEN_state_t *state, HAVEN_state_actions_t *acti
     
 #line 42 "consensus_state.c"
 	{
-	 machine->cs = Consensus_start;
+	 state->cs = Consensus_start;
 	}
 
 #line 78 "consensus.rl"
@@ -51,14 +51,14 @@ int HAVEN_exec_consensus_state(HAVEN_state_t *state, HAVEN_server_t* server)
     int *p = NULL;
     int *pe = NULL;
     int *eof = NULL;
-    int cs = machine->cs;
+    int cs = state->cs;
 
     
 #line 58 "consensus_state.c"
 	{
 	if ( p == pe )
 		goto _test_eof;
-	switch (  machine->cs )
+	switch (  state->cs )
 	{
 case 1:
 	switch( (*p) ) {
@@ -70,12 +70,12 @@ case 1:
 tr4:
 #line 31 "consensus.rl"
 	{
-        HAVEN_consensus_error_cb();
+        HAVEN_state_error();
     }
 	goto st0;
 #line 77 "consensus_state.c"
 st0:
- machine->cs = 0;
+ state->cs = 0;
 	goto _out;
 st2:
 	if ( ++p == pe )
@@ -132,17 +132,17 @@ case 7:
 		goto st4;
 	goto tr4;
 	}
-	_test_eof2:  machine->cs = 2; goto _test_eof; 
-	_test_eof3:  machine->cs = 3; goto _test_eof; 
-	_test_eof4:  machine->cs = 4; goto _test_eof; 
-	_test_eof5:  machine->cs = 5; goto _test_eof; 
-	_test_eof6:  machine->cs = 6; goto _test_eof; 
-	_test_eof7:  machine->cs = 7; goto _test_eof; 
+	_test_eof2:  state->cs = 2; goto _test_eof; 
+	_test_eof3:  state->cs = 3; goto _test_eof; 
+	_test_eof4:  state->cs = 4; goto _test_eof; 
+	_test_eof5:  state->cs = 5; goto _test_eof; 
+	_test_eof6:  state->cs = 6; goto _test_eof; 
+	_test_eof7:  state->cs = 7; goto _test_eof; 
 
 	_test_eof: {}
 	if ( p == eof )
 	{
-	switch (  machine->cs ) {
+	switch (  state->cs ) {
 	case 2: 
 	case 3: 
 	case 4: 
@@ -151,7 +151,7 @@ case 7:
 	case 7: 
 #line 31 "consensus.rl"
 	{
-        HAVEN_consensus_error_cb();
+        HAVEN_state_error();
     }
 	break;
 #line 158 "consensus_state.c"

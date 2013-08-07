@@ -1,5 +1,5 @@
-#ifndef __HAVEN__HAVEND_STATE_ACTIONS_H_
-#define __HAVEN__HAVEND_STATE_ACTIONS_H_
+#ifndef __HAVEN__HAVEND_STATE_STATE_H_
+#define __HAVEN__HAVEND_STATE_STATE_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -35,4 +35,10 @@ typedef struct HAVEN_state_actions_t {
 
 } HAVEN_state_actions_t;
 
-#endif /* __HAVEN__HAVEND_STATE_ACTIONS_H_ */
+typedef struct HAVEN_state_t {
+    int cs;
+    void* data;
+    HAVEN_state_actions_t* actions;
+} HAVEN_state_t;
+
+#endif /* __HAVEN__HAVEND_STATE_STATE_H_ */
