@@ -37,6 +37,8 @@ int HAVEN_server_task(HAVEN_server_t* server)
     char* remote_addr = (char*) malloc(sizeof(char) * _POSIX_HOST_NAME_MAX);
 
     // TODO: add conn to server struct so we can free it later on.
+    
+    // TODO: add server to newbie state machine.
 
     while((accept_fd = netaccept(server->listen_fd, remote_addr, &remote_port)) >= 0){
         conn = (HAVEN_connection_t*) malloc(sizeof(HAVEN_connection_t));
@@ -45,7 +47,7 @@ int HAVEN_server_task(HAVEN_server_t* server)
         conn->fd = accept_fd;
         conn->remote_port = remote_port;
 
-        /* FIXME: free this. */
+        /* FIXME: free this (first need to track conn in the server). */
         conn->remote_addr = (char*) malloc(sizeof(char) * _POSIX_HOST_NAME_MAX);
         strncpy(conn->remote_addr, remote_addr, _POSIX_HOST_NAME_MAX);
 
