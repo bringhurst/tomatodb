@@ -19,24 +19,24 @@
 #include "newbie_machine.h"
 
 
-#line 74 "newbie.rl"
+#line 65 "newbie.rl"
 
 
 
 #line 27 "newbie_machine.c"
 static const int Newbie_start = 1;
-static const int Newbie_first_final = 13;
+static const int Newbie_first_final = 12;
 static const int Newbie_error = 0;
 
 static const int Newbie_en_Newbie = 8;
-static const int Newbie_en_Client = 12;
-static const int Newbie_en_Client_RegisteringWithLocationService = 12;
+static const int Newbie_en_Client = 11;
+static const int Newbie_en_Client_RegisteringWithLocationService = 11;
 static const int Newbie_en_Consensus = 1;
 static const int Newbie_en_Consensus_StartingLocationService = 6;
 static const int Newbie_en_Consensus_JoiningExistingQuorum = 7;
 
 
-#line 77 "newbie.rl"
+#line 68 "newbie.rl"
 
 int HAVEN_init_machine_newbie(HAVEN_newbie_machine_t *machine, HAVEN_state_actions_t *actions)
 {
@@ -44,13 +44,13 @@ int HAVEN_init_machine_newbie(HAVEN_newbie_machine_t *machine, HAVEN_state_actio
     
 #line 46 "newbie_machine.c"
 	{
-	cs = Newbie_start;
+	 machine->cs = Newbie_start;
 	}
 
-#line 82 "newbie.rl"
+#line 73 "newbie.rl"
 }
 
-int HAVEN_exec_machine_newbie(HAVEN_newbie_machine_t *machine, HAVEN_ctx_t* ctx)
+int HAVEN_exec_machine_newbie(HAVEN_newbie_machine_t *machine, HAVEN_server_t* server)
 {
     int *p = NULL;
     int *pe = NULL;
@@ -62,7 +62,7 @@ int HAVEN_exec_machine_newbie(HAVEN_newbie_machine_t *machine, HAVEN_ctx_t* ctx)
 	{
 	if ( p == pe )
 		goto _test_eof;
-	switch ( cs )
+	switch (  machine->cs )
 	{
 case 1:
 	switch( (*p) ) {
@@ -78,12 +78,12 @@ tr4:
     }
 	goto st0;
 tr9:
-#line 51 "newbie.rl"
+#line 46 "newbie.rl"
 	{
-        HAVEN_newbie_error_cb();
+        HAVEN_newbie_error();
     }
 	goto st0;
-tr15:
+tr14:
 #line 8 "client.rl"
 	{
         HAVEN_client_error_cb();
@@ -91,7 +91,7 @@ tr15:
 	goto st0;
 #line 93 "newbie_machine.c"
 st0:
-cs = 0;
+ machine->cs = 0;
 	goto _out;
 st2:
 	if ( ++p == pe )
@@ -145,9 +145,9 @@ case 8:
 		goto tr8;
 	goto st0;
 tr8:
-#line 23 "newbie.rl"
+#line 26 "newbie.rl"
 	{
-        HAVEN_newbie_setup_cb();
+        HAVEN_newbie_listen(server);
     }
 	goto st9;
 st9:
@@ -155,92 +155,76 @@ st9:
 		goto _test_eof9;
 case 9:
 #line 158 "newbie_machine.c"
-	if ( (*p) == 1 )
-		goto tr10;
+	switch( (*p) ) {
+		case 2: goto tr10;
+		case 3: goto tr11;
+		case 4: goto tr12;
+	}
 	goto tr9;
 tr10:
-#line 31 "newbie.rl"
+#line 38 "newbie.rl"
 	{
-        HAVEN_newbie_handle_cmd_cb();
+        {goto st7;}
+    }
+	goto st10;
+tr11:
+#line 30 "newbie.rl"
+	{
+        {goto st11;}
+    }
+	goto st10;
+tr12:
+#line 34 "newbie.rl"
+	{
+        {goto st6;}
     }
 	goto st10;
 st10:
 	if ( ++p == pe )
 		goto _test_eof10;
 case 10:
-#line 172 "newbie_machine.c"
-	switch( (*p) ) {
-		case 2: goto tr11;
-		case 3: goto tr12;
-		case 4: goto tr13;
-	}
+#line 187 "newbie_machine.c"
 	goto tr9;
-tr11:
-#line 43 "newbie.rl"
-	{
-        {goto st7;}
-    }
-	goto st11;
-tr12:
-#line 35 "newbie.rl"
-	{
-        {goto st12;}
-    }
-	goto st11;
-tr13:
-#line 39 "newbie.rl"
-	{
-        {goto st6;}
-    }
-	goto st11;
 st11:
 	if ( ++p == pe )
 		goto _test_eof11;
 case 11:
-#line 201 "newbie_machine.c"
-	goto tr9;
-st12:
-	if ( ++p == pe )
-		goto _test_eof12;
-case 12:
 	if ( (*p) == 0 )
-		goto tr14;
+		goto tr13;
 	goto st0;
-tr14:
+tr13:
 #line 8 "client.rl"
 	{
         HAVEN_client_error_cb();
     }
-	goto st13;
-st13:
+	goto st12;
+st12:
 	if ( ++p == pe )
-		goto _test_eof13;
-case 13:
-#line 220 "newbie_machine.c"
-	goto tr15;
+		goto _test_eof12;
+case 12:
+#line 206 "newbie_machine.c"
+	goto tr14;
 	}
-	_test_eof2: cs = 2; goto _test_eof; 
-	_test_eof3: cs = 3; goto _test_eof; 
-	_test_eof4: cs = 4; goto _test_eof; 
-	_test_eof5: cs = 5; goto _test_eof; 
-	_test_eof6: cs = 6; goto _test_eof; 
-	_test_eof7: cs = 7; goto _test_eof; 
-	_test_eof9: cs = 9; goto _test_eof; 
-	_test_eof10: cs = 10; goto _test_eof; 
-	_test_eof11: cs = 11; goto _test_eof; 
-	_test_eof12: cs = 12; goto _test_eof; 
-	_test_eof13: cs = 13; goto _test_eof; 
+	_test_eof2:  machine->cs = 2; goto _test_eof; 
+	_test_eof3:  machine->cs = 3; goto _test_eof; 
+	_test_eof4:  machine->cs = 4; goto _test_eof; 
+	_test_eof5:  machine->cs = 5; goto _test_eof; 
+	_test_eof6:  machine->cs = 6; goto _test_eof; 
+	_test_eof7:  machine->cs = 7; goto _test_eof; 
+	_test_eof9:  machine->cs = 9; goto _test_eof; 
+	_test_eof10:  machine->cs = 10; goto _test_eof; 
+	_test_eof11:  machine->cs = 11; goto _test_eof; 
+	_test_eof12:  machine->cs = 12; goto _test_eof; 
 
 	_test_eof: {}
 	if ( p == eof )
 	{
-	switch ( cs ) {
+	switch (  machine->cs ) {
 	case 9: 
 	case 10: 
-	case 11: 
-#line 51 "newbie.rl"
+#line 46 "newbie.rl"
 	{
-        HAVEN_newbie_error_cb();
+        HAVEN_newbie_error();
     }
 	break;
 	case 2: 
@@ -254,14 +238,14 @@ case 13:
         HAVEN_consensus_error_cb();
     }
 	break;
-#line 258 "newbie_machine.c"
+#line 242 "newbie_machine.c"
 	}
 	}
 
 	_out: {}
 	}
 
-#line 92 "newbie.rl"
+#line 83 "newbie.rl"
 }
 
 /* EOF */

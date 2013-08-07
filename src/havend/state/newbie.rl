@@ -20,16 +20,11 @@
     machine Newbie;
     import "newbie_events.h";
 
-    action newbie_setup {
-        HAVEN_newbie_setup_cb();
-    }
+    alphtype int;
+    access machine->;
 
     action newbie_listen {
-        HAVEN_newbie_listen_cb();
-    }
-
-    action newbie_handle_cmd {
-        HAVEN_newbie_handle_cmd_cb();
+        HAVEN_newbie_listen(server);
     }
 
     action newbie_become_client {
@@ -45,20 +40,16 @@
     }
 
     action newbie_exit {
-        HAVEN_newbie_exit_cb();
+        HAVEN_newbie_exit(server);
     }
 
     action newbie_error {
-        HAVEN_newbie_error_cb();
+        HAVEN_newbie_error();
     }
 
 Newbie := (
         start: (
-            CONFIGURE @newbie_setup -> Listening
-        ),
-
-        Listening: (
-            RECEIVED_CMD @newbie_handle_cmd -> Handling
+            CONFIGURE @newbie_listen -> Handling
         ),
 
         Handling: (
@@ -81,7 +72,7 @@ int HAVEN_init_machine_newbie(HAVEN_newbie_machine_t *machine, HAVEN_state_actio
     %% write init;
 }
 
-int HAVEN_exec_machine_newbie(HAVEN_newbie_machine_t *machine, HAVEN_ctx_t* ctx)
+int HAVEN_exec_machine_newbie(HAVEN_newbie_machine_t *machine, HAVEN_server_t* server)
 {
     int *p = NULL;
     int *pe = NULL;

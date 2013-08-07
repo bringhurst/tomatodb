@@ -1,6 +1,7 @@
 #ifndef __HAVEN_HAVEND_NEWBIE_MACHINE_H
 #define __HAVEN_HAVEND_NEWBIE_MACHINE_H
 
+#include "server.h"
 #include "actions.h"
 
 typedef struct HAVEN_newbie_machine_t {
