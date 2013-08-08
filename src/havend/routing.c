@@ -49,47 +49,46 @@ extern HAVEN_loglevel HAVEN_debug_level;
 //      leader
 //   3. Become a new location quorum leader.
 //
-int HAVEN_routing_task(HAVEN_router_t* router)
+void HAVEN_routing_task(HAVEN_router_t* router)
 {
-    LOG("Started routing task.");
+    LOG(HAVEN_LOG_INFO, "Started routing task.");
 
     HAVEN_free_router(router);
-    return HAVEN_SUCCESS;
 }
 
 int HAVEN_init_router(HAVEN_router_t** router, \
                       HAVEN_ctx_t* ctx, \
-                      char* listen_addr, \
-                      int listen_port, 
-                      int listen_fd)
+                      char* remote_addr, \
+                      int remote_port, 
+                      int accept_fd)
 {
-    router = (HAVEN_router_t*) malloc(sizeof(HAVEN_router_t));
+    *router = (HAVEN_router_t*) malloc(sizeof(HAVEN_router_t));
 
-    if(router == NULL) {
+    if(*router == NULL) {
         LOG(HAVEN_LOG_ERR, "Failed to allocate memory for a connection router.");
         return HAVEN_ERROR;
     }
 
-    router->listen_addr = (char*) malloc(sizeof(char) * _POSIX_HOST_NAME_MAX);
+    (*router)->remote_addr = (char*) malloc(sizeof(char) * _POSIX_HOST_NAME_MAX);
 
-    if(router->listen_addr == NULL) {
+    if((*router)->remote_addr == NULL) {
         LOG(HAVEN_LOG_ERR, "Failed to allocate memory within a connection router.");
-        free(router);
+        free(*router);
         return HAVEN_ERROR;
     }
 
-    strncpy(router->listen_addr, listen_addr);
+    strncpy((*router)->remote_addr, remote_addr, _POSIX_HOST_NAME_MAX);
 
-    router->ctx = ctx;
-    router->listen_port = listen_port;
-    router->listen_fd = listen_fd;
+    (*router)->ctx = ctx;
+    (*router)->remote_port = remote_port;
+    (*router)->accept_fd = accept_fd;
 
-    return HAVEN_SUCCESS:
+    return HAVEN_SUCCESS;
 }
 
 void HAVEN_free_router(HAVEN_router_t* router)
 {
-    free(router->listen_addr);
+    free(router->remote_addr);
     free(router);
 }
 

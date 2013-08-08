@@ -18,6 +18,7 @@
 #include "log.h"
 #include "ut/utarray.h"
 #include "settings.h"
+#include "routing.h"
 
 #include "task/task.h"
 #include "task/taskimpl.h"
@@ -45,15 +46,14 @@ int HAVEN_init_server_loop(HAVEN_ctx_t* ctx)
     LOG(HAVEN_LOG_INFO, "Listening on `%s:%d'.", ctx->listen_addr, ctx->listen_port);
 
     while(*is_running) {
-        accept_fd = netaccept(server->listen_fd, remote_addr, &remote_port);
+        accept_fd = netaccept(ctx->listen_fd, remote_addr, &remote_port);
         HAVEN_router_t* router = NULL;
         
-        if(HAVEN_init_router(&router, ctx, listen_addr, listen_port, listen_fd) != HAVEN_SUCCESS) {
+        if(HAVEN_init_router(&router, ctx, remote_addr, remote_port, accept_fd) != HAVEN_SUCCESS) {
             LOG(HAVEN_LOG_ERR, "Could not proper initialize a new connection router. Attempting to shut down.");
             *is_running = false;
             break;
         }
-
         taskcreate((void (*)(void*))HAVEN_routing_task, router, HAVEN_ROUTER_STACK_SIZE);
         taskswitch();
     }

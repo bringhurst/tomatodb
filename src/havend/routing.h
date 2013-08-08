@@ -17,22 +17,24 @@
  * limitations under the License.
  */
 
-#include "routing.h"
+#include "havend.h"
+
+#define HAVEN_ROUTER_STACK_SIZE (32768)
 
 typedef struct HAVEN_router_t {
     HAVEN_ctx_t* ctx;
-    char* listen_addr;
-    int listen_port;
-    int listen_fd;
+    char* remote_addr;
+    int remote_port;
+    int accept_fd;
 } HAVEN_router_t;
 
-int HAVEN_routing_task(HAVEN_router_t* router);
+void HAVEN_routing_task(HAVEN_router_t* router);
 
 int HAVEN_init_router(HAVEN_router_t** router, \
                       HAVEN_ctx_t* ctx, \
-                      char* listen_addr, \
-                      int listen_port, \
-                      int listen_fd);
+                      char* remote_addr, \
+                      int accept_port, \
+                      int accept_fd);
 void HAVEN_free_router(HAVEN_router_t* router);
 
 #endif /* __HAVEN__HAVEND_ROUTING_H_ */

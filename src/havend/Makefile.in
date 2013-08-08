@@ -68,9 +68,9 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_havend_OBJECTS = connection.$(OBJEXT) bootstrap.$(OBJEXT) \
-	settings.$(OBJEXT) consensus.$(OBJEXT) server.$(OBJEXT) \
-	havend.$(OBJEXT)
+am_havend_OBJECTS = routing.$(OBJEXT) connection.$(OBJEXT) \
+	bootstrap.$(OBJEXT) settings.$(OBJEXT) consensus.$(OBJEXT) \
+	server.$(OBJEXT) havend.$(OBJEXT)
 havend_OBJECTS = $(am_havend_OBJECTS)
 havend_DEPENDENCIES = ../common/libhaven_common.la \
 	state/libhaven_havend_state.la task/libhaven_havend_task.la
@@ -283,12 +283,13 @@ INCLUDES = \
 		   -I$(top_srcdir)/src/common
 
 havend_SOURCES = \
-		 connection.c \
-		 bootstrap.c \
-		 settings.c \
-		 consensus.c \
-		 server.c \
-		 havend.c
+				 routing.c \
+				 connection.c \
+				 bootstrap.c \
+				 settings.c \
+				 consensus.c \
+				 server.c \
+				 havend.c
 
 havend_LDADD = \
 		../common/libhaven_common.la \
@@ -390,6 +391,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/connection.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/consensus.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/havend.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/routing.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/server.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/settings.Po@am__quote@
 
