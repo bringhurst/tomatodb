@@ -16,11 +16,12 @@
 #define _LIBP_MACROS_H_
 
 #include <stddef.h>  /* offsetof */
+#include <stdint.h>  /* intptr_t */
 
 /*
  	restore pointer to the structure by a pointer to its field
  */
-#define structof(p,t,f) ((t*)(- offsetof(t,f) + (void*)(p)))
+#define structof(p,t,f) ((t*)(- offsetof(t,f) + (intptr_t)(p)))
 
 #endif
 
