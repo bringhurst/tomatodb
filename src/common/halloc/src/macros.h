@@ -22,11 +22,5 @@
  */
 #define structof(p,t,f) ((t*)(- offsetof(t,f) + (void*)(p)))
 
-/*
- *	redefine for the target compiler
- */
-#define static_inline static __inline__
-
-
 #endif
 

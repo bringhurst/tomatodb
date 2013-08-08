@@ -16,7 +16,7 @@
 #define _LIBP_HLIST_H_
 
 #include <assert.h>
-#include "macros.h"  /* static_inline */
+#include "macros.h"  /* inline */
 
 /*
  *	weak double-linked list w/ tail sentinel
@@ -49,28 +49,28 @@ struct hlist_item hlist_null;
 #define __hlist_init(h)      { &hlist_null }
 #define __hlist_init_item(i) { &hlist_null, &(i).next }
 
-static_inline void hlist_init(hlist_head_t * h);
-static_inline void hlist_init_item(hlist_item_t * i);
+inline void hlist_init(hlist_head_t * h);
+inline void hlist_init_item(hlist_item_t * i);
 
-/* static_inline void hlist_purge(hlist_head_t * h); */
+/* inline void hlist_purge(hlist_head_t * h); */
 
-/* static_inline bool_t hlist_empty(const hlist_head_t * h); */
+/* inline bool_t hlist_empty(const hlist_head_t * h); */
 
-/* static_inline hlist_item_t * hlist_head(const hlist_head_t * h); */
+/* inline hlist_item_t * hlist_head(const hlist_head_t * h); */
 
-/* static_inline hlist_item_t * hlist_next(const hlist_item_t * i); */
-/* static_inline hlist_item_t * hlist_prev(const hlist_item_t * i, 
+/* inline hlist_item_t * hlist_next(const hlist_item_t * i); */
+/* inline hlist_item_t * hlist_prev(const hlist_item_t * i, 
                                            const hlist_head_t * h); */
 
-static_inline void hlist_add(hlist_head_t * h, hlist_item_t * i);
+inline void hlist_add(hlist_head_t * h, hlist_item_t * i);
 
-/* static_inline void hlist_add_prev(hlist_item_t * l, hlist_item_t * i); */
-/* static_inline void hlist_add_next(hlist_item_t * l, hlist_item_t * i); */
+/* inline void hlist_add_prev(hlist_item_t * l, hlist_item_t * i); */
+/* inline void hlist_add_next(hlist_item_t * l, hlist_item_t * i); */
 
-static_inline void hlist_del(hlist_item_t * i);
+inline void hlist_del(hlist_item_t * i);
 
-static_inline void hlist_relink(hlist_item_t * i);
-static_inline void hlist_relink_head(hlist_head_t * h);
+inline void hlist_relink(hlist_item_t * i);
+inline void hlist_relink_head(hlist_head_t * h);
 
 #define hlist_for_each(i, h) \
 	for (i = (h)->next; i != &hlist_null; i = i->next)
@@ -83,20 +83,20 @@ static_inline void hlist_relink_head(hlist_head_t * h);
 /*
  *	static
  */
-static_inline void hlist_init(hlist_head_t * h)
+inline void hlist_init(hlist_head_t * h)
 {
 	assert(h);
 	h->next = &hlist_null;
 }
 
-static_inline void hlist_init_item(hlist_item_t * i)
+inline void hlist_init_item(hlist_item_t * i)
 {
 	assert(i);
 	i->prev = &i->next;
 	i->next = &hlist_null;
 }
 
-static_inline void hlist_add(hlist_head_t * h, hlist_item_t * i)
+inline void hlist_add(hlist_head_t * h, hlist_item_t * i)
 {
 	hlist_item_t * next;
 	assert(h && i);
@@ -107,7 +107,7 @@ static_inline void hlist_add(hlist_head_t * h, hlist_item_t * i)
 	i->prev = &h->next;
 }
 
-static_inline void hlist_del(hlist_item_t * i)
+inline void hlist_del(hlist_item_t * i)
 {
 	hlist_item_t * next;
 	assert(i);
@@ -119,14 +119,14 @@ static_inline void hlist_del(hlist_item_t * i)
 	hlist_init_item(i);
 }
 
-static_inline void hlist_relink(hlist_item_t * i)
+inline void hlist_relink(hlist_item_t * i)
 {
 	assert(i);
 	*i->prev = i;
 	i->next->prev = &i->next;
 }
 
-static_inline void hlist_relink_head(hlist_head_t * h)
+inline void hlist_relink_head(hlist_head_t * h)
 {
 	assert(h);
 	h->next->prev = &h->next;
