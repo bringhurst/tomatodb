@@ -20,7 +20,7 @@ static char *argv0;
 static	void		contextswitch(Context *from, Context *to);
 
 static void
-taskdebug(char *fmt, ...)
+taskdebug(const char *fmt, ...)
 {
 	va_list arg;
 	char buf[128];
@@ -263,7 +263,7 @@ taskdata(void)
  * debugging
  */
 void
-taskname(char *fmt, ...)
+taskname(const char *fmt, ...)
 {
 	va_list arg;
 	Task *t;
@@ -281,7 +281,7 @@ taskgetname(void)
 }
 
 void
-taskstate(char *fmt, ...)
+taskstate(const char *fmt, ...)
 {
 	va_list arg;
 	Task *t;

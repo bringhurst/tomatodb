@@ -15,7 +15,7 @@ enum
 };
 
 static char*
-printstr(char *dst, char *edst, char *s, int size)
+printstr(char *dst, char *edst, const char *s, int size)
 {
 	int l, n, sign;
 
@@ -47,7 +47,7 @@ printstr(char *dst, char *edst, char *s, int size)
 }
 	
 char*
-vseprint(char *dst, char *edst, char *fmt, va_list arg)
+vseprint(char *dst, char *edst, const char *fmt, va_list arg)
 {
 	int fl, size, sign, base;
 	char *p, *w;
@@ -173,13 +173,13 @@ vseprint(char *dst, char *edst, char *fmt, va_list arg)
 }
 
 char*
-vsnprint(char *dst, uint n, char *fmt, va_list arg)
+vsnprint(char *dst, uint n, const char *fmt, va_list arg)
 {
 	return vseprint(dst, dst+n, fmt, arg);
 }
 
 char*
-snprint(char *dst, uint n, char *fmt, ...)
+snprint(char *dst, uint n, const char *fmt, ...)
 {
 	va_list arg;
 
@@ -201,7 +201,7 @@ seprint(char *dst, char *edst, char *fmt, ...)
 }
 
 int
-vfprint(int fd, char *fmt, va_list arg)
+vfprint(int fd, const char *fmt, va_list arg)
 {
 	char buf[256];
 
@@ -210,13 +210,13 @@ vfprint(int fd, char *fmt, va_list arg)
 }
 
 int
-vprint(char *fmt, va_list arg)
+vprint(const char *fmt, va_list arg)
 {
 	return vfprint(1, fmt, arg);
 }
 
 int
-fprint(int fd, char *fmt, ...)
+fprint(int fd, const char *fmt, ...)
 {
 	int n;
 	va_list arg;
@@ -228,7 +228,7 @@ fprint(int fd, char *fmt, ...)
 }
 
 int
-print(char *fmt, ...)
+print(const char *fmt, ...)
 {
 	int n;
 	va_list arg;
