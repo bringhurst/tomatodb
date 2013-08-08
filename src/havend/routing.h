@@ -28,4 +28,11 @@ typedef struct HAVEN_router_t {
 
 int HAVEN_routing_task(HAVEN_router_t* router);
 
+int HAVEN_init_router(HAVEN_router_t** router, \
+                      HAVEN_ctx_t* ctx, \
+                      char* listen_addr, \
+                      int listen_port, \
+                      int listen_fd);
+void HAVEN_free_router(HAVEN_router_t* router);
+
 #endif /* __HAVEN__HAVEND_ROUTING_H_ */
