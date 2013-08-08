@@ -18,5 +18,5 @@ havend_SOURCES = \
 
 havend_LDADD = \
 		../common/libhaven_common.la \
-                state/libhavend_state.la \
+		state/libhavend_state.la \
 		task/libtask.a

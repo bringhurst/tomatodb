@@ -3,6 +3,8 @@ include $(top_srcdir)/common.mk
 %.pb-c.c: %.proto
 	protoc-c $< --c_out=.
 
+SUBDIRS = halloc
+
 INCLUDES = \
            -I$(top_srcdir) \
            -I$(top_srcdir)/src/common
@@ -20,6 +22,7 @@ libhaven_common_la_SOURCES = \
 							consensus.pb-c.c
 
 libhaven_common_la_LIBADD = \
+							halloc/libhalloc.a \
 							$(protobuf-c_LIBS) \
 							$(leveldb_LIBS) \
 							$(uuid_LIBS) \
