@@ -22,7 +22,7 @@ libhaven_common_la_SOURCES = \
 							consensus.pb-c.c
 
 libhaven_common_la_LIBADD = \
-							halloc/libhalloc.a \
+							halloc/libhaven_common_halloc.la \
 							$(protobuf-c_LIBS) \
 							$(leveldb_LIBS) \
 							$(uuid_LIBS) \

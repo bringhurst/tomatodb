@@ -6,7 +6,6 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([config.h])
 
 AM_INIT_AUTOMAKE([foreign])
-m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
 # Checks for programs.
 AC_PROG_CXX
@@ -75,15 +74,16 @@ AC_FUNC_REALLOC
 AC_CHECK_FUNCS([bzero gethostbyname gettimeofday memmove memset mkdir socket \
                 strcasecmp strerror strrchr strtoul])
 
-AC_CONFIG_FILES([Makefile                  \
-                 src/Makefile              \
-                 src/common/Makefile       \
-                 src/haven/Makefile        \
-                 src/havend/Makefile       \
-                 src/havend/state/Makefile \
-                 doc/Makefile              \
-                 doc/man/Makefile          \
-                 doc/man/man1/Makefile     \
+AC_CONFIG_FILES([Makefile                   \
+                 src/Makefile               \
+                 src/common/Makefile        \
+                 src/common/halloc/Makefile \
+                 src/haven/Makefile         \
+                 src/havend/Makefile        \
+                 src/havend/state/Makefile  \
+                 doc/Makefile               \
+                 doc/man/Makefile           \
+                 doc/man/man1/Makefile      \
 ])
 
 AC_OUTPUT
