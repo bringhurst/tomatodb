@@ -57,9 +57,23 @@ extern HAVEN_loglevel HAVEN_debug_level;
 void HAVEN_routing_task(HAVEN_router_t* router)
 {
     LOG(HAVEN_LOG_INFO, "Started routing task.");
+/******
+    if(incoming_message_contains_server_uuid) {
+        HAVEN_server_t* server = NULL;
+        HASH_FIND_INT(router->ctx->server_routes, &incoming_server_uuid, server);
 
-    // TODO: everything described above.
-
+        if(server != NULL) {
+            LOG(HAVEN_LOG_INFO, "We found the server that the client was looking for!");
+            //TODO: create a connection task and add it to the server task.
+        } else {
+            LOG(HAVEN_LOG_INFO, "We could not find the server that the client specified.");
+            //TODO: tell the client to use the location quorum.
+        }
+    } else {
+        LOG(HAVEN_LOG_INFO, "The incoming message did not contain a server UUID.");
+        //TODO: determine what the client is trying to do (1, 2, or 3).
+    }
+*******/
     HAVEN_free_router(router);
 }
 
