@@ -313,7 +313,7 @@ needstack(int n)
 }
 
 static void
-taskinfo(int s)
+taskinfo()
 {
 	int i;
 	Task *t;
@@ -343,7 +343,7 @@ static char **taskargv;
 int mainstacksize;
 
 static void
-taskmainstart(void *v)
+taskmainstart()
 {
 	taskname("taskmain");
 	taskmain(taskargc, taskargv);

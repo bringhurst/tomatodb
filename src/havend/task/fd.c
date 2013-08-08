@@ -16,7 +16,7 @@ static int sleepingcounted;
 static uvlong nsec(void);
 
 void
-fdtask(void *v)
+fdtask()
 {
 	int i, ms;
 	Task *t;
