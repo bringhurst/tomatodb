@@ -30,7 +30,7 @@
 #include "common.h"
 #include "consensus.h"
 #include "database.h"
-#include "server.h"
+#include "routing.h"
 #include "settings.h"
 
 #include "task/task.h"
@@ -207,7 +207,7 @@ void taskmain(int argc, char* argv[])
         taskexit(EXIT_FAILURE);
     }
 
-    if(HAVEN_init_server_loop(ctx) != HAVEN_SUCCESS) {
+    if(HAVEN_listen_and_accept(ctx) != HAVEN_SUCCESS) {
         LOG(HAVEN_LOG_ERR, "The primary server loop failed.");
         taskexit(EXIT_FAILURE);
     }

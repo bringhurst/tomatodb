@@ -19,6 +19,11 @@
 
 #include "common.h"
 
+#include "task/task.h"
+#include "task/taskimpl.h"
+
+#include <stdbool.h>
+
 /** The debug stream to write log messages to. */
 extern FILE* HAVEN_debug_stream;
 
@@ -56,6 +61,39 @@ void HAVEN_routing_task(HAVEN_router_t* router)
     // TODO: everything described above.
 
     HAVEN_free_router(router);
+}
+
+// This is where we'll listen and accept for connections so we can launch
+// routing tasks.
+int HAVEN_listen_and_accept(HAVEN_ctx_t* ctx)
+{
+    int remote_port, accept_fd = 0;
+    bool* is_running = (bool*) malloc(sizeof(bool));
+    char* remote_addr = (char*) malloc(sizeof(char) * _POSIX_HOST_NAME_MAX);
+
+    *is_running = true;
+
+    // TODO
+    //HAVEN_handle_shutdown_signals(is_running);
+
+    ctx->listen_fd = netannounce(TCP, ctx->listen_addr, ctx->listen_port);
+    LOG(HAVEN_LOG_INFO, "Listening on `%s:%d'.", ctx->listen_addr, ctx->listen_port);
+
+    while(*is_running) {
+        accept_fd = netaccept(ctx->listen_fd, remote_addr, &remote_port);
+        HAVEN_router_t* router = NULL;
+        
+        if(HAVEN_init_router(&router, ctx, remote_addr, remote_port, accept_fd) != HAVEN_SUCCESS) {
+            LOG(HAVEN_LOG_ERR, "Could not proper initialize a new connection router. Attempting to shut down.");
+            *is_running = false;
+            break;
+        }
+        taskcreate((void (*)(void*))HAVEN_routing_task, router, HAVEN_ROUTER_STACK_SIZE);
+        taskswitch();
+    }
+
+    free(is_running);
+    return HAVEN_SUCCESS;
 }
 
 int HAVEN_init_router(HAVEN_router_t** router, \

@@ -28,6 +28,7 @@ typedef struct HAVEN_router_t {
     int accept_fd;
 } HAVEN_router_t;
 
+int HAVEN_listen_and_accept(HAVEN_ctx_t* ctx);
 void HAVEN_routing_task(HAVEN_router_t* router);
 
 int HAVEN_init_router(HAVEN_router_t** router, \

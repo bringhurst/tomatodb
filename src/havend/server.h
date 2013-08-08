@@ -33,11 +33,4 @@ typedef struct HAVEN_server_t {
     uuid_t uuid;
 } HAVEN_server_t;
 
-void UT_HAVEN_server_t_copy(void* _dst, const void* _src);
-void UT_HAVEN_server_t_dtor(void* _elt);
-
-int HAVEN_init_server_queue(HAVEN_ctx_t* ctx);
-int HAVEN_server_task(HAVEN_server_t* server);
-int HAVEN_init_server_loop(HAVEN_ctx_t* ctx);
-
 #endif /* __HAVEN_SERVER_H */
