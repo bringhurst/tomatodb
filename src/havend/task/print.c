@@ -102,7 +102,7 @@ vseprint(char *dst, char *edst, const char *fmt, va_list arg)
 				num:
 				{
 					static char digits[] = "0123456789abcdef";
-					char buf[30], *p;
+					char buf[30];
 					int zero;
 					uvlong luv;
 				
