@@ -1,5 +1,3 @@
-include $(top_srcdir)/common.mk
-
 INCLUDES = -I$(top_srcdir)/src/havend/task
 
 noinst_LTLIBRARIES = libhaven_havend_task.la
