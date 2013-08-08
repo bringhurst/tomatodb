@@ -24,5 +24,3 @@ libhavend_state_la_SOURCES = consensus_state.c
 
 libhavend_state_la_LIBADD =
 libhavend_state_la_CFLAGS =
-
-CLEANFILES = consensus_state.c
