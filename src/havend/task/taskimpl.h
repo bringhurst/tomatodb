@@ -69,14 +69,14 @@ typedef long long vlong;
 #define vseprint task_vseprint
 #define strecpy task_strecpy
 
-int print(const char*, ...);
-int fprint(int, const char*, ...);
-char *snprint(char*, uint, const char*, ...);
+int print(char*, ...);
+int fprint(int, char*, ...);
+char *snprint(char*, uint, char*, ...);
 char *seprint(char*, char*, char*, ...);
-int vprint(const char*, va_list);
-int vfprint(int, const char*, va_list);
-char *vsnprint(char*, uint, const char*, va_list);
-char *vseprint(char*, char*, const char*, va_list);
+int vprint(char*, va_list);
+int vfprint(int, char*, va_list);
+char *vsnprint(char*, uint, char*, va_list);
+char *vseprint(char*, char*, char*, va_list);
 char *strecpy(char*, char*, char*);
 
 #if defined(__FreeBSD__) && __FreeBSD__ < 5

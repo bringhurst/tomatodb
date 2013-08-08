@@ -15,7 +15,7 @@ enum
 };
 
 static char*
-printstr(char *dst, char *edst, const char *s, int size)
+printstr(char *dst, char *edst, char *s, int size)
 {
 	int l, n, sign;
 
@@ -47,7 +47,7 @@ printstr(char *dst, char *edst, const char *s, int size)
 }
 	
 char*
-vseprint(char *dst, char *edst, const char *fmt, va_list arg)
+vseprint(char *dst, char *edst, char *fmt, va_list arg)
 {
 	int fl, size, sign, base;
 	char *p, *w;
@@ -102,8 +102,8 @@ vseprint(char *dst, char *edst, const char *fmt, va_list arg)
 				num:
 				{
 					static char digits[] = "0123456789abcdef";
-					char buf[30];
-					int zero;
+					char buf[30], *p;
+					int neg, zero;
 					uvlong luv;
 				
 					if(fl&FlagLongLong){
@@ -126,8 +126,10 @@ vseprint(char *dst, char *edst, const char *fmt, va_list arg)
 					}
 				
 					p = buf+sizeof buf;
+					neg = 0;
 					zero = 0;
 					if(!(fl&FlagUnsigned) && (vlong)luv < 0){
+						neg = 1;
 						luv = -luv;
 					}
 					if(luv == 0)
@@ -173,13 +175,13 @@ vseprint(char *dst, char *edst, const char *fmt, va_list arg)
 }
 
 char*
-vsnprint(char *dst, uint n, const char *fmt, va_list arg)
+vsnprint(char *dst, uint n, char *fmt, va_list arg)
 {
 	return vseprint(dst, dst+n, fmt, arg);
 }
 
 char*
-snprint(char *dst, uint n, const char *fmt, ...)
+snprint(char *dst, uint n, char *fmt, ...)
 {
 	va_list arg;
 
@@ -201,7 +203,7 @@ seprint(char *dst, char *edst, char *fmt, ...)
 }
 
 int
-vfprint(int fd, const char *fmt, va_list arg)
+vfprint(int fd, char *fmt, va_list arg)
 {
 	char buf[256];
 
@@ -210,13 +212,13 @@ vfprint(int fd, const char *fmt, va_list arg)
 }
 
 int
-vprint(const char *fmt, va_list arg)
+vprint(char *fmt, va_list arg)
 {
 	return vfprint(1, fmt, arg);
 }
 
 int
-fprint(int fd, const char *fmt, ...)
+fprint(int fd, char *fmt, ...)
 {
 	int n;
 	va_list arg;
@@ -228,7 +230,7 @@ fprint(int fd, const char *fmt, ...)
 }
 
 int
-print(const char *fmt, ...)
+print(char *fmt, ...)
 {
 	int n;
 	va_list arg;

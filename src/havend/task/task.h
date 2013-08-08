@@ -25,8 +25,8 @@ void		taskmain(int argc, char *argv[]);
 int		taskyield(void);
 void**		taskdata(void);
 void		needstack(int);
-void		taskname(const char*, ...);
-void		taskstate(const char*, ...);
+void		taskname(char*, ...);
+void		taskstate(char*, ...);
 char*		taskgetname(void);
 char*		taskgetstate(void);
 void		tasksystem(void);
@@ -171,6 +171,7 @@ enum
 
 int		netannounce(int, char*, int);
 int		netaccept(int, char*, int*);
+int		netdial(int, char*, int);
 int		netlookup(char*, uint32_t*);	/* blocks entire program! */
 int		netdial(int, char*, int);
 

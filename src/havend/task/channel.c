@@ -104,7 +104,7 @@ altqueue(Alt *a)
 static void
 altdequeue(Alt *a)
 {
-	unsigned int i;
+	int i;
 	Altarray *ar;
 
 	ar = chanarray(a->c, a->op);
@@ -113,7 +113,7 @@ altdequeue(Alt *a)
 		abort();
 	}
 
-	for(i=0; i < ar->n; i++)
+	for(i=0; i<ar->n; i++)
 		if(ar->a[i] == a){
 			delarray(ar, i);
 			return;

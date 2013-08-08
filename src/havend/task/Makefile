@@ -131,13 +131,13 @@ AUTOCONF = ${SHELL} /home/jonb/haven/auxdir/missing --run autoconf
 AUTOHEADER = ${SHELL} /home/jonb/haven/auxdir/missing --run autoheader
 AUTOMAKE = ${SHELL} /home/jonb/haven/auxdir/missing --run automake-1.11
 AWK = gawk
-CC = clang
-CCAS = clang
+CC = gcc
+CCAS = gcc
 CCASDEPMODE = depmode=gcc3
 CCASFLAGS = -g -O2
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
-CPP = clang -E
+CPP = gcc -E
 CPPFLAGS = 
 CXX = g++
 CXXCPP = g++ -E
@@ -200,7 +200,7 @@ abs_srcdir = /home/jonb/haven/src/havend/task
 abs_top_builddir = /home/jonb/haven
 abs_top_srcdir = /home/jonb/haven
 ac_ct_AR = ar
-ac_ct_CC = clang
+ac_ct_CC = gcc
 ac_ct_CXX = g++
 ac_ct_DUMPBIN = 
 am__include = include

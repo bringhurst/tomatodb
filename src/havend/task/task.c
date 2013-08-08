@@ -20,7 +20,7 @@ static char *argv0;
 static	void		contextswitch(Context *from, Context *to);
 
 static void
-taskdebug(const char *fmt, ...)
+taskdebug(char *fmt, ...)
 {
 	va_list arg;
 	char buf[128];
@@ -263,7 +263,7 @@ taskdata(void)
  * debugging
  */
 void
-taskname(const char *fmt, ...)
+taskname(char *fmt, ...)
 {
 	va_list arg;
 	Task *t;
@@ -281,7 +281,7 @@ taskgetname(void)
 }
 
 void
-taskstate(const char *fmt, ...)
+taskstate(char *fmt, ...)
 {
 	va_list arg;
 	Task *t;
@@ -313,7 +313,7 @@ needstack(int n)
 }
 
 static void
-taskinfo()
+taskinfo(int s)
 {
 	int i;
 	Task *t;
@@ -343,7 +343,7 @@ static char **taskargv;
 int mainstacksize;
 
 static void
-taskmainstart()
+taskmainstart(void *v)
 {
 	taskname("taskmain");
 	taskmain(taskargc, taskargv);

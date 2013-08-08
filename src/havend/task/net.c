@@ -122,7 +122,7 @@ parseip(char *name, uint32_t *ip)
 			return -1;
 		break;
 	}
-	*ip = *addr;
+	*ip = *(uint32_t*)addr;
 	return 0;
 }
 
@@ -137,7 +137,7 @@ netlookup(char *name, uint32_t *ip)
 	/* BUG - Name resolution blocks.  Need a non-blocking DNS. */
 	taskstate("netlookup");
 	if((he = gethostbyname(name)) != 0){
-		*ip = *(he->h_addr);
+		*ip = *(uint32_t*)he->h_addr;
 		taskstate("netlookup succeeded");
 		return 0;
 	}
