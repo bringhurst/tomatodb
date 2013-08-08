@@ -16,11 +16,11 @@ INCLUDES = \
            -I$(top_srcdir)/src/common \
            -I$(top_srcdir)/src/havend
 
-noinst_LTLIBRARIES = libhavend_state.la
+noinst_LTLIBRARIES = libhaven_havend_state.la
 
-libhavend_state_la_LDFLAGS = $(LIB_LDFLAGS)
+libhaven_havend_state_la_LDFLAGS = $(LIB_LDFLAGS)
 
-libhavend_state_la_SOURCES = consensus_state.c
+libhaven_havend_state_la_SOURCES = consensus_state.c
 
-libhavend_state_la_LIBADD =
-libhavend_state_la_CFLAGS =
+libhaven_havend_state_la_LIBADD =
+libhaven_havend_state_la_CFLAGS =

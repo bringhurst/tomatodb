@@ -8,6 +8,7 @@ AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([foreign])
 
 # Checks for programs.
+AM_PROG_AS
 AC_PROG_CXX
 AC_PROG_AWK
 AC_PROG_CC
@@ -81,6 +82,7 @@ AC_CONFIG_FILES([Makefile                   \
                  src/haven/Makefile         \
                  src/havend/Makefile        \
                  src/havend/state/Makefile  \
+                 src/havend/task/Makefile   \
                  doc/Makefile               \
                  doc/man/Makefile           \
                  doc/man/man1/Makefile      \

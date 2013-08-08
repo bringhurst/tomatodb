@@ -66,13 +66,15 @@ CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
-libhavend_state_la_DEPENDENCIES =
-am_libhavend_state_la_OBJECTS = libhavend_state_la-consensus_state.lo
-libhavend_state_la_OBJECTS = $(am_libhavend_state_la_OBJECTS)
-libhavend_state_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
+libhaven_havend_state_la_DEPENDENCIES =
+am_libhaven_havend_state_la_OBJECTS =  \
+	libhaven_havend_state_la-consensus_state.lo
+libhaven_havend_state_la_OBJECTS =  \
+	$(am_libhaven_havend_state_la_OBJECTS)
+libhaven_havend_state_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) \
-	$(libhavend_state_la_CFLAGS) $(CFLAGS) \
-	$(libhavend_state_la_LDFLAGS) $(LDFLAGS) -o $@
+	$(libhaven_havend_state_la_CFLAGS) $(CFLAGS) \
+	$(libhaven_havend_state_la_LDFLAGS) $(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/auxdir/depcomp
 am__depfiles_maybe = depfiles
@@ -86,8 +88,8 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(libhavend_state_la_SOURCES)
-DIST_SOURCES = $(libhavend_state_la_SOURCES)
+SOURCES = $(libhaven_havend_state_la_SOURCES)
+DIST_SOURCES = $(libhaven_havend_state_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -104,6 +106,9 @@ AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
 CC = @CC@
+CCAS = @CCAS@
+CCASDEPMODE = @CCASDEPMODE@
+CCASFLAGS = @CCASFLAGS@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
 CPP = @CPP@
@@ -223,11 +228,11 @@ INCLUDES = \
            -I$(top_srcdir)/src/common \
            -I$(top_srcdir)/src/havend
 
-noinst_LTLIBRARIES = libhavend_state.la
-libhavend_state_la_LDFLAGS = $(LIB_LDFLAGS)
-libhavend_state_la_SOURCES = consensus_state.c
-libhavend_state_la_LIBADD = 
-libhavend_state_la_CFLAGS = 
+noinst_LTLIBRARIES = libhaven_havend_state.la
+libhaven_havend_state_la_LDFLAGS = $(LIB_LDFLAGS)
+libhaven_havend_state_la_SOURCES = consensus_state.c
+libhaven_havend_state_la_LIBADD = 
+libhaven_havend_state_la_CFLAGS = 
 all: all-am
 
 .SUFFIXES:
@@ -272,8 +277,8 @@ clean-noinstLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-libhavend_state.la: $(libhavend_state_la_OBJECTS) $(libhavend_state_la_DEPENDENCIES) $(EXTRA_libhavend_state_la_DEPENDENCIES) 
-	$(libhavend_state_la_LINK)  $(libhavend_state_la_OBJECTS) $(libhavend_state_la_LIBADD) $(LIBS)
+libhaven_havend_state.la: $(libhaven_havend_state_la_OBJECTS) $(libhaven_havend_state_la_DEPENDENCIES) $(EXTRA_libhaven_havend_state_la_DEPENDENCIES) 
+	$(libhaven_havend_state_la_LINK)  $(libhaven_havend_state_la_OBJECTS) $(libhaven_havend_state_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -281,7 +286,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhavend_state_la-consensus_state.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhaven_havend_state_la-consensus_state.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -304,12 +309,12 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
 
-libhavend_state_la-consensus_state.lo: consensus_state.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhavend_state_la_CFLAGS) $(CFLAGS) -MT libhavend_state_la-consensus_state.lo -MD -MP -MF $(DEPDIR)/libhavend_state_la-consensus_state.Tpo -c -o libhavend_state_la-consensus_state.lo `test -f 'consensus_state.c' || echo '$(srcdir)/'`consensus_state.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libhavend_state_la-consensus_state.Tpo $(DEPDIR)/libhavend_state_la-consensus_state.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='consensus_state.c' object='libhavend_state_la-consensus_state.lo' libtool=yes @AMDEPBACKSLASH@
+libhaven_havend_state_la-consensus_state.lo: consensus_state.c
+@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_havend_state_la_CFLAGS) $(CFLAGS) -MT libhaven_havend_state_la-consensus_state.lo -MD -MP -MF $(DEPDIR)/libhaven_havend_state_la-consensus_state.Tpo -c -o libhaven_havend_state_la-consensus_state.lo `test -f 'consensus_state.c' || echo '$(srcdir)/'`consensus_state.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libhaven_havend_state_la-consensus_state.Tpo $(DEPDIR)/libhaven_havend_state_la-consensus_state.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='consensus_state.c' object='libhaven_havend_state_la-consensus_state.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhavend_state_la_CFLAGS) $(CFLAGS) -c -o libhavend_state_la-consensus_state.lo `test -f 'consensus_state.c' || echo '$(srcdir)/'`consensus_state.c
+@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_havend_state_la_CFLAGS) $(CFLAGS) -c -o libhaven_havend_state_la-consensus_state.lo `test -f 'consensus_state.c' || echo '$(srcdir)/'`consensus_state.c
 
 mostlyclean-libtool:
 	-rm -f *.lo
