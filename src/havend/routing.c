@@ -53,6 +53,8 @@ void HAVEN_routing_task(HAVEN_router_t* router)
 {
     LOG(HAVEN_LOG_INFO, "Started routing task.");
 
+    // TODO: everything described above.
+
     HAVEN_free_router(router);
 }
 
