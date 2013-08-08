@@ -18,6 +18,9 @@
  */
 
 #include "havend.h"
+#include "database.h"
+
+#include "ut/utarray.h"
 
 #include <stdio.h>
 #include <uuid/uuid.h>
@@ -26,7 +29,7 @@
 #define HAVEN_SERVER_STACK_SIZE (32768)
 
 typedef struct HAVEN_server_t {
-    HAVEN_ctx_t* ctx;
+    struct HAVEN_ctx_t* ctx;
     HAVEN_db_t* consensus_db;
     UT_array* consensus_log;
     int listen_fd;
