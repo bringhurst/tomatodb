@@ -212,6 +212,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CFLAGS = -std=gnu99 -ggdb -W -pedantic -Wall -Wextra -Wformat=2 -Winit-self -Wmissing-include-dirs -Wswitch-default -Wswitch-enum -Wuninitialized -Wunknown-pragmas -Wstrict-aliasing -Wfloat-equal -Wundef -Wbad-function-cast -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wredundant-decls -Winline -Wdisabled-optimization -Wshadow -Wwrite-strings
+havenctl_srcdir = $(top_srcdir)/src/havenctl
 all: all-am
 
 .SUFFIXES:
@@ -404,20 +405,17 @@ uninstall-am:
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
 	uninstall uninstall-am
 
-
 all:
-	-(cd $(top_srcdir)/src/havenctl && $(PYTHON) setup.py build)
+	-(cd $(havenctl_srcdir) && $(PYTHON) setup.py build)
 
 install:
-	-(cd $(top_srcdir)/src/havenctl && $(PYTHON) setup.py install)
+	-(cd $(havenctl_srcdir) && $(PYTHON) setup.py install)
 
 develop:
-	-(cd $(top_srcdir)/src/havenctl && $(PYTHON) setup.py develop)
+	-(cd $(havenctl_srcdir) && $(PYTHON) setup.py develop)
 
 clean-local:
-	-(cd $(top_srcdir)/src/havenctl && rm -rf build)
-	-(cd $(top_srcdir)/src/havenctl && rm -rf dist)
-	-(cd $(top_srcdir)/src/havenctl && rm -rf havenctl.egg-info)
+	-(cd $(havenctl_srcdir) && rm -rf build dist havenctl.egg-info)
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
