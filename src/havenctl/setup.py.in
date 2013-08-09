@@ -1,11 +1,11 @@
 from setuptools import setup, find_packages
 
 setup (
-    name               = 'havenctl',
-    version            = '0.0.1-alpha.1',
+    name               = '@PACKAGE_NAME@ctl',
+    version            = '@PACKAGE_VERSION@',
     author             = 'Jon Bringhurst',
     author_email       = 'jonb@lanl.gov',
-    url                = 'http://bringhurst.org/haven',
+    url                = '@PACKAGE_URL@',
     scripts            = ['havenctl/bin/havenctl'],
     description        = 'A utility to control a haven daemon.',
     packages           = find_packages(),

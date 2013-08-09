@@ -70,11 +70,14 @@ AC_FUNC_REALLOC
 AC_CHECK_FUNCS([bzero gethostbyname gettimeofday memmove memset mkdir socket \
                 strcasecmp strerror strrchr strtoul strdup])
 
+AC_CONFIG_FILES([src/havenctl/setup.py],    \
+                [chmod +x src/havenctl/setup.py])
+
 AC_CONFIG_FILES([Makefile                   \
                  src/Makefile               \
                  src/common/Makefile        \
                  src/common/halloc/Makefile \
-                 src/haven/Makefile         \
+                 src/havenctl/Makefile      \
                  src/havend/Makefile        \
                  src/havend/state/Makefile  \
                  src/havend/task/Makefile   \

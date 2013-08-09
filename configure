@@ -16835,7 +16835,10 @@ fi
 done
 
 
-ac_config_files="$ac_config_files Makefile src/Makefile src/common/Makefile src/common/halloc/Makefile src/haven/Makefile src/havend/Makefile src/havend/state/Makefile src/havend/task/Makefile doc/Makefile doc/man/Makefile doc/man/man1/Makefile"
+ac_config_files="$ac_config_files src/havenctl/setup.py"
+
+
+ac_config_files="$ac_config_files Makefile src/Makefile src/common/Makefile src/common/halloc/Makefile src/havenctl/Makefile src/havend/Makefile src/havend/state/Makefile src/havend/task/Makefile doc/Makefile doc/man/Makefile doc/man/man1/Makefile"
 
 
 cat >confcache <<\_ACEOF
@@ -17946,11 +17949,12 @@ do
     "config.h") CONFIG_HEADERS="$CONFIG_HEADERS config.h" ;;
     "depfiles") CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
     "libtool") CONFIG_COMMANDS="$CONFIG_COMMANDS libtool" ;;
+    "src/havenctl/setup.py") CONFIG_FILES="$CONFIG_FILES src/havenctl/setup.py" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
     "src/common/Makefile") CONFIG_FILES="$CONFIG_FILES src/common/Makefile" ;;
     "src/common/halloc/Makefile") CONFIG_FILES="$CONFIG_FILES src/common/halloc/Makefile" ;;
-    "src/haven/Makefile") CONFIG_FILES="$CONFIG_FILES src/haven/Makefile" ;;
+    "src/havenctl/Makefile") CONFIG_FILES="$CONFIG_FILES src/havenctl/Makefile" ;;
     "src/havend/Makefile") CONFIG_FILES="$CONFIG_FILES src/havend/Makefile" ;;
     "src/havend/state/Makefile") CONFIG_FILES="$CONFIG_FILES src/havend/state/Makefile" ;;
     "src/havend/task/Makefile") CONFIG_FILES="$CONFIG_FILES src/havend/task/Makefile" ;;
@@ -19444,6 +19448,8 @@ compiler_lib_search_path=$lt_compiler_lib_search_path_CXX
 _LT_EOF
 
  ;;
+    "src/havenctl/setup.py":F) \
+                chmod +x src/havenctl/setup.py ;;
 
   esac
 done # for ac_tag

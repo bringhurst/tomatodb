@@ -1,1 +1,1 @@
-SUBDIRS = common havend haven
+SUBDIRS = common havend havenctl
