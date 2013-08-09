@@ -19,12 +19,6 @@ AC_PROG_LN_S
 AC_PROG_MAKE_SET
 AC_PROG_RANLIB
 
-# Check for the protobuf-c command.
-AC_CHECK_PROG(PROTOBUF_C_CHECK,protoc-c,yes)
-if test x"$PROTOBUF_C_CHECK" != x"yes" ; then
-    AC_MSG_ERROR([Could not find the protoc-c command. Is protobuf-c-compiler installed?])
-fi
-
 # Check for the ragel command.
 AC_CHECK_PROG(RAGEL_CHECK,ragel,yes)
 if test x"$RAGEL_CHECK" != x"yes" ; then
@@ -45,36 +39,36 @@ AC_CHECK_LIB([leveldb], [leveldb_open], [], \
              [AC_MSG_ERROR([Function leveldb_open was not found in LevelDB. \
                             Is libleveldb-dev installed?])])
 
-AC_CHECK_LIB([protobuf-c], [protobuf_c_message_pack], [], \
-             [AC_MSG_ERROR([Function protobuf_c_message_pack was not found \
-                            in ProtoBuf-C. Is libprotobuf-c0-dev installed?])])
+AC_CHECK_LIB([msgpack], [msgpack_pack_object], [], \
+             [AC_MSG_ERROR([Function msgpack_pack_object was not found in \
+                            in MessagePack. Is libmsgpack-dev installed?])])
 
 AC_CHECK_LIB([uuid], [uuid_generate_time_safe], [], \
              [AC_MSG_ERROR([Function uuid_generate_time_safe was not found \
                             in libuuid. Is uuid-dev installed?])])
 
-AC_CHECK_LIB([ev], [ev_io_start], [], \
-             [AC_MSG_ERROR([Function ev_io_start was not found in libev. \
-                            Is libev-dev installed?])])
-
 # Checks for header files.
+AC_CHECK_HEADER_STDBOOL
 AC_CHECK_HEADERS([arpa/inet.h fcntl.h inttypes.h limits.h netdb.h \
                   netinet/in.h stdlib.h string.h strings.h sys/socket.h \
-                  sys/time.h unistd.h])
+                  sys/time.h unistd.h malloc.c stddef.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
+AC_CHECK_TYPES([ptrdiff_t])
+AC_TYPE_UINT16_T
 AC_TYPE_INT32_T
 AC_TYPE_INT64_T
 AC_TYPE_PID_T
 AC_TYPE_SIZE_T
 AC_TYPE_UINT32_T
 AC_TYPE_UINT8_T
+AC_C_INLINE
 
 # Checks for library functions.
 AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 AC_CHECK_FUNCS([bzero gethostbyname gettimeofday memmove memset mkdir socket \
-                strcasecmp strerror strrchr strtoul])
+                strcasecmp strerror strrchr strtoul strdup])
 
 AC_CONFIG_FILES([Makefile                   \
                  src/Makefile               \

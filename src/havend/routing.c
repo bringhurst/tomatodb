@@ -59,7 +59,7 @@ extern HAVEN_loglevel HAVEN_debug_level;
 void HAVEN_routing_task(HAVEN_router_t* router)
 {
     LOG(HAVEN_LOG_INFO, "Started routing task.");
-/******
+/*****
     if(incoming_message_contains_server_uuid) {
         HAVEN_server_t* server = NULL;
         HASH_FIND_INT(router->ctx->server_routes, &incoming_server_uuid, server);
