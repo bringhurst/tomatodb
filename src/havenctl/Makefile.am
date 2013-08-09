@@ -1,6 +1,7 @@
 include $(top_srcdir)/common.mk
 
 havenctl_srcdir = $(top_srcdir)/src/havenctl
+
 all:
 	-(cd $(havenctl_srcdir) && $(PYTHON) setup.py build)
 
