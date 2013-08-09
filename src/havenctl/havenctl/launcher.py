@@ -15,6 +15,9 @@ Usage: havenctl [-a <remote_address> | --address=<remote_address>]
     """
 
 def execute_from_command_line():
+    address = None
+    port = 7854
+
     try:
         opts, args = getopt.getopt(sys.argv[1:], "a:p:hv", \
                 ["address=", "port=", "version", "help"])
@@ -40,7 +43,8 @@ def execute_from_command_line():
             assert False, "unhandled option"
             sys.exit(2)
 
-    handle_user_args(address, port, " ".join(args))
+    remaining = " ".join(args)
+    handle_user_args(address, port, remaining)
 
 def handle_user_args(address, port, cmd):
     repl = HavenCtl()
