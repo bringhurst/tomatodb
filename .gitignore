@@ -11,6 +11,7 @@
 *.lo
 Makefile
 *.o
+*.pyc
 /src/havend/havend
 !/src/havend/task/Makefile
 /src/havend/task/primes
