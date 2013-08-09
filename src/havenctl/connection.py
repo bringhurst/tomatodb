@@ -1,4 +1,3 @@
-
 class HavenConnection():
     def connect(self, server, port):
         print("got to connect")
