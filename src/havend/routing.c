@@ -34,7 +34,7 @@ extern HAVEN_loglevel HAVEN_debug_level;
 // This is the router for all new incoming connections. The overall flow
 // for what we're doing here is as follows:
 //
-// First, we'll read the first message that comes in from the new connection.
+// First, we'll read the request message that comes in off the new connection.
 //
 // If a server ID is in the request, we'll attempt to lookup the server task
 // in the context routing hash table. If the server task exists in the hash
@@ -42,17 +42,19 @@ extern HAVEN_loglevel HAVEN_debug_level;
 // connection list.
 //
 // If the server ID is not in the context's routing hash table, we respond to
-// the new connection with a suggestion to ask the location quorum where the
-// server may be located at. If possible, we should send the address and port
-// number of the last known location quorum leader.
+// the new connection with a suggestion to have the client ask the location
+// quorum where the server may be located at. If possible, we should send the
+// address and port number of the last known location quorum leader (or any
+// location quorum member if the leader is not known).
 //
 // If the client doesn't send a server ID at all, we'll then try to determine
-// what the client wants to do. The remaining options are:
+// what the client wants to do. The remaining options to attempt at this point
+// are the following:
 //
 //   1. Become a client-server instance.
-//   2. Simply want help to find the address and port of the location quorum
-//      leader
-//   3. Become a new location quorum leader.
+//   2. Respond with the address and port of the location quorum leader (or a
+//      location quorum member if the leader is not known).
+//   3. Create a new location quorum by becoming a location quorum leader.
 //
 void HAVEN_routing_task(HAVEN_router_t* router)
 {
