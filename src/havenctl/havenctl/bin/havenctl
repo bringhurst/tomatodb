@@ -5,7 +5,8 @@ import sys
 try:
     from havenctl import launcher
 except ImportError:
-    sys.exit("Error: Could not find havenctl python package. Try to reinstall?")
+    sys.exit("Sorry, I couldn't find the havenctl python package.\n" \
+             "You should check your PYTHONPATH or reinstall havenctl.")
 
 if __name__ == "__main__":
     launcher.execute_from_command_line()

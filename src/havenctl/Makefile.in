@@ -405,6 +405,7 @@ uninstall-am:
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
 	uninstall uninstall-am
 
+
 all:
 	-(cd $(havenctl_srcdir) && $(PYTHON) setup.py build)
 

@@ -1,5 +1,6 @@
 import readline
 import cmd
+import shlex
 
 from connection import HavenConnection
 
@@ -11,7 +12,10 @@ class HavenCtl(cmd.Cmd):
     def __init__(self):
         cmd.Cmd.__init__(self)
         self.prompt = PROMPT_DISCONNECTED
-        self.intro  = "Haven daemon controller (0.0.1-alpha.1). Type help or ? to list commands."
+        self.intro  = "\n ****\n" \
+                      " **** Welcome to havenctl 0.0.1-alpha.1\n" \
+                      " **** Type help or ? to list available commands.\n" \
+                      " ****\n"
         self.conn = None
 
     def do_disconnect(self, line):
@@ -25,24 +29,30 @@ class HavenCtl(cmd.Cmd):
             print("Not currently connected to a server. Please see 'help disconnect'.")
         self.prompt = PROMPT_DISCONNECTED
 
-    def do_connect(self, server=None, port=7854):
+    def do_connect(self, line):
         """
         connect <server> [port]
             Connect to the specified server and port (default 7854).
         """
+        args = shlex.split(line)
+        server = None
+        port = 7854
+
+        if len(args) > 0:
+            server = args[0]
+        if len(args) > 1:
+            port = int(args[1])
+
         if server:
             if self.conn:
                 self.conn.disconnect()
             self.prompt = PROMPT_DISCONNECTED
 
-            if not port:
-                port = 7854
-
             print("Attempting to establish a connection to `" + server + ":" + str(port) + "'.")
             self.conn = HavenConnection()
             self.conn.connect(server, port)
 
-            if self.conn.is_connected():
+            if self.conn.is_connected:
                 print("Connection established.")
                 self.prompt = "havenctl(" + server + ":" + str(port) + ")> "
             else:
