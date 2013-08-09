@@ -8,9 +8,11 @@ from connection import HavenConnection
 class HavenCtl(cmd.Cmd):
     """Haven daemon controller REPL."""
 
+    PROMPT_DISCONNECTED = "havenctl([NOT CONNECTED])> "
+
     def __init__(self):
         cmd.Cmd.__init__(self)
-        self.prompt = "havenctl([disconnected])> "
+        self.prompt = PROMPT_DISCONNECTED
         self.intro  = "Haven daemon controller (0.0.1-alpha.1). Type help or ? to list commands."
         self.conn = None
 
@@ -23,7 +25,7 @@ class HavenCtl(cmd.Cmd):
             self.conn.disconnect()
         else:
             print("Not currently connected to a server. Please see 'help disconnect'.")
-        self.prompt = 'havenctl([disconnected])> '
+        self.prompt = PROMPT_DISCONNECTED
 
     def do_connect(self, server=None, port=7854):
         """
@@ -33,7 +35,7 @@ class HavenCtl(cmd.Cmd):
         if server:
             if self.conn:
                 self.conn.disconnect()
-            self.prompt = 'havenctl([disconnected])> '
+            self.prompt = PROMPT_DISCONNECTED
 
             if not port:
                 port = 7854
