@@ -1,3 +1,4 @@
+import signal
 import readline
 import cmd
 import shlex
@@ -11,6 +12,7 @@ class HavenCtl(cmd.Cmd):
 
     def __init__(self):
         cmd.Cmd.__init__(self)
+        signal.signal(signal.SIGINT, self.sigint_handler)
         self.prompt = PROMPT_DISCONNECTED
         self.intro  = "\n ****\n" \
                       " **** Welcome to havenctl 0.0.1-alpha.1\n" \
@@ -73,3 +75,6 @@ class HavenCtl(cmd.Cmd):
 
     def postloop(self):
         print
+
+    def sigint_handler(self, signum, frame):
+        return True
