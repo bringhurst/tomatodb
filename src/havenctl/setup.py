@@ -6,7 +6,7 @@ setup (
     author             = 'Jon Bringhurst',
     author_email       = 'jonb@lanl.gov',
     url                = 'https://www.github.com/hpc/haven',
-    scripts            = ['bin/havenctl'],
+    scripts            = ['havenctl/bin/havenctl'],
     description        = 'A utility to control a haven daemon.',
     packages           = find_packages(),
 )

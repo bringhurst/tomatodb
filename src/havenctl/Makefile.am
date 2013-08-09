@@ -1,14 +1,8 @@
 include $(top_srcdir)/common.mk
 
-INCLUDES = \
-		-I$(top_srcdir) \
-		-I$(top_srcdir)/src/common
+BUILT_SOURCES = script.py
+nodist_python_PYTHON = script.py 
+CLEANFILES = $(python_PYTHON)
+EXTRA_DIST = script.py.in 
 
-bin_PROGRAMS = haven
-
-haven_SOURCES = \
-				peer.c \
-				haven.c
-
-haven_LDADD = \
-			../common/libhaven_common.la
+bin_PROGRAMS = bin/havenctl
