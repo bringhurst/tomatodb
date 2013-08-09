@@ -141,6 +141,11 @@ PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
+PYTHON = @PYTHON@
+PYTHON_EXEC_PREFIX = @PYTHON_EXEC_PREFIX@
+PYTHON_PLATFORM = @PYTHON_PLATFORM@
+PYTHON_PREFIX = @PYTHON_PREFIX@
+PYTHON_VERSION = @PYTHON_VERSION@
 RAGEL_CHECK = @RAGEL_CHECK@
 RANLIB = @RANLIB@
 SED = @SED@
@@ -191,9 +196,13 @@ mandir = @mandir@
 mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
 pdfdir = @pdfdir@
+pkgpyexecdir = @pkgpyexecdir@
+pkgpythondir = @pkgpythondir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
 psdir = @psdir@
+pyexecdir = @pyexecdir@
+pythondir = @pythondir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
@@ -284,9 +293,8 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile all-local
+all-am: Makefile
 installdirs:
-install: install-am
 install-exec: install-exec-am
 install-data: install-data-am
 uninstall: uninstall-am
@@ -384,10 +392,10 @@ uninstall-am:
 
 .MAKE: install-am install-strip
 
-.PHONY: all all-am all-local check check-am clean clean-generic \
-	clean-libtool clean-local distclean distclean-generic \
-	distclean-libtool distdir dvi dvi-am html html-am info info-am \
-	install install-am install-data install-data-am install-dvi \
+.PHONY: all all-am check check-am clean clean-generic clean-libtool \
+	clean-local distclean distclean-generic distclean-libtool \
+	distdir dvi dvi-am html html-am info info-am install \
+	install-am install-data install-data-am install-dvi \
 	install-dvi-am install-exec install-exec-am install-html \
 	install-html-am install-info install-info-am install-man \
 	install-pdf install-pdf-am install-ps install-ps-am \
@@ -397,8 +405,14 @@ uninstall-am:
 	uninstall uninstall-am
 
 
-all-local:
-	echo 'ALL LOCAL WAS CALLED***************'
+all:
+	-(cd $(top_srcdir)/src/havenctl && $(PYTHON) setup.py build)
+
+install:
+	-(cd $(top_srcdir)/src/havenctl && $(PYTHON) setup.py install)
+
+develop:
+	-(cd $(top_srcdir)/src/havenctl && $(PYTHON) setup.py develop)
 
 clean-local:
 	-(cd $(top_srcdir)/src/havenctl && rm -rf build)

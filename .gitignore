@@ -12,10 +12,12 @@
 Makefile
 *.o
 *.pyc
+/src/havenctl/build
+/src/havenctl/dist
+/src/havenctl/havenctl.egg-info
 /src/havend/havend
 !/src/havend/task/Makefile
 /src/havend/task/primes
 /src/havend/task/tcpproxy
 /src/havend/task/testdelay
-/src/haven/haven
 stamp-h1
