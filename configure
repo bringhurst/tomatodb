@@ -16576,8 +16576,8 @@ _ACEOF
 
 else
   \
-             as_fn_error $? "Function leveldb_open was not found in LevelDB. \
-                            Is libleveldb-dev installed?" "$LINENO" 5
+             as_fn_error $? "Function leveldb_open was not found in LevelDB.
+Is libleveldb-dev installed? Try running 'sudo apt-get install libleveldb-dev'." "$LINENO" 5
 fi
 
 
@@ -16626,8 +16626,8 @@ _ACEOF
 
 else
   \
-             as_fn_error $? "Function msgpack_pack_object was not found in \
-                            in MessagePack. Is libmsgpack-dev installed?" "$LINENO" 5
+             as_fn_error $? "Function msgpack_pack_object was not found in MsgPack.
+Is libmsgpack-dev installed? Try running 'sudo apt-get install libmsgpack-dev'." "$LINENO" 5
 fi
 
 
@@ -16676,8 +16676,8 @@ _ACEOF
 
 else
   \
-             as_fn_error $? "Function uuid_generate_time_safe was not found \
-                            in libuuid. Is uuid-dev installed?" "$LINENO" 5
+             as_fn_error $? "Function uuid_generate_time_safe was not found in libuuid.
+Is uuid-dev installed? Try running 'sudo apt-get install uuid-dev'." "$LINENO" 5
 fi
 
 

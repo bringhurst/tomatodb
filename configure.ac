@@ -37,16 +37,16 @@ LT_INIT
 
 # Checks for required libraries.
 AC_CHECK_LIB([leveldb], [leveldb_open], [], \
-             [AC_MSG_ERROR([Function leveldb_open was not found in LevelDB. \
-                            Is libleveldb-dev installed?])])
+             [AC_MSG_ERROR([Function leveldb_open was not found in LevelDB.
+Is libleveldb-dev installed? Try running 'sudo apt-get install libleveldb-dev'.])])
 
 AC_CHECK_LIB([msgpack], [msgpack_pack_object], [], \
-             [AC_MSG_ERROR([Function msgpack_pack_object was not found in \
-                            in MessagePack. Is libmsgpack-dev installed?])])
+             [AC_MSG_ERROR([Function msgpack_pack_object was not found in MessagePack.
+Is libmsgpack-dev installed? Try running 'sudo apt-get install libmsgpack-dev'.])])
 
 AC_CHECK_LIB([uuid], [uuid_generate_time_safe], [], \
-             [AC_MSG_ERROR([Function uuid_generate_time_safe was not found \
-                            in libuuid. Is uuid-dev installed?])])
+             [AC_MSG_ERROR([Function uuid_generate_time_safe was not found in libuuid.
+Is uuid-dev installed? Try running 'sudo apt-get install uuid-dev'.])])
 
 # Checks for header files.
 AC_CHECK_HEADER_STDBOOL
