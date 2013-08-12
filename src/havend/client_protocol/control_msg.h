@@ -17,12 +17,28 @@
  * limitations under the License.
  */
 
-typedef struct HVN_msg_client_control_t {
+#include <stdint.h>
 
+/* Client requests. */
+#define HVN_CLNT_PROTO_CTRL_PROCESSOR        0x01
+#define HVN_CLNT_PROTO_CTRL_LOCATION_LEADER  0x03
+#define HVN_CLNT_PROTO_CTRL_QUORUM_LEADER    0x02
+#define HVN_CLNT_PROTO_CTRL_QUORUM_FOLLOWER  0x06
+#define HVN_CLNT_PROTO_CTRL_SHUTDOWN         0x07
+
+/* Server responses. */
+#define HVN_CLNT_PROTO_CTRL_R_OK             0x05
+#define HVN_CLNT_PROTO_CTRL_R_ERR            0x04
+#define HVN_CLNT_PROTO_CTRL_R_NOT_FOUND      0x0C
+
+typedef struct HVN_msg_client_control_t {
+    uint8_t action;
+    unsigned char uuid[16];
 } HVN_msg_client_control_t;
 
 typedef struct HVN_msg_client_control_resp_t {
-
+    uint8_t status;
+    uint8_t err;
 } HVN_msg_client_control_resp_t;
 
 #endif /* __HVN__HAVEND_CLIENT_PROTOCOL_CONTROL_MSG_H_ */

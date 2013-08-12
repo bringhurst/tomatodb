@@ -17,12 +17,21 @@
  * limitations under the License.
  */
 
-#define HVN_CLIENT_PROTOCOL_VERSION 0x01
+/* Overall protocol version. */
+#define HVN_CLIENT_PROTOCOL_VERSION          0x01
 
-#include "connect_msg.h"
-#include "control_msg.h"
-#include "data_msg.h"
-#include "discover_msg.h"
-#include "heartbeat_msg.h"
+/* Client request msg types. */
+#define HVN_CLNT_PROTO_MSG_TYPE_CONNECT      0x01
+#define HVN_CLNT_PROTO_MSG_TYPE_CONTROL      0x03
+#define HVN_CLNT_PROTO_MSG_TYPE_DATA         0x02
+#define HVN_CLNT_PROTO_MSG_TYPE_DISCOVER     0x06
+#define HVN_CLNT_PROTO_MSG_TYPE_HEARTBEAT    0x07
+
+/* Server response msg types. */
+#define HVN_CLNT_PROTO_MSG_TYPE_CONNECT_R    0x05
+#define HVN_CLNT_PROTO_MSG_TYPE_CONTROL_R    0x04
+#define HVN_CLNT_PROTO_MSG_TYPE_DATA_R       0x0C
+#define HVN_CLNT_PROTO_MSG_TYPE_DISCOVER_R   0x0D
+#define HVN_CLNT_PROTO_MSG_TYPE_HEARTBEAT_R  0x0F
 
 #endif /* __HVN__HAVEND_CLIENT_PROTOCOL_CLIENT_H_ */

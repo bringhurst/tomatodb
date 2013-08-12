@@ -342,13 +342,13 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-AM_CPPFLAGS = -std=gnu99 -ggdb -W -pedantic -Wall -Wextra -Wformat=2 \
-	-Winit-self -Wmissing-include-dirs -Wswitch-default \
-	-Wswitch-enum -Wuninitialized -Wunknown-pragmas \
-	-Wstrict-aliasing -Wfloat-equal -Wundef -Wbad-function-cast \
-	-Wcast-align -Wstrict-prototypes -Wmissing-prototypes \
-	-Wredundant-decls -Winline -Wdisabled-optimization -Wshadow \
-	-Wwrite-strings -I$(top_srcdir) -I$(top_srcdir)/src/common
+AM_CPPFLAGS = -std=gnu99 -ggdb -W -Wall -Wextra -Wformat=2 -Winit-self \
+	-Wmissing-include-dirs -Wswitch-default -Wswitch-enum \
+	-Wuninitialized -Wunknown-pragmas -Wstrict-aliasing \
+	-Wfloat-equal -Wundef -Wbad-function-cast -Wcast-align \
+	-Wstrict-prototypes -Wmissing-prototypes -Wredundant-decls \
+	-Winline -Wdisabled-optimization -Wshadow -Wwrite-strings \
+	-I$(top_srcdir) -I$(top_srcdir)/src/common
 SUBDIRS = client_protocol task state
 havend_SOURCES = \
 		 routing.c \
