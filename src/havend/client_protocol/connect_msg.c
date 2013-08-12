@@ -23,4 +23,24 @@ extern FILE* HVN_debug_stream;
 /** The log level to write messages for. */
 extern HVN_loglevel HVN_debug_level;
 
+int HVN_clnt_proto_unpack_connect()
+{
+
+}
+
+int HVN_clnt_proto_unpack_connect_resp()
+{
+
+}
+
+int HVN_clnt_proto_pack_connect()
+{
+
+}
+
+int HVN_clnt_proto_pack_connect_resp()
+{
+
+}
+
 /* EOF */

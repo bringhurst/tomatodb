@@ -20,6 +20,10 @@
 /* Overall protocol version. */
 #define HVN_CLIENT_PROTOCOL_VERSION          0x01
 
+/* Message packing schemes. */
+#define HVN_CLNT_PROTO_PACK_TYPE_RAW         0x01
+#define HVN_CLNT_PROTO_PACK_TYPE_MSGPACK     0x03
+
 /* Client request msg types. */
 #define HVN_CLNT_PROTO_MSG_TYPE_CONNECT      0x01
 #define HVN_CLNT_PROTO_MSG_TYPE_CONTROL      0x03
