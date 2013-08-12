@@ -33,7 +33,7 @@ static const int Consensus_en_Consensus = 1;
 
 #line 78 "consensus.rl"
 
-int HAVEN_init_consensus_state(HAVEN_state_t *state, HAVEN_state_actions_t *actions)
+int HVN_init_consensus_state(HVN_state_t *state, HVN_state_actions_t *actions)
 {
     int cs;
 
@@ -46,7 +46,7 @@ int HAVEN_init_consensus_state(HAVEN_state_t *state, HAVEN_state_actions_t *acti
 #line 84 "consensus.rl"
 }
 
-int HAVEN_exec_consensus_state(HAVEN_state_t *state, int event, HAVEN_server_t* server)
+int HVN_exec_consensus_state(HVN_state_t *state, int event, HVN_server_t* server)
 {
     int event_queue[2] = {0};
     event_queue[0] = event;
@@ -72,7 +72,7 @@ case 1:
 	goto st0;
 tr4:
 #line 29 "consensus.rl"
-	{ HAVEN_state_error(); }
+	{ HVN_state_error(); }
 	goto st0;
 #line 78 "consensus_state.c"
 st0:
@@ -80,7 +80,7 @@ st0:
 	goto _out;
 tr0:
 #line 24 "consensus.rl"
-	{ TRANSITION(HAVEN_consensus_create_quorum_as_leader); }
+	{ TRANSITION(HVN_consensus_create_quorum_as_leader); }
 	goto st2;
 st2:
 	if ( ++p == pe )
@@ -119,7 +119,7 @@ case 5:
 	goto tr4;
 tr8:
 #line 26 "consensus.rl"
-	{ TRANSITION(HAVEN_consensus_leave_quorum); }
+	{ TRANSITION(HVN_consensus_leave_quorum); }
 	goto st6;
 st6:
 	if ( ++p == pe )
@@ -131,7 +131,7 @@ case 6:
 	goto tr4;
 tr9:
 #line 27 "consensus.rl"
-	{ TRANSITION(HAVEN_consensus_shutdown_server); }
+	{ TRANSITION(HVN_consensus_shutdown_server); }
 	goto st7;
 st7:
 	if ( ++p == pe )
@@ -141,7 +141,7 @@ case 7:
 	goto tr4;
 tr2:
 #line 25 "consensus.rl"
-	{ TRANSITION(HAVEN_consensus_create_location_quorum); }
+	{ TRANSITION(HVN_consensus_create_location_quorum); }
 	goto st8;
 st8:
 	if ( ++p == pe )
@@ -181,7 +181,7 @@ case 9:
 	case 8: 
 	case 9: 
 #line 29 "consensus.rl"
-	{ HAVEN_state_error(); }
+	{ HVN_state_error(); }
 	break;
 #line 187 "consensus_state.c"
 	}

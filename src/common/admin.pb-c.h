@@ -16,8 +16,8 @@ typedef struct _Haven__Admin__Result Haven__Admin__Result;
 /* --- enums --- */
 
 typedef enum _Haven__Admin__ModifyPeers__ModifyType {
-    HAVEN__ADMIN__MODIFY_PEERS__MODIFY_TYPE__ADD = 1,
-    HAVEN__ADMIN__MODIFY_PEERS__MODIFY_TYPE__REMOVE = 2
+    HVN__ADMIN__MODIFY_PEERS__MODIFY_TYPE__ADD = 1,
+    HVN__ADMIN__MODIFY_PEERS__MODIFY_TYPE__REMOVE = 2
 } Haven__Admin__ModifyPeers__ModifyType;
 
 /* --- messages --- */
@@ -27,7 +27,7 @@ struct  _Haven__Admin__ModifyPeers__Peer {
     char* hostname;
     int32_t port;
 };
-#define HAVEN__ADMIN__MODIFY_PEERS__PEER__INIT \
+#define HVN__ADMIN__MODIFY_PEERS__PEER__INIT \
     { PROTOBUF_C_MESSAGE_INIT (&haven__admin__modify_peers__peer__descriptor) \
         , NULL, 0 }
 
@@ -38,7 +38,7 @@ struct  _Haven__Admin__ModifyPeers {
     size_t n_peers;
     Haven__Admin__ModifyPeers__Peer** peers;
 };
-#define HAVEN__ADMIN__MODIFY_PEERS__INIT \
+#define HVN__ADMIN__MODIFY_PEERS__INIT \
     { PROTOBUF_C_MESSAGE_INIT (&haven__admin__modify_peers__descriptor) \
         , 0, 0,NULL }
 
@@ -47,7 +47,7 @@ struct  _Haven__Admin__Result {
     ProtobufCMessage base;
     protobuf_c_boolean success;
 };
-#define HAVEN__ADMIN__RESULT__INIT \
+#define HVN__ADMIN__RESULT__INIT \
     { PROTOBUF_C_MESSAGE_INIT (&haven__admin__result__descriptor) \
         , 0 }
 
@@ -118,10 +118,10 @@ struct _Haven__Admin__Admin_Service {
 typedef void (*Haven__Admin__Admin_ServiceDestroy)(Haven__Admin__Admin_Service*);
 void haven__admin__admin__init(Haven__Admin__Admin_Service* service,
                                Haven__Admin__Admin_ServiceDestroy destroy);
-#define HAVEN__ADMIN__ADMIN__BASE_INIT \
+#define HVN__ADMIN__ADMIN__BASE_INIT \
     { &haven__admin__admin__descriptor, protobuf_c_service_invoke_internal, NULL }
-#define HAVEN__ADMIN__ADMIN__INIT(function_prefix__) \
-    { HAVEN__ADMIN__ADMIN__BASE_INIT,\
+#define HVN__ADMIN__ADMIN__INIT(function_prefix__) \
+    { HVN__ADMIN__ADMIN__BASE_INIT,\
         function_prefix__ ## peers  }
 void haven__admin__admin__peers(ProtobufCService* service,
                                 const Haven__Admin__ModifyPeers* input,

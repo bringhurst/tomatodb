@@ -18,10 +18,10 @@
 #include "log.h"
 
 /** The stream to send log messages to. */
-extern FILE* HAVEN_debug_stream;
+extern FILE* HVN_debug_stream;
 
 /** The log level to output. */
-extern HAVEN_loglevel HAVEN_debug_level;
+extern HVN_loglevel HVN_debug_level;
 
 // TODO: functions directly related to server tasks.
 

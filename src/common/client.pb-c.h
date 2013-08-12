@@ -18,8 +18,8 @@ typedef struct _Haven__Client__HeartbeatResult Haven__Client__HeartbeatResult;
 /* --- enums --- */
 
 typedef enum _Haven__Client__Command__ConcurrencyType {
-    HAVEN__CLIENT__COMMAND__CONCURRENCY_TYPE__READ_WRITE = 1,
-    HAVEN__CLIENT__COMMAND__CONCURRENCY_TYPE__READ_ONLY = 2
+    HVN__CLIENT__COMMAND__CONCURRENCY_TYPE__READ_WRITE = 1,
+    HVN__CLIENT__COMMAND__CONCURRENCY_TYPE__READ_ONLY = 2
 } Haven__Client__Command__ConcurrencyType;
 
 /* --- messages --- */
@@ -29,16 +29,16 @@ struct  _Haven__Client__Command {
     Haven__Client__Command__ConcurrencyType type;
     Haven__Database__LogCommand* command;
 };
-#define HAVEN__CLIENT__COMMAND__INIT \
+#define HVN__CLIENT__COMMAND__INIT \
     { PROTOBUF_C_MESSAGE_INIT (&haven__client__command__descriptor) \
-        , HAVEN__CLIENT__COMMAND__CONCURRENCY_TYPE__READ_WRITE, NULL }
+        , HVN__CLIENT__COMMAND__CONCURRENCY_TYPE__READ_WRITE, NULL }
 
 
 struct  _Haven__Client__CommandResult {
     ProtobufCMessage base;
     protobuf_c_boolean success;
 };
-#define HAVEN__CLIENT__COMMAND_RESULT__INIT \
+#define HVN__CLIENT__COMMAND_RESULT__INIT \
     { PROTOBUF_C_MESSAGE_INIT (&haven__client__command_result__descriptor) \
         , 0 }
 
@@ -49,7 +49,7 @@ struct  _Haven__Client__HeartbeatUpdate {
     size_t n_watched_keys;
     char** watched_keys;
 };
-#define HAVEN__CLIENT__HEARTBEAT_UPDATE__INIT \
+#define HVN__CLIENT__HEARTBEAT_UPDATE__INIT \
     { PROTOBUF_C_MESSAGE_INIT (&haven__client__heartbeat_update__descriptor) \
         , 0, 0,NULL }
 
@@ -61,7 +61,7 @@ struct  _Haven__Client__HeartbeatResult {
     int64_t last_log_term;
     Haven__Database__AppendEntries* updated_entries;
 };
-#define HAVEN__CLIENT__HEARTBEAT_RESULT__INIT \
+#define HVN__CLIENT__HEARTBEAT_RESULT__INIT \
     { PROTOBUF_C_MESSAGE_INIT (&haven__client__heartbeat_result__descriptor) \
         , 0, 0, 0, NULL }
 
@@ -174,10 +174,10 @@ struct _Haven__Client__Client_Service {
 typedef void (*Haven__Client__Client_ServiceDestroy)(Haven__Client__Client_Service*);
 void haven__client__client__init(Haven__Client__Client_Service* service,
                                  Haven__Client__Client_ServiceDestroy destroy);
-#define HAVEN__CLIENT__CLIENT__BASE_INIT \
+#define HVN__CLIENT__CLIENT__BASE_INIT \
     { &haven__client__client__descriptor, protobuf_c_service_invoke_internal, NULL }
-#define HAVEN__CLIENT__CLIENT__INIT(function_prefix__) \
-    { HAVEN__CLIENT__CLIENT__BASE_INIT,\
+#define HVN__CLIENT__CLIENT__INIT(function_prefix__) \
+    { HVN__CLIENT__CLIENT__BASE_INIT,\
         function_prefix__ ## heartbeat,\
         function_prefix__ ## operation  }
 void haven__client__client__heartbeat(ProtobufCService* service,

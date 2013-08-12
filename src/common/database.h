@@ -1,5 +1,5 @@
-#ifndef __HAVEN_DATABASE_H
-#define __HAVEN_DATABASE_H
+#ifndef __HVN_DATABASE_H
+#define __HVN_DATABASE_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -22,16 +22,16 @@
 
 #include "common.h"
 
-typedef struct HAVEN_db_t {
+typedef struct HVN_db_t {
     char* path;
     leveldb_t* handle;
     leveldb_options_t* options;
     leveldb_readoptions_t* read_options;
     leveldb_writeoptions_t* write_options;
-} HAVEN_db_t;
+} HVN_db_t;
 
-int HAVEN_init_db(HAVEN_db_t** db, char* path);
-void HAVEN_close_db(HAVEN_db_t* db);
-int HAVEN_destroy_db(HAVEN_db_t* db);
+int HVN_init_db(HVN_db_t** db, char* path);
+void HVN_close_db(HVN_db_t* db);
+int HVN_destroy_db(HVN_db_t* db);
 
-#endif /* __HAVEN_DATABASE_H */
+#endif /* __HVN_DATABASE_H */

@@ -9,7 +9,7 @@
 void   haven__client__command__init
 (Haven__Client__Command*         message)
 {
-    static Haven__Client__Command init_value = HAVEN__CLIENT__COMMAND__INIT;
+    static Haven__Client__Command init_value = HVN__CLIENT__COMMAND__INIT;
     *message = init_value;
 }
 size_t haven__client__command__get_packed_size
@@ -52,7 +52,7 @@ void   haven__client__command__free_unpacked
 void   haven__client__command_result__init
 (Haven__Client__CommandResult*         message)
 {
-    static Haven__Client__CommandResult init_value = HAVEN__CLIENT__COMMAND_RESULT__INIT;
+    static Haven__Client__CommandResult init_value = HVN__CLIENT__COMMAND_RESULT__INIT;
     *message = init_value;
 }
 size_t haven__client__command_result__get_packed_size
@@ -95,7 +95,7 @@ void   haven__client__command_result__free_unpacked
 void   haven__client__heartbeat_update__init
 (Haven__Client__HeartbeatUpdate*         message)
 {
-    static Haven__Client__HeartbeatUpdate init_value = HAVEN__CLIENT__HEARTBEAT_UPDATE__INIT;
+    static Haven__Client__HeartbeatUpdate init_value = HVN__CLIENT__HEARTBEAT_UPDATE__INIT;
     *message = init_value;
 }
 size_t haven__client__heartbeat_update__get_packed_size
@@ -138,7 +138,7 @@ void   haven__client__heartbeat_update__free_unpacked
 void   haven__client__heartbeat_result__init
 (Haven__Client__HeartbeatResult*         message)
 {
-    static Haven__Client__HeartbeatResult init_value = HAVEN__CLIENT__HEARTBEAT_RESULT__INIT;
+    static Haven__Client__HeartbeatResult init_value = HVN__CLIENT__HEARTBEAT_RESULT__INIT;
     *message = init_value;
 }
 size_t haven__client__heartbeat_result__get_packed_size
@@ -179,8 +179,8 @@ void   haven__client__heartbeat_result__free_unpacked
     protobuf_c_message_free_unpacked((ProtobufCMessage*)message, allocator);
 }
 const ProtobufCEnumValue haven__client__command__concurrency_type__enum_values_by_number[2] = {
-    { "READ_WRITE", "HAVEN__CLIENT__COMMAND__CONCURRENCY_TYPE__READ_WRITE", 1 },
-    { "READ_ONLY", "HAVEN__CLIENT__COMMAND__CONCURRENCY_TYPE__READ_ONLY", 2 },
+    { "READ_WRITE", "HVN__CLIENT__COMMAND__CONCURRENCY_TYPE__READ_WRITE", 1 },
+    { "READ_ONLY", "HVN__CLIENT__COMMAND__CONCURRENCY_TYPE__READ_ONLY", 2 },
 };
 static const ProtobufCIntRange haven__client__command__concurrency_type__value_ranges[] = {
     {1, 0}, {0, 2}
@@ -203,7 +203,7 @@ const ProtobufCEnumDescriptor haven__client__command__concurrency_type__descript
     haven__client__command__concurrency_type__value_ranges,
     NULL, NULL, NULL, NULL /* reserved[1234] */
 };
-static const Haven__Client__Command__ConcurrencyType haven__client__command__type__default_value = HAVEN__CLIENT__COMMAND__CONCURRENCY_TYPE__READ_WRITE;
+static const Haven__Client__Command__ConcurrencyType haven__client__command__type__default_value = HVN__CLIENT__COMMAND__CONCURRENCY_TYPE__READ_WRITE;
 static const ProtobufCFieldDescriptor haven__client__command__field_descriptors[2] = {
     {
         "type",

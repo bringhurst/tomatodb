@@ -18,14 +18,14 @@
 #include "log.h"
 
 /** The stream to send log messages to. */
-extern FILE* HAVEN_debug_stream;
+extern FILE* HVN_debug_stream;
 
 /** The log level to output. */
-extern HAVEN_loglevel HAVEN_debug_level;
+extern HVN_loglevel HVN_debug_level;
 
-void HAVEN_init_consensus_loop(HAVEN_ctx_t* ctx)
+void HVN_init_consensus_loop(HVN_ctx_t* ctx)
 {
-    LOG(HAVEN_LOG_ERR, "Consensus is not implemented yet.");
+    LOG(HVN_LOG_ERR, "Consensus is not implemented yet.");
 }
 
 /* EOF */

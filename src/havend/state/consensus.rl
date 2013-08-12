@@ -21,12 +21,12 @@
     alphtype int;
     access state->;
 
-    action create_new      { TRANSITION(HAVEN_consensus_create_quorum_as_leader); }
-    action create_location { TRANSITION(HAVEN_consensus_create_location_quorum); }
-    action leave           { TRANSITION(HAVEN_consensus_leave_quorum); }
-    action shutdown        { TRANSITION(HAVEN_consensus_shutdown_server); }
+    action create_new      { TRANSITION(HVN_consensus_create_quorum_as_leader); }
+    action create_location { TRANSITION(HVN_consensus_create_location_quorum); }
+    action leave           { TRANSITION(HVN_consensus_leave_quorum); }
+    action shutdown        { TRANSITION(HVN_consensus_shutdown_server); }
 
-    action error { HAVEN_state_error(); }
+    action error { HVN_state_error(); }
 
 Consensus := (
 
@@ -76,14 +76,14 @@ Consensus := (
 
 %% write data;
 
-int HAVEN_init_consensus_state(HAVEN_state_t *state, HAVEN_state_actions_t *actions)
+int HVN_init_consensus_state(HVN_state_t *state, HVN_state_actions_t *actions)
 {
     int cs;
 
     %% write init;
 }
 
-int HAVEN_exec_consensus_state(HAVEN_state_t *state, int event, HAVEN_server_t* server)
+int HVN_exec_consensus_state(HVN_state_t *state, int event, HVN_server_t* server)
 {
     int event_queue[2] = {0};
     event_queue[0] = event;

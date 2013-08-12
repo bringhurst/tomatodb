@@ -18,15 +18,15 @@
 #include "log.h"
 
 /** The stream to send log messages to. */
-extern FILE* HAVEN_debug_stream;
+extern FILE* HVN_debug_stream;
 
 /** The log level to output. */
-extern HAVEN_loglevel HAVEN_debug_level;
+extern HVN_loglevel HVN_debug_level;
 
-void HAVEN_connection_task(HAVEN_connection_t* conn)
+void HVN_connection_task(HVN_connection_t* conn)
 {
     // TODO: modify conn->server to transition between states.
-    LOG(HAVEN_LOG_ERR, "Connection task is not implemented yet.");
+    LOG(HVN_LOG_ERR, "Connection task is not implemented yet.");
 }
 
 /* EOF */

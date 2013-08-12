@@ -1,5 +1,5 @@
-#ifndef __HAVEN_SETTINGS_H
-#define __HAVEN_SETTINGS_H
+#ifndef __HVN_SETTINGS_H
+#define __HVN_SETTINGS_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -22,10 +22,10 @@
 #define UUID_STR_LEN (36 + 1)
 #define PROCESS_UUID_SETTINGS_PATH "/process_uuid"
 
-int HAVEN_set_process_uuid(HAVEN_ctx_t* ctx);
-int HAVEN_get_uuid_from_file(HAVEN_ctx_t* ctx, char* uuid_file_path);
-int HAVEN_generate_uuid(uuid_t* uuid);
-int HAVEN_configure_new_uuid(HAVEN_ctx_t* ctx, char* uuid_file_path);
-int HAVEN_prepare_settings_db(HAVEN_ctx_t* ctx);
+int HVN_set_process_uuid(HVN_ctx_t* ctx);
+int HVN_get_uuid_from_file(HVN_ctx_t* ctx, char* uuid_file_path);
+int HVN_generate_uuid(uuid_t* uuid);
+int HVN_configure_new_uuid(HVN_ctx_t* ctx, char* uuid_file_path);
+int HVN_prepare_settings_db(HVN_ctx_t* ctx);
 
-#endif /* __HAVEN_SETTINGS_H */
+#endif /* __HVN_SETTINGS_H */

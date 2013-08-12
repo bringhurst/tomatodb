@@ -18,13 +18,13 @@ typedef struct _Haven__Database__CatchUpResult Haven__Database__CatchUpResult;
 /* --- enums --- */
 
 typedef enum _Haven__Database__LogCommand__CommandType {
-    HAVEN__DATABASE__LOG_COMMAND__COMMAND_TYPE__PUT = 4,
-    HAVEN__DATABASE__LOG_COMMAND__COMMAND_TYPE__GET = 5,
-    HAVEN__DATABASE__LOG_COMMAND__COMMAND_TYPE__DELETE = 6
+    HVN__DATABASE__LOG_COMMAND__COMMAND_TYPE__PUT = 4,
+    HVN__DATABASE__LOG_COMMAND__COMMAND_TYPE__GET = 5,
+    HVN__DATABASE__LOG_COMMAND__COMMAND_TYPE__DELETE = 6
 } Haven__Database__LogCommand__CommandType;
 typedef enum _Haven__Database__CatchUpResult__CatchUpType {
-    HAVEN__DATABASE__CATCH_UP_RESULT__CATCH_UP_TYPE__LOG_ENTRIES = 1,
-    HAVEN__DATABASE__CATCH_UP_RESULT__CATCH_UP_TYPE__SNAPSHOT_REPLACEMENT = 2
+    HVN__DATABASE__CATCH_UP_RESULT__CATCH_UP_TYPE__LOG_ENTRIES = 1,
+    HVN__DATABASE__CATCH_UP_RESULT__CATCH_UP_TYPE__SNAPSHOT_REPLACEMENT = 2
 } Haven__Database__CatchUpResult__CatchUpType;
 
 /* --- messages --- */
@@ -38,7 +38,7 @@ struct  _Haven__Database__LogCommand {
     protobuf_c_boolean has_value;
     ProtobufCBinaryData value;
 };
-#define HAVEN__DATABASE__LOG_COMMAND__INIT \
+#define HVN__DATABASE__LOG_COMMAND__INIT \
     { PROTOBUF_C_MESSAGE_INIT (&haven__database__log_command__descriptor) \
         , 0, {0,NULL}, 0,0, 0,{0,NULL} }
 
@@ -49,7 +49,7 @@ struct  _Haven__Database__AppendEntry {
     int64_t index;
     Haven__Database__LogCommand* command;
 };
-#define HAVEN__DATABASE__APPEND_ENTRY__INIT \
+#define HVN__DATABASE__APPEND_ENTRY__INIT \
     { PROTOBUF_C_MESSAGE_INIT (&haven__database__append_entry__descriptor) \
         , 0, 0, NULL }
 
@@ -60,7 +60,7 @@ struct  _Haven__Database__AppendEntries {
     size_t n_entries;
     Haven__Database__AppendEntry** entries;
 };
-#define HAVEN__DATABASE__APPEND_ENTRIES__INIT \
+#define HVN__DATABASE__APPEND_ENTRIES__INIT \
     { PROTOBUF_C_MESSAGE_INIT (&haven__database__append_entries__descriptor) \
         , 0, 0,NULL }
 
@@ -71,7 +71,7 @@ struct  _Haven__Database__CatchUp {
     int64_t last_log_term;
     int64_t last_log_index;
 };
-#define HAVEN__DATABASE__CATCH_UP__INIT \
+#define HVN__DATABASE__CATCH_UP__INIT \
     { PROTOBUF_C_MESSAGE_INIT (&haven__database__catch_up__descriptor) \
         , 0, 0, 0 }
 
@@ -84,7 +84,7 @@ struct  _Haven__Database__CatchUpResult {
     size_t n_snapshot;
     ProtobufCBinaryData* snapshot;
 };
-#define HAVEN__DATABASE__CATCH_UP_RESULT__INIT \
+#define HVN__DATABASE__CATCH_UP_RESULT__INIT \
     { PROTOBUF_C_MESSAGE_INIT (&haven__database__catch_up_result__descriptor) \
         , 0, 0, NULL, 0,NULL }
 
@@ -215,10 +215,10 @@ struct _Haven__Database__Database_Service {
 typedef void (*Haven__Database__Database_ServiceDestroy)(Haven__Database__Database_Service*);
 void haven__database__database__init(Haven__Database__Database_Service* service,
                                      Haven__Database__Database_ServiceDestroy destroy);
-#define HAVEN__DATABASE__DATABASE__BASE_INIT \
+#define HVN__DATABASE__DATABASE__BASE_INIT \
     { &haven__database__database__descriptor, protobuf_c_service_invoke_internal, NULL }
-#define HAVEN__DATABASE__DATABASE__INIT(function_prefix__) \
-    { HAVEN__DATABASE__DATABASE__BASE_INIT,\
+#define HVN__DATABASE__DATABASE__INIT(function_prefix__) \
+    { HVN__DATABASE__DATABASE__BASE_INIT,\
         function_prefix__ ## follower_catch_up  }
 void haven__database__database__follower_catch_up(ProtobufCService* service,
         const Haven__Database__CatchUp* input,

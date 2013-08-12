@@ -9,7 +9,7 @@
 void   haven__database__log_command__init
 (Haven__Database__LogCommand*         message)
 {
-    static Haven__Database__LogCommand init_value = HAVEN__DATABASE__LOG_COMMAND__INIT;
+    static Haven__Database__LogCommand init_value = HVN__DATABASE__LOG_COMMAND__INIT;
     *message = init_value;
 }
 size_t haven__database__log_command__get_packed_size
@@ -52,7 +52,7 @@ void   haven__database__log_command__free_unpacked
 void   haven__database__append_entry__init
 (Haven__Database__AppendEntry*         message)
 {
-    static Haven__Database__AppendEntry init_value = HAVEN__DATABASE__APPEND_ENTRY__INIT;
+    static Haven__Database__AppendEntry init_value = HVN__DATABASE__APPEND_ENTRY__INIT;
     *message = init_value;
 }
 size_t haven__database__append_entry__get_packed_size
@@ -95,7 +95,7 @@ void   haven__database__append_entry__free_unpacked
 void   haven__database__append_entries__init
 (Haven__Database__AppendEntries*         message)
 {
-    static Haven__Database__AppendEntries init_value = HAVEN__DATABASE__APPEND_ENTRIES__INIT;
+    static Haven__Database__AppendEntries init_value = HVN__DATABASE__APPEND_ENTRIES__INIT;
     *message = init_value;
 }
 size_t haven__database__append_entries__get_packed_size
@@ -138,7 +138,7 @@ void   haven__database__append_entries__free_unpacked
 void   haven__database__catch_up__init
 (Haven__Database__CatchUp*         message)
 {
-    static Haven__Database__CatchUp init_value = HAVEN__DATABASE__CATCH_UP__INIT;
+    static Haven__Database__CatchUp init_value = HVN__DATABASE__CATCH_UP__INIT;
     *message = init_value;
 }
 size_t haven__database__catch_up__get_packed_size
@@ -181,7 +181,7 @@ void   haven__database__catch_up__free_unpacked
 void   haven__database__catch_up_result__init
 (Haven__Database__CatchUpResult*         message)
 {
-    static Haven__Database__CatchUpResult init_value = HAVEN__DATABASE__CATCH_UP_RESULT__INIT;
+    static Haven__Database__CatchUpResult init_value = HVN__DATABASE__CATCH_UP_RESULT__INIT;
     *message = init_value;
 }
 size_t haven__database__catch_up_result__get_packed_size
@@ -222,9 +222,9 @@ void   haven__database__catch_up_result__free_unpacked
     protobuf_c_message_free_unpacked((ProtobufCMessage*)message, allocator);
 }
 const ProtobufCEnumValue haven__database__log_command__command_type__enum_values_by_number[3] = {
-    { "PUT", "HAVEN__DATABASE__LOG_COMMAND__COMMAND_TYPE__PUT", 4 },
-    { "GET", "HAVEN__DATABASE__LOG_COMMAND__COMMAND_TYPE__GET", 5 },
-    { "DELETE", "HAVEN__DATABASE__LOG_COMMAND__COMMAND_TYPE__DELETE", 6 },
+    { "PUT", "HVN__DATABASE__LOG_COMMAND__COMMAND_TYPE__PUT", 4 },
+    { "GET", "HVN__DATABASE__LOG_COMMAND__COMMAND_TYPE__GET", 5 },
+    { "DELETE", "HVN__DATABASE__LOG_COMMAND__COMMAND_TYPE__DELETE", 6 },
 };
 static const ProtobufCIntRange haven__database__log_command__command_type__value_ranges[] = {
     {4, 0}, {0, 3}
@@ -495,8 +495,8 @@ const ProtobufCMessageDescriptor haven__database__catch_up__descriptor = {
     NULL, NULL, NULL  /* reserved[123] */
 };
 const ProtobufCEnumValue haven__database__catch_up_result__catch_up_type__enum_values_by_number[2] = {
-    { "LOG_ENTRIES", "HAVEN__DATABASE__CATCH_UP_RESULT__CATCH_UP_TYPE__LOG_ENTRIES", 1 },
-    { "SNAPSHOT_REPLACEMENT", "HAVEN__DATABASE__CATCH_UP_RESULT__CATCH_UP_TYPE__SNAPSHOT_REPLACEMENT", 2 },
+    { "LOG_ENTRIES", "HVN__DATABASE__CATCH_UP_RESULT__CATCH_UP_TYPE__LOG_ENTRIES", 1 },
+    { "SNAPSHOT_REPLACEMENT", "HVN__DATABASE__CATCH_UP_RESULT__CATCH_UP_TYPE__SNAPSHOT_REPLACEMENT", 2 },
 };
 static const ProtobufCIntRange haven__database__catch_up_result__catch_up_type__value_ranges[] = {
     {1, 0}, {0, 2}

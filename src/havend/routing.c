@@ -26,10 +26,10 @@
 #include <stdbool.h>
 
 /** The debug stream to write log messages to. */
-extern FILE* HAVEN_debug_stream;
+extern FILE* HVN_debug_stream;
 
 /** The log level to write messages for. */
-extern HAVEN_loglevel HAVEN_debug_level;
+extern HVN_loglevel HVN_debug_level;
 
 //
 // This is the router for all new incoming connections. The overall flow
@@ -57,9 +57,9 @@ extern HAVEN_loglevel HAVEN_debug_level;
 //      location quorum member if the leader is not known).
 //   3. Create a new location quorum by becoming a location quorum leader.
 //
-void HAVEN_routing_task(HAVEN_router_t* router)
+void HVN_routing_task(HVN_router_t* router)
 {
-    LOG(HAVEN_LOG_INFO, "Started routing task.");
+    LOG(HVN_LOG_INFO, "Started routing task.");
 
     msgpack_object deserialized;
     msgpack_zone mempool;
@@ -70,36 +70,36 @@ void HAVEN_routing_task(HAVEN_router_t* router)
     fdread(router->accept_fd, buf, 256);
     msgpack_unpack(buf, buf[0], NULL, &mempool, &deserialized);
 
-    LOG(HAVEN_LOG_INFO, "Recevied msg!");
+    LOG(HVN_LOG_INFO, "Recevied msg!");
     msgpack_object_print(stdout, deserialized);
     puts("");
-    LOG(HAVEN_LOG_INFO, "End received msg!");
+    LOG(HVN_LOG_INFO, "End received msg!");
 
     msgpack_zone_destroy(&mempool);
 
 /*****
     if(incoming_message_contains_server_uuid) {
-        HAVEN_server_t* server = NULL;
+        HVN_server_t* server = NULL;
         HASH_FIND_INT(router->ctx->server_routes, &incoming_server_uuid, server);
 
         if(server != NULL) {
-            LOG(HAVEN_LOG_INFO, "We found the server that the client was looking for!");
+            LOG(HVN_LOG_INFO, "We found the server that the client was looking for!");
             //TODO: create a connection task and add it to the server task.
         } else {
-            LOG(HAVEN_LOG_INFO, "We could not find the server that the client specified.");
+            LOG(HVN_LOG_INFO, "We could not find the server that the client specified.");
             //TODO: tell the client to use the location quorum.
         }
     } else {
-        LOG(HAVEN_LOG_INFO, "The incoming message did not contain a server UUID.");
+        LOG(HVN_LOG_INFO, "The incoming message did not contain a server UUID.");
         //TODO: determine what the client is trying to do (1, 2, or 3).
     }
 *******/
-    HAVEN_free_router(router);
+    HVN_free_router(router);
 }
 
 // This is where we'll listen and accept for connections so we can launch
 // routing tasks.
-int HAVEN_listen_and_accept(HAVEN_ctx_t* ctx)
+int HVN_listen_and_accept(HVN_ctx_t* ctx)
 {
     int remote_port, accept_fd = 0;
     bool* is_running = (bool*) malloc(sizeof(bool));
@@ -108,47 +108,47 @@ int HAVEN_listen_and_accept(HAVEN_ctx_t* ctx)
     *is_running = true;
 
     // TODO
-    //HAVEN_handle_shutdown_signals(is_running);
+    //HVN_handle_shutdown_signals(is_running);
 
     ctx->listen_fd = netannounce(TCP, ctx->listen_addr, ctx->listen_port);
-    LOG(HAVEN_LOG_INFO, "Listening on `%s:%d'.", ctx->listen_addr, ctx->listen_port);
+    LOG(HVN_LOG_INFO, "Listening on `%s:%d'.", ctx->listen_addr, ctx->listen_port);
 
     while(*is_running) {
         accept_fd = netaccept(ctx->listen_fd, remote_addr, &remote_port);
-        HAVEN_router_t* router = NULL;
+        HVN_router_t* router = NULL;
         
-        if(HAVEN_init_router(&router, ctx, remote_addr, remote_port, accept_fd) != HAVEN_SUCCESS) {
-            LOG(HAVEN_LOG_ERR, "Could not proper initialize a new connection router. Attempting to shut down.");
+        if(HVN_init_router(&router, ctx, remote_addr, remote_port, accept_fd) != HVN_SUCCESS) {
+            LOG(HVN_LOG_ERR, "Could not proper initialize a new connection router. Attempting to shut down.");
             *is_running = false;
             break;
         }
-        taskcreate((void (*)(void*))HAVEN_routing_task, router, HAVEN_ROUTER_STACK_SIZE);
+        taskcreate((void (*)(void*))HVN_routing_task, router, HVN_ROUTER_STACK_SIZE);
         taskswitch();
     }
 
     free(is_running);
-    return HAVEN_SUCCESS;
+    return HVN_SUCCESS;
 }
 
-int HAVEN_init_router(HAVEN_router_t** router, \
-                      HAVEN_ctx_t* ctx, \
+int HVN_init_router(HVN_router_t** router, \
+                      HVN_ctx_t* ctx, \
                       char* remote_addr, \
                       int remote_port, 
                       int accept_fd)
 {
-    *router = (HAVEN_router_t*) malloc(sizeof(HAVEN_router_t));
+    *router = (HVN_router_t*) malloc(sizeof(HVN_router_t));
 
     if(*router == NULL) {
-        LOG(HAVEN_LOG_ERR, "Failed to allocate memory for a connection router.");
-        return HAVEN_ERROR;
+        LOG(HVN_LOG_ERR, "Failed to allocate memory for a connection router.");
+        return HVN_ERROR;
     }
 
     (*router)->remote_addr = (char*) malloc(sizeof(char) * _POSIX_HOST_NAME_MAX);
 
     if((*router)->remote_addr == NULL) {
-        LOG(HAVEN_LOG_ERR, "Failed to allocate memory within a connection router.");
+        LOG(HVN_LOG_ERR, "Failed to allocate memory within a connection router.");
         free(*router);
-        return HAVEN_ERROR;
+        return HVN_ERROR;
     }
 
     strncpy((*router)->remote_addr, remote_addr, _POSIX_HOST_NAME_MAX);
@@ -157,10 +157,10 @@ int HAVEN_init_router(HAVEN_router_t** router, \
     (*router)->remote_port = remote_port;
     (*router)->accept_fd = accept_fd;
 
-    return HAVEN_SUCCESS;
+    return HVN_SUCCESS;
 }
 
-void HAVEN_free_router(HAVEN_router_t* router)
+void HVN_free_router(HVN_router_t* router)
 {
     free(router->remote_addr);
     free(router);

@@ -1,5 +1,5 @@
-#ifndef __HAVEN__HAVEND_BOOTSTRAP_H_
-#define __HAVEN__HAVEND_BOOTSTRAP_H_
+#ifndef __HVN__HAVEND_BOOTSTRAP_H_
+#define __HVN__HAVEND_BOOTSTRAP_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -19,6 +19,6 @@
 
 #include "server.h"
 
-int HAVEN_bootstrap_listen(HAVEN_server_t* server);
+int HVN_bootstrap_listen(HVN_server_t* server);
 
-#endif /* __HAVEN_HAVEND_BOOTSTRAP_H_ */
+#endif /* __HVN_HAVEND_BOOTSTRAP_H_ */

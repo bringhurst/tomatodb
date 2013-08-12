@@ -1,5 +1,5 @@
-#ifndef __HAVEN__HAVEND_STATE_EVENTS_H_
-#define __HAVEN__HAVEND_STATE_EVENTS_H_
+#ifndef __HVN__HAVEND_STATE_EVENTS_H_
+#define __HVN__HAVEND_STATE_EVENTS_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-typedef enum HAVEN_state_events {
+typedef enum HVN_state_events {
     CREATE_NEW=0,
     CREATE_NEW_LOCATION=1,
     JOIN_EXISTING=2,
@@ -31,6 +31,6 @@ typedef enum HAVEN_state_events {
     ELECTION_SUCCESS=10,
     DISCOVERED_HIGHER_TERM=11,
     GONE=12
-} HAVEN_state_events;
+} HVN_state_events;
 
-#endif /* __HAVEN__HAVEND_STATE_EVENTS_H_ */
+#endif /* __HVN__HAVEND_STATE_EVENTS_H_ */

@@ -36,18 +36,18 @@
 #include "task/task.h"
 
 /** The debug stream to write log messages to. */
-FILE* HAVEN_debug_stream;
+FILE* HVN_debug_stream;
 
 /** The log level to write messages for. */
-HAVEN_loglevel HAVEN_debug_level;
+HVN_loglevel HVN_debug_level;
 
-int HAVEN_context_init(HAVEN_ctx_t** ctx)
+int HVN_context_init(HVN_ctx_t** ctx)
 {
-    *ctx = (HAVEN_ctx_t*) malloc(sizeof(HAVEN_ctx_t));
+    *ctx = (HVN_ctx_t*) malloc(sizeof(HVN_ctx_t));
 
     if(*ctx == NULL) {
-        LOG(HAVEN_LOG_ERR, "Malloc failed when allocating a context.");
-        return HAVEN_ERROR;
+        LOG(HVN_LOG_ERR, "Malloc failed when allocating a context.");
+        return HVN_ERROR;
     }
 
     (*ctx)->listen_addr = (char*) malloc(sizeof(char) * _POSIX_HOST_NAME_MAX);
@@ -55,15 +55,11 @@ int HAVEN_context_init(HAVEN_ctx_t** ctx)
 
     (*ctx)->listen_port = DEFAULT_LISTEN_PORT;
 
-    msgpack_zone_init((*ctx)->mp_mempool, 2048);
-
-    return HAVEN_SUCCESS;
+    return HVN_SUCCESS;
 }
 
-void HAVEN_context_free(HAVEN_ctx_t* ctx)
+void HVN_context_free(HVN_ctx_t* ctx)
 {
-    msgpack_zone_destroy(ctx->mp_mempool);
-
     /* FIXME: properly free this thing. */
     free(ctx);
 }
@@ -71,7 +67,7 @@ void HAVEN_context_free(HAVEN_ctx_t* ctx)
 /**
  * Print the current version.
  */
-void HAVEN_print_version()
+void HVN_print_version()
 {
     fprintf(stdout, "%s-%s\n", PACKAGE_NAME, PACKAGE_VERSION);
 }
@@ -79,7 +75,7 @@ void HAVEN_print_version()
 /**
  * Print a usage message.
  */
-void HAVEN_print_usage()
+void HVN_print_usage()
 {
     printf("usage: havend [-hv] [--debug=<fatal,err,warn,info,dbg>]\n"
            "              [-a <addr> | --listen-address=<addr>]\n"
@@ -87,7 +83,7 @@ void HAVEN_print_usage()
     fflush(stdout);
 }
 
-int HAVEN_handle_havend_cli_args(HAVEN_ctx_t* ctx, int argc, char* argv[])
+int HVN_handle_havend_cli_args(HVN_ctx_t* ctx, int argc, char* argv[])
 {
     int c, option_index = 0;
 
@@ -107,33 +103,33 @@ int HAVEN_handle_havend_cli_args(HAVEN_ctx_t* ctx, int argc, char* argv[])
 
             case 'a':
                 strncpy(ctx->listen_addr, optarg, _POSIX_HOST_NAME_MAX);
-                LOG(HAVEN_LOG_INFO, "Listen address set to `%s'.", ctx->listen_addr);
+                LOG(HVN_LOG_INFO, "Listen address set to `%s'.", ctx->listen_addr);
                 break;
 
             case 'd':
 
                 if(strncmp(optarg, "fatal", 5) == 0) {
-                    HAVEN_debug_level = HAVEN_LOG_FATAL;
-                    LOG(HAVEN_LOG_INFO, "Debug level set to: fatal");
+                    HVN_debug_level = HVN_LOG_FATAL;
+                    LOG(HVN_LOG_INFO, "Debug level set to: fatal");
                 }
                 else if(strncmp(optarg, "err", 3) == 0) {
-                    HAVEN_debug_level = HAVEN_LOG_ERR;
-                    LOG(HAVEN_LOG_INFO, "Debug level set to: errors");
+                    HVN_debug_level = HVN_LOG_ERR;
+                    LOG(HVN_LOG_INFO, "Debug level set to: errors");
                 }
                 else if(strncmp(optarg, "warn", 4) == 0) {
-                    HAVEN_debug_level = HAVEN_LOG_WARN;
-                    LOG(HAVEN_LOG_INFO, "Debug level set to: warnings");
+                    HVN_debug_level = HVN_LOG_WARN;
+                    LOG(HVN_LOG_INFO, "Debug level set to: warnings");
                 }
                 else if(strncmp(optarg, "info", 4) == 0) {
-                    HAVEN_debug_level = HAVEN_LOG_INFO;
-                    LOG(HAVEN_LOG_INFO, "Debug level set to: info");
+                    HVN_debug_level = HVN_LOG_INFO;
+                    LOG(HVN_LOG_INFO, "Debug level set to: info");
                 }
                 else if(strncmp(optarg, "dbg", 3) == 0) {
-                    HAVEN_debug_level = HAVEN_LOG_DBG;
-                    LOG(HAVEN_LOG_INFO, "Debug level set to: debug");
+                    HVN_debug_level = HVN_LOG_DBG;
+                    LOG(HVN_LOG_INFO, "Debug level set to: debug");
                 }
                 else {
-                    LOG(HAVEN_LOG_INFO, "Debug level `%s' not recognized. " \
+                    LOG(HVN_LOG_INFO, "Debug level `%s' not recognized. " \
                         "Defaulting to `info'.", optarg);
                 }
 
@@ -141,16 +137,16 @@ int HAVEN_handle_havend_cli_args(HAVEN_ctx_t* ctx, int argc, char* argv[])
 
             case 'p':
                 ctx->listen_port = atoi(optarg);
-                LOG(HAVEN_LOG_INFO, "Listen port set to `%d'.", ctx->listen_port);
+                LOG(HVN_LOG_INFO, "Listen port set to `%d'.", ctx->listen_port);
                 break;
 
             case 'h':
-                HAVEN_print_usage();
+                HVN_print_usage();
                 taskexit(EXIT_SUCCESS);
                 break;
 
             case 'v':
-                HAVEN_print_version();
+                HVN_print_version();
                 taskexit(EXIT_SUCCESS);
                 break;
 
@@ -158,16 +154,16 @@ int HAVEN_handle_havend_cli_args(HAVEN_ctx_t* ctx, int argc, char* argv[])
             default:
 
                 if(optopt == 'd' || optopt == 'a' || optopt == 'p') {
-                    HAVEN_print_usage();
+                    HVN_print_usage();
                     fprintf(stderr, "Option -%c requires an argument.\n", \
                             optopt);
                 }
                 else if(isprint(optopt)) {
-                    HAVEN_print_usage();
+                    HVN_print_usage();
                     fprintf(stderr, "Unknown option `-%c'.\n", optopt);
                 }
                 else {
-                    HAVEN_print_usage();
+                    HVN_print_usage();
                     fprintf(stderr,
                             "Unknown option character `\\x%x'.\n",
                             optopt);
@@ -178,48 +174,48 @@ int HAVEN_handle_havend_cli_args(HAVEN_ctx_t* ctx, int argc, char* argv[])
         }
     }
 
-    return HAVEN_SUCCESS;
+    return HVN_SUCCESS;
 }
 
 void taskmain(int argc, char* argv[])
 {
-    HAVEN_ctx_t* ctx = NULL;
+    HVN_ctx_t* ctx = NULL;
 
-    HAVEN_debug_stream = stdout;
-    HAVEN_debug_level = HAVEN_LOG_INFO;
+    HVN_debug_stream = stdout;
+    HVN_debug_level = HVN_LOG_INFO;
 
-    if(HAVEN_handle_havend_cli_args(ctx, argc, argv) != HAVEN_SUCCESS) {
-        LOG(HAVEN_LOG_ERR, "Failed to properly handle command line arguments.");
+    if(HVN_handle_havend_cli_args(ctx, argc, argv) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Failed to properly handle command line arguments.");
         taskexit(EXIT_FAILURE);
     }
 
-    LOG(HAVEN_LOG_INFO, "Hello! %s-%s is starting up.", \
+    LOG(HVN_LOG_INFO, "Hello! %s-%s is starting up.", \
         PACKAGE_NAME, PACKAGE_VERSION);
 
-    if(HAVEN_context_init(&ctx) != HAVEN_SUCCESS) {
-        LOG(HAVEN_LOG_ERR, "Could not allocate the primary context.");
+    if(HVN_context_init(&ctx) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Could not allocate the primary context.");
         taskexit(EXIT_FAILURE);
     }
 
-    if(HAVEN_set_process_uuid(ctx) != HAVEN_SUCCESS) {
-        LOG(HAVEN_LOG_ERR, "Could not create or determine local machine UUID.");
+    if(HVN_set_process_uuid(ctx) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Could not create or determine local machine UUID.");
         taskexit(EXIT_FAILURE);
     }
 
-    if(HAVEN_prepare_settings_db(ctx) != HAVEN_SUCCESS) {
-        LOG(HAVEN_LOG_ERR, "Could not prepare the local settings database.");
+    if(HVN_prepare_settings_db(ctx) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Could not prepare the local settings database.");
         taskexit(EXIT_FAILURE);
     }
 
-    if(HAVEN_listen_and_accept(ctx) != HAVEN_SUCCESS) {
-        LOG(HAVEN_LOG_ERR, "The primary server loop failed.");
+    if(HVN_listen_and_accept(ctx) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "The primary server loop failed.");
         taskexit(EXIT_FAILURE);
     }
 
-    HAVEN_close_db(ctx->settings_db);
-    HAVEN_context_free(ctx);
+    HVN_close_db(ctx->settings_db);
+    HVN_context_free(ctx);
 
-    LOG(HAVEN_LOG_INFO, "Goodbye! %s-%s is shutting down.", \
+    LOG(HVN_LOG_INFO, "Goodbye! %s-%s is shutting down.", \
         PACKAGE_NAME, PACKAGE_VERSION);
 
     taskexit(EXIT_SUCCESS);

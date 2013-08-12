@@ -24,12 +24,12 @@
 #include <string.h>
 
 /** The debug stream to write log messages to. */
-extern FILE* HAVEN_debug_stream;
+extern FILE* HVN_debug_stream;
 
 /** The log level to write messages for. */
-extern HAVEN_loglevel HAVEN_debug_level;
+extern HVN_loglevel HVN_debug_level;
 
-int HAVEN_ensure_directory_exists(char* path)
+int HVN_ensure_directory_exists(char* path)
 {
     struct stat s;
     int err = stat(path, &s);
@@ -37,26 +37,26 @@ int HAVEN_ensure_directory_exists(char* path)
     if(-1 == err) {
         if(ENOENT == errno) {
             if(mkdir(path, 0755) == 0) {
-                return HAVEN_SUCCESS;
+                return HVN_SUCCESS;
             }
             else {
-                LOG(HAVEN_LOG_ERR, "Creating a directory at `%s' failed. %s", path, strerror(errno));
-                return HAVEN_ERROR;
+                LOG(HVN_LOG_ERR, "Creating a directory at `%s' failed. %s", path, strerror(errno));
+                return HVN_ERROR;
             }
         }
         else {
-            LOG(HAVEN_LOG_ERR, "Viewing the directory at `%s' failed. %s", path, strerror(errno));
-            return HAVEN_ERROR;
+            LOG(HVN_LOG_ERR, "Viewing the directory at `%s' failed. %s", path, strerror(errno));
+            return HVN_ERROR;
         }
     }
 
     if(S_ISDIR(s.st_mode)) {
-        return HAVEN_SUCCESS;
+        return HVN_SUCCESS;
     }
 
     /* The path already exists, but is not a directory. */
-    LOG(HAVEN_LOG_ERR, "Creating a directory at `%s' failed. The path already exists.", path);
-    return HAVEN_ERROR;
+    LOG(HVN_LOG_ERR, "Creating a directory at `%s' failed. The path already exists.", path);
+    return HVN_ERROR;
 }
 
 /* EOF */

@@ -1,5 +1,5 @@
-#ifndef __HAVEN__HAVEND_STATE_CONSENSUS_STATE_H_
-#define __HAVEN__HAVEND_STATE_CONSENSUS_STATE_H_
+#ifndef __HVN__HAVEND_STATE_CONSENSUS_STATE_H_
+#define __HVN__HAVEND_STATE_CONSENSUS_STATE_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -20,9 +20,9 @@
 #include "state.h"
 #include "events.h"
 
-int HAVEN_init_consensus_state(HAVEN_state_t *state, HAVEN_state_actions_t *actions);
-int HAVEN_exec_consensus_state(HAVEN_state_t *state, int event, HAVEN_server_t* server);
+int HVN_init_consensus_state(HVN_state_t *state, HVN_state_actions_t *actions);
+int HVN_exec_consensus_state(HVN_state_t *state, int event, HVN_server_t* server);
 
-#endif /* __HAVEN__HAVEND_STATE_CONSENSUS_STATE_H_ */
+#endif /* __HVN__HAVEND_STATE_CONSENSUS_STATE_H_ */
 
 /* EOF */

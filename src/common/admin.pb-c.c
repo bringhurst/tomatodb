@@ -9,13 +9,13 @@
 void   haven__admin__modify_peers__peer__init
 (Haven__Admin__ModifyPeers__Peer*         message)
 {
-    static Haven__Admin__ModifyPeers__Peer init_value = HAVEN__ADMIN__MODIFY_PEERS__PEER__INIT;
+    static Haven__Admin__ModifyPeers__Peer init_value = HVN__ADMIN__MODIFY_PEERS__PEER__INIT;
     *message = init_value;
 }
 void   haven__admin__modify_peers__init
 (Haven__Admin__ModifyPeers*         message)
 {
-    static Haven__Admin__ModifyPeers init_value = HAVEN__ADMIN__MODIFY_PEERS__INIT;
+    static Haven__Admin__ModifyPeers init_value = HVN__ADMIN__MODIFY_PEERS__INIT;
     *message = init_value;
 }
 size_t haven__admin__modify_peers__get_packed_size
@@ -58,7 +58,7 @@ void   haven__admin__modify_peers__free_unpacked
 void   haven__admin__result__init
 (Haven__Admin__Result*         message)
 {
-    static Haven__Admin__Result init_value = HAVEN__ADMIN__RESULT__INIT;
+    static Haven__Admin__Result init_value = HVN__ADMIN__RESULT__INIT;
     *message = init_value;
 }
 size_t haven__admin__result__get_packed_size
@@ -147,8 +147,8 @@ const ProtobufCMessageDescriptor haven__admin__modify_peers__peer__descriptor = 
     NULL, NULL, NULL  /* reserved[123] */
 };
 const ProtobufCEnumValue haven__admin__modify_peers__modify_type__enum_values_by_number[2] = {
-    { "ADD", "HAVEN__ADMIN__MODIFY_PEERS__MODIFY_TYPE__ADD", 1 },
-    { "REMOVE", "HAVEN__ADMIN__MODIFY_PEERS__MODIFY_TYPE__REMOVE", 2 },
+    { "ADD", "HVN__ADMIN__MODIFY_PEERS__MODIFY_TYPE__ADD", 1 },
+    { "REMOVE", "HVN__ADMIN__MODIFY_PEERS__MODIFY_TYPE__REMOVE", 2 },
 };
 static const ProtobufCIntRange haven__admin__modify_peers__modify_type__value_ranges[] = {
     {1, 0}, {0, 2}

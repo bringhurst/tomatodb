@@ -1,5 +1,5 @@
-#ifndef __HAVEN__HAVEND_CONNECTION_H_
-#define __HAVEN__HAVEND_CONNECTION_H_
+#ifndef __HVN__HAVEND_CONNECTION_H_
+#define __HVN__HAVEND_CONNECTION_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -22,15 +22,15 @@
 
 #include <stdio.h>
 
-#define HAVEN_CONNECTION_STACK_SIZE (32768)
+#define HVN_CONNECTION_STACK_SIZE (32768)
 
-typedef struct HAVEN_connection_t {
-    HAVEN_server_t* server;
+typedef struct HVN_connection_t {
+    HVN_server_t* server;
     char* remote_addr;
     int remote_port;
     int fd;
-} HAVEN_connection_t;
+} HVN_connection_t;
 
-void HAVEN_connection_task(HAVEN_connection_t* conn);
+void HVN_connection_task(HVN_connection_t* conn);
 
-#endif /* __HAVEN__HAVEND_CONNECTION_H_ */
+#endif /* __HVN__HAVEND_CONNECTION_H_ */

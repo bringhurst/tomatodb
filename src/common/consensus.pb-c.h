@@ -18,106 +18,109 @@ typedef struct _Haven__Consensus__ConsensusResult Haven__Consensus__ConsensusRes
 
 /* --- messages --- */
 
-struct  _Haven__Consensus__Vote {
-    ProtobufCMessage base;
-    int64_t candidate_term;
-    int64_t candidate_id;
-    int64_t last_log_index;
-    int64_t last_log_term;
+struct  _Haven__Consensus__Vote
+{
+  ProtobufCMessage base;
+  int64_t candidate_term;
+  int64_t candidate_id;
+  int64_t last_log_index;
+  int64_t last_log_term;
 };
 #define HAVEN__CONSENSUS__VOTE__INIT \
-    { PROTOBUF_C_MESSAGE_INIT (&haven__consensus__vote__descriptor) \
-        , 0, 0, 0, 0 }
+ { PROTOBUF_C_MESSAGE_INIT (&haven__consensus__vote__descriptor) \
+    , 0, 0, 0, 0 }
 
 
-struct  _Haven__Consensus__ConsensusResult {
-    ProtobufCMessage base;
-    int64_t term;
-    protobuf_c_boolean success;
+struct  _Haven__Consensus__ConsensusResult
+{
+  ProtobufCMessage base;
+  int64_t term;
+  protobuf_c_boolean success;
 };
 #define HAVEN__CONSENSUS__CONSENSUS_RESULT__INIT \
-    { PROTOBUF_C_MESSAGE_INIT (&haven__consensus__consensus_result__descriptor) \
-        , 0, 0 }
+ { PROTOBUF_C_MESSAGE_INIT (&haven__consensus__consensus_result__descriptor) \
+    , 0, 0 }
 
 
 /* Haven__Consensus__Vote methods */
 void   haven__consensus__vote__init
-(Haven__Consensus__Vote*         message);
+                     (Haven__Consensus__Vote         *message);
 size_t haven__consensus__vote__get_packed_size
-(const Haven__Consensus__Vote*   message);
+                     (const Haven__Consensus__Vote   *message);
 size_t haven__consensus__vote__pack
-(const Haven__Consensus__Vote*   message,
- uint8_t*             out);
+                     (const Haven__Consensus__Vote   *message,
+                      uint8_t             *out);
 size_t haven__consensus__vote__pack_to_buffer
-(const Haven__Consensus__Vote*   message,
- ProtobufCBuffer*     buffer);
-Haven__Consensus__Vote*
-haven__consensus__vote__unpack
-(ProtobufCAllocator*  allocator,
- size_t               len,
- const uint8_t*       data);
+                     (const Haven__Consensus__Vote   *message,
+                      ProtobufCBuffer     *buffer);
+Haven__Consensus__Vote *
+       haven__consensus__vote__unpack
+                     (ProtobufCAllocator  *allocator,
+                      size_t               len,
+                      const uint8_t       *data);
 void   haven__consensus__vote__free_unpacked
-(Haven__Consensus__Vote* message,
- ProtobufCAllocator* allocator);
+                     (Haven__Consensus__Vote *message,
+                      ProtobufCAllocator *allocator);
 /* Haven__Consensus__ConsensusResult methods */
 void   haven__consensus__consensus_result__init
-(Haven__Consensus__ConsensusResult*         message);
+                     (Haven__Consensus__ConsensusResult         *message);
 size_t haven__consensus__consensus_result__get_packed_size
-(const Haven__Consensus__ConsensusResult*   message);
+                     (const Haven__Consensus__ConsensusResult   *message);
 size_t haven__consensus__consensus_result__pack
-(const Haven__Consensus__ConsensusResult*   message,
- uint8_t*             out);
+                     (const Haven__Consensus__ConsensusResult   *message,
+                      uint8_t             *out);
 size_t haven__consensus__consensus_result__pack_to_buffer
-(const Haven__Consensus__ConsensusResult*   message,
- ProtobufCBuffer*     buffer);
-Haven__Consensus__ConsensusResult*
-haven__consensus__consensus_result__unpack
-(ProtobufCAllocator*  allocator,
- size_t               len,
- const uint8_t*       data);
+                     (const Haven__Consensus__ConsensusResult   *message,
+                      ProtobufCBuffer     *buffer);
+Haven__Consensus__ConsensusResult *
+       haven__consensus__consensus_result__unpack
+                     (ProtobufCAllocator  *allocator,
+                      size_t               len,
+                      const uint8_t       *data);
 void   haven__consensus__consensus_result__free_unpacked
-(Haven__Consensus__ConsensusResult* message,
- ProtobufCAllocator* allocator);
+                     (Haven__Consensus__ConsensusResult *message,
+                      ProtobufCAllocator *allocator);
 /* --- per-message closures --- */
 
 typedef void (*Haven__Consensus__Vote_Closure)
-(const Haven__Consensus__Vote* message,
- void* closure_data);
+                 (const Haven__Consensus__Vote *message,
+                  void *closure_data);
 typedef void (*Haven__Consensus__ConsensusResult_Closure)
-(const Haven__Consensus__ConsensusResult* message,
- void* closure_data);
+                 (const Haven__Consensus__ConsensusResult *message,
+                  void *closure_data);
 
 /* --- services --- */
 
 typedef struct _Haven__Consensus__Consensus_Service Haven__Consensus__Consensus_Service;
-struct _Haven__Consensus__Consensus_Service {
-    ProtobufCService base;
-    void (*request_vote)(Haven__Consensus__Consensus_Service* service,
-                         const Haven__Consensus__Vote* input,
-                         Haven__Consensus__ConsensusResult_Closure closure,
-                         void* closure_data);
-    void (*append_log_entries)(Haven__Consensus__Consensus_Service* service,
-                               const Haven__Database__AppendEntries* input,
-                               Haven__Consensus__ConsensusResult_Closure closure,
-                               void* closure_data);
+struct _Haven__Consensus__Consensus_Service
+{
+  ProtobufCService base;
+  void (*request_vote)(Haven__Consensus__Consensus_Service *service,
+                       const Haven__Consensus__Vote *input,
+                       Haven__Consensus__ConsensusResult_Closure closure,
+                       void *closure_data);
+  void (*append_log_entries)(Haven__Consensus__Consensus_Service *service,
+                             const Haven__Database__AppendEntries *input,
+                             Haven__Consensus__ConsensusResult_Closure closure,
+                             void *closure_data);
 };
-typedef void (*Haven__Consensus__Consensus_ServiceDestroy)(Haven__Consensus__Consensus_Service*);
-void haven__consensus__consensus__init(Haven__Consensus__Consensus_Service* service,
-                                       Haven__Consensus__Consensus_ServiceDestroy destroy);
+typedef void (*Haven__Consensus__Consensus_ServiceDestroy)(Haven__Consensus__Consensus_Service *);
+void haven__consensus__consensus__init (Haven__Consensus__Consensus_Service *service,
+                                        Haven__Consensus__Consensus_ServiceDestroy destroy);
 #define HAVEN__CONSENSUS__CONSENSUS__BASE_INIT \
     { &haven__consensus__consensus__descriptor, protobuf_c_service_invoke_internal, NULL }
 #define HAVEN__CONSENSUS__CONSENSUS__INIT(function_prefix__) \
     { HAVEN__CONSENSUS__CONSENSUS__BASE_INIT,\
-        function_prefix__ ## request_vote,\
-        function_prefix__ ## append_log_entries  }
-void haven__consensus__consensus__request_vote(ProtobufCService* service,
-        const Haven__Consensus__Vote* input,
-        Haven__Consensus__ConsensusResult_Closure closure,
-        void* closure_data);
-void haven__consensus__consensus__append_log_entries(ProtobufCService* service,
-        const Haven__Database__AppendEntries* input,
-        Haven__Consensus__ConsensusResult_Closure closure,
-        void* closure_data);
+      function_prefix__ ## request_vote,\
+      function_prefix__ ## append_log_entries  }
+void haven__consensus__consensus__request_vote(ProtobufCService *service,
+                                               const Haven__Consensus__Vote *input,
+                                               Haven__Consensus__ConsensusResult_Closure closure,
+                                               void *closure_data);
+void haven__consensus__consensus__append_log_entries(ProtobufCService *service,
+                                                     const Haven__Database__AppendEntries *input,
+                                                     Haven__Consensus__ConsensusResult_Closure closure,
+                                                     void *closure_data);
 
 /* --- descriptors --- */
 

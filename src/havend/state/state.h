@@ -1,5 +1,5 @@
-#ifndef __HAVEN__HAVEND_STATE_STATE_H_
-#define __HAVEN__HAVEND_STATE_STATE_H_
+#ifndef __HVN__HAVEND_STATE_STATE_H_
+#define __HVN__HAVEND_STATE_STATE_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -21,26 +21,26 @@
 
 #define TRANSITION(ACTION) (next = state->actions->ACTION(server))
 
-typedef int (*HAVEN_action_cb)(HAVEN_server_t* ctx);
+typedef int (*HVN_action_cb)(HVN_server_t* ctx);
 
-typedef struct HAVEN_state_actions_t {
+typedef struct HVN_state_actions_t {
 
     /* Actions for the consensus machine. */
-    HAVEN_action_cb HAVEN_consensus_create_quorum_as_leader;
-    HAVEN_action_cb HAVEN_consensus_create_location_quorum;
-    HAVEN_action_cb HAVEN_consensus_leave_quorum;
-    HAVEN_action_cb HAVEN_consensus_shutdown_server;
-    HAVEN_action_cb HAVEN_consensus_join_existing;
-    HAVEN_action_cb HAVEN_consensus_become_follower;
-    HAVEN_action_cb HAVEN_consensus_become_candidate;
-    HAVEN_action_cb HAVEN_consensus_become_leader;
+    HVN_action_cb HVN_consensus_create_quorum_as_leader;
+    HVN_action_cb HVN_consensus_create_location_quorum;
+    HVN_action_cb HVN_consensus_leave_quorum;
+    HVN_action_cb HVN_consensus_shutdown_server;
+    HVN_action_cb HVN_consensus_join_existing;
+    HVN_action_cb HVN_consensus_become_follower;
+    HVN_action_cb HVN_consensus_become_candidate;
+    HVN_action_cb HVN_consensus_become_leader;
 
-} HAVEN_state_actions_t;
+} HVN_state_actions_t;
 
-typedef struct HAVEN_state_t {
+typedef struct HVN_state_t {
     int cs;
     void* data;
-    HAVEN_state_actions_t* actions;
-} HAVEN_state_t;
+    HVN_state_actions_t* actions;
+} HVN_state_t;
 
-#endif /* __HAVEN__HAVEND_STATE_STATE_H_ */
+#endif /* __HVN__HAVEND_STATE_STATE_H_ */

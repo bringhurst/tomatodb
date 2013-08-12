@@ -1,5 +1,5 @@
-#ifndef __HAVEN__HAVEND_ROUTING_H_
-#define __HAVEN__HAVEND_ROUTING_H_
+#ifndef __HVN__HAVEND_ROUTING_H_
+#define __HVN__HAVEND_ROUTING_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -19,23 +19,23 @@
 
 #include "havend.h"
 
-#define HAVEN_ROUTER_STACK_SIZE (32768)
+#define HVN_ROUTER_STACK_SIZE (32768)
 
-typedef struct HAVEN_router_t {
-    HAVEN_ctx_t* ctx;
+typedef struct HVN_router_t {
+    HVN_ctx_t* ctx;
     char* remote_addr;
     int remote_port;
     int accept_fd;
-} HAVEN_router_t;
+} HVN_router_t;
 
-int HAVEN_listen_and_accept(HAVEN_ctx_t* ctx);
-void HAVEN_routing_task(HAVEN_router_t* router);
+int HVN_listen_and_accept(HVN_ctx_t* ctx);
+void HVN_routing_task(HVN_router_t* router);
 
-int HAVEN_init_router(HAVEN_router_t** router, \
-                      HAVEN_ctx_t* ctx, \
+int HVN_init_router(HVN_router_t** router, \
+                      HVN_ctx_t* ctx, \
                       char* remote_addr, \
                       int accept_port, \
                       int accept_fd);
-void HAVEN_free_router(HAVEN_router_t* router);
+void HVN_free_router(HVN_router_t* router);
 
-#endif /* __HAVEN__HAVEND_ROUTING_H_ */
+#endif /* __HVN__HAVEND_ROUTING_H_ */

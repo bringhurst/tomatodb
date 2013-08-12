@@ -1,5 +1,5 @@
-#ifndef __HAVEN_SERVER_H
-#define __HAVEN_SERVER_H
+#ifndef __HVN_SERVER_H
+#define __HVN_SERVER_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -26,14 +26,14 @@
 #include <uuid/uuid.h>
 
 #define INITIAL_SERVER_QUEUE_SIZE (100)
-#define HAVEN_SERVER_STACK_SIZE (32768)
+#define HVN_SERVER_STACK_SIZE (32768)
 
-typedef struct HAVEN_server_t {
-    struct HAVEN_ctx_t* ctx;
-    HAVEN_db_t* consensus_db;
+typedef struct HVN_server_t {
+    struct HVN_ctx_t* ctx;
+    HVN_db_t* consensus_db;
     UT_array* consensus_log;
     int listen_fd;
     uuid_t uuid;
-} HAVEN_server_t;
+} HVN_server_t;
 
-#endif /* __HAVEN_SERVER_H */
+#endif /* __HVN_SERVER_H */
