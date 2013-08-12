@@ -22,6 +22,7 @@
 #include "task/task.h"
 #include "task/taskimpl.h"
 
+#include <msgpack.h>
 #include <stdbool.h>
 
 /** The debug stream to write log messages to. */
@@ -59,6 +60,23 @@ extern HAVEN_loglevel HAVEN_debug_level;
 void HAVEN_routing_task(HAVEN_router_t* router)
 {
     LOG(HAVEN_LOG_INFO, "Started routing task.");
+
+    msgpack_object deserialized;
+    msgpack_zone mempool;
+    char buf[256];
+
+    msgpack_zone_init(&mempool, 2048);
+
+    fdread(router->accept_fd, buf, 256);
+    msgpack_unpack(buf, buf[0], NULL, &mempool, &deserialized);
+
+    LOG(HAVEN_LOG_INFO, "Recevied msg!");
+    msgpack_object_print(stdout, deserialized);
+    puts("");
+    LOG(HAVEN_LOG_INFO, "End received msg!");
+
+    msgpack_zone_destroy(&mempool);
+
 /*****
     if(incoming_message_contains_server_uuid) {
         HAVEN_server_t* server = NULL;

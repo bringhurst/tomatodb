@@ -5,7 +5,7 @@ include $(top_srcdir)/common.mk
 
 SUBDIRS = halloc
 
-AM_CFLAGS += \
+AM_CPPFLAGS += \
            -I$(top_srcdir) \
            -I$(top_srcdir)/src/common
 

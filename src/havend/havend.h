@@ -22,6 +22,7 @@
 
 #include <stdlib.h>
 #include <uuid/uuid.h>
+#include <msgpack.h>
 
 #define HAVEN_SETTINGS_DB_PREFIX "/settings"
 #define HAVEN_LOG_DB_PREFIX    "/log"
@@ -38,6 +39,7 @@ typedef struct HAVEN_ctx_t {
     int listen_port;
     int listen_fd;
     uuid_t process_uuid;
+    msgpack_zone* mp_mempool;
 } HAVEN_ctx_t;
 
 int HAVEN_context_init(HAVEN_ctx_t** ctx);

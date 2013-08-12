@@ -55,11 +55,15 @@ int HAVEN_context_init(HAVEN_ctx_t** ctx)
 
     (*ctx)->listen_port = DEFAULT_LISTEN_PORT;
 
+    msgpack_zone_init((*ctx)->mp_mempool, 2048);
+
     return HAVEN_SUCCESS;
 }
 
 void HAVEN_context_free(HAVEN_ctx_t* ctx)
 {
+    msgpack_zone_destroy(ctx->mp_mempool);
+
     /* FIXME: properly free this thing. */
     free(ctx);
 }

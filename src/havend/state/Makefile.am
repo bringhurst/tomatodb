@@ -11,7 +11,7 @@ include $(top_srcdir)/common.mk
 
 png: client.png consensus.png newbie.png
 
-AM_CFLAGS += \
+AM_CPPFLAGS = \
 	-I$(top_srcdir) \
 	-I$(top_srcdir)/src/common \
 	-I$(top_srcdir)/src/havend

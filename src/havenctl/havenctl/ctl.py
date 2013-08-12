@@ -63,6 +63,10 @@ class HavenCtl(cmd.Cmd):
             print("You must specify a server with the connect command. Please see 'help connect'.")
 
     def do_become(self, line):
+        if self.conn is None or not self.conn.is_connected:
+            print("You must be connected to a server to issue the become command.");
+            return False
+
         become_type = 'location_leader'
 
         msg = {
@@ -70,11 +74,10 @@ class HavenCtl(cmd.Cmd):
             'type'   : become_type
         }
 
-        packed = msgpack.packb(msg)
-        print("Sending message `{0}' (`{1}' bytes).".format(repr(packed), len(packed)))
-        print("msgpack.unpackb= " + str(msgpack.unpackb(packed)))
+        packed_msg = msgpack.packb(msg)
+        print("Sending message `{0}' (`{1}' bytes).".format(repr(packed_msg), len(packed_msg)))
 
-#        self.conn.send(
+        self.conn.send(packed_msg)
 
 
     def do_EOF(self, line):

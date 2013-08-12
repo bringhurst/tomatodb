@@ -26,6 +26,11 @@ class HavenConnection():
         if self.s is None:
             self.is_connected = False
 
+    def send(self, msg):
+        if not self.is_connected:
+            return False
+        self.s.sendall(msg)
+
     def disconnect(self):
         if self.s:
           self.s.close()

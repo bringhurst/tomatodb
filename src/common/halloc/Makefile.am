@@ -1,6 +1,6 @@
 include $(top_srcdir)/common.mk
 
-AM_CFLAGS += -I$(top_srcdir)/src/common/halloc
+AM_CPPFLAGS += -I$(top_srcdir)/src/common/halloc
 
 noinst_LTLIBRARIES = libhaven_common_halloc.la
 
