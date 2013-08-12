@@ -18,12 +18,61 @@
 #include "havend.h"
 
 #include "client_protocol.h"
+#include "connect_msg.h"
 
 /** The debug stream to write log messages to. */
 extern FILE* HVN_debug_stream;
 
 /** The log level to write messages for. */
 extern HVN_loglevel HVN_debug_level;
+
+int HVN_clnt_proto_pack(int type, \
+                        int scheme, \
+                        void* msg_struct, \
+                        size_t len, \
+                        unsigned char* msg)
+{
+    int result = HVN_SUCCESS;
+
+    switch(type) {
+        case HVN_CLNT_PROTO_MSG_TYPE_CONNECT:
+            return HVN_clnt_proto_pack_connect(msg_struct, scheme, len, msg);
+            break;
+        case HVN_CLNT_PROTO_MSG_TYPE_CONTROL:
+            LOG(HVN_LOG_WARN, "Pack not implemented for `%d'.", type);
+            break;
+        case HVN_CLNT_PROTO_MSG_TYPE_DATA:
+            LOG(HVN_LOG_WARN, "Pack not implemented for `%d'.", type);
+            break;
+        case HVN_CLNT_PROTO_MSG_TYPE_DISCOVER:
+            LOG(HVN_LOG_WARN, "Pack not implemented for `%d'.", type);
+            break;
+        case HVN_CLNT_PROTO_MSG_TYPE_HEARTBEAT:
+            LOG(HVN_LOG_WARN, "Pack not implemented for `%d'.", type);
+            break;
+        case HVN_CLNT_PROTO_MSG_TYPE_CONNECT_R:
+            return HVN_clnt_proto_pack_connect_resp(msg_struct, scheme, len, msg);
+            break;
+        case HVN_CLNT_PROTO_MSG_TYPE_CONTROL_R:
+            LOG(HVN_LOG_WARN, "Pack not implemented for `%d'.", type);
+            break;
+        case HVN_CLNT_PROTO_MSG_TYPE_DATA_R:
+            LOG(HVN_LOG_WARN, "Pack not implemented for `%d'.", type);
+            break;
+        case HVN_CLNT_PROTO_MSG_TYPE_DISCOVER_R:
+            LOG(HVN_LOG_WARN, "Pack not implemented for `%d'.", type);
+            break;
+        case HVN_CLNT_PROTO_MSG_TYPE_HEARTBEAT_R:
+            LOG(HVN_LOG_WARN, "Pack not implemented for `%d'.", type);
+            break;
+        default:
+            LOG(HVN_LOG_WARN, \
+                "Encountered an unknown message type of `%d' on pack operation. Skipping", type);
+            result = HVN_ERROR;
+    }
+
+    return result;
+}
 
 int HVN_clnt_proto_unpack(int type, \
                           int scheme, \
@@ -35,41 +84,42 @@ int HVN_clnt_proto_unpack(int type, \
 
     switch(type) {
         case HVN_CLNT_PROTO_MSG_TYPE_CONNECT:
+            return HVN_clnt_proto_unpack_connect(msg_struct, scheme, len, msg);
             break;
         case HVN_CLNT_PROTO_MSG_TYPE_CONTROL:
+            LOG(HVN_LOG_WARN, "Unpack not implemented for `%d'.", type);
             break;
         case HVN_CLNT_PROTO_MSG_TYPE_DATA:
+            LOG(HVN_LOG_WARN, "Unpack not implemented for `%d'.", type);
             break;
         case HVN_CLNT_PROTO_MSG_TYPE_DISCOVER:
+            LOG(HVN_LOG_WARN, "Unpack not implemented for `%d'.", type);
             break;
         case HVN_CLNT_PROTO_MSG_TYPE_HEARTBEAT:
+            LOG(HVN_LOG_WARN, "Unpack not implemented for `%d'.", type);
             break;
         case HVN_CLNT_PROTO_MSG_TYPE_CONNECT_R:
+            return HVN_clnt_proto_unpack_connect_resp(msg_struct, scheme, len, msg);
             break;
         case HVN_CLNT_PROTO_MSG_TYPE_CONTROL_R:
+            LOG(HVN_LOG_WARN, "Unpack not implemented for `%d'.", type);
             break;
         case HVN_CLNT_PROTO_MSG_TYPE_DATA_R:
+            LOG(HVN_LOG_WARN, "Unpack not implemented for `%d'.", type);
             break;
         case HVN_CLNT_PROTO_MSG_TYPE_DISCOVER_R:
+            LOG(HVN_LOG_WARN, "Unpack not implemented for `%d'.", type);
             break;
         case HVN_CLNT_PROTO_MSG_TYPE_HEARTBEAT_R:
+            LOG(HVN_LOG_WARN, "Unpack not implemented for `%d'.", type);
             break;
         default:
-           LOG(HVN_LOG_WARN, \
-               "Encountered an unknown message type of `%d'. Skipping", type);
-           result = HVN_ERROR;
+            LOG(HVN_LOG_WARN, \
+                "Encountered an unknown message type of `%d' on unpack operation. Skipping", type);
+            result = HVN_ERROR;
     }
 
     return result;
-}
-
-int HVN_clnt_proto_pack(int type, \
-                        int scheme, \
-                        void* msg_struct, \
-                        size_t len, \
-                        unsigned char* msg)
-{
-
 }
 
 /* EOF */
