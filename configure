@@ -17171,7 +17171,7 @@ done
 ac_config_files="$ac_config_files src/havenctl/setup.py"
 
 
-ac_config_files="$ac_config_files Makefile src/Makefile src/common/Makefile src/common/halloc/Makefile src/havenctl/Makefile src/havend/Makefile src/havend/state/Makefile src/havend/task/Makefile doc/Makefile doc/man/Makefile doc/man/man1/Makefile"
+ac_config_files="$ac_config_files Makefile src/Makefile src/common/Makefile src/common/halloc/Makefile src/havenctl/Makefile src/havend/Makefile src/havend/protocol/Makefile src/havend/state/Makefile src/havend/task/Makefile doc/Makefile doc/man/Makefile doc/man/man1/Makefile"
 
 
 cat >confcache <<\_ACEOF
@@ -18297,6 +18297,7 @@ do
     "src/common/halloc/Makefile") CONFIG_FILES="$CONFIG_FILES src/common/halloc/Makefile" ;;
     "src/havenctl/Makefile") CONFIG_FILES="$CONFIG_FILES src/havenctl/Makefile" ;;
     "src/havend/Makefile") CONFIG_FILES="$CONFIG_FILES src/havend/Makefile" ;;
+    "src/havend/protocol/Makefile") CONFIG_FILES="$CONFIG_FILES src/havend/protocol/Makefile" ;;
     "src/havend/state/Makefile") CONFIG_FILES="$CONFIG_FILES src/havend/state/Makefile" ;;
     "src/havend/task/Makefile") CONFIG_FILES="$CONFIG_FILES src/havend/task/Makefile" ;;
     "doc/Makefile") CONFIG_FILES="$CONFIG_FILES doc/Makefile" ;;
