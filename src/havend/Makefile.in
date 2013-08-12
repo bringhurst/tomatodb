@@ -100,7 +100,7 @@ am_havend_OBJECTS = routing.$(OBJEXT) connection.$(OBJEXT) \
 	server.$(OBJEXT) havend.$(OBJEXT)
 havend_OBJECTS = $(am_havend_OBJECTS)
 havend_DEPENDENCIES = ../common/libhaven_common.la \
-	protocol/libhaven_havend_protocol.la \
+	client_protocol/libhaven_havend_client_protocol.la \
 	state/libhaven_havend_state.la task/libhaven_havend_task.la
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -349,7 +349,7 @@ AM_CPPFLAGS = -std=gnu99 -ggdb -W -pedantic -Wall -Wextra -Wformat=2 \
 	-Wcast-align -Wstrict-prototypes -Wmissing-prototypes \
 	-Wredundant-decls -Winline -Wdisabled-optimization -Wshadow \
 	-Wwrite-strings -I$(top_srcdir) -I$(top_srcdir)/src/common
-SUBDIRS = protocol task state
+SUBDIRS = client_protocol task state
 havend_SOURCES = \
 		 routing.c \
 		 connection.c \
@@ -361,7 +361,7 @@ havend_SOURCES = \
 
 havend_LDADD = \
 		../common/libhaven_common.la \
-                protocol/libhaven_havend_protocol.la \
+                client_protocol/libhaven_havend_client_protocol.la \
 		state/libhaven_havend_state.la \
 		task/libhaven_havend_task.la
 

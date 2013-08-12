@@ -74,18 +74,18 @@ AC_CHECK_FUNCS([bzero gethostbyname gettimeofday memmove memset mkdir socket \
 AC_CONFIG_FILES([src/havenctl/setup.py], \
                 [chmod +x src/havenctl/setup.py])
 
-AC_CONFIG_FILES([Makefile                     \
-                 src/Makefile                 \
-                 src/common/Makefile          \
-                 src/common/halloc/Makefile   \
-                 src/havenctl/Makefile        \
-                 src/havend/Makefile          \
-                 src/havend/protocol/Makefile \
-                 src/havend/state/Makefile    \
-                 src/havend/task/Makefile     \
-                 doc/Makefile                 \
-                 doc/man/Makefile             \
-                 doc/man/man1/Makefile        \
+AC_CONFIG_FILES([Makefile                            \
+                 src/Makefile                        \
+                 src/common/Makefile                 \
+                 src/common/halloc/Makefile          \
+                 src/havenctl/Makefile               \
+                 src/havend/Makefile                 \
+                 src/havend/client_protocol/Makefile \
+                 src/havend/state/Makefile           \
+                 src/havend/task/Makefile            \
+                 doc/Makefile                        \
+                 doc/man/Makefile                    \
+                 doc/man/man1/Makefile               \
 ])
 
 AC_OUTPUT

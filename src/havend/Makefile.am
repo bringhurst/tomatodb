@@ -1,6 +1,6 @@
 include $(top_srcdir)/common.mk
 
-SUBDIRS = protocol task state
+SUBDIRS = client_protocol task state
 
 AM_CPPFLAGS += \
 	   -I$(top_srcdir) \
@@ -19,6 +19,6 @@ havend_SOURCES = \
 
 havend_LDADD = \
 		../common/libhaven_common.la \
-                protocol/libhaven_havend_protocol.la \
+                client_protocol/libhaven_havend_client_protocol.la \
 		state/libhaven_havend_state.la \
 		task/libhaven_havend_task.la
