@@ -17,4 +17,19 @@
  * limitations under the License.
  */
 
+#include <stdint.h>
+
+#define HVN_CONNECT_MAGIC 0xDECAFBAD
+
+typedef struct HVN_msg_client_connect_t {
+    uint32_t magic;
+    uint16_t version;
+} HVN_msg_client_connect_t;
+
+typedef struct HVN_msg_client_connect_resp_t {
+    uint8_t success;
+    uint8_t err_code;
+    uint16_t version;
+} HVN_msg_client_connect_t;
+
 #endif /* __HVN__HAVEND_CLIENT_PROTOCOL_CONNECT_MSG_H_ */
