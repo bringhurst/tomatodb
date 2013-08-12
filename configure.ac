@@ -52,7 +52,7 @@ Is uuid-dev installed? Try running 'sudo apt-get install uuid-dev'.])])
 AC_CHECK_HEADER_STDBOOL
 AC_CHECK_HEADERS([arpa/inet.h fcntl.h inttypes.h limits.h netdb.h \
                   netinet/in.h stdlib.h string.h strings.h sys/socket.h \
-                  sys/time.h unistd.h malloc.c stddef.h])
+                  sys/time.h unistd.h malloc.c stddef.h Python.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_CHECK_TYPES([ptrdiff_t])

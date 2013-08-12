@@ -2,9 +2,9 @@ include $(top_srcdir)/common.mk
 
 SUBDIRS = task state
 
-INCLUDES = \
-		   -I$(top_srcdir) \
-		   -I$(top_srcdir)/src/common
+AM_CFLAGS += \
+	   -I$(top_srcdir) \
+	   -I$(top_srcdir)/src/common
 
 bin_PROGRAMS = havend
 

@@ -11,10 +11,10 @@ include $(top_srcdir)/common.mk
 
 png: client.png consensus.png newbie.png
 
-INCLUDES = \
-           -I$(top_srcdir) \
-           -I$(top_srcdir)/src/common \
-           -I$(top_srcdir)/src/havend
+AM_CFLAGS += \
+	-I$(top_srcdir) \
+	-I$(top_srcdir)/src/common \
+	-I$(top_srcdir)/src/havend
 
 noinst_LTLIBRARIES = libhaven_havend_state.la
 

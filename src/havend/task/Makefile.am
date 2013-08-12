@@ -1,4 +1,4 @@
-INCLUDES = -I$(top_srcdir)/src/havend/task
+AM_CFLAGS = -I$(top_srcdir)/src/havend/task
 
 noinst_LTLIBRARIES = libhaven_havend_task.la
 
