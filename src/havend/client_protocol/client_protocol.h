@@ -19,6 +19,7 @@
 
 /* Overall protocol version. */
 #define HVN_CLIENT_PROTOCOL_VERSION          0x01
+#define HVN_CLIENT_PROTOCOL_MAGIC            0xDECAFBAD
 
 /* Message packing schemes. */
 #define HVN_CLNT_PROTO_PACK_TYPE_RAW         0x01
@@ -41,7 +42,7 @@
 int HVN_clnt_proto_pack(int type, \
                         int scheme, \
                         void* msg_struct, \
-                        size_t len, \
+                        size_t* len, \
                         unsigned char* msg);
 
 int HVN_clnt_proto_unpack(int type, \

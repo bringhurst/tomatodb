@@ -19,8 +19,6 @@
 
 #include <stdint.h>
 
-#define HVN_CONNECT_MAGIC 0xDECAFBAD
-
 typedef struct HVN_msg_client_connect_t {
     uint32_t magic;
     uint16_t version;
@@ -45,12 +43,12 @@ int HVN_clnt_proto_unpack_connect_resp(HVN_msg_client_connect_resp_t * data, \
 
 int HVN_clnt_proto_pack_connect(HVN_msg_client_connect_t* data, \
                                 int scheme, \
-                                size_t len, \
+                                size_t* len, \
                                 unsigned char* msg);
 
 int HVN_clnt_proto_pack_connect_resp(HVN_msg_client_connect_resp_t* data, \
                                      int scheme, \
-                                     size_t len, \
+                                     size_t* len, \
                                      unsigned char* msg);
 
 #endif /* __HVN__HAVEND_CLIENT_PROTOCOL_CONNECT_MSG_H_ */

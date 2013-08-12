@@ -22,6 +22,9 @@
 #include "task/task.h"
 #include "task/taskimpl.h"
 
+#include "client_protocol/client_protocol.h"
+#include "client_protocol/connect_msg.h"
+
 #include <msgpack.h>
 #include <stdbool.h>
 
@@ -59,23 +62,36 @@ extern HVN_loglevel HVN_debug_level;
 //
 void HVN_routing_task(HVN_router_t* router)
 {
-    LOG(HVN_LOG_INFO, "Started routing task.");
+    int pack_result, unpack_result;
+    size_t len = 0;
+    unsigned char msg[4096];
 
-    msgpack_object deserialized;
-    msgpack_zone mempool;
-    char buf[256];
+    HVN_msg_client_connect_t connect_msg_data_new;
+    HVN_msg_client_connect_t connect_msg_data_orig;
 
-    msgpack_zone_init(&mempool, 2048);
+    connect_msg_data_orig.magic = HVN_CLIENT_PROTOCOL_MAGIC;
+    connect_msg_data_orig.version = HVN_CLIENT_PROTOCOL_VERSION;
 
-    fdread(router->accept_fd, buf, 256);
-    msgpack_unpack(buf, buf[0], NULL, &mempool, &deserialized);
+    pack_result = HVN_clnt_proto_pack(HVN_CLNT_PROTO_MSG_TYPE_CONNECT,
+                                      HVN_CLNT_PROTO_PACK_TYPE_MSGPACK,
+                                      &connect_msg_data_orig, &len, msg);
 
-    LOG(HVN_LOG_INFO, "Recevied msg!");
-    msgpack_object_print(stdout, deserialized);
-    puts("");
-    LOG(HVN_LOG_INFO, "End received msg!");
+    unpack_result = HVN_clnt_proto_unpack(HVN_CLNT_PROTO_MSG_TYPE_CONNECT,
+                                          HVN_CLNT_PROTO_PACK_TYPE_MSGPACK,
+                                          &connect_msg_data_new, len, msg);
 
-    msgpack_zone_destroy(&mempool);
+    if(pack_result == HVN_SUCCESS) {
+        LOG(HVN_LOG_INFO, "Pack was successful.");
+    }
+
+    if(unpack_result == HVN_SUCCESS) {
+        LOG(HVN_LOG_INFO, "Unpack was successful.");
+    }
+
+    if(connect_msg_data_new.magic == connect_msg_data_orig.magic &&
+       connect_msg_data_new.version == connect_msg_data_orig.version) {
+        LOG(HVN_LOG_INFO, "Old and new connect msgs match.");
+    }
 
 /*****
     if(incoming_message_contains_server_uuid) {

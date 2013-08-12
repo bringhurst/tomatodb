@@ -41,7 +41,7 @@ int HVN_clnt_proto_unpack_connect_resp(HVN_msg_client_connect_resp_t * data, \
 
 int HVN_clnt_proto_pack_connect(HVN_msg_client_connect_t* data, \
                                 int scheme, \
-                                size_t len, \
+                                size_t* len, \
                                 unsigned char* msg)
 {
 
@@ -49,7 +49,7 @@ int HVN_clnt_proto_pack_connect(HVN_msg_client_connect_t* data, \
 
 int HVN_clnt_proto_pack_connect_resp(HVN_msg_client_connect_resp_t* data, \
                                      int scheme, \
-                                     size_t len, \
+                                     size_t* len, \
                                      unsigned char* msg)
 {
 

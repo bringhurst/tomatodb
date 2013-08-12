@@ -29,7 +29,7 @@ extern HVN_loglevel HVN_debug_level;
 int HVN_clnt_proto_pack(int type, \
                         int scheme, \
                         void* msg_struct, \
-                        size_t len, \
+                        size_t* len, \
                         unsigned char* msg)
 {
     int result = HVN_SUCCESS;
