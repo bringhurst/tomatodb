@@ -2,6 +2,7 @@ import signal
 import readline
 import cmd
 import shlex
+import msgpack
 
 from connection import HavenConnection
 
@@ -60,6 +61,21 @@ class HavenCtl(cmd.Cmd):
                 print("Connection to server failed.")
         else:
             print("You must specify a server with the connect command. Please see 'help connect'.")
+
+    def do_become(self, line):
+        become_type = 'location_leader'
+
+        msg = {
+            'action' : 'become',
+            'type'   : become_type
+        }
+
+        packed = msgpack.packb(msg)
+        print("Sending message `{0}' (`{1}' bytes).".format(repr(packed), len(packed)))
+        print("msgpack.unpackb= " + str(msgpack.unpackb(packed)))
+
+#        self.conn.send(
+
 
     def do_EOF(self, line):
         print("\nEncountered EOF. Exiting Haven daemon controller. Goodbye!")
