@@ -1,5 +1,5 @@
-#ifndef __HVN__HAVEND_CLIENT_PROTOCOL_HEARTBEAT_MSG_H_
-#define __HVN__HAVEND_CLIENT_PROTOCOL_HEARTBEAT_MSG_H_
+#ifndef __HVN__HAVEND_CLIENT_PROTOCOL_CLIENT_H_
+#define __HVN__HAVEND_CLIENT_PROTOCOL_CLIENT_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -17,4 +17,12 @@
  * limitations under the License.
  */
 
-#endif /* __HVN__HAVEND_CLIENT_PROTOCOL_HEARTBEAT_MSG_H_ */
+#define HVN_CLIENT_PROTOCOL_VERSION 0x01
+
+#include "connect_msg.h"
+#include "control_msg.h"
+#include "data_msg.h"
+#include "discover_msg.h"
+#include "heartbeat_msg.h"
+
+#endif /* __HVN__HAVEND_CLIENT_PROTOCOL_CLIENT_H_ */
