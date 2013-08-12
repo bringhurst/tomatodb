@@ -10,6 +10,7 @@ noinst_LTLIBRARIES = libhaven_havend_client_protocol.la
 libhaven_havend_client_protocol_la_LDFLAGS = $(LIB_LDFLAGS)
 
 libhaven_havend_client_protocol_la_SOURCES = \
+                                        client_protocol.c \
 					connect_msg.c \
 					control_msg.c \
 					data_msg.c \
