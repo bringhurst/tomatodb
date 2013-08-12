@@ -17,4 +17,12 @@
  * limitations under the License.
  */
 
+typedef struct HVN_msg_client_heartbeat_t {
+
+} HVN_msg_client_heartbeat_t;
+
+typedef struct HVN_msg_client_heartbeat_resp_t {
+
+} HVN_msg_client_heartbeat_resp_t;
+
 #endif /* __HVN__HAVEND_CLIENT_PROTOCOL_HEARTBEAT_MSG_H_ */

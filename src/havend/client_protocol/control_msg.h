@@ -17,4 +17,12 @@
  * limitations under the License.
  */
 
+typedef struct HVN_msg_client_control_t {
+
+} HVN_msg_client_control_t;
+
+typedef struct HVN_msg_client_control_resp_t {
+
+} HVN_msg_client_control_resp_t;
+
 #endif /* __HVN__HAVEND_CLIENT_PROTOCOL_CONTROL_MSG_H_ */
