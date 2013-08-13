@@ -64,33 +64,34 @@ void HVN_routing_task(HVN_router_t* router)
 {
     int pack_result, unpack_result;
     size_t len = 0;
-    unsigned char msg[4096];
+    char* msg;
 
-    HVN_msg_client_connect_t connect_msg_data_new;
-    HVN_msg_client_connect_t connect_msg_data_orig;
+    readfd
 
-    connect_msg_data_orig.magic = HVN_CLIENT_PROTOCOL_MAGIC;
-    connect_msg_data_orig.version = HVN_CLIENT_PROTOCOL_VERSION;
+    LOG(HVN_LOG_DBG, "Entered routing task.");
 
-    pack_result = HVN_clnt_proto_pack(HVN_CLNT_PROTO_MSG_TYPE_CONNECT,
-                                      HVN_CLNT_PROTO_PACK_TYPE_MSGPACK,
-                                      &connect_msg_data_orig, &len, msg);
+    HVN_msg_client_connect_t connect_msg_data;
 
-    unpack_result = HVN_clnt_proto_unpack(HVN_CLNT_PROTO_MSG_TYPE_CONNECT,
-                                          HVN_CLNT_PROTO_PACK_TYPE_MSGPACK,
-                                          &connect_msg_data_new, len, msg);
+//    connect_msg_data_orig.magic = HVN_CLIENT_PROTOCOL_MAGIC;
+//    connect_msg_data_orig.version = HVN_CLIENT_PROTOCOL_VERSION;
 
-    if(pack_result == HVN_SUCCESS) {
-        LOG(HVN_LOG_INFO, "Pack was successful.");
+    unpack_result = HVN_clnt_proto_unpack(HVN_CLNT_PROTO_MSG_TYPE_CONNECT, \
+                                          HVN_CLNT_PROTO_PACK_TYPE_MSGPACK, \
+                                          &connect_msg_data, len, &msg);
+
+
+    if(connect_msg_data.magic == HVN_CLIENT_PROTOCOL_MAGIC) {
+        LOG(HVN_LOG_DBG, "Incoming messsage has correct magic value.");
+    } else {
+        LOG(HVN_LOG_DBG, "Incoming messsage does not have the correct magic value.");
+        // TODO exit task
     }
 
-    if(unpack_result == HVN_SUCCESS) {
-        LOG(HVN_LOG_INFO, "Unpack was successful.");
-    }
-
-    if(connect_msg_data_new.magic == connect_msg_data_orig.magic &&
-       connect_msg_data_new.version == connect_msg_data_orig.version) {
-        LOG(HVN_LOG_INFO, "Old and new connect msgs match.");
+    if(connect_msg_data.version == HVN_CLIENT_PROTOCOL_VERSION) {
+        LOG(HVN_LOG_DBG, "Incoming messsage has correct version value.");
+    } else {
+        LOG(HVN_LOG_DBG, "Incoming messsage does not have the correct version value.");
+        // TODO exit task
     }
 
 /*****
@@ -110,6 +111,8 @@ void HVN_routing_task(HVN_router_t* router)
         //TODO: determine what the client is trying to do (1, 2, or 3).
     }
 *******/
+
+    free(msg);
     HVN_free_router(router);
 }
 
@@ -132,7 +135,7 @@ int HVN_listen_and_accept(HVN_ctx_t* ctx)
     while(*is_running) {
         accept_fd = netaccept(ctx->listen_fd, remote_addr, &remote_port);
         HVN_router_t* router = NULL;
-        
+
         if(HVN_init_router(&router, ctx, remote_addr, remote_port, accept_fd) != HVN_SUCCESS) {
             LOG(HVN_LOG_ERR, "Could not proper initialize a new connection router. Attempting to shut down.");
             *is_running = false;

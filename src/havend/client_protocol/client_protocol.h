@@ -43,12 +43,12 @@ int HVN_clnt_proto_pack(int type, \
                         int scheme, \
                         void* msg_struct, \
                         size_t* len, \
-                        unsigned char* msg);
+                        char** msg);
 
 int HVN_clnt_proto_unpack(int type, \
                           int scheme, \
                           void* msg_struct, \
                           size_t len, \
-                          unsigned char* msg);
+                          char* msg);
 
 #endif /* __HVN__HAVEND_CLIENT_PROTOCOL_CLIENT_H_ */

@@ -30,7 +30,7 @@ int HVN_clnt_proto_pack(int type, \
                         int scheme, \
                         void* msg_struct, \
                         size_t* len, \
-                        unsigned char* msg)
+                        char** msg)
 {
     int result = HVN_SUCCESS;
 
@@ -78,7 +78,7 @@ int HVN_clnt_proto_unpack(int type, \
                           int scheme, \
                           void* msg_struct, \
                           size_t len, \
-                          unsigned char* msg)
+                          char* msg)
 {
     int result = HVN_SUCCESS;
 
