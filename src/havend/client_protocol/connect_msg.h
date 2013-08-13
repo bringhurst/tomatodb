@@ -31,15 +31,15 @@ typedef struct HVN_msg_client_connect_resp_t {
 } HVN_msg_client_connect_resp_t;
 
 int HVN_clnt_proto_pack_connect_msgpack(HVN_msg_client_connect_t* data, \
-                                        size_t len, \
+                                        size_t* len, \
                                         unsigned char* msg);
 int HVN_clnt_proto_unpack_connect_msgpack(HVN_msg_client_connect_t* data, \
                                           size_t len, \
                                           unsigned char* msg);
-int HVN_clnt_proto_pack_connect_resp_msgpack(HVN_msg_client_connect_t* data, \
-                                             size_t len, \
+int HVN_clnt_proto_pack_connect_resp_msgpack(HVN_msg_client_connect_resp_t* data, \
+                                             size_t* len, \
                                              unsigned char* msg);
-int HVN_clnt_proto_unpack_connect_resp_msgpack(HVN_msg_client_connect_t* data, \
+int HVN_clnt_proto_unpack_connect_resp_msgpack(HVN_msg_client_connect_resp_t* data, \
                                                size_t len, \
                                                unsigned char* msg);
 
