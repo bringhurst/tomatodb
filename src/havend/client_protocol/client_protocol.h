@@ -39,6 +39,8 @@
 #define HVN_CLNT_PROTO_MSG_TYPE_DISCOVER_R   0x0D
 #define HVN_CLNT_PROTO_MSG_TYPE_HEARTBEAT_R  0x0F
 
+#include "msgpack_helper.h"
+
 int HVN_clnt_proto_pack(int type, \
                         int scheme, \
                         void* msg_struct, \
