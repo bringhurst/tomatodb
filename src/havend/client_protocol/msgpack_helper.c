@@ -38,7 +38,7 @@ int HVN_msgpack_fdread(int fd, size_t* len, char** msg)
     }
 
     *len = htonl(*len);
-    LOG(HVN_LOG_DBG, "Length of incoming msgpack message is `%zu'.", *len);
+    LOG(HVN_LOG_DBG, "Length of incoming msgpack message is `%zu'+4.", *len);
 
     // FIXME: check packed_len for sanity and max record length.
     
