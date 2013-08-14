@@ -77,8 +77,12 @@ int HVN_fdwriten(int fd, char* buf, size_t len)
         if ( (rc = fdwrite(fd, buf, len)) <= 0) {
             if (rc < 0 && errno == EINTR) {
                 rc = 0;
+            } else if (rc < 0 && errno == EPIPE) {
+                LOG(HVN_LOG_ERR, "The client unexpectedly disconnected.");
+                return HVN_ERROR;
             } else {
-                LOG(HVN_LOG_ERR, "An error occurred while writing to the socket. Zero length.");
+                LOG(HVN_LOG_ERR, "An error occurred while writing to the socket (errno=%d). %s", \
+                        errno, strerror(errno));
                 return HVN_ERROR;
             }
         }
@@ -104,7 +108,8 @@ int HVN_fdreadn(int fd, char* buf, size_t len)
                 continue;
             }
 
-            LOG(HVN_LOG_ERR, "An error occurred while reading from the socket (errno=%d). %s", errno, strerror(errno));
+            LOG(HVN_LOG_ERR, "An error occurred while reading from the socket (errno=%d). %s", \
+                    errno, strerror(errno));
             return HVN_ERROR;
         }
 
