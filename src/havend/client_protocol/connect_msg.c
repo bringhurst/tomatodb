@@ -57,16 +57,19 @@ int HVN_clnt_proto_unpack_connect_msgpack(HVN_msg_client_connect_t* data, \
                                           size_t len, \
                                           char* msg)
 {
-    msgpack_zone mempool;
-    msgpack_zone_init(&mempool, 2048);
+    msgpack_unpacked unpacked;
+    msgpack_unpacked_init(&unpacked);
 
-    msgpack_object deserialized;
-    msgpack_unpack(msg, len, NULL, &mempool, &deserialized);
+    if(msgpack_unpack_next(&unpacked, msg, len, NULL)) {
+        msgpack_object root = unpacked.data;
 
-    msgpack_object_print(stdout, deserialized);
-    puts("");
+        if(root.type == MSGPACK_OBJECT_ARRAY && root.via.array.size == 2) {
+            data->magic = root.via.array.ptr[0].via.u64;
+            data->version = root.via.array.ptr[1].via.u64;
+        }
+    }
 
-    msgpack_zone_destroy(&mempool);
+    msgpack_unpacked_destroy(&unpacked);
     return HVN_SUCCESS;
 }
 

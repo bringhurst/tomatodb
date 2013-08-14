@@ -84,17 +84,15 @@ void HVN_routing_task(HVN_router_t* router)
 
 
     if(connect_msg_data.magic == HVN_CLIENT_PROTOCOL_MAGIC) {
-        LOG(HVN_LOG_DBG, "Incoming messsage has correct magic value.");
+        LOG(HVN_LOG_DBG, "Incoming messsage has the correct magic value.");
     } else {
-        LOG(HVN_LOG_DBG, "Incoming messsage does not have the correct magic value.");
-        taskexit(HVN_ERROR);
+        LOG(HVN_LOG_DBG, "Incoming messsage does not have the correct magic value (found `%08X').", connect_msg_data.magic);
     }
 
     if(connect_msg_data.version == HVN_CLIENT_PROTOCOL_VERSION) {
-        LOG(HVN_LOG_DBG, "Incoming messsage has correct version value.");
+        LOG(HVN_LOG_DBG, "Incoming messsage has the correct version value.");
     } else {
-        LOG(HVN_LOG_DBG, "Incoming messsage does not have the correct version value.");
-        taskexit(HVN_ERROR);
+        LOG(HVN_LOG_DBG, "Incoming messsage does not have the correct version value (found `%d').", connect_msg_data.version);
     }
 
 /*****
