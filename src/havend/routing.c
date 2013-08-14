@@ -62,37 +62,9 @@ extern HVN_loglevel HVN_debug_level;
 //
 void HVN_routing_task(HVN_router_t* router)
 {
-    int pack_result, unpack_result;
-    size_t len = 0;
-    char* msg;
-
-    LOG(HVN_LOG_DBG, "Entered routing task with fd `%d'.", router->accept_fd);
-
-    HVN_msg_client_connect_t connect_msg_data;
-
-    if(HVN_msgpack_fdread(router->accept_fd, &len, &msg) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Failed to read a connect message while routing.");
+    if(HVN_proto_handle_connect_msg(router->accept_fd) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Did not receive a valid connect message while routing.");
         taskexit(HVN_ERROR);
-    }
-
-//    connect_msg_data_orig.magic = HVN_CLIENT_PROTOCOL_MAGIC;
-//    connect_msg_data_orig.version = HVN_CLIENT_PROTOCOL_VERSION;
-
-    unpack_result = HVN_clnt_proto_unpack(HVN_CLNT_PROTO_MSG_TYPE_CONNECT, \
-                                          HVN_CLNT_PROTO_PACK_TYPE_MSGPACK, \
-                                          &connect_msg_data, len, msg);
-
-
-    if(connect_msg_data.magic == HVN_CLIENT_PROTOCOL_MAGIC) {
-        LOG(HVN_LOG_DBG, "Incoming messsage has the correct magic value.");
-    } else {
-        LOG(HVN_LOG_DBG, "Incoming messsage does not have the correct magic value (found `%08X').", connect_msg_data.magic);
-    }
-
-    if(connect_msg_data.version == HVN_CLIENT_PROTOCOL_VERSION) {
-        LOG(HVN_LOG_DBG, "Incoming messsage has the correct version value.");
-    } else {
-        LOG(HVN_LOG_DBG, "Incoming messsage does not have the correct version value (found `%d').", connect_msg_data.version);
     }
 
 /*****
@@ -113,7 +85,6 @@ void HVN_routing_task(HVN_router_t* router)
     }
 *******/
 
-    free(msg);
     HVN_free_router(router);
 
     taskexit(HVN_SUCCESS);
