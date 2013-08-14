@@ -28,26 +28,66 @@ extern FILE* HVN_debug_stream;
 /** The log level to write messages for. */
 extern HVN_loglevel HVN_debug_level;
 
+int HVN_msgpack_fdwrite(int fd, size_t len, char* msg)
+{
+    size_t net_len = htonl(len);
+
+    if(HVN_fdwriten(fd, (char*) &net_len, sizeof(uint32_t)) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Failed to write the length of a msgpack message.");
+        return HVN_ERROR;
+    }
+
+    if(HVN_fdwriten(fd, msg, len) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Failed to write a msgpack message.");
+        return HVN_ERROR;
+    }
+
+    LOG(HVN_LOG_INFO, "Got past fdwriten.");
+
+    return HVN_SUCCESS;
+}
+
 int HVN_msgpack_fdread(int fd, size_t* len, char** msg)
 {
-    LOG(HVN_LOG_DBG, "Entering HVN_msgpack_fdread with fd `%d'.", fd);
-
     if(HVN_fdreadn(fd, (char*) len, sizeof(uint32_t)) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to read the length of a msgpack message.");
         return HVN_ERROR;
     }
 
-    *len = htonl(*len);
+    *len = ntohl(*len);
     LOG(HVN_LOG_DBG, "Length of incoming msgpack message is `%zu'+4.", *len);
 
-    // FIXME: check packed_len for sanity and max record length.
-    
     *msg = (char*) malloc(sizeof(char) * *len);
     
     if(HVN_fdreadn(fd, *msg, *len) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to read a msgpack message.");
         return HVN_ERROR;
     }
+
+    return HVN_SUCCESS;
+}
+
+int HVN_fdwriten(int fd, char* buf, size_t len)
+{
+    int rc;
+
+    LOG(HVN_LOG_INFO, "Entered HVN_fdwriten fd=%d, buf=`%s', len=`%zu'.", fd, buf, len);
+
+    while (len > 0) {
+        if ( (rc = fdwrite(fd, buf, len)) <= 0) {
+            if (rc < 0 && errno == EINTR) {
+                rc = 0;
+            } else {
+                LOG(HVN_LOG_ERR, "An error occurred while writing to the socket. Zero length.");
+                return HVN_ERROR;
+            }
+        }
+
+        len -= rc;
+        buf += rc;
+    }
+
+    LOG(HVN_LOG_INFO, "Leaving HVN_fdwriten.");
 
     return HVN_SUCCESS;
 }
@@ -69,7 +109,7 @@ int HVN_fdreadn(int fd, char* buf, size_t len)
         }
 
         if(rc == 0) {
-            LOG(HVN_LOG_ERR, "An error occurred while reading from the socket. Unexpected message truncation.");
+            LOG(HVN_LOG_ERR, "An error occurred while reading from the socket. Unexpected EOF.");
             return HVN_ERROR;
         }
 

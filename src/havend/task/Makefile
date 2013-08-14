@@ -255,7 +255,10 @@ target_alias =
 top_build_prefix = ../../../
 top_builddir = ../../..
 top_srcdir = ../../..
-AM_CFLAGS = -I$(top_srcdir)/src/havend/task
+AM_CPPFLAGS = \
+			  -I$(top_srcdir) \
+              -I$(top_srcdir)/src/havend/task
+
 noinst_LTLIBRARIES = libhaven_havend_task.la
 libhaven_havend_task_la_LDFLAGS = $(LIB_LDFLAGS)
 libhaven_havend_task_la_SOURCES = \

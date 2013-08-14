@@ -1,6 +1,12 @@
 #include "taskimpl.h"
 #include <fcntl.h>
 
+#include "config.h"
+
+#ifdef HAVE_MSG_NOSIGNAL
+ #include <sys/types.h>
+ #include <sys/socket.h>
+#endif
 
 static Tasklist sleeping;
 static int sleepingcounted;
@@ -281,7 +287,12 @@ fdwrite(int fd, void *buf, int n)
 	int m, tot;
 	
 	for(tot=0; tot<n; tot+=m){
+#ifdef HAVE_MSG_NOSIGNAL
+        printf("calling send\n");
+		while((m=send(fd, (char*)buf+tot, n-tot, MSG_NOSIGNAL)) < 0 && errno == EAGAIN)
+#else
 		while((m=write(fd, (char*)buf+tot, n-tot)) < 0 && errno == EAGAIN)
+#endif
 			fdwait(fd, 'w');
 		if(m < 0)
 			return m;

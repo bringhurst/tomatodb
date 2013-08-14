@@ -20,6 +20,9 @@
 #include <stddef.h>
 
 int HVN_msgpack_fdread(int fd, size_t* len, char** msg);
+int HVN_msgpack_fdwrite(int fd, size_t len, char* msg);
+
 int HVN_fdreadn(int fd, char* buf, size_t len);
+int HVN_fdwriten(int fd, char* buf, size_t len);
 
 #endif /* __HVN__HAVEND_CLIENT_PROTOCOL_MSGPACK_HELPER_H_ */

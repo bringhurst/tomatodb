@@ -77,7 +77,23 @@ int HVN_clnt_proto_pack_connect_resp_msgpack(HVN_msg_client_connect_resp_t* data
                                              size_t* len, \
                                              char** msg)
 {
-    return HVN_ERROR;
+    msgpack_sbuffer sbuf;
+    msgpack_sbuffer_init(&sbuf);
+
+    msgpack_packer pck;
+    msgpack_packer_init(&pck, &sbuf, msgpack_sbuffer_write);
+    msgpack_pack_array(&pck, 3);
+
+    msgpack_pack_uint8(&pck, data->success);
+    msgpack_pack_uint8(&pck, data->err_code);
+    msgpack_pack_uint8(&pck, data->version);
+
+    *len = sbuf.size;
+    *msg = (char*) malloc(sizeof(char) * sbuf.size);
+    memcpy(*msg, sbuf.data, sbuf.size);
+
+    msgpack_sbuffer_destroy(&sbuf);
+    return HVN_SUCCESS;
 }
 
 int HVN_clnt_proto_unpack_connect_resp_msgpack(HVN_msg_client_connect_resp_t* data, \
@@ -199,7 +215,24 @@ int HVN_proto_receive_connect_msg(int fd)
 
 int HVN_proto_send_connect_resp_msg(int fd)
 {
-    return HVN_ERROR;
+    HVN_msg_client_connect_resp_t connect_resp_msg_data;
+    size_t len = 0;
+    char* msg;
+
+    if(HVN_clnt_proto_pack(HVN_CLNT_PROTO_MSG_TYPE_CONNECT_R, \
+                             HVN_CLNT_PROTO_PACK_TYPE_MSGPACK, \
+                             &connect_resp_msg_data, &len, &msg) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Failed to pack a connect message response.");
+        return HVN_ERROR;
+    }
+
+    if(HVN_msgpack_fdwrite(fd, len, msg) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Failed to write a connect message to the socket.");
+        return HVN_ERROR;
+    }
+
+    free(msg);
+    return HVN_SUCCESS;
 }
 
 int HVN_proto_handle_connect_msg(int fd)

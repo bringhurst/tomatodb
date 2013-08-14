@@ -65,12 +65,23 @@ AC_TYPE_UINT32_T
 AC_TYPE_UINT8_T
 AC_C_INLINE
 
+# Check for MSG_NOSIGNAL to ignore SIGPIPE.
+AC_MSG_CHECKING(for MSG_NOSIGNAL)
+AC_TRY_COMPILE([#include <sys/socket.h>],
+               [int flag = MSG_NOSIGNAL;],
+               [AC_MSG_RESULT(yes)
+                 AC_DEFINE(HAVE_MSG_NOSIGNAL, 1,
+                           [Define this symbol if you have MSG_NOSIGNAL]) ],
+               [AC_MSG_RESULT(no)]
+)
+
 # Checks for library functions.
 AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 AC_CHECK_FUNCS([bzero gethostbyname gettimeofday memmove memset mkdir socket \
                 strcasecmp strerror strrchr strtoul strdup])
 
+# Generate the config files.
 AC_CONFIG_FILES([src/havenctl/setup.py], \
                 [chmod +x src/havenctl/setup.py])
 

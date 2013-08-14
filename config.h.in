@@ -52,6 +52,9 @@
 /* Define to 1 if you have the `mkdir' function. */
 #undef HAVE_MKDIR
 
+/* Define this symbol if you have MSG_NOSIGNAL */
+#undef HAVE_MSG_NOSIGNAL
+
 /* Define to 1 if you have the <netdb.h> header file. */
 #undef HAVE_NETDB_H
 

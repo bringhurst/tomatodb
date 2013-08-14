@@ -67,6 +67,8 @@ void HVN_routing_task(HVN_router_t* router)
         taskexit(HVN_ERROR);
     }
 
+    LOG(HVN_LOG_DBG, "Connect handshake completed.");
+
 /*****
     if(incoming_message_contains_server_uuid) {
         HVN_server_t* server = NULL;
@@ -100,8 +102,12 @@ int HVN_listen_and_accept(HVN_ctx_t* ctx)
 
     *is_running = true;
 
-    // TODO
+    // FIXME: clean up signal blocking
     //HVN_handle_shutdown_signals(is_running);
+    struct sigaction sa;
+    memset(&sa, 0, sizeof sa);
+    sa.sa_handler = SIG_IGN;
+    sigaction(SIGPIPE, &sa, NULL);
 
     ctx->listen_fd = netannounce(TCP, ctx->listen_addr, ctx->listen_port);
 

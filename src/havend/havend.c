@@ -14,22 +14,12 @@
  * limitations under the License.
  */
 
-#include <limits.h>
-#include <unistd.h>
 #include <getopt.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netdb.h>
-#include <string.h>
-#include <ctype.h>
 
 #include "config.h"
 #include "havend.h"
 #include "log.h"
 
-#include "common.h"
-#include "consensus.h"
-#include "database.h"
 #include "routing.h"
 #include "settings.h"
 
@@ -81,6 +71,11 @@ void HVN_print_usage()
            "              [-a <addr> | --listen-address=<addr>]\n"
            "              [-p <port> | --listen-port=<port>]\n");
     fflush(stdout);
+}
+
+void HVN_install_signal_handlers(void)
+{
+    //FIXME: install signal handlers
 }
 
 int HVN_handle_havend_cli_args(HVN_ctx_t* ctx, int argc, char* argv[])
@@ -191,6 +186,8 @@ void taskmain(int argc, char* argv[])
 
     LOG(HVN_LOG_INFO, "Hello! %s-%s is starting up.", \
         PACKAGE_NAME, PACKAGE_VERSION);
+
+    HVN_install_signal_handlers();
 
     if(HVN_context_init(&ctx) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Could not allocate the primary context.");
