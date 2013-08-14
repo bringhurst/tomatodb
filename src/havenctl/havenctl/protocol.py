@@ -28,6 +28,11 @@ class HavenProtocol():
         ])
         self.send(msg, conn)
 
+    def recv_connect(self, conn):
+        msg = self.recv(conn)
+        unpacker = msgpack.Unpacker(msg)
+        print("Contents of received connect msg: " + str(unpacker))
+
     def send_control(self, conn):
         print "not implemented"
 
@@ -39,6 +44,11 @@ class HavenProtocol():
 
     def send_heartbeat(self, conn):
         print "not implemented"
+
+    def recv(self, conn):
+        msg_len = struct.unpack("<L", conn.recv(4))[0]
+        msg = conn.recv(msg_len)
+        print("Received message of `{0}' (`{1}+4' bytes).".format(repr(msg), len(msg)))
 
     def send(self, msg, conn):
         print("Sending message `{0}' (`{1}+4' bytes).".format(repr(msg), len(msg)))

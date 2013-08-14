@@ -29,6 +29,11 @@ class HavenConnection():
         if self.s is None:
             self.is_connected = False
 
+    def recv(self, length):
+        if not self.is_connected:
+            return False
+        return self.s.recv(length)
+
     def send(self, msg):
         if not self.is_connected:
             return False
