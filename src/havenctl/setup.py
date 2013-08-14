@@ -10,6 +10,7 @@ setup (
     url                = 'http://bringhurst.org/haven',
     scripts            = ['havenctl/bin/havenctl'],
     description        = 'A utility to control a haven daemon.',
+    install_requires   = ['msgpack-python == 0.3.0'],
     packages           = find_packages(),
 )
 

@@ -79,7 +79,6 @@ class HavenCtl(cmd.Cmd):
 
         self.conn.send(packed_msg)
 
-
     def do_EOF(self, line):
         print("\nEncountered EOF. Exiting Haven daemon controller. Goodbye!")
         return True
