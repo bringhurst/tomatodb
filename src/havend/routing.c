@@ -72,7 +72,7 @@ void HVN_routing_task(HVN_router_t* router)
 
     if(HVN_msgpack_fdread(router->accept_fd, &len, &msg) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to read a connect message while routing.");
-        return;
+        taskexit(HVN_ERROR);
     }
 
 //    connect_msg_data_orig.magic = HVN_CLIENT_PROTOCOL_MAGIC;
@@ -87,14 +87,14 @@ void HVN_routing_task(HVN_router_t* router)
         LOG(HVN_LOG_DBG, "Incoming messsage has correct magic value.");
     } else {
         LOG(HVN_LOG_DBG, "Incoming messsage does not have the correct magic value.");
-        // TODO exit task
+        taskexit(HVN_ERROR);
     }
 
     if(connect_msg_data.version == HVN_CLIENT_PROTOCOL_VERSION) {
         LOG(HVN_LOG_DBG, "Incoming messsage has correct version value.");
     } else {
         LOG(HVN_LOG_DBG, "Incoming messsage does not have the correct version value.");
-        // TODO exit task
+        taskexit(HVN_ERROR);
     }
 
 /*****
@@ -117,6 +117,8 @@ void HVN_routing_task(HVN_router_t* router)
 
     free(msg);
     HVN_free_router(router);
+
+    taskexit(HVN_SUCCESS);
 }
 
 // This is where we'll listen and accept for connections so we can launch
@@ -133,11 +135,23 @@ int HVN_listen_and_accept(HVN_ctx_t* ctx)
     //HVN_handle_shutdown_signals(is_running);
 
     ctx->listen_fd = netannounce(TCP, ctx->listen_addr, ctx->listen_port);
+
+    if(fdnoblock(ctx->listen_fd) < 0) {
+        LOG(HVN_LOG_ERR, "Failed to set the listening socket to non-blocking.");
+        return HVN_ERROR;
+    }
+
     LOG(HVN_LOG_INFO, "Listening on `%s:%d'.", ctx->listen_addr, ctx->listen_port);
 
     while(*is_running) {
         accept_fd = netaccept(ctx->listen_fd, remote_addr, &remote_port);
         HVN_router_t* router = NULL;
+
+        if(accept_fd < 0) {
+            LOG(HVN_LOG_ERR, "Failed to accept a new connection. Attempting to shut down.");
+            *is_running = false;
+            break;
+        }
 
         if(HVN_init_router(&router, ctx, remote_addr, remote_port, accept_fd) != HVN_SUCCESS) {
             LOG(HVN_LOG_ERR, "Could not proper initialize a new connection router. Attempting to shut down.");
@@ -145,7 +159,6 @@ int HVN_listen_and_accept(HVN_ctx_t* ctx)
             break;
         }
         taskcreate((void (*)(void*))HVN_routing_task, router, HVN_ROUTER_STACK_SIZE);
-        taskswitch();
     }
 
     free(is_running);
