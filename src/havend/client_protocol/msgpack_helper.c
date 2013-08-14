@@ -28,25 +28,23 @@ extern FILE* HVN_debug_stream;
 /** The log level to write messages for. */
 extern HVN_loglevel HVN_debug_level;
 
-int HVN_msgpack_fdwrite(int fd, size_t* len, char** msg)
-{
-
-}
-
 int HVN_msgpack_fdread(int fd, size_t* len, char** msg)
 {
-    uint32_t packed_len;
+    LOG(HVN_LOG_DBG, "Entering HVN_msgpack_fdread with fd `%d'.", fd);
 
-    if(HVN_fdreadn(fd, (char*) &packed_len, sizeof(uint32_t)) != HVN_SUCCESS) {
+    if(HVN_fdreadn(fd, (char*) len, sizeof(uint32_t)) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to read the length of a msgpack message.");
         return HVN_ERROR;
     }
 
+    *len = htonl(*len);
+    LOG(HVN_LOG_DBG, "Length of incoming msgpack message is `%zu'.", *len);
+
     // FIXME: check packed_len for sanity and max record length.
     
-    *msg = (char*) malloc(sizeof(char) * packed_len);
+    *msg = (char*) malloc(sizeof(char) * *len);
     
-    if(HVN_fdreadn(fd, msg, packed_len) != HVN_SUCCESS) {
+    if(HVN_fdreadn(fd, *msg, *len) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to read a msgpack message.");
         return HVN_ERROR;
     }
@@ -66,7 +64,7 @@ int HVN_fdreadn(int fd, char* buf, size_t len)
                 continue;
             }
 
-            LOG(HVN_LOG_ERR, "An error occurred while reading from the socket. %s", strerror(errno));
+            LOG(HVN_LOG_ERR, "An error occurred while reading from the socket (errno=%d). %s", errno, strerror(errno));
             return HVN_ERROR;
         }
 

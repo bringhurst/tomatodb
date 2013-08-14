@@ -19,7 +19,6 @@
 
 #include <stddef.h>
 
-int HVN_msgpack_fdwrite(int fd, size_t* len, char** msg);
 int HVN_msgpack_fdread(int fd, size_t* len, char** msg);
 int HVN_fdreadn(int fd, char* buf, size_t len);
 

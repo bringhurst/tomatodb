@@ -5,6 +5,7 @@ import shlex
 import msgpack
 
 from connection import HavenConnection
+from protocol import HavenProtocol
 
 PROMPT_DISCONNECTED = "havenctl([NOT CONNECTED])> "
 
@@ -19,6 +20,7 @@ class HavenCtl(cmd.Cmd):
                       " **** Welcome to havenctl 0.0.1-alpha.1\n" \
                       " **** Type help or ? to list available commands.\n" \
                       " ****\n"
+        self.proto = HavenProtocol()
         self.conn = None
 
     def do_disconnect(self, line):
@@ -53,6 +55,7 @@ class HavenCtl(cmd.Cmd):
             self.prompt = PROMPT_DISCONNECTED
             self.conn = HavenConnection()
             self.conn.connect(server, port)
+            self.proto.send_connect(self.conn)
 
             if self.conn.is_connected:
                 print("Connection established to `" + server + ":" + str(port) + "'.")

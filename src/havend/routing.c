@@ -66,7 +66,7 @@ void HVN_routing_task(HVN_router_t* router)
     size_t len = 0;
     char* msg;
 
-    LOG(HVN_LOG_DBG, "Entered routing task.");
+    LOG(HVN_LOG_DBG, "Entered routing task with fd `%d'.", router->accept_fd);
 
     HVN_msg_client_connect_t connect_msg_data;
 
