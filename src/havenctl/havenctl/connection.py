@@ -10,6 +10,9 @@ class HavenConnection():
         self.s = None
         self.is_connected = False
 
+    def __del__(self):
+        self.disconnect()
+
     def connect(self, server, port):
         self.addr = server
         self.port = port
@@ -33,5 +36,6 @@ class HavenConnection():
 
     def disconnect(self):
         if self.s:
-          self.s.close()
+            print("Disconnecting from `" + str(self.addr) + ":" + str(self.port) + "'.")
+            self.s.close()
         self.is_connected = False
