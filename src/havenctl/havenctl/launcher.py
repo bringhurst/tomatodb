@@ -53,6 +53,10 @@ def handle_user_args(address, port, cmd):
         repl.onecmd("connect " + str(address) + " " + str(port))
 
     if(cmd):
-        repl.onecmd(cmd)
+        # When in non-REPL mode, we connect automatically.
+        if cmd.strip().startswith("connect"):
+            return
+        else:
+            repl.onecmd(cmd)
     else:
         repl.cmdloop()
