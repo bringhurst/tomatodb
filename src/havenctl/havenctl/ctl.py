@@ -55,10 +55,10 @@ class HavenCtl(cmd.Cmd):
             self.prompt = PROMPT_DISCONNECTED
             self.conn = HavenConnection()
             self.conn.connect(server, port)
-            self.proto.send_connect(self.conn)
 
             if self.conn.is_connected:
                 print("Connection established to `" + server + ":" + str(port) + "'.")
+                self.proto.send_connect(self.conn)
                 self.prompt = "havenctl(" + server + ":" + str(port) + ")> "
             else:
                 print("Connection to server failed.")
