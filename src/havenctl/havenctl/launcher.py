@@ -12,6 +12,8 @@ def print_usage():
     print """
 Usage: havenctl [-a <remote_address> | --address=<remote_address>]
                 [-p <remote_port> | --port=<remote_port>] [-hv] cmd
+
+       For more information on available commands, use the 'help' command.
     """
 
 def execute_from_command_line():

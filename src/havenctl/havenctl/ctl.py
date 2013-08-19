@@ -66,7 +66,7 @@ class HavenCtl(cmd.Cmd):
         else:
             print("You must specify a server with the connect command. Please see 'help connect'.")
 
-    def do_become(self, line):
+    def do_control(self, line):
         if self.conn is None or not self.conn.is_connected:
             print("You must be connected to a server to issue the become command.");
             return False
@@ -82,6 +82,15 @@ class HavenCtl(cmd.Cmd):
         print("Sending message `{0}' (`{1}' bytes).".format(repr(packed_msg), len(packed_msg)))
 
         self.conn.send(packed_msg)
+
+    def do_data(self, line):
+        print("The data command is not implemented yet. Sorry!")
+
+    def do_discover(self, line):
+        print("The discover command is not implemented yet. Sorry!")
+
+    def do_heartbeat(self, line):
+        print("The heartbeat command is not implemented yet. Sorry!")
 
     def do_EOF(self, line):
         print("\nEncountered EOF. Exiting Haven daemon controller. Goodbye!")
