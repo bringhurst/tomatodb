@@ -7,6 +7,8 @@ import msgpack
 from connection import HavenConnection
 from protocol import HavenProtocol
 
+from command_connect import CommandConnect
+
 PROMPT_DISCONNECTED = "havenctl([NOT CONNECTED])> "
 
 class HavenCtl(cmd.Cmd):
@@ -23,6 +25,69 @@ class HavenCtl(cmd.Cmd):
         self.proto = HavenProtocol()
         self.conn = None
 
+    def do_connect(self, line):
+        """
+        connect <server> [port]
+            Connect to the specified server and port (default 7854).
+        """
+        CommandConnect.handle(self, line)
+
+    def do_control(self, line):
+        """
+        control <state> [args]
+            Transition the remote server into the specified state and function.
+       
+            States:
+                'exit <destroy>'  - Tell the remote server to exit. If destroy is 'true', delete the tablet.
+                'follower <uuid>' - Follow the quorum (or lonely leader) with the specified uuid.
+                'leader <path>'   - Create a new generic leader for the specified path.
+                'location'        - Create a new location leader.
+                'proxy'           - Become a proxy for end user client commands.
+                'router'          - Become idle until transitioned into another state.
+        """
+        CommandControl.handle(self, line)
+
+    def do_data(self, line):
+        """
+        data [<verb> | <transaction control>] [args]
+            Perform actions related to stored keys and values.
+
+            Verbs:
+                'read <key> [<mode>]' - Read the data at key. Mode is required outside of transactions.
+                'write <key> <value>' - In a transaction, write the value at the key location.
+                'delete <key>' - In a transaction, delete the specified key.
+                'watch <key>' - Begin watching the specified key value for changes.
+                'unwatch <key>' - Stop watching the specified key.
+
+            Transaction control:
+                'transaction abort' - Abort the current transaction.
+                'transaction commit' - Perform the current transaction.
+                'transaction end' - End the current transaction if the commit buffer is empty.
+                'transaction start <mode>' - Begin a transaction with the specified mode.
+
+            Transaction modes:
+                'read_write' - The transaction may include read and write operations.
+                'read_only' - The transaction may only include read operations.
+
+            Read modes:
+                'read_bounded <age>' - Ensure data returned is newer than the specified age.
+                'read_timestamp <earliest> <latest>' - Ensure data is bounded by the specified timestamps.
+              
+        """
+        CommandData.handle(self, line)
+
+    def do_discover(self, line):
+        """
+        discover TODO
+        """
+        CommandDiscover.handle(self, line)
+
+    def do_heartbeat(self, line):
+        """
+        heartbeat TODO
+        """
+        CommandHeartbeat.handle(self, line)
+
     def do_disconnect(self, line):
         """
         disconnect
@@ -33,64 +98,6 @@ class HavenCtl(cmd.Cmd):
         else:
             print("Not currently connected to a server. Please see 'help disconnect'.")
         self.prompt = PROMPT_DISCONNECTED
-
-    def do_connect(self, line):
-        """
-        connect <server> [port]
-            Connect to the specified server and port (default 7854).
-        """
-        args = shlex.split(line)
-        server = None
-        port = 7854
-
-        if len(args) > 0:
-            server = args[0]
-        if len(args) > 1:
-            port = int(args[1])
-
-        if server:
-            if self.conn:
-                self.conn.disconnect()
-
-            self.prompt = PROMPT_DISCONNECTED
-            self.conn = HavenConnection()
-            self.conn.connect(server, port)
-
-            if self.conn.is_connected:
-                print("Connection established to `" + server + ":" + str(port) + "'.")
-                self.proto.send_connect(self.conn)
-                self.proto.recv_connect(self.conn)
-                self.prompt = "havenctl(" + server + ":" + str(port) + ")> "
-            else:
-                print("Connection to server failed.")
-        else:
-            print("You must specify a server with the connect command. Please see 'help connect'.")
-
-    def do_control(self, line):
-        if self.conn is None or not self.conn.is_connected:
-            print("You must be connected to a server to issue the become command.");
-            return False
-
-        become_type = 'location_leader'
-
-        msg = {
-            'action' : 'become',
-            'type'   : become_type
-        }
-
-        packed_msg = msgpack.packb(msg)
-        print("Sending message `{0}' (`{1}' bytes).".format(repr(packed_msg), len(packed_msg)))
-
-        self.conn.send(packed_msg)
-
-    def do_data(self, line):
-        print("The data command is not implemented yet. Sorry!")
-
-    def do_discover(self, line):
-        print("The discover command is not implemented yet. Sorry!")
-
-    def do_heartbeat(self, line):
-        print("The heartbeat command is not implemented yet. Sorry!")
 
     def do_EOF(self, line):
         print("\nEncountered EOF. Exiting Haven daemon controller. Goodbye!")
