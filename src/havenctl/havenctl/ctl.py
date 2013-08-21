@@ -38,7 +38,7 @@ class HavenCtl(cmd.Cmd):
             Transition the remote server into the specified state and function.
        
             States:
-                'exit <destroy>'  - Tell the remote server to exit. If destroy is 'true', delete the tablet.
+                'exit [<destroy>]'  - Tell the remote server to exit. If destroy is 'true', delete the tablet.
                 'follower <uuid>' - Follow the quorum (or lonely leader) with the specified uuid.
                 'leader <path>'   - Create a new generic leader for the specified path.
                 'location'        - Create a new location leader.
@@ -78,7 +78,13 @@ class HavenCtl(cmd.Cmd):
 
     def do_discover(self, line):
         """
-        discover TODO
+        discover <type> [<uuid> | <key>]
+            Determine the location of resources.
+
+            Types:
+                'leader' - Return the leader address and UUID of the specified path or UUID.
+                'location' - Return the quorum addresses and UUID of the primary location service.
+                'quorum' - Return the quorum addresses and UUID of the specified path or UUID.
         """
         CommandDiscover.handle(self, line)
 
