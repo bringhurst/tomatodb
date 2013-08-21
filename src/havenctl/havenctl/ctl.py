@@ -1,3 +1,11 @@
+"""
+Process user commands.
+"""
+
+__author__     = "Jon Bringhurst <jon@bringhurst.org>"
+__copyright__  = "Copyright 2013 Los Alamos National Security, LLC."
+__license__    = "Apache License, Version 2.0"
+
 import signal
 import readline
 import cmd
@@ -7,7 +15,11 @@ import msgpack
 from connection import HavenConnection
 from protocol import HavenProtocol
 
-from command_connect import CommandConnect
+from cmds.command_connect import CommandConnect
+from cmds.command_data import CommandData
+from cmds.command_control import CommandControl
+from cmds.command_discover import CommandDiscover
+from cmds.command_heartbeat import CommandHeartbeat
 
 PROMPT_DISCONNECTED = "havenctl([NOT CONNECTED])> "
 
