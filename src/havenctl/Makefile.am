@@ -13,3 +13,4 @@ develop:
 
 clean-local:
 	-(cd $(havenctl_srcdir) && rm -rf build dist havenctl.egg-info)
+	-(cd $(havenctl_srcdir) && find . -iname "*.pyc" -exec rm -f {} \;)
