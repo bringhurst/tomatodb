@@ -6,6 +6,10 @@ __author__     = "Jon Bringhurst <jon@bringhurst.org>"
 __copyright__  = "Copyright 2013 Los Alamos National Security, LLC."
 __license__    = "Apache License, Version 2.0"
 
+import shlex
+
+from ..connection import HavenConnection
+
 class CommandConnect():
     """Haven connect command handler."""
 
@@ -23,7 +27,7 @@ class CommandConnect():
             if ctl.conn:
                 ctl.conn.disconnect()
 
-            ctl.prompt = PROMPT_DISCONNECTED
+            ctl.prompt = ctl.PROMPT_DISCONNECTED
             ctl.conn = HavenConnection()
             ctl.conn.connect(server, port)
 

@@ -9,10 +9,7 @@ __license__    = "Apache License, Version 2.0"
 import signal
 import readline
 import cmd
-import shlex
-import msgpack
 
-from connection import HavenConnection
 from protocol import HavenProtocol
 
 from cmds.command_connect import CommandConnect
@@ -21,19 +18,22 @@ from cmds.command_control import CommandControl
 from cmds.command_discover import CommandDiscover
 from cmds.command_heartbeat import CommandHeartbeat
 
-PROMPT_DISCONNECTED = "havenctl([NOT CONNECTED])> "
-
 class HavenCtl(cmd.Cmd):
     """Haven daemon controller REPL."""
 
+    PROMPT_DISCONNECTED = "havenctl([NOT CONNECTED])> "
+
     def __init__(self):
         cmd.Cmd.__init__(self)
+
         signal.signal(signal.SIGINT, self.sigint_handler)
-        self.prompt = PROMPT_DISCONNECTED
+
+        self.prompt = self.PROMPT_DISCONNECTED
         self.intro  = "\n ****\n" \
                       " **** Welcome to havenctl 0.0.1-alpha.1\n" \
                       " **** Type help or ? to list available commands.\n" \
                       " ****\n"
+
         self.proto = HavenProtocol()
         self.conn = None
 
@@ -115,7 +115,7 @@ class HavenCtl(cmd.Cmd):
             self.conn.disconnect()
         else:
             print("Not currently connected to a server. Please see 'help disconnect'.")
-        self.prompt = PROMPT_DISCONNECTED
+        self.prompt = self.PROMPT_DISCONNECTED
 
     def do_EOF(self, line):
         print("\nEncountered EOF. Exiting Haven daemon controller. Goodbye!")
