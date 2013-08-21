@@ -50,12 +50,13 @@ class HavenCtl(cmd.Cmd):
             Transition the remote server into the specified state and function.
        
             States:
-                'exit [<destroy>]'  - Tell the remote server to exit. If destroy is 'true', delete the tablet.
-                'follower <uuid>' - Follow the quorum (or lonely leader) with the specified uuid.
-                'leader <path>'   - Create a new generic leader for the specified path.
-                'location'        - Create a new location leader.
-                'proxy'           - Become a proxy for end user client commands.
-                'router'          - Become idle until transitioned into another state.
+                'attach <uuid>'    - Attach the current connection to a resource to prepare for data commands.
+                'exit [<destroy>]' - Tell the remote server to exit. If destroy is 'true', delete the tablet.
+                'follower <uuid>'  - Follow the quorum (or lonely leader) with the specified uuid.
+                'leader <path>'    - Create a new generic leader for the specified path.
+                'location'         - Create a new location leader.
+                'proxy'            - Become a proxy for end user client commands.
+                'router'           - Become idle until transitioned into another state.
         """
         CommandControl().handle(self, line)
 
