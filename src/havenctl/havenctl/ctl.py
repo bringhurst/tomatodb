@@ -42,7 +42,7 @@ class HavenCtl(cmd.Cmd):
         connect <server> [port]
             Connect to the specified server and port (default 7854).
         """
-        CommandConnect.handle(self, line)
+        CommandConnect().handle(self, line)
 
     def do_control(self, line):
         """
@@ -57,7 +57,7 @@ class HavenCtl(cmd.Cmd):
                 'proxy'           - Become a proxy for end user client commands.
                 'router'          - Become idle until transitioned into another state.
         """
-        CommandControl.handle(self, line)
+        CommandControl().handle(self, line)
 
     def do_data(self, line):
         """
@@ -86,7 +86,7 @@ class HavenCtl(cmd.Cmd):
                 'read_timestamp <earliest> <latest>' - Ensure data is bounded by the specified timestamps.
               
         """
-        CommandData.handle(self, line)
+        CommandData().handle(self, line)
 
     def do_discover(self, line):
         """
@@ -98,13 +98,13 @@ class HavenCtl(cmd.Cmd):
                 'location' - Return the quorum addresses and UUID of the primary location service.
                 'quorum' - Return the quorum addresses and UUID of the specified path or UUID.
         """
-        CommandDiscover.handle(self, line)
+        CommandDiscover().handle(self, line)
 
     def do_heartbeat(self, line):
         """
         heartbeat TODO
         """
-        CommandHeartbeat.handle(self, line)
+        CommandHeartbeat().handle(self, line)
 
     def do_disconnect(self, line):
         """
