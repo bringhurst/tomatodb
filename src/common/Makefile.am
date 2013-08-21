@@ -1,8 +1,5 @@
 include $(top_srcdir)/common.mk
 
-%.pb-c.c: %.proto
-	protoc-c $< --c_out=.
-
 SUBDIRS = halloc
 
 AM_CPPFLAGS += \
@@ -16,21 +13,14 @@ libhaven_common_la_LDFLAGS = $(LIB_LDFLAGS)
 libhaven_common_la_SOURCES = \
 							common.c \
 							database.c \
-							database.pb-c.c \
-							admin.pb-c.c \
-							client.pb-c.c \
-							consensus.pb-c.c
+							xtime.c
 
 libhaven_common_la_LIBADD = \
 							halloc/libhaven_common_halloc.la \
-							$(protobuf-c_LIBS) \
 							$(leveldb_LIBS) \
-							$(uuid_LIBS) \
-							$(zmq_LIBS)
+							$(uuid_LIBS)
 
 
 libhaven_common_la_CFLAGS = \
-							$(protobuf-c_CFLAGS) \
 							$(leveldb_CFLAGS) \
-							$(uuid_CFLAGS) \
-							$(zmq_CFLAGS)
+							$(uuid_CFLAGS)
