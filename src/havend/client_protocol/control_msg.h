@@ -44,8 +44,8 @@ typedef struct HVN_msg_client_control_t {
 } HVN_msg_client_control_t;
 
 typedef struct HVN_msg_client_control_resp_t {
-    uint8_t status;
-    uint8_t err;
+    uint8_t success;
+    uint8_t err_code;
 } HVN_msg_client_control_resp_t;
 
 int HVN_clnt_proto_pack_control_msgpack(HVN_msg_client_control_t* data, \
@@ -84,8 +84,9 @@ int HVN_clnt_proto_unpack_control_resp(HVN_msg_client_control_resp_t * data, \
                                        size_t len, \
                                        char* msg);
 
-int HVN_proto_receive_control_msg(int fd);
+int HVN_proto_receive_control_msg(int fd, \
+                                  HVN_msg_client_control_t* control_msg_data);
+
 int HVN_proto_send_control_resp_msg(int fd);
-int HVN_proto_handle_control_msg(int fd);
 
 #endif /* __HVN__HAVEND_CLIENT_PROTOCOL_CONTROL_MSG_H_ */

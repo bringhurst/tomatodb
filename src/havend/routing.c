@@ -26,6 +26,7 @@
 
 #include "client_protocol/client_protocol.h"
 #include "client_protocol/connect_msg.h"
+#include "client_protocol/control_msg.h"
 
 #include <msgpack.h>
 #include <stdbool.h>
@@ -64,6 +65,8 @@ extern HVN_loglevel HVN_debug_level;
 //
 void HVN_routing_task(HVN_router_t* router)
 {
+    HVN_msg_client_control_t control_msg_data;
+
     if(HVN_proto_handle_connect_msg(router->accept_fd) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Did not receive a valid connect message while routing.");
         taskexit(HVN_ERROR);
@@ -71,13 +74,12 @@ void HVN_routing_task(HVN_router_t* router)
 
     LOG(HVN_LOG_DBG, "Connect handshake completed.");
 
-
-/**
-    if(HVN_proto_handle_control_msg(router->accept_fd, HVN_control_msg_t* msg) != HVN_SUCCESS) {
+    if(HVN_proto_receive_control_msg(router->accept_fd, &control_msg_data) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Did not receive a valid control message while routing.");
         taskexit(HVN_ERROR);
     }
-**/
+
+    LOG(HVN_LOG_DBG, "Received control message of type `%d'.", control_msg_data.action);
 
 /*****
     if(incoming_message_contains_server_uuid) {
