@@ -35,7 +35,6 @@ class CommandControl():
 
         if args[0].lower() in opts.keys():
             protocol_key = opts[args[0].lower()]
-            print("using key " + str(protocol_key))
         else:
             print("Command `" + str(args[0]) + "' not recognized.")
             print("Please see 'help control'.")
