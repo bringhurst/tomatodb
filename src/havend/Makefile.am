@@ -9,11 +9,13 @@ AM_CPPFLAGS += \
 bin_PROGRAMS = havend
 
 havend_SOURCES = \
-		 routing.c \
 		 connection.c \
-		 settings.c \
+		 havend.c \
+                 proxy.c \
+                 replica.c \
+		 routing.c \
 		 server.c \
-		 havend.c
+		 settings.c
 
 havend_LDADD = \
 		../common/libhaven_common.la \

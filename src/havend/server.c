@@ -25,6 +25,6 @@ extern FILE* HVN_debug_stream;
 /** The log level to output. */
 extern HVN_loglevel HVN_debug_level;
 
-// TODO: functions directly related to server tasks.
+// TODO: management functions for proxies and replicas.
 
 /* EOF */

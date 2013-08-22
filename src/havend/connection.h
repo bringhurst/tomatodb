@@ -27,7 +27,7 @@
 #define HVN_CONNECTION_STACK_SIZE (32768)
 
 typedef struct HVN_connection_t {
-    HVN_server_t* server;
+//    HVN_server_t* server;
     char* remote_addr;
     int remote_port;
     int fd;

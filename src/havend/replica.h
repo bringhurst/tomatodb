@@ -1,5 +1,5 @@
-#ifndef __HVN__HAVEND_SERVER_H
-#define __HVN__HAVEND_SERVER_H
+#ifndef __HVN__HAVEND_REPLICA_H
+#define __HVN__HAVEND_REPLICA_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -19,4 +19,4 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
-#endif /* __HVN__HAVEND_SERVER_H */
+#endif /* __HVN__HAVEND_REPLICA_H */
