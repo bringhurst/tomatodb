@@ -34,8 +34,6 @@ int HVN_clnt_proto_pack_connect_msgpack(HVN_msg_client_connect_t* data, \
                                         size_t* len, \
                                         char** msg)
 {
-    uint16_t msg_type = 0;
-
     msgpack_sbuffer sbuf;
     msgpack_sbuffer_init(&sbuf);
 
@@ -43,14 +41,8 @@ int HVN_clnt_proto_pack_connect_msgpack(HVN_msg_client_connect_t* data, \
     msgpack_packer_init(&pk, &sbuf, msgpack_sbuffer_write);
 
     msgpack_pack_array(&pk, 3);
-    msgpack_pack_uint16(&pk, msg_type);
     msgpack_pack_uint16(&pk, data->magic);
     msgpack_pack_uint32(&pk, data->version);
-
-    if(msg_type != HVN_CLNT_PROTO_MSG_TYPE_CONNECT) {
-        LOG(HVN_LOG_ERR, "Unexpected msg type when unpacking a connect message.");
-        return HVN_ERROR;
-    }
 
     *msg = (char*) malloc(sizeof(char) * sbuf.size);
     memcpy(*msg, sbuf.data, sbuf.size);
@@ -69,14 +61,21 @@ int HVN_clnt_proto_unpack_connect_msgpack(HVN_msg_client_connect_t* data, \
 {
     msgpack_unpacked unpacked;
     msgpack_unpacked_init(&unpacked);
+    int16_t msg_type = 0;
 
     if(msgpack_unpack_next(&unpacked, msg, len, NULL)) {
         msgpack_object root = unpacked.data;
 
-        if(root.type == MSGPACK_OBJECT_ARRAY && root.via.array.size == 2) {
-            data->magic = root.via.array.ptr[0].via.u64;
-            data->version = root.via.array.ptr[1].via.u64;
+        if(root.type == MSGPACK_OBJECT_ARRAY && root.via.array.size == 3) {
+            msg_type = root.via.array.ptr[0].via.u64;
+            data->magic = root.via.array.ptr[1].via.u64;
+            data->version = root.via.array.ptr[2].via.u64;
         }
+    }
+
+    if(msg_type != HVN_CLNT_PROTO_MSG_TYPE_CONNECT) {
+        LOG(HVN_LOG_ERR, "Unexpected msg type when unpacking a connect message.");
+        return HVN_ERROR;
     }
 
     msgpack_unpacked_destroy(&unpacked);

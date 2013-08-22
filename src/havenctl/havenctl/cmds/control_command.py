@@ -6,6 +6,10 @@ __author__     = "Jon Bringhurst <jon@bringhurst.org>"
 __copyright__  = "Copyright 2013 Los Alamos National Security, LLC."
 __license__    = "Apache License, Version 2.0"
 
+import shlex
+
+from ..protocol import HavenProtocol
+
 class CommandControl():
     """Haven control command handler."""
 
@@ -24,13 +28,11 @@ class CommandControl():
 
         print("argv[0] = " + args[0])
         print("argv[1] = " + args[1])
-        print("argv[2] = " + args[2])
 
         #follower<uuid>
         #leader<path>
 
         if ctl.conn.is_connected:
-            print("Sending control message to `" + server + ":" + str(port) + "'.")
             ctl.proto.send_control(ctl.conn)
             ctl.proto.recv_control(ctl.conn)
         else:
