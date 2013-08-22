@@ -37,6 +37,42 @@ extern FILE* HVN_debug_stream;
 /** The log level to write messages for. */
 extern HVN_loglevel HVN_debug_level;
 
+int HVN_init_router(HVN_router_t** router, \
+                      HVN_ctx_t* ctx, \
+                      char* remote_addr, \
+                      int remote_port, 
+                      int accept_fd)
+{
+    *router = (HVN_router_t*) malloc(sizeof(HVN_router_t));
+
+    if(*router == NULL) {
+        LOG(HVN_LOG_ERR, "Failed to allocate memory for a connection router.");
+        return HVN_ERROR;
+    }
+
+    (*router)->remote_addr = (char*) malloc(sizeof(char) * _POSIX_HOST_NAME_MAX);
+
+    if((*router)->remote_addr == NULL) {
+        LOG(HVN_LOG_ERR, "Failed to allocate memory within a connection router.");
+        free(*router);
+        return HVN_ERROR;
+    }
+
+    strncpy((*router)->remote_addr, remote_addr, _POSIX_HOST_NAME_MAX);
+
+    (*router)->ctx = ctx;
+    (*router)->remote_port = remote_port;
+    (*router)->accept_fd = accept_fd;
+
+    return HVN_SUCCESS;
+}
+
+void HVN_free_router(HVN_router_t* router)
+{
+    free(router->remote_addr);
+    free(router);
+}
+
 //
 // This is the router for all new incoming connections. The overall flow
 // for what we're doing here is as follows:
@@ -78,6 +114,8 @@ void HVN_routing_task(HVN_router_t* router)
         LOG(HVN_LOG_ERR, "Did not receive a valid control message while routing.");
         taskexit(HVN_ERROR);
     }
+
+    LOG(HVN_LOG_DBG, "Received a sane control messsage.");
 
     switch(control_msg_data.action) {
 
@@ -126,42 +164,6 @@ void HVN_routing_task(HVN_router_t* router)
     HVN_free_router(router);
 
     taskexit(HVN_SUCCESS);
-}
-
-int HVN_init_router(HVN_router_t** router, \
-                      HVN_ctx_t* ctx, \
-                      char* remote_addr, \
-                      int remote_port, 
-                      int accept_fd)
-{
-    *router = (HVN_router_t*) malloc(sizeof(HVN_router_t));
-
-    if(*router == NULL) {
-        LOG(HVN_LOG_ERR, "Failed to allocate memory for a connection router.");
-        return HVN_ERROR;
-    }
-
-    (*router)->remote_addr = (char*) malloc(sizeof(char) * _POSIX_HOST_NAME_MAX);
-
-    if((*router)->remote_addr == NULL) {
-        LOG(HVN_LOG_ERR, "Failed to allocate memory within a connection router.");
-        free(*router);
-        return HVN_ERROR;
-    }
-
-    strncpy((*router)->remote_addr, remote_addr, _POSIX_HOST_NAME_MAX);
-
-    (*router)->ctx = ctx;
-    (*router)->remote_port = remote_port;
-    (*router)->accept_fd = accept_fd;
-
-    return HVN_SUCCESS;
-}
-
-void HVN_free_router(HVN_router_t* router)
-{
-    free(router->remote_addr);
-    free(router);
 }
 
 /* EOF */
