@@ -80,34 +80,50 @@ void HVN_routing_task(HVN_router_t* router)
         taskexit(HVN_ERROR);
     }
 
-    if(control_msg_data.action == HVN_CLNT_PROTO_CTRL_LOCATION) {
-        LOG(HVN_LOG_DBG, "Handling control location message.");
-    } else {
-        LOG(HVN_LOG_ERR, "Encountered unrecognized control message type of `%d'.", \
-            control_msg_data.action);
-        taskexit(HVN_ERROR);
+    switch(control_msg_data.action) {
+
+        case HVN_CLNT_PROTO_CTRL_ATTACH:
+            LOG(HVN_LOG_DBG, "Handling control attach message.");
+            LOG(HVN_LOG_ERR, "Not implemented yet.");
+            break;
+
+        case HVN_CLNT_PROTO_CTRL_PROXY:
+            LOG(HVN_LOG_DBG, "Handling control proxy message.");
+            LOG(HVN_LOG_ERR, "Not implemented yet.");
+            break;
+
+        case HVN_CLNT_PROTO_CTRL_FOLLOWER:
+            LOG(HVN_LOG_DBG, "Handling control follower message.");
+            LOG(HVN_LOG_ERR, "Not implemented yet.");
+            break;
+
+        case HVN_CLNT_PROTO_CTRL_LEADER:
+            LOG(HVN_LOG_DBG, "Handling control leader message.");
+            LOG(HVN_LOG_ERR, "Not implemented yet.");
+            break;
+
+        case HVN_CLNT_PROTO_CTRL_LOCATION:
+            LOG(HVN_LOG_DBG, "Handling control location message.");
+            LOG(HVN_LOG_ERR, "Not implemented yet.");
+            break;
+
+        case HVN_CLNT_PROTO_CTRL_EXIT:
+            LOG(HVN_LOG_DBG, "Handling control exit message.");
+            LOG(HVN_LOG_ERR, "Not implemented yet.");
+            break;
+
+        case HVN_CLNT_PROTO_CTRL_DESTROY:
+            LOG(HVN_LOG_DBG, "Handling control destroy message.");
+            LOG(HVN_LOG_ERR, "Not implemented yet.");
+            break;
+
+        default:
+            LOG(HVN_LOG_ERR, "Encountered unrecognized control message type of `%d'.", \
+                control_msg_data.action);
+            taskexit(HVN_ERROR);
     }
 
-
-
-/*****
-    if(incoming_message_contains_server_uuid) {
-        HVN_server_t* server = NULL;
-        HASH_FIND_INT(router->ctx->server_routes, &incoming_server_uuid, server);
-
-        if(server != NULL) {
-            LOG(HVN_LOG_INFO, "We found the server that the client was looking for!");
-            //TODO: create a connection task and add it to the server task.
-        } else {
-            LOG(HVN_LOG_INFO, "We could not find the server that the client specified.");
-            //TODO: tell the client to use the location quorum.
-        }
-    } else {
-        LOG(HVN_LOG_INFO, "The incoming message did not contain a server UUID.");
-        //TODO: determine what the client is trying to do (1, 2, or 3).
-    }
-*******/
-
+    LOG(HVN_LOG_DBG, "Completed routing. Exiting task.");
     HVN_free_router(router);
 
     taskexit(HVN_SUCCESS);
