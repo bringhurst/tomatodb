@@ -1,6 +1,3 @@
-#ifndef __HVN__HAVEND_SERVER_H
-#define __HVN__HAVEND_SERVER_H
-
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
  *
@@ -19,4 +16,15 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
-#endif /* __HVN__HAVEND_SERVER_H */
+#include "worker.h"
+#include "log.h"
+
+/** The stream to send log messages to. */
+extern FILE* HVN_debug_stream;
+
+/** The log level to output. */
+extern HVN_loglevel HVN_debug_level;
+
+// TODO: management functions for proxies and replicas.
+
+/* EOF */
