@@ -34,15 +34,23 @@ int HVN_clnt_proto_pack_connect_msgpack(HVN_msg_client_connect_t* data, \
                                         size_t* len, \
                                         char** msg)
 {
+    uint16_t msg_type = 0;
+
     msgpack_sbuffer sbuf;
     msgpack_sbuffer_init(&sbuf);
 
     msgpack_packer pk;
     msgpack_packer_init(&pk, &sbuf, msgpack_sbuffer_write);
 
-    msgpack_pack_array(&pk, 2);
+    msgpack_pack_array(&pk, 3);
+    msgpack_pack_uint16(&pk, msg_type);
     msgpack_pack_uint16(&pk, data->magic);
     msgpack_pack_uint32(&pk, data->version);
+
+    if(msg_type != HVN_CLNT_PROTO_MSG_TYPE_CONNECT) {
+        LOG(HVN_LOG_ERR, "Unexpected msg type when unpacking a connect message.");
+        return HVN_ERROR;
+    }
 
     *msg = (char*) malloc(sizeof(char) * sbuf.size);
     memcpy(*msg, sbuf.data, sbuf.size);

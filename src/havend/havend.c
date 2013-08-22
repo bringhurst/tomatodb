@@ -181,20 +181,20 @@ void taskmain(int argc, char* argv[])
     HVN_debug_stream = stdout;
     HVN_debug_level = HVN_LOG_INFO;
 
-    if(HVN_handle_havend_cli_args(ctx, argc, argv) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Failed to properly handle command line arguments.");
-        taskexit(EXIT_FAILURE);
-    }
-
     LOG(HVN_LOG_INFO, "Hello! %s-%s is starting up.", \
         PACKAGE_NAME, PACKAGE_VERSION);
-
-    HVN_install_signal_handlers();
 
     if(HVN_context_init(&ctx) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Could not allocate the primary context.");
         taskexit(EXIT_FAILURE);
     }
+
+    if(HVN_handle_havend_cli_args(ctx, argc, argv) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Failed to properly handle command line arguments.");
+        taskexit(EXIT_FAILURE);
+    }
+
+    HVN_install_signal_handlers();
 
     if(HVN_set_process_uuid(ctx) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Could not create or determine local machine UUID.");

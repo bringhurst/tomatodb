@@ -29,8 +29,24 @@ class HavenProtocol():
     HVN_CLNT_PROTO_MSG_TYPE_DISCOVER_R   = 0x0D
     HVN_CLNT_PROTO_MSG_TYPE_HEARTBEAT_R  = 0x0F
 
+    # Control client requests.
+    HVN_CLNT_PROTO_CTRL_ATTACH           = 0x01
+    HVN_CLNT_PROTO_CTRL_DESTROY          = 0x03
+    HVN_CLNT_PROTO_CTRL_EXIT             = 0x02
+    HVN_CLNT_PROTO_CTRL_FOLLOWER         = 0x06
+    HVN_CLNT_PROTO_CTRL_LEADER           = 0x07
+    HVN_CLNT_PROTO_CTRL_LOCATION         = 0x05
+    HVN_CLNT_PROTO_CTRL_PROXY            = 0x04
+    HVN_CLNT_PROTO_CTRL_ROUTER           = 0x0C
+
+    # Control server responses.
+    HVN_CLNT_PROTO_CTRL_R_OK             = 0x0D
+    HVN_CLNT_PROTO_CTRL_R_ERR            = 0x1D
+    HVN_CLNT_PROTO_CTRL_R_NOT_FOUND      = 0x1C
+
     def send_connect(self, conn):
         msg = msgpack.packb([
+            HavenProtocol.HVN_CLNT_PROTO_MSG_TYPE_CONNECT,
             HavenProtocol.HVN_CLIENT_PROTOCOL_MAGIC,
             HavenProtocol.HVN_CLIENT_PROTOCOL_VERSION
         ])
@@ -38,10 +54,21 @@ class HavenProtocol():
 
     def recv_connect(self, conn):
         msg = self.recv(conn)
-        print("Contents of received message: " + str(msgpack.unpackb(msg)))
+        print("Contents of received connect response message: " + \
+            str(msgpack.unpackb(msg)))
 
-    def send_control(self, conn):
-        print "not implemented"
+    def send_control(self, conn, action, uuid=None):
+        msg = msgpack.packb([
+            HavenProtocol.HVN_CLNT_PROTO_MSG_TYPE_CONTROL,
+            action,
+            uuid
+        ])
+        self.send(msg, conn)
+
+    def recv_control(self, conn):
+        msg = self.recv(conn)
+        print("Contents of received control response message: " + \
+            str(msgpack.unpackb(msg)))
 
     def send_data(self, conn):
         print "not implemented"

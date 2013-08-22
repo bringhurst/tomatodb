@@ -12,11 +12,11 @@ import cmd
 
 from protocol import HavenProtocol
 
-from cmds.command_connect import CommandConnect
-from cmds.command_data import CommandData
-from cmds.command_control import CommandControl
-from cmds.command_discover import CommandDiscover
-from cmds.command_heartbeat import CommandHeartbeat
+from cmds.connect_command   import CommandConnect
+from cmds.data_command      import CommandData
+from cmds.control_command   import CommandControl
+from cmds.discover_command  import CommandDiscover
+from cmds.heartbeat_command import CommandHeartbeat
 
 class HavenCtl(cmd.Cmd):
     """Haven daemon controller REPL."""
