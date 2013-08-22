@@ -69,12 +69,11 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_havend_OBJECTS = routing.$(OBJEXT) connection.$(OBJEXT) \
-	bootstrap.$(OBJEXT) settings.$(OBJEXT) consensus.$(OBJEXT) \
-	server.$(OBJEXT) havend.$(OBJEXT)
+	settings.$(OBJEXT) server.$(OBJEXT) havend.$(OBJEXT)
 havend_OBJECTS = $(am_havend_OBJECTS)
 havend_DEPENDENCIES = ../common/libhaven_common.la \
 	client_protocol/libhaven_havend_client_protocol.la \
-	state/libhaven_havend_state.la task/libhaven_havend_task.la
+	task/libhaven_havend_task.la
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -292,20 +291,17 @@ AM_CPPFLAGS = -std=gnu99 -ggdb -W -Wall -Wextra -Wformat=1 -Winit-self \
 	-Wstrict-prototypes -Wmissing-prototypes -Wredundant-decls \
 	-Winline -Wdisabled-optimization -Wshadow -Wwrite-strings \
 	-I$(top_srcdir) -I$(top_srcdir)/src/common
-SUBDIRS = client_protocol task state
+SUBDIRS = client_protocol task
 havend_SOURCES = \
 		 routing.c \
 		 connection.c \
-		 bootstrap.c \
 		 settings.c \
-		 consensus.c \
 		 server.c \
 		 havend.c
 
 havend_LDADD = \
 		../common/libhaven_common.la \
                 client_protocol/libhaven_havend_client_protocol.la \
-		state/libhaven_havend_state.la \
 		task/libhaven_havend_task.la
 
 all: all-recursive
@@ -399,9 +395,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bootstrap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/connection.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/consensus.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/havend.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/routing.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/server.Po@am__quote@
