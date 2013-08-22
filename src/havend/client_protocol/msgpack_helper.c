@@ -60,7 +60,7 @@ int HVN_msgpack_fdread(int fd, size_t* len, char** msg)
     LOG(HVN_LOG_DBG, "Length of incoming msgpack message is `%zu'+4.", *len);
 
     *msg = (char*) malloc(sizeof(char) * *len);
-    
+
     if(HVN_fdreadn(fd, *msg, *len) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to read a msgpack message.");
         return HVN_ERROR;
@@ -75,16 +75,18 @@ int HVN_fdwriten(int fd, char* buf, size_t len)
 
     LOG(HVN_LOG_INFO, "Entered HVN_fdwriten fd=%d, buf=`%s', len=`%zu'.", fd, buf, len);
 
-    while (len > 0) {
-        if ( (rc = fdwrite(fd, buf, len)) <= 0) {
-            if (rc < 0 && errno == EINTR) {
+    while(len > 0) {
+        if((rc = fdwrite(fd, buf, len)) <= 0) {
+            if(rc < 0 && errno == EINTR) {
                 rc = 0;
-            } else if (rc < 0 && errno == EPIPE) {
+            }
+            else if(rc < 0 && errno == EPIPE) {
                 LOG(HVN_LOG_ERR, "The client unexpectedly disconnected.");
                 return HVN_ERROR;
-            } else {
+            }
+            else {
                 LOG(HVN_LOG_ERR, "An error occurred while writing to the socket (errno=%d). %s", \
-                        errno, strerror(errno));
+                    errno, strerror(errno));
                 return HVN_ERROR;
             }
         }
@@ -111,7 +113,7 @@ int HVN_fdreadn(int fd, char* buf, size_t len)
             }
 
             LOG(HVN_LOG_ERR, "An error occurred while reading from the socket (errno=%d). %s", \
-                    errno, strerror(errno));
+                errno, strerror(errno));
             return HVN_ERROR;
         }
 

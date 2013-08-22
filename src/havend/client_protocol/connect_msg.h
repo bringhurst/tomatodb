@@ -36,14 +36,14 @@ int HVN_clnt_proto_pack_connect_msgpack(HVN_msg_client_connect_t* data, \
                                         size_t* len, \
                                         char** msg);
 int HVN_clnt_proto_unpack_connect_msgpack(HVN_msg_client_connect_t* data, \
-                                          size_t len, \
-                                          char* msg);
+        size_t len, \
+        char* msg);
 int HVN_clnt_proto_pack_connect_resp_msgpack(HVN_msg_client_connect_resp_t* data, \
-                                             size_t* len, \
-                                             char** msg);
+        size_t* len, \
+        char** msg);
 int HVN_clnt_proto_unpack_connect_resp_msgpack(HVN_msg_client_connect_resp_t* data, \
-                                               size_t len, \
-                                               char* msg);
+        size_t len, \
+        char* msg);
 
 int HVN_clnt_proto_pack_connect(HVN_msg_client_connect_t* data, \
                                 int scheme, \
@@ -57,7 +57,7 @@ int HVN_clnt_proto_pack_connect_resp(HVN_msg_client_connect_resp_t* data, \
                                      int scheme, \
                                      size_t* len, \
                                      char** msg);
-int HVN_clnt_proto_unpack_connect_resp(HVN_msg_client_connect_resp_t * data, \
+int HVN_clnt_proto_unpack_connect_resp(HVN_msg_client_connect_resp_t* data, \
                                        int scheme, \
                                        size_t len, \
                                        char* msg);

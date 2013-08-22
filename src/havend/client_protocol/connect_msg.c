@@ -56,8 +56,8 @@ int HVN_clnt_proto_pack_connect_msgpack(HVN_msg_client_connect_t* data, \
 }
 
 int HVN_clnt_proto_unpack_connect_msgpack(HVN_msg_client_connect_t* data, \
-                                          size_t len, \
-                                          char* msg)
+        size_t len, \
+        char* msg)
 {
     msgpack_unpacked unpacked;
     msgpack_unpacked_init(&unpacked);
@@ -83,8 +83,8 @@ int HVN_clnt_proto_unpack_connect_msgpack(HVN_msg_client_connect_t* data, \
 }
 
 int HVN_clnt_proto_pack_connect_resp_msgpack(HVN_msg_client_connect_resp_t* data, \
-                                             size_t* len, \
-                                             char** msg)
+        size_t* len, \
+        char** msg)
 {
     msgpack_sbuffer sbuf;
     msgpack_sbuffer_init(&sbuf);
@@ -106,8 +106,8 @@ int HVN_clnt_proto_pack_connect_resp_msgpack(HVN_msg_client_connect_resp_t* data
 }
 
 int HVN_clnt_proto_unpack_connect_resp_msgpack(HVN_msg_client_connect_resp_t* data, \
-                                               size_t len, \
-                                               char* msg)
+        size_t len, \
+        char* msg)
 {
     return HVN_ERROR;
 }
@@ -121,11 +121,11 @@ int HVN_clnt_proto_pack_connect(HVN_msg_client_connect_t* data, \
 
     switch(scheme) {
         case HVN_CLNT_PROTO_PACK_TYPE_MSGPACK:
-           result = HVN_clnt_proto_pack_connect_msgpack(data, len, msg);
-           break;
+            result = HVN_clnt_proto_pack_connect_msgpack(data, len, msg);
+            break;
         default:
-           LOG(HVN_LOG_WARN, "Pack scheme `%d' not recognized.", scheme);
-           result = HVN_ERROR;
+            LOG(HVN_LOG_WARN, "Pack scheme `%d' not recognized.", scheme);
+            result = HVN_ERROR;
     }
 
     return result;
@@ -140,11 +140,11 @@ int HVN_clnt_proto_unpack_connect(HVN_msg_client_connect_t* data, \
 
     switch(scheme) {
         case HVN_CLNT_PROTO_PACK_TYPE_MSGPACK:
-           result = HVN_clnt_proto_unpack_connect_msgpack(data, len, msg);
-           break;
+            result = HVN_clnt_proto_unpack_connect_msgpack(data, len, msg);
+            break;
         default:
-           LOG(HVN_LOG_WARN, "Unpack scheme `%d' not recognized.", scheme);
-           result = HVN_ERROR;
+            LOG(HVN_LOG_WARN, "Unpack scheme `%d' not recognized.", scheme);
+            result = HVN_ERROR;
     }
 
     return result;
@@ -159,17 +159,17 @@ int HVN_clnt_proto_pack_connect_resp(HVN_msg_client_connect_resp_t* data, \
 
     switch(scheme) {
         case HVN_CLNT_PROTO_PACK_TYPE_MSGPACK:
-           result = HVN_clnt_proto_pack_connect_resp_msgpack(data, len, msg);
-           break;
+            result = HVN_clnt_proto_pack_connect_resp_msgpack(data, len, msg);
+            break;
         default:
-           LOG(HVN_LOG_WARN, "Pack scheme `%d' not recognized.", scheme);
-           result = HVN_ERROR;
+            LOG(HVN_LOG_WARN, "Pack scheme `%d' not recognized.", scheme);
+            result = HVN_ERROR;
     }
 
     return result;
 }
 
-int HVN_clnt_proto_unpack_connect_resp(HVN_msg_client_connect_resp_t * data, \
+int HVN_clnt_proto_unpack_connect_resp(HVN_msg_client_connect_resp_t* data, \
                                        int scheme, \
                                        size_t len, \
                                        char* msg)
@@ -178,11 +178,11 @@ int HVN_clnt_proto_unpack_connect_resp(HVN_msg_client_connect_resp_t * data, \
 
     switch(scheme) {
         case HVN_CLNT_PROTO_PACK_TYPE_MSGPACK:
-           result = HVN_clnt_proto_unpack_connect_resp_msgpack(data, len, msg);
-           break;
+            result = HVN_clnt_proto_unpack_connect_resp_msgpack(data, len, msg);
+            break;
         default:
-           LOG(HVN_LOG_WARN, "Unpack scheme `%d' not recognized.", scheme);
-           result = HVN_ERROR;
+            LOG(HVN_LOG_WARN, "Unpack scheme `%d' not recognized.", scheme);
+            result = HVN_ERROR;
     }
 
     return result;
@@ -208,13 +208,13 @@ int HVN_proto_receive_connect_msg(int fd)
 
     if(connect_msg_data.magic != HVN_CLIENT_PROTOCOL_MAGIC) {
         LOG(HVN_LOG_DBG, "Incoming messsage does not have the correct magic value (found `%08X').", \
-                connect_msg_data.magic);
+            connect_msg_data.magic);
         return HVN_ERROR;
     }
 
     if(connect_msg_data.version != HVN_CLIENT_PROTOCOL_VERSION) {
         LOG(HVN_LOG_DBG, "Incoming messsage does not have the correct version value (found `%d').", \
-                connect_msg_data.version);
+            connect_msg_data.version);
         return HVN_ERROR;
     }
 
@@ -229,8 +229,8 @@ int HVN_proto_send_connect_resp_msg(int fd)
     char* msg;
 
     if(HVN_clnt_proto_pack(HVN_CLNT_PROTO_MSG_TYPE_CONNECT_R, \
-                             HVN_CLNT_PROTO_PACK_TYPE_MSGPACK, \
-                             &connect_resp_msg_data, &len, &msg) != HVN_SUCCESS) {
+                           HVN_CLNT_PROTO_PACK_TYPE_MSGPACK, \
+                           &connect_resp_msg_data, &len, &msg) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to pack a connect message response.");
         return HVN_ERROR;
     }
@@ -249,7 +249,8 @@ int HVN_proto_handle_connect_msg(int fd)
     if(HVN_proto_receive_connect_msg(fd) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to receive a connect message.");
         return HVN_ERROR;
-    } else {
+    }
+    else {
         if(HVN_proto_send_connect_resp_msg(fd) != HVN_SUCCESS) {
             LOG(HVN_LOG_ERR, "Failed to send a response to a connect message.");
             return HVN_ERROR;
