@@ -15,25 +15,48 @@ class CommandControl():
 
     def handle(self, ctl, line):
         args = shlex.split(line)
+        uuid = None
+        path = None
 
-        opts = [("attach",   HavenProtocol.HVN_CLNT_PROTO_CTRL_ATTACH),
-                ("destroy",  HavenProtocol.HVN_CLNT_PROTO_CTRL_DESTROY),
-                ("exit",     HavenProtocol.HVN_CLNT_PROTO_CTRL_EXIT),
-                ("follower", HavenProtocol.HVN_CLNT_PROTO_CTRL_FOLLOWER),
-                ("leader",   HavenProtocol.HVN_CLNT_PROTO_CTRL_LEADER),
-                ("location", HavenProtocol.HVN_CLNT_PROTO_CTRL_LOCATION),
-                ("proxy",    HavenProtocol.HVN_CLNT_PROTO_CTRL_PROXY),
-                ("router",   HavenProtocol.HVN_CLNT_PROTO_CTRL_ROUTER)
-        ]
+        if len(args) < 1:
+            print("The control command requires arguments. Please see 'help control'.")
+            return
 
-        print("argv[0] = " + args[0])
-        print("argv[1] = " + args[1])
+        opts = {
+            "attach":   HavenProtocol.HVN_CLNT_PROTO_CTRL_ATTACH,
+            "destroy":  HavenProtocol.HVN_CLNT_PROTO_CTRL_DESTROY,
+            "exit":     HavenProtocol.HVN_CLNT_PROTO_CTRL_EXIT,
+            "follower": HavenProtocol.HVN_CLNT_PROTO_CTRL_FOLLOWER,
+            "leader":   HavenProtocol.HVN_CLNT_PROTO_CTRL_LEADER,
+            "location": HavenProtocol.HVN_CLNT_PROTO_CTRL_LOCATION,
+            "proxy":    HavenProtocol.HVN_CLNT_PROTO_CTRL_PROXY,
+            "router":   HavenProtocol.HVN_CLNT_PROTO_CTRL_ROUTER
+        }
 
-        #follower<uuid>
-        #leader<path>
+        if args[0].lower() in opts.keys():
+            protocol_key = opts[args[0].lower()]
+            print("using key " + str(protocol_key))
+        else:
+            print("Command `" + str(args[0]) + "' not recognized.")
+            print("Please see 'help control'.")
+            return
+
+        if protocol_key == HavenProtocol.HVN_CLNT_PROTO_CTRL_FOLLOWER:
+            if len(args) < 2:
+                print("The follower subcommand requires a uuid argument.")
+                print("Please see 'help control'.")
+                return
+            uuid = args[1]
+
+        if protocol_key == HavenProtocol.HVN_CLNT_PROTO_CTRL_LEADER:
+            if len(args) < 2:
+                print("The leader subcommand requires a path argument.")
+                print("Please see 'help control'.")
+                return
+            path = args[1]
 
         if ctl.conn.is_connected:
-            ctl.proto.send_control(ctl.conn)
+            ctl.proto.send_control(ctl.conn, protocol_key, uuid, path)
             ctl.proto.recv_control(ctl.conn)
         else:
             print("Connection to server failed.")

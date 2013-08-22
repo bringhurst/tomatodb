@@ -57,11 +57,12 @@ class HavenProtocol():
         print("Contents of received connect response message: " + \
             str(msgpack.unpackb(msg)))
 
-    def send_control(self, conn, action, uuid=None):
+    def send_control(self, conn, action, uuid=None, path=None):
         msg = msgpack.packb([
             HavenProtocol.HVN_CLNT_PROTO_MSG_TYPE_CONTROL,
             action,
-            uuid
+            uuid,
+            path
         ])
         self.send(msg, conn)
 
