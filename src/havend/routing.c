@@ -28,7 +28,6 @@
 #include "client_protocol/connect_msg.h"
 #include "client_protocol/control_msg.h"
 
-#include <errno.h>
 #include <msgpack.h>
 #include <stdbool.h>
 
@@ -127,54 +126,6 @@ void HVN_routing_task(HVN_router_t* router)
     HVN_free_router(router);
 
     taskexit(HVN_SUCCESS);
-}
-
-// This is where we'll listen and accept for connections so we can launch
-// routing tasks.
-int HVN_listen_and_accept(HVN_ctx_t* ctx)
-{
-    int remote_port, accept_fd = 0;
-    bool* is_running = (bool*) malloc(sizeof(bool));
-    char* remote_addr = (char*) malloc(sizeof(char) * _POSIX_HOST_NAME_MAX);
-
-    *is_running = true;
-
-    // FIXME: clean up signal blocking
-    //HVN_handle_shutdown_signals(is_running);
-    struct sigaction sa;
-    memset(&sa, 0, sizeof sa);
-    sa.sa_handler = SIG_IGN;
-    sigaction(SIGPIPE, &sa, NULL);
-
-    ctx->listen_fd = netannounce(TCP, ctx->listen_addr, ctx->listen_port);
-
-    if(fdnoblock(ctx->listen_fd) < 0) {
-        LOG(HVN_LOG_ERR, "Failed to set the listening socket to non-blocking. %s", strerror(errno));
-        return HVN_ERROR;
-    }
-
-    LOG(HVN_LOG_INFO, "Listening on `%s:%d'.", ctx->listen_addr, ctx->listen_port);
-
-    while(*is_running) {
-        accept_fd = netaccept(ctx->listen_fd, remote_addr, &remote_port);
-        HVN_router_t* router = NULL;
-
-        if(accept_fd < 0) {
-            LOG(HVN_LOG_ERR, "Failed to accept a new connection. Attempting to shut down.");
-            *is_running = false;
-            break;
-        }
-
-        if(HVN_init_router(&router, ctx, remote_addr, remote_port, accept_fd) != HVN_SUCCESS) {
-            LOG(HVN_LOG_ERR, "Could not proper initialize a new connection router. Attempting to shut down.");
-            *is_running = false;
-            break;
-        }
-        taskcreate((void (*)(void*))HVN_routing_task, router, HVN_ROUTER_STACK_SIZE);
-    }
-
-    free(is_running);
-    return HVN_SUCCESS;
 }
 
 int HVN_init_router(HVN_router_t** router, \

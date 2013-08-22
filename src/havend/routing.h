@@ -30,7 +30,6 @@ typedef struct HVN_router_t {
     int accept_fd;
 } HVN_router_t;
 
-int HVN_listen_and_accept(HVN_ctx_t* ctx);
 void HVN_routing_task(HVN_router_t* router);
 
 int HVN_init_router(HVN_router_t** router, \
@@ -38,6 +37,7 @@ int HVN_init_router(HVN_router_t** router, \
                       char* remote_addr, \
                       int accept_port, \
                       int accept_fd);
+
 void HVN_free_router(HVN_router_t* router);
 
 #endif /* __HVN__HAVEND_ROUTING_H_ */

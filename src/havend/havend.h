@@ -45,9 +45,14 @@ typedef struct HVN_ctx_t {
 
 int HVN_context_init(HVN_ctx_t** ctx);
 void HVN_context_free(HVN_ctx_t* ctx);
+
+int HVN_listen_and_accept(HVN_ctx_t* ctx);
+
 void HVN_print_version(void);
 void HVN_print_usage(void);
+
 void HVN_install_signal_handlers(void);
+
 int HVN_handle_havend_cli_args(HVN_ctx_t* ctx, int argc, char* argv[]);
 
 #endif /* __HVN__HAVEND_HAVEND_H_ */
