@@ -28,6 +28,7 @@
 #include "client_protocol/connect_msg.h"
 #include "client_protocol/control_msg.h"
 
+#include <errno.h>
 #include <msgpack.h>
 #include <stdbool.h>
 
@@ -124,7 +125,7 @@ int HVN_listen_and_accept(HVN_ctx_t* ctx)
     ctx->listen_fd = netannounce(TCP, ctx->listen_addr, ctx->listen_port);
 
     if(fdnoblock(ctx->listen_fd) < 0) {
-        LOG(HVN_LOG_ERR, "Failed to set the listening socket to non-blocking.");
+        LOG(HVN_LOG_ERR, "Failed to set the listening socket to non-blocking. %s", strerror(errno));
         return HVN_ERROR;
     }
 

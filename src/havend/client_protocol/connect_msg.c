@@ -74,7 +74,7 @@ int HVN_clnt_proto_unpack_connect_msgpack(HVN_msg_client_connect_t* data, \
     }
 
     if(msg_type != HVN_CLNT_PROTO_MSG_TYPE_CONNECT) {
-        LOG(HVN_LOG_ERR, "Unexpected msg type when unpacking a connect message.");
+        LOG(HVN_LOG_ERR, "Unexpected msg type when unpacking a connect message (%d).", msg_type);
         return HVN_ERROR;
     }
 

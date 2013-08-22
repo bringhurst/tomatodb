@@ -20,7 +20,9 @@
 #include "havend.h"
 
 #include "client_protocol.h"
+
 #include "connect_msg.h"
+#include "control_msg.h"
 
 /** The debug stream to write log messages to. */
 extern FILE* HVN_debug_stream;
@@ -89,7 +91,7 @@ int HVN_clnt_proto_unpack(int type, \
             return HVN_clnt_proto_unpack_connect(msg_struct, scheme, len, msg);
             break;
         case HVN_CLNT_PROTO_MSG_TYPE_CONTROL:
-            LOG(HVN_LOG_WARN, "Unpack not implemented for `%d'.", type);
+            return HVN_clnt_proto_unpack_control(msg_struct, scheme, len, msg);
             break;
         case HVN_CLNT_PROTO_MSG_TYPE_DATA:
             LOG(HVN_LOG_WARN, "Unpack not implemented for `%d'.", type);

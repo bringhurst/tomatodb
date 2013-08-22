@@ -37,7 +37,7 @@
 #define HVN_CLNT_PROTO_CTRL_R_NOT_FOUND  0x1C
 
 typedef struct HVN_msg_client_control_t {
-    uint8_t action;
+    uint16_t action;
     unsigned char uuid[16];
     uint16_t path_len;
     char* path;

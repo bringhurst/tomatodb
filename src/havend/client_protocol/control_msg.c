@@ -72,14 +72,14 @@ int HVN_clnt_proto_unpack_control_msgpack(HVN_msg_client_control_t* data, \
     if(msgpack_unpack_next(&unpacked, msg, len, NULL)) {
         msgpack_object root = unpacked.data;
 
-        if(root.type == MSGPACK_OBJECT_ARRAY && root.via.array.size == 3) {
+        if(root.type == MSGPACK_OBJECT_ARRAY && root.via.array.size == 4) {
             msg_type = root.via.array.ptr[0].via.u64;
             data->action = root.via.array.ptr[1].via.u64;
         }
     }
 
     if(msg_type != HVN_CLNT_PROTO_MSG_TYPE_CONTROL) {
-        LOG(HVN_LOG_ERR, "Unexpected msg type when unpacking a control message.");
+        LOG(HVN_LOG_ERR, "Unexpected msg type when unpacking a control message (%zu).", msg_type);
         return HVN_ERROR;
     }
 
