@@ -79,7 +79,7 @@ int HVN_clnt_proto_unpack_control_msgpack(HVN_msg_client_control_t* data, \
     }
 
     if(msg_type != HVN_CLNT_PROTO_MSG_TYPE_CONTROL) {
-        LOG(HVN_LOG_ERR, "Unexpected msg type when unpacking a control message (%zu).", msg_type);
+        LOG(HVN_LOG_ERR, "Unexpected msg type when unpacking a control message (%d).", msg_type);
         return HVN_ERROR;
     }
 
@@ -205,7 +205,7 @@ int HVN_proto_receive_control_msg(int fd, \
 
     if(HVN_clnt_proto_unpack(HVN_CLNT_PROTO_MSG_TYPE_CONTROL, \
                              HVN_CLNT_PROTO_PACK_TYPE_MSGPACK, \
-                             &control_msg_data, len, msg) != HVN_SUCCESS) {
+                             control_msg_data, len, msg) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to unpack a control message.");
         return HVN_ERROR;
     }

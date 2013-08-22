@@ -80,7 +80,15 @@ void HVN_routing_task(HVN_router_t* router)
         taskexit(HVN_ERROR);
     }
 
-    LOG(HVN_LOG_DBG, "Received control message of type `%d'.", control_msg_data.action);
+    if(control_msg_data.action == HVN_CLNT_PROTO_CTRL_LOCATION) {
+        LOG(HVN_LOG_DBG, "Handling control location message.");
+    } else {
+        LOG(HVN_LOG_ERR, "Encountered unrecognized control message type of `%d'.", \
+            control_msg_data.action);
+        taskexit(HVN_ERROR);
+    }
+
+
 
 /*****
     if(incoming_message_contains_server_uuid) {
