@@ -100,6 +100,7 @@ int HVN_listen_and_accept(HVN_ctx_t* ctx)
             *is_running = false;
             break;
         }
+
         taskcreate((void (*)(void*))HVN_routing_task, router, HVN_ROUTER_STACK_SIZE);
     }
 

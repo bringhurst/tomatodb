@@ -38,10 +38,10 @@ extern FILE* HVN_debug_stream;
 extern HVN_loglevel HVN_debug_level;
 
 int HVN_init_router(HVN_router_t** router, \
-                      HVN_ctx_t* ctx, \
-                      char* remote_addr, \
-                      int remote_port, 
-                      int accept_fd)
+                    HVN_ctx_t* ctx, \
+                    char* remote_addr, \
+                    int remote_port,
+                    int accept_fd)
 {
     *router = (HVN_router_t*) malloc(sizeof(HVN_router_t));
 
