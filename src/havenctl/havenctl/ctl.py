@@ -51,7 +51,8 @@ class HavenCtl(cmd.Cmd):
        
             States:
                 'attach <uuid>'    - Attach the current connection to a resource to prepare for data commands.
-                'exit [<destroy>]' - Tell the remote server to exit. If destroy is 'true', delete the tablet.
+                'destroy'          - Tell the remove server to delete itself and exit.
+                'exit'             - Tell the remote server to exit.
                 'follower <uuid>'  - Follow the quorum (or lonely leader) with the specified uuid.
                 'leader <path>'    - Create a new generic leader for the specified path.
                 'location'         - Create a new location leader.

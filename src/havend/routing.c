@@ -71,6 +71,12 @@ void HVN_routing_task(HVN_router_t* router)
 
     LOG(HVN_LOG_DBG, "Connect handshake completed.");
 
+    if(HVN_proto_handle_control_msg(router->accept_fd, HVN_control_msg_t* msg) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Did not receive a valid control message while routing.");
+        taskexit(HVN_ERROR);
+    }
+
+
 /*****
     if(incoming_message_contains_server_uuid) {
         HVN_server_t* server = NULL;

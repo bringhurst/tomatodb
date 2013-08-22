@@ -22,16 +22,19 @@
 #include <stdint.h>
 
 /* Client requests. */
-#define HVN_CLNT_PROTO_CTRL_PROCESSOR        0x01
-#define HVN_CLNT_PROTO_CTRL_LOCATION_LEADER  0x03
-#define HVN_CLNT_PROTO_CTRL_QUORUM_LEADER    0x02
-#define HVN_CLNT_PROTO_CTRL_QUORUM_FOLLOWER  0x06
-#define HVN_CLNT_PROTO_CTRL_SHUTDOWN         0x07
+#define HVN_CLNT_PROTO_CTRL_ATTACH       0x01
+#define HVN_CLNT_PROTO_CTRL_DESTROY      0x03
+#define HVN_CLNT_PROTO_CTRL_EXIT         0x02
+#define HVN_CLNT_PROTO_CTRL_FOLLOWER     0x06
+#define HVN_CLNT_PROTO_CTRL_LEADER       0x07
+#define HVN_CLNT_PROTO_CTRL_LOCATION     0x05
+#define HVN_CLNT_PROTO_CTRL_PROXY        0x04
+#define HVN_CLNT_PROTO_CTRL_ROUTER       0x0C
 
 /* Server responses. */
-#define HVN_CLNT_PROTO_CTRL_R_OK             0x05
-#define HVN_CLNT_PROTO_CTRL_R_ERR            0x04
-#define HVN_CLNT_PROTO_CTRL_R_NOT_FOUND      0x0C
+#define HVN_CLNT_PROTO_CTRL_R_OK         0x0D
+#define HVN_CLNT_PROTO_CTRL_R_ERR        0x1D
+#define HVN_CLNT_PROTO_CTRL_R_NOT_FOUND  0x1C
 
 typedef struct HVN_msg_client_control_t {
     uint8_t action;
