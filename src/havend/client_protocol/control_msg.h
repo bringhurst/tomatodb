@@ -39,11 +39,53 @@
 typedef struct HVN_msg_client_control_t {
     uint8_t action;
     unsigned char uuid[16];
+    uint16_t path_len;
+    char* path;
 } HVN_msg_client_control_t;
 
 typedef struct HVN_msg_client_control_resp_t {
     uint8_t status;
     uint8_t err;
 } HVN_msg_client_control_resp_t;
+
+int HVN_clnt_proto_pack_control_msgpack(HVN_msg_client_control_t* data, \
+                                        size_t* len, \
+                                        char** msg);
+
+int HVN_clnt_proto_unpack_control_msgpack(HVN_msg_client_control_t* data, \
+                                          size_t len, \
+                                          char* msg);
+
+int HVN_clnt_proto_pack_control_resp_msgpack(HVN_msg_client_control_resp_t* data, \
+                                             size_t* len, \
+                                             char** msg);
+
+int HVN_clnt_proto_unpack_control_resp_msgpack(HVN_msg_client_control_resp_t* data, \
+                                               size_t len, \
+                                               char* msg);
+
+int HVN_clnt_proto_pack_control(HVN_msg_client_control_t* data, \
+                                int scheme, \
+                                size_t* len, \
+                                char** msg);
+
+int HVN_clnt_proto_unpack_control(HVN_msg_client_control_t* data, \
+                                  int scheme, \
+                                  size_t len, \
+                                  char* msg);
+
+int HVN_clnt_proto_pack_control_resp(HVN_msg_client_control_resp_t* data, \
+                                     int scheme, \
+                                     size_t* len, \
+                                     char** msg);
+
+int HVN_clnt_proto_unpack_control_resp(HVN_msg_client_control_resp_t * data, \
+                                       int scheme, \
+                                       size_t len, \
+                                       char* msg);
+
+int HVN_proto_receive_control_msg(int fd);
+int HVN_proto_send_control_resp_msg(int fd);
+int HVN_proto_handle_control_msg(int fd);
 
 #endif /* __HVN__HAVEND_CLIENT_PROTOCOL_CONTROL_MSG_H_ */
