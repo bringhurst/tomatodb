@@ -1,7 +1,5 @@
 include $(top_srcdir)/common.mk
 
-SUBDIRS = client_protocol task
-
 AM_CPPFLAGS += \
 	   -I$(top_srcdir) \
 	   -I$(top_srcdir)/src/common
@@ -14,10 +12,7 @@ havend_SOURCES = \
                  proxy.c \
                  replica.c \
 		 routing.c \
-		 server.c \
-		 settings.c
+		 settings.c \
+                 worker.c
 
-havend_LDADD = \
-		../common/libhaven_common.la \
-                client_protocol/libhaven_havend_client_protocol.la \
-		task/libhaven_havend_task.la
+havend_LDADD = ../common/libhaven_common.la

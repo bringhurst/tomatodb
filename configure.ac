@@ -89,11 +89,12 @@ AC_CONFIG_FILES([Makefile                            \
                  src/Makefile                        \
                  src/common/Makefile                 \
                  src/common/halloc/Makefile          \
+                 src/common/protocol/Makefile        \
+                 src/common/protocol/client/Makefile \
+                 src/common/protocol/server/Makefile \
+                 src/common/task/Makefile            \
                  src/havenctl/Makefile               \
                  src/havend/Makefile                 \
-                 src/havend/client_protocol/Makefile \
-                 src/havend/state/Makefile           \
-                 src/havend/task/Makefile            \
                  doc/Makefile                        \
                  doc/man/Makefile                    \
                  doc/man/man1/Makefile               \

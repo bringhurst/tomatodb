@@ -18,11 +18,14 @@
 
 #include "msgpack_helper.h"
 #include "log.h"
-#include "havend.h"
+#include "common.h"
 
 #include "task/task.h"
 
+#include <arpa/inet.h>
 #include <errno.h>
+#include <stdlib.h>
+#include <string.h>
 
 /** The debug stream to write log messages to. */
 extern FILE* HVN_debug_stream;

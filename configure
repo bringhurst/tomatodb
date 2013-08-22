@@ -17103,7 +17103,7 @@ done
 ac_config_files="$ac_config_files src/havenctl/setup.py"
 
 
-ac_config_files="$ac_config_files Makefile src/Makefile src/common/Makefile src/common/halloc/Makefile src/havenctl/Makefile src/havend/Makefile src/havend/client_protocol/Makefile src/havend/state/Makefile src/havend/task/Makefile doc/Makefile doc/man/Makefile doc/man/man1/Makefile"
+ac_config_files="$ac_config_files Makefile src/Makefile src/common/Makefile src/common/halloc/Makefile src/common/protocol/Makefile src/common/protocol/client/Makefile src/common/protocol/server/Makefile src/common/task/Makefile src/havenctl/Makefile src/havend/Makefile doc/Makefile doc/man/Makefile doc/man/man1/Makefile"
 
 
 cat >confcache <<\_ACEOF
@@ -18219,11 +18219,12 @@ do
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
     "src/common/Makefile") CONFIG_FILES="$CONFIG_FILES src/common/Makefile" ;;
     "src/common/halloc/Makefile") CONFIG_FILES="$CONFIG_FILES src/common/halloc/Makefile" ;;
+    "src/common/protocol/Makefile") CONFIG_FILES="$CONFIG_FILES src/common/protocol/Makefile" ;;
+    "src/common/protocol/client/Makefile") CONFIG_FILES="$CONFIG_FILES src/common/protocol/client/Makefile" ;;
+    "src/common/protocol/server/Makefile") CONFIG_FILES="$CONFIG_FILES src/common/protocol/server/Makefile" ;;
+    "src/common/task/Makefile") CONFIG_FILES="$CONFIG_FILES src/common/task/Makefile" ;;
     "src/havenctl/Makefile") CONFIG_FILES="$CONFIG_FILES src/havenctl/Makefile" ;;
     "src/havend/Makefile") CONFIG_FILES="$CONFIG_FILES src/havend/Makefile" ;;
-    "src/havend/client_protocol/Makefile") CONFIG_FILES="$CONFIG_FILES src/havend/client_protocol/Makefile" ;;
-    "src/havend/state/Makefile") CONFIG_FILES="$CONFIG_FILES src/havend/state/Makefile" ;;
-    "src/havend/task/Makefile") CONFIG_FILES="$CONFIG_FILES src/havend/task/Makefile" ;;
     "doc/Makefile") CONFIG_FILES="$CONFIG_FILES doc/Makefile" ;;
     "doc/man/Makefile") CONFIG_FILES="$CONFIG_FILES doc/man/Makefile" ;;
     "doc/man/man1/Makefile") CONFIG_FILES="$CONFIG_FILES doc/man/man1/Makefile" ;;

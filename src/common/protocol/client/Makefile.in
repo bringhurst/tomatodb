@@ -53,8 +53,7 @@ build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/common.mk
-bin_PROGRAMS = havend$(EXEEXT)
-subdir = src/havend
+subdir = src/common/protocol/client
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
 	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
@@ -66,16 +65,25 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-am__installdirs = "$(DESTDIR)$(bindir)"
-PROGRAMS = $(bin_PROGRAMS)
-am_havend_OBJECTS = connection.$(OBJEXT) havend.$(OBJEXT) \
-	proxy.$(OBJEXT) replica.$(OBJEXT) routing.$(OBJEXT) \
-	settings.$(OBJEXT) worker.$(OBJEXT)
-havend_OBJECTS = $(am_havend_OBJECTS)
-havend_DEPENDENCIES = ../common/libhaven_common.la
+LTLIBRARIES = $(noinst_LTLIBRARIES)
+libhaven_common_protocol_client_la_DEPENDENCIES =
+am_libhaven_common_protocol_client_la_OBJECTS =  \
+	libhaven_common_protocol_client_la-msgpack_helper.lo \
+	libhaven_common_protocol_client_la-client_protocol.lo \
+	libhaven_common_protocol_client_la-connect_msg.lo \
+	libhaven_common_protocol_client_la-control_msg.lo \
+	libhaven_common_protocol_client_la-data_msg.lo \
+	libhaven_common_protocol_client_la-discover_msg.lo \
+	libhaven_common_protocol_client_la-heartbeat_msg.lo
+libhaven_common_protocol_client_la_OBJECTS =  \
+	$(am_libhaven_common_protocol_client_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
+libhaven_common_protocol_client_la_LINK = $(LIBTOOL) $(AM_V_lt) \
+	--tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link \
+	$(CCLD) $(libhaven_common_protocol_client_la_CFLAGS) $(CFLAGS) \
+	$(libhaven_common_protocol_client_la_LDFLAGS) $(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/auxdir/depcomp
 am__depfiles_maybe = depfiles
@@ -102,8 +110,8 @@ am__v_CCLD_0 = @echo "  CCLD  " $@;
 AM_V_GEN = $(am__v_GEN_@AM_V@)
 am__v_GEN_ = $(am__v_GEN_@AM_DEFAULT_V@)
 am__v_GEN_0 = @echo "  GEN   " $@;
-SOURCES = $(havend_SOURCES)
-DIST_SOURCES = $(havend_SOURCES)
+SOURCES = $(libhaven_common_protocol_client_la_SOURCES)
+DIST_SOURCES = $(libhaven_common_protocol_client_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -251,17 +259,27 @@ AM_CPPFLAGS = -std=gnu99 -ggdb -W -Wall -Wextra -Wformat=1 -Winit-self \
 	-Wfloat-equal -Wundef -Wbad-function-cast -Wcast-align \
 	-Wstrict-prototypes -Wmissing-prototypes -Wredundant-decls \
 	-Winline -Wdisabled-optimization -Wshadow -Wwrite-strings \
-	-I$(top_srcdir) -I$(top_srcdir)/src/common
-havend_SOURCES = \
-		 connection.c \
-		 havend.c \
-                 proxy.c \
-                 replica.c \
-		 routing.c \
-		 settings.c \
-                 worker.c
+	-I$(top_srcdir) -I$(top_srcdir)/src/common \
+	-I$(top_srcdir)/src/common/protocol/client
+noinst_LTLIBRARIES = libhaven_common_protocol_client.la
+libhaven_common_protocol_client_la_LDFLAGS = $(LIB_LDFLAGS)
+libhaven_common_protocol_client_la_SOURCES = \
+                                             msgpack_helper.c \
+                                             client_protocol.c \
+                                             connect_msg.c \
+                                             control_msg.c \
+                                             data_msg.c \
+                                             discover_msg.c \
+                                             heartbeat_msg.c
 
-havend_LDADD = ../common/libhaven_common.la
+libhaven_common_protocol_client_la_LIBADD = \
+                                            $(msgpack_LIBS) \
+                                            $(uuid_LIBS)
+
+libhaven_common_protocol_client_la_CFLAGS = \
+                                            $(msgpack_CFLAGS) \
+                                            $(uuid_CFLAGS)
+
 all: all-am
 
 .SUFFIXES:
@@ -275,9 +293,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/common.mk $(am__conf
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign src/havend/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign src/common/protocol/client/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign src/havend/Makefile
+	  $(AUTOMAKE) --foreign src/common/protocol/client/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -297,55 +315,17 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
-install-binPROGRAMS: $(bin_PROGRAMS)
-	@$(NORMAL_INSTALL)
-	@list='$(bin_PROGRAMS)'; test -n "$(bindir)" || list=; \
-	if test -n "$$list"; then \
-	  echo " $(MKDIR_P) '$(DESTDIR)$(bindir)'"; \
-	  $(MKDIR_P) "$(DESTDIR)$(bindir)" || exit 1; \
-	fi; \
-	for p in $$list; do echo "$$p $$p"; done | \
-	sed 's/$(EXEEXT)$$//' | \
-	while read p p1; do if test -f $$p || test -f $$p1; \
-	  then echo "$$p"; echo "$$p"; else :; fi; \
-	done | \
-	sed -e 'p;s,.*/,,;n;h' -e 's|.*|.|' \
-	    -e 'p;x;s,.*/,,;s/$(EXEEXT)$$//;$(transform);s/$$/$(EXEEXT)/' | \
-	sed 'N;N;N;s,\n, ,g' | \
-	$(AWK) 'BEGIN { files["."] = ""; dirs["."] = 1 } \
-	  { d=$$3; if (dirs[d] != 1) { print "d", d; dirs[d] = 1 } \
-	    if ($$2 == $$4) files[d] = files[d] " " $$1; \
-	    else { print "f", $$3 "/" $$4, $$1; } } \
-	  END { for (d in files) print "f", d, files[d] }' | \
-	while read type dir files; do \
-	    if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
-	    test -z "$$files" || { \
-	    echo " $(INSTALL_PROGRAM_ENV) $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL_PROGRAM) $$files '$(DESTDIR)$(bindir)$$dir'"; \
-	    $(INSTALL_PROGRAM_ENV) $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL_PROGRAM) $$files "$(DESTDIR)$(bindir)$$dir" || exit $$?; \
-	    } \
-	; done
 
-uninstall-binPROGRAMS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(bin_PROGRAMS)'; test -n "$(bindir)" || list=; \
-	files=`for p in $$list; do echo "$$p"; done | \
-	  sed -e 'h;s,^.*/,,;s/$(EXEEXT)$$//;$(transform)' \
-	      -e 's/$$/$(EXEEXT)/' `; \
-	test -n "$$list" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(bindir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(bindir)" && rm -f $$files
-
-clean-binPROGRAMS:
-	@list='$(bin_PROGRAMS)'; test -n "$$list" || exit 0; \
-	echo " rm -f" $$list; \
-	rm -f $$list || exit $$?; \
-	test -n "$(EXEEXT)" || exit 0; \
-	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
-	echo " rm -f" $$list; \
-	rm -f $$list
-havend$(EXEEXT): $(havend_OBJECTS) $(havend_DEPENDENCIES) $(EXTRA_havend_DEPENDENCIES) 
-	@rm -f havend$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(havend_OBJECTS) $(havend_LDADD) $(LIBS)
+clean-noinstLTLIBRARIES:
+	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
+	@list='$(noinst_LTLIBRARIES)'; for p in $$list; do \
+	  dir="`echo $$p | sed -e 's|/[^/]*$$||'`"; \
+	  test "$$dir" != "$$p" || dir=.; \
+	  echo "rm -f \"$${dir}/so_locations\""; \
+	  rm -f "$${dir}/so_locations"; \
+	done
+libhaven_common_protocol_client.la: $(libhaven_common_protocol_client_la_OBJECTS) $(libhaven_common_protocol_client_la_DEPENDENCIES) $(EXTRA_libhaven_common_protocol_client_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(libhaven_common_protocol_client_la_LINK)  $(libhaven_common_protocol_client_la_OBJECTS) $(libhaven_common_protocol_client_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -353,13 +333,13 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/connection.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/havend.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/proxy.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/replica.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/routing.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/settings.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/worker.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhaven_common_protocol_client_la-client_protocol.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhaven_common_protocol_client_la-connect_msg.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhaven_common_protocol_client_la-control_msg.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhaven_common_protocol_client_la-data_msg.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhaven_common_protocol_client_la-discover_msg.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhaven_common_protocol_client_la-heartbeat_msg.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhaven_common_protocol_client_la-msgpack_helper.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -381,6 +361,55 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
+
+libhaven_common_protocol_client_la-msgpack_helper.lo: msgpack_helper.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_protocol_client_la_CFLAGS) $(CFLAGS) -MT libhaven_common_protocol_client_la-msgpack_helper.lo -MD -MP -MF $(DEPDIR)/libhaven_common_protocol_client_la-msgpack_helper.Tpo -c -o libhaven_common_protocol_client_la-msgpack_helper.lo `test -f 'msgpack_helper.c' || echo '$(srcdir)/'`msgpack_helper.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhaven_common_protocol_client_la-msgpack_helper.Tpo $(DEPDIR)/libhaven_common_protocol_client_la-msgpack_helper.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='msgpack_helper.c' object='libhaven_common_protocol_client_la-msgpack_helper.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_protocol_client_la_CFLAGS) $(CFLAGS) -c -o libhaven_common_protocol_client_la-msgpack_helper.lo `test -f 'msgpack_helper.c' || echo '$(srcdir)/'`msgpack_helper.c
+
+libhaven_common_protocol_client_la-client_protocol.lo: client_protocol.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_protocol_client_la_CFLAGS) $(CFLAGS) -MT libhaven_common_protocol_client_la-client_protocol.lo -MD -MP -MF $(DEPDIR)/libhaven_common_protocol_client_la-client_protocol.Tpo -c -o libhaven_common_protocol_client_la-client_protocol.lo `test -f 'client_protocol.c' || echo '$(srcdir)/'`client_protocol.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhaven_common_protocol_client_la-client_protocol.Tpo $(DEPDIR)/libhaven_common_protocol_client_la-client_protocol.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='client_protocol.c' object='libhaven_common_protocol_client_la-client_protocol.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_protocol_client_la_CFLAGS) $(CFLAGS) -c -o libhaven_common_protocol_client_la-client_protocol.lo `test -f 'client_protocol.c' || echo '$(srcdir)/'`client_protocol.c
+
+libhaven_common_protocol_client_la-connect_msg.lo: connect_msg.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_protocol_client_la_CFLAGS) $(CFLAGS) -MT libhaven_common_protocol_client_la-connect_msg.lo -MD -MP -MF $(DEPDIR)/libhaven_common_protocol_client_la-connect_msg.Tpo -c -o libhaven_common_protocol_client_la-connect_msg.lo `test -f 'connect_msg.c' || echo '$(srcdir)/'`connect_msg.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhaven_common_protocol_client_la-connect_msg.Tpo $(DEPDIR)/libhaven_common_protocol_client_la-connect_msg.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='connect_msg.c' object='libhaven_common_protocol_client_la-connect_msg.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_protocol_client_la_CFLAGS) $(CFLAGS) -c -o libhaven_common_protocol_client_la-connect_msg.lo `test -f 'connect_msg.c' || echo '$(srcdir)/'`connect_msg.c
+
+libhaven_common_protocol_client_la-control_msg.lo: control_msg.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_protocol_client_la_CFLAGS) $(CFLAGS) -MT libhaven_common_protocol_client_la-control_msg.lo -MD -MP -MF $(DEPDIR)/libhaven_common_protocol_client_la-control_msg.Tpo -c -o libhaven_common_protocol_client_la-control_msg.lo `test -f 'control_msg.c' || echo '$(srcdir)/'`control_msg.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhaven_common_protocol_client_la-control_msg.Tpo $(DEPDIR)/libhaven_common_protocol_client_la-control_msg.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='control_msg.c' object='libhaven_common_protocol_client_la-control_msg.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_protocol_client_la_CFLAGS) $(CFLAGS) -c -o libhaven_common_protocol_client_la-control_msg.lo `test -f 'control_msg.c' || echo '$(srcdir)/'`control_msg.c
+
+libhaven_common_protocol_client_la-data_msg.lo: data_msg.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_protocol_client_la_CFLAGS) $(CFLAGS) -MT libhaven_common_protocol_client_la-data_msg.lo -MD -MP -MF $(DEPDIR)/libhaven_common_protocol_client_la-data_msg.Tpo -c -o libhaven_common_protocol_client_la-data_msg.lo `test -f 'data_msg.c' || echo '$(srcdir)/'`data_msg.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhaven_common_protocol_client_la-data_msg.Tpo $(DEPDIR)/libhaven_common_protocol_client_la-data_msg.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='data_msg.c' object='libhaven_common_protocol_client_la-data_msg.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_protocol_client_la_CFLAGS) $(CFLAGS) -c -o libhaven_common_protocol_client_la-data_msg.lo `test -f 'data_msg.c' || echo '$(srcdir)/'`data_msg.c
+
+libhaven_common_protocol_client_la-discover_msg.lo: discover_msg.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_protocol_client_la_CFLAGS) $(CFLAGS) -MT libhaven_common_protocol_client_la-discover_msg.lo -MD -MP -MF $(DEPDIR)/libhaven_common_protocol_client_la-discover_msg.Tpo -c -o libhaven_common_protocol_client_la-discover_msg.lo `test -f 'discover_msg.c' || echo '$(srcdir)/'`discover_msg.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhaven_common_protocol_client_la-discover_msg.Tpo $(DEPDIR)/libhaven_common_protocol_client_la-discover_msg.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='discover_msg.c' object='libhaven_common_protocol_client_la-discover_msg.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_protocol_client_la_CFLAGS) $(CFLAGS) -c -o libhaven_common_protocol_client_la-discover_msg.lo `test -f 'discover_msg.c' || echo '$(srcdir)/'`discover_msg.c
+
+libhaven_common_protocol_client_la-heartbeat_msg.lo: heartbeat_msg.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_protocol_client_la_CFLAGS) $(CFLAGS) -MT libhaven_common_protocol_client_la-heartbeat_msg.lo -MD -MP -MF $(DEPDIR)/libhaven_common_protocol_client_la-heartbeat_msg.Tpo -c -o libhaven_common_protocol_client_la-heartbeat_msg.lo `test -f 'heartbeat_msg.c' || echo '$(srcdir)/'`heartbeat_msg.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhaven_common_protocol_client_la-heartbeat_msg.Tpo $(DEPDIR)/libhaven_common_protocol_client_la-heartbeat_msg.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='heartbeat_msg.c' object='libhaven_common_protocol_client_la-heartbeat_msg.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_protocol_client_la_CFLAGS) $(CFLAGS) -c -o libhaven_common_protocol_client_la-heartbeat_msg.lo `test -f 'heartbeat_msg.c' || echo '$(srcdir)/'`heartbeat_msg.c
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -472,11 +501,8 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(PROGRAMS)
+all-am: Makefile $(LTLIBRARIES)
 installdirs:
-	for dir in "$(DESTDIR)$(bindir)"; do \
-	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
-	done
 install: install-am
 install-exec: install-exec-am
 install-data: install-data-am
@@ -509,7 +535,8 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-binPROGRAMS clean-generic clean-libtool mostlyclean-am
+clean-am: clean-generic clean-libtool clean-noinstLTLIBRARIES \
+	mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -535,7 +562,7 @@ install-dvi: install-dvi-am
 
 install-dvi-am:
 
-install-exec-am: install-binPROGRAMS
+install-exec-am:
 
 install-html: install-html-am
 
@@ -575,23 +602,22 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-binPROGRAMS
+uninstall-am:
 
 .MAKE: install-am install-strip
 
-.PHONY: CTAGS GTAGS all all-am check check-am clean clean-binPROGRAMS \
-	clean-generic clean-libtool ctags distclean distclean-compile \
-	distclean-generic distclean-libtool distclean-tags distdir dvi \
-	dvi-am html html-am info info-am install install-am \
-	install-binPROGRAMS install-data install-data-am install-dvi \
+.PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
+	clean-libtool clean-noinstLTLIBRARIES ctags distclean \
+	distclean-compile distclean-generic distclean-libtool \
+	distclean-tags distdir dvi dvi-am html html-am info info-am \
+	install install-am install-data install-data-am install-dvi \
 	install-dvi-am install-exec install-exec-am install-html \
 	install-html-am install-info install-info-am install-man \
 	install-pdf install-pdf-am install-ps install-ps-am \
 	install-strip installcheck installcheck-am installdirs \
 	maintainer-clean maintainer-clean-generic mostlyclean \
 	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	pdf pdf-am ps ps-am tags uninstall uninstall-am \
-	uninstall-binPROGRAMS
+	pdf pdf-am ps ps-am tags uninstall uninstall-am
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

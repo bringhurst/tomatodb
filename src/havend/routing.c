@@ -24,9 +24,9 @@
 #include "task/task.h"
 #include "task/taskimpl.h"
 
-#include "client_protocol/client_protocol.h"
-#include "client_protocol/connect_msg.h"
-#include "client_protocol/control_msg.h"
+#include "protocol/client/client_protocol.h"
+#include "protocol/client/connect_msg.h"
+#include "protocol/client/control_msg.h"
 
 #include <msgpack.h>
 #include <stdbool.h>

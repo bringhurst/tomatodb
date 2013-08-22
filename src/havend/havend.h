@@ -19,7 +19,6 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
-#include "server.h"
 #include "database.h"
 
 #include <stdlib.h>

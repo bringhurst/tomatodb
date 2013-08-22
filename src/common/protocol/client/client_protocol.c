@@ -17,7 +17,7 @@
  */
 
 #include "log.h"
-#include "havend.h"
+#include "common.h"
 
 #include "client_protocol.h"
 

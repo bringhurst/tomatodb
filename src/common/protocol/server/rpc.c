@@ -1,6 +1,3 @@
-#ifndef __HVN__HAVEND_CONNECTION_H_
-#define __HVN__HAVEND_CONNECTION_H_
-
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
  *
@@ -19,19 +16,4 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
-#include "havend.h"
-
-#include <stdio.h>
-
-#define HVN_CONNECTION_STACK_SIZE (32768)
-
-typedef struct HVN_connection_t {
-//    HVN_server_t* server;
-    char* remote_addr;
-    int remote_port;
-    int fd;
-} HVN_connection_t;
-
-void HVN_connection_task(HVN_connection_t* conn);
-
-#endif /* __HVN__HAVEND_CONNECTION_H_ */
+/* EOF */
