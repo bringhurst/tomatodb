@@ -19,4 +19,10 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
+#include "havend.h"
+
+int HVN_replica_bootstrap_location(void);
+int HVN_replica_bootstrap_leader(void);
+int HVN_replica_bootstrap_follower(void);
+
 #endif /* __HVN__HAVEND_REPLICA_H */
