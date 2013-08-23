@@ -19,7 +19,6 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
-#include "client.h"
 #include "context.h"
 #include "ut/uthash.h"
 
@@ -30,7 +29,6 @@
 typedef struct HVN_replica_t {
     HVN_db_t* db;
     HVN_ctx_t* ctx;
-    HVN_client_t* clients;
     int fd;
     uuid_t uuid;
     UT_array* quorum_addrs;

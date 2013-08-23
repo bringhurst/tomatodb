@@ -1,5 +1,5 @@
-#ifndef __HVN__HAVEND_CLIENT_H_
-#define __HVN__HAVEND_CLIENT_H_
+#ifndef __HVN__HAVEND_ATTACH_H_
+#define __HVN__HAVEND_ATTACH_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -19,18 +19,22 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
-#include "havend.h"
-
 #include <stdio.h>
 
-#define HVN_CLIENT_STACK_SIZE (32768)
+#include "routing.h"
 
-typedef struct HVN_client_t {
+#define HVN_ATTACH_STACK_SIZE (32768)
+
+typedef struct HVN_attach_t {
     char* remote_addr;
     int remote_port;
     int fd;
-} HVN_client_t;
+} HVN_attach_t;
 
-void HVN_client_task(HVN_client_t* client);
+void HVN_attach_task(HVN_attach_t* client);
+int HVN_replica_attach(HVN_router_t* router, uuid_t uuid);
 
-#endif /* __HVN__HAVEND_CLIENT_H_ */
+int HVN_attach_init(HVN_attach_t** client, HVN_router_t* router);
+void HVN_attach_free(HVN_attach_t* client);
+
+#endif /* __HVN__HAVEND_ATTACH_H_ */

@@ -16,6 +16,7 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
+#include "routing.h"
 #include "settings.h"
 #include "task/task.h"
 

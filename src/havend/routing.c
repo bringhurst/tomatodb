@@ -20,15 +20,15 @@
 #include <string.h>
 #include <uuid/uuid.h>
 
-#include "routing.h"
+#include "attach.h"
 #include "log.h"
-
-#include "client.h"
 #include "protocol/client/client_protocol.h"
 #include "protocol/client/connect_msg.h"
 #include "protocol/client/control_msg.h"
 #include "replica.h"
 #include "task/task.h"
+
+#include "routing.h"
 
 /** The debug stream to write log messages to. */
 extern FILE* HVN_debug_stream;
@@ -122,8 +122,12 @@ void HVN_routing_task(HVN_router_t* router)
     switch(control_msg_data.action) {
 
         case HVN_CLNT_PROTO_CTRL_ATTACH:
-            LOG(HVN_LOG_DBG, "Handling control attach message.");
-            LOG(HVN_LOG_ERR, "Not implemented yet.");
+            if(HVN_replica_attach(router, control_msg_data.uuid) != HVN_SUCCESS) {
+                uuid_unparse(control_msg_data.uuid, new_uuid_string);
+                LOG(HVN_LOG_ERR, "Failed to attach to UUID `%s'.", new_uuid_string);
+            } else {
+                LOG(HVN_LOG_DBG, "Attach completed.");
+            }
             break;
 
         case HVN_CLNT_PROTO_CTRL_PROXY:
