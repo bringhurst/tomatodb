@@ -16,20 +16,19 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
+#include <stdlib.h>
+#include <string.h>
+#include <uuid/uuid.h>
+
 #include "routing.h"
 #include "log.h"
 
-#include "common.h"
-
-#include "task/task.h"
-#include "task/taskimpl.h"
-
+#include "client.h"
 #include "protocol/client/client_protocol.h"
 #include "protocol/client/connect_msg.h"
 #include "protocol/client/control_msg.h"
-
-#include <msgpack.h>
-#include <stdbool.h>
+#include "replica.h"
+#include "task/task.h"
 
 /** The debug stream to write log messages to. */
 extern FILE* HVN_debug_stream;
@@ -102,6 +101,8 @@ void HVN_free_router(HVN_router_t* router)
 void HVN_routing_task(HVN_router_t* router)
 {
     HVN_msg_client_control_t control_msg_data;
+    char new_uuid_string[37];
+    uuid_t new_uuid;
 
     if(HVN_proto_handle_connect_msg(router->accept_fd) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Did not receive a valid connect message while routing.");
@@ -141,7 +142,15 @@ void HVN_routing_task(HVN_router_t* router)
 
         case HVN_CLNT_PROTO_CTRL_LOCATION:
             LOG(HVN_LOG_DBG, "Handling control location message.");
-            LOG(HVN_LOG_ERR, "Not implemented yet.");
+
+            if(HVN_replica_bootstrap_location(router->ctx, &new_uuid) == HVN_SUCCESS) {
+                uuid_unparse(new_uuid, new_uuid_string);
+                LOG(HVN_LOG_ERR, "Location quorum leader created with UUID `%s'.", new_uuid_string);
+                //TODO: return uuid to requestor?
+            } else {
+                LOG(HVN_LOG_ERR, "Failed to bootstrap a location quorum leader.");
+            }
+
             break;
 
         case HVN_CLNT_PROTO_CTRL_EXIT:
