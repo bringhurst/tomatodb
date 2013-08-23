@@ -25,6 +25,25 @@ extern FILE* HVN_debug_stream;
 /** The log level to output. */
 extern HVN_loglevel HVN_debug_level;
 
+int HVN_replica_init(HVN_replica_t** replica)
+{
+    *replica = (HVN_replica_t*) malloc(sizeof(HVN_replica_t));
+
+    if(*replica == NULL) {
+        LOG(HVN_LOG_ERR, "Failed to allocate memory for a new replica.");
+        return HVN_ERROR;
+    }
+
+    utarray_new((*replica)->quorum_addrs, &ut_str_icd);
+    return HVN_SUCCESS;
+}
+
+void HVN_replica_free(HVN_replica_t* replica)
+{
+    utarray_free(replica->quorum_addrs);
+    free(replica);
+}
+
 // Bootstrap a new location leader replica in the specified context. Set the
 // UUID of the new replica to the uuid pointer.
 int HVN_replica_bootstrap_location(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t* uuid)
@@ -34,7 +53,6 @@ int HVN_replica_bootstrap_location(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_
         //FIXME: allow override?
         return HVN_ERROR;
     } else {
-        utarray_new(replica->quorum_addrs, &ut_str_icd);
         ctx->location_addrs = replica->quorum_addrs;
     }
 
@@ -50,18 +68,18 @@ int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t*
 
     // TODO: check for a valid path.
     // TODO: if applicable, register with location quorum.
-    // TODO: initialize key value store.
-    // TODO: initialize consensus scheme.
-    // TODO: initialize data command connection queue.
-    LOG(HVN_LOG_ERR, "Bootstrap leader is not implemented.");
+    // TODO: create key value store.
+    // TODO: create replica task.
+   
     return HVN_ERROR;
 }
 
 int HVN_replica_bootstrap_follower()
 {
     // TODO: query location quorum to find location leader.
-    // TODO: request snapshot from location leader.
-    // TODO: initialize consensus scheme.
+    // TODO: create key value store.
+    // TODO: create replica task.
+
     LOG(HVN_LOG_ERR, "Bootstrap follower is not implemented.");
     return HVN_ERROR;
 }

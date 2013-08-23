@@ -47,8 +47,6 @@ int HVN_msgpack_fdwrite(int fd, size_t len, char* msg)
         return HVN_ERROR;
     }
 
-    LOG(HVN_LOG_INFO, "Got past fdwriten.");
-
     return HVN_SUCCESS;
 }
 

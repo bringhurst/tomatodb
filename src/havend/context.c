@@ -41,6 +41,7 @@ int HVN_ctx_init(HVN_ctx_t** ctx)
     strcpy((*ctx)->listen_addr, DEFAULT_LISTEN_ADDRESS);
 
     (*ctx)->listen_port = DEFAULT_LISTEN_PORT;
+    (*ctx)->location_addrs = NULL;
 
     return HVN_SUCCESS;
 }

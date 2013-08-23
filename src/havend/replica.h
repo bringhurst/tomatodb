@@ -37,7 +37,7 @@ typedef struct HVN_replica_t {
 } HVN_replica_t;
 
 int HVN_replica_init(HVN_replica_t** replica);
-int HVN_replica_free(HVN_replica_t* replica);
+void HVN_replica_free(HVN_replica_t* replica);
 
 int HVN_replica_follower(HVN_replica_t* replica);
 int HVN_replica_candidate(HVN_replica_t* replica);
