@@ -19,6 +19,7 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
+// FIXME: make this configurable.
 #define HVN_BASE_STATE_DIR "/var/lib/haven"
 
 #define HVN_SUCCESS (1)
