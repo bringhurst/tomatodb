@@ -44,7 +44,7 @@ int HVN_set_process_uuid(HVN_ctx_t* ctx)
         result = HVN_get_uuid_from_file(ctx, uuid_file_path);
     }
     else {
-        result = HVN_configure_new_uuid(ctx, uuid_file_path);
+        result = HVN_configure_new_process_uuid(ctx, uuid_file_path);
     }
 
     free(uuid_file_path);
@@ -103,7 +103,7 @@ int HVN_generate_uuid(uuid_t* uuid)
     return HVN_SUCCESS;
 }
 
-int HVN_configure_new_uuid(HVN_ctx_t* ctx, char* uuid_file_path)
+int HVN_configure_new_process_uuid(HVN_ctx_t* ctx, char* uuid_file_path)
 {
     FILE* fh = NULL;
     int result = HVN_generate_uuid(&ctx->process_uuid);

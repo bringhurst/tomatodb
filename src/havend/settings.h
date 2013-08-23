@@ -26,7 +26,7 @@
 int HVN_set_process_uuid(HVN_ctx_t* ctx);
 int HVN_get_uuid_from_file(HVN_ctx_t* ctx, char* uuid_file_path);
 int HVN_generate_uuid(uuid_t* uuid);
-int HVN_configure_new_uuid(HVN_ctx_t* ctx, char* uuid_file_path);
+int HVN_configure_new_process_uuid(HVN_ctx_t* ctx, char* uuid_file_path);
 int HVN_prepare_settings_db(HVN_ctx_t* ctx);
 
 #endif /* __HVN_SETTINGS_H */

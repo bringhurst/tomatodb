@@ -16,6 +16,8 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
+#include "settings.h"
+
 #include "replica.h"
 #include "log.h"
 
@@ -76,9 +78,15 @@ int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t*
         LOG(HVN_LOG_DBG, "Using leader base key `%s'.", path_key);
     }
 
-    // TODO: generate a uuid.
 
-    if(HVN_replica_bootstrap_db(ctx, replica) != HVN_SUCCESS) {
+    if(HVN_generate_uuid(&replica->uuid) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Failed to generate a new replica UUID.");
+        return HVN_ERROR;
+    } else {
+        uuid_copy(*uuid, replica->uuid);
+    }
+
+    if(HVN_replica_bootstrap_db(replica) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to bootstrap a new replica database.");
         return HVN_ERROR;
     }
@@ -105,7 +113,7 @@ int HVN_replica_bootstrap_follower()
     return HVN_ERROR;
 }
 
-int HVN_replica_bootstrap_db(HVN_ctx_t* ctx, HVN_replica_t* replica)
+int HVN_replica_bootstrap_db(HVN_replica_t* replica)
 {
     char* db_path = (char*) malloc(sizeof(char) * _POSIX_PATH_MAX);
     char* uuid_string = (char*) malloc(sizeof(char) * UUID_STR_LEN);
