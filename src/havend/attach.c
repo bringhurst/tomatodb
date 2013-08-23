@@ -33,6 +33,27 @@ void HVN_attach_task(HVN_attach_t* client)
     LOG(HVN_LOG_ERR, "Attach task is not implemented yet.");
 }
 
+int HVN_replica_attach(HVN_router_t* router, uuid_t uuid)
+{
+    HVN_attach_t* client;
+    HVN_replica_t* replica;
+
+    HASH_FIND(hh, router->ctx->replicas, uuid, sizeof(uuid_t), replica);
+    if(replica == NULL) {
+        LOG(HVN_LOG_ERR, "Attempted to attach to a replica which doesn't exit in this instance.");
+        return HVN_ERROR;
+    }
+
+    LOG(HVN_LOG_DBG, "Client attached to a replica. Preparing to handle commands.");
+    
+    if(HVN_attach_init(&client, router) != HVN_SUCCESS) {
+        LOG(HVN_LOG_INFO, "Failed to allocate memory to attach a new client.");
+    }
+
+    taskcreate((void (*)(void*))HVN_attach_task, client, HVN_ATTACH_STACK_SIZE);
+    return HVN_SUCCESS;
+}
+
 int HVN_attach_init(HVN_attach_t** client, HVN_router_t* router)
 {
     *client = (HVN_attach_t*) malloc(sizeof(HVN_attach_t));
@@ -58,23 +79,6 @@ void HVN_attach_free(HVN_attach_t* client)
 {
     free(client->remote_addr);
     free(client);
-}
-
-int HVN_replica_attach(HVN_router_t* router, uuid_t uuid)
-{
-    HVN_attach_t* client;
-    HVN_replica_t* replica;
-
-    LOG(HVN_LOG_DBG, "Entered replica attach.");
-
-    //TODO: lookup replica with the uuid and router->ctx.
-    
-    if(HVN_attach_init(&client, router) != HVN_SUCCESS) {
-        LOG(HVN_LOG_INFO, "Failed to allocate memory to attach a new client.");
-    }
-
-    taskcreate((void (*)(void*))HVN_attach_task, client, HVN_ATTACH_STACK_SIZE);
-    return HVN_SUCCESS;
 }
 
 /* EOF */
