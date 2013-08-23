@@ -83,7 +83,7 @@ int HVN_get_uuid_from_file(HVN_ctx_t* ctx, char* uuid_file_path)
     }
 
     uuid_unparse(ctx->process_uuid, uuid_string);
-    LOG(HVN_LOG_INFO, "Using existing UUID of `%s' for the process identifier.", uuid_string);
+    //LOG(HVN_LOG_INFO, "Using existing UUID of `%s' for the process identifier.", uuid_string);
 
     fclose(fh);
     free(buf);

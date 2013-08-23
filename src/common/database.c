@@ -86,9 +86,13 @@ bool HVN_db_validate_key(char* key)
 {
     char* p = key;
 
+    // FIXME: not designed for malicious intent.
+
     while (*p++) {
+        if(*p == '\0') break;
         if((*p < 'a') || (*p > 'z')) {
             if((*p != '_') && (*p != '/')) {
+                LOG(HVN_LOG_DBG, "Returning false on %c", *p);
                 return false;
             }
         }

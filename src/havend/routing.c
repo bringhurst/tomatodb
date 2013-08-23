@@ -110,14 +110,14 @@ void HVN_routing_task(HVN_router_t* router)
         taskexit(HVN_ERROR);
     }
 
-    LOG(HVN_LOG_DBG, "Connect handshake completed.");
+    //LOG(HVN_LOG_DBG, "Connect handshake completed.");
 
     if(HVN_proto_receive_control_msg(router->accept_fd, &control_msg_data) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Did not receive a valid control message while routing.");
         taskexit(HVN_ERROR);
     }
 
-    LOG(HVN_LOG_DBG, "Received a sane control messsage.");
+    //LOG(HVN_LOG_DBG, "Received a sane control messsage.");
 
     switch(control_msg_data.action) {
 
