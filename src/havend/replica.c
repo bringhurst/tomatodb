@@ -48,6 +48,9 @@ void HVN_replica_free(HVN_replica_t* replica)
 // UUID of the new replica to the uuid pointer.
 int HVN_replica_bootstrap_location(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t* uuid)
 {
+    char* key = (char*) malloc(sizeof(char) * HVN_MAX_KEY_SIZE);
+    strncpy(key, HVN_REPLICA_KEY_DEFAULT_LOCATION, HVN_MAX_KEY_SIZE);
+
     if(ctx->location_addrs != NULL) {
         LOG(HVN_LOG_ERR, "A location leader already exists.");
         //FIXME: allow override?
@@ -56,19 +59,32 @@ int HVN_replica_bootstrap_location(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_
         ctx->location_addrs = replica->quorum_addrs;
     }
 
-    return HVN_replica_bootstrap_leader(replica, ctx, uuid, HVN_REPLICA_LOCATION_KEY);
+    return HVN_replica_bootstrap_leader(replica, ctx, uuid, key);
 }
 
 // Bootstrap a new leader replica in the specified context. Set the UUID of
 // the new replica to the uuid pointer.
-int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t* uuid, const char* path_key)
+int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t* uuid, char* path_key)
 {
     LOG(HVN_LOG_INFO, "Bootstrapping a replica leader on interface `%s:%d'.", \
             ctx->listen_addr, ctx->listen_port);
 
-    // TODO: check for a valid path.
-    // TODO: if applicable, register with location quorum.
-    // TODO: create key value store.
+    if(HVN_db_validate_key(path_key) != true) {
+        LOG(HVN_LOG_ERR, "Invalid leader base key format `%s'.", path_key);
+        return HVN_ERROR;
+    } else {
+        LOG(HVN_LOG_DBG, "Using leader base key `%s'.", path_key);
+    }
+
+    // TODO: create key value store (this generates a uuid).
+
+    if(ctx->location_addrs == replica->quorum_addrs) {
+        LOG(HVN_LOG_DBG, "This replica is the location service. Not attempting to register.");
+    } else {
+        LOG(HVN_LOG_DBG, "Attempting to register with the location service.");
+        // TODO: register with location quorum.
+    }
+
     // TODO: create replica task.
    
     return HVN_ERROR;

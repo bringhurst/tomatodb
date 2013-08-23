@@ -24,7 +24,7 @@
 
 #include "havend.h"
 
-#define HVN_REPLICA_LOCATION_KEY "/location"
+#define HVN_REPLICA_KEY_DEFAULT_LOCATION "/location"
 
 typedef struct HVN_replica_t {
     HVN_db_t* db;
@@ -44,7 +44,7 @@ int HVN_replica_candidate(HVN_replica_t* replica);
 int HVN_replica_leader(HVN_replica_t* replica);
 
 int HVN_replica_bootstrap_location(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t* uuid);
-int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t* uuid, const char* path_key);
+int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t* uuid, char* path_key);
 int HVN_replica_bootstrap_follower(void);
 
 #endif /* __HVN__HAVEND_REPLICA_H */

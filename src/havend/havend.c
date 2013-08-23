@@ -240,7 +240,7 @@ void taskmain(int argc, char* argv[])
         taskexit(EXIT_FAILURE);
     }
 
-    HVN_close_db(ctx->settings_db);
+    HVN_db_close(ctx->settings_db);
     HVN_ctx_free(ctx);
 
     LOG(HVN_LOG_INFO, "Goodbye! %s-%s is shutting down.", \

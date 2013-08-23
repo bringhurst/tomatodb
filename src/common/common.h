@@ -33,6 +33,8 @@
 #define _POSIX_PATH_MAX 4096
 #endif
 
+#define HVN_MAX_KEY_SIZE _POSIX_PATH_MAX
+
 int HVN_ensure_directory_exists(char* path);
 
 #endif /* __HVN_COMMON_COMMON_H */

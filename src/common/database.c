@@ -33,7 +33,7 @@ extern FILE* HVN_debug_stream;
 /** The log level to output. */
 extern HVN_loglevel HVN_debug_level;
 
-int HVN_init_db(HVN_db_t** db, char* path)
+int HVN_db_init(HVN_db_t** db, char* path)
 {
     char* db_err = NULL;
 
@@ -61,12 +61,12 @@ int HVN_init_db(HVN_db_t** db, char* path)
     return HVN_SUCCESS;
 }
 
-void HVN_close_db(HVN_db_t* db)
+void HVN_db_close(HVN_db_t* db)
 {
     leveldb_close(db->handle);
 }
 
-int HVN_destroy_db(HVN_db_t* db)
+int HVN_db_destroy(HVN_db_t* db)
 {
     char* db_err = NULL;
 
@@ -80,6 +80,21 @@ int HVN_destroy_db(HVN_db_t* db)
 
     leveldb_free(db_err);
     return HVN_SUCCESS;
+}
+
+bool HVN_db_validate_key(char* key)
+{
+    char* p = key;
+
+    while (*p++) {
+        if((*p < 'a') || (*p > 'z')) {
+            if((*p != '_') && (*p != '/')) {
+                return false;
+            }
+        }
+    }
+
+    return true;
 }
 
 /* EOF */

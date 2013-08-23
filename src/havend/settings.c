@@ -170,7 +170,7 @@ int HVN_prepare_settings_db(HVN_ctx_t* ctx)
 
     uuid_unparse(ctx->process_uuid, uuid_string);
     sprintf(settings_db_path + offset, "/%s", uuid_string);
-    result = HVN_init_db(&ctx->settings_db, settings_db_path);
+    result = HVN_db_init(&ctx->settings_db, settings_db_path);
 
     free(settings_db_path);
     free(uuid_string);
