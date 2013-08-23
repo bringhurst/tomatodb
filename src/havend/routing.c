@@ -137,13 +137,18 @@ void HVN_routing_task(HVN_router_t* router)
             break;
 
         case HVN_CLNT_PROTO_CTRL_LEADER:
-            LOG(HVN_LOG_DBG, "Handling control leader message.");
-            LOG(HVN_LOG_ERR, "Not implemented yet.");
+            HVN_replica_init(&new_replica);
+            if(HVN_replica_bootstrap_leader(new_replica, router->ctx, &new_uuid, control_msg_data.path) == HVN_SUCCESS) {
+                uuid_unparse(new_uuid, new_uuid_string);
+                LOG(HVN_LOG_ERR, "Quorum leader created with UUID `%s'.", new_uuid_string);
+                //TODO: return uuid to requestor?
+            } else {
+                LOG(HVN_LOG_ERR, "Failed to bootstrap a quorum leader.");
+            }
             break;
 
         case HVN_CLNT_PROTO_CTRL_LOCATION:
             HVN_replica_init(&new_replica);
-
             if(HVN_replica_bootstrap_location(new_replica, router->ctx, &new_uuid) == HVN_SUCCESS) {
                 uuid_unparse(new_uuid, new_uuid_string);
                 LOG(HVN_LOG_ERR, "Location quorum leader created with UUID `%s'.", new_uuid_string);
@@ -151,7 +156,6 @@ void HVN_routing_task(HVN_router_t* router)
             } else {
                 LOG(HVN_LOG_ERR, "Failed to bootstrap a location quorum leader.");
             }
-
             break;
 
         case HVN_CLNT_PROTO_CTRL_EXIT:

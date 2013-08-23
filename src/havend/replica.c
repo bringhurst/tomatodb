@@ -78,7 +78,6 @@ int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t*
         LOG(HVN_LOG_DBG, "Using leader base key `%s'.", path_key);
     }
 
-
     if(HVN_generate_uuid(&replica->uuid) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to generate a new replica UUID.");
         return HVN_ERROR;
