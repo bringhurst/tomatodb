@@ -17,6 +17,7 @@
  */
 
 #include "settings.h"
+#include "task/task.h"
 
 #include "replica.h"
 #include "log.h"
@@ -26,6 +27,14 @@ extern FILE* HVN_debug_stream;
 
 /** The log level to output. */
 extern HVN_loglevel HVN_debug_level;
+
+void HVN_replica_task(HVN_replica_t* replica)
+{
+    LOG(HVN_LOG_DBG, "Entered replica task.");
+
+
+    taskexit(EXIT_SUCCESS);
+}
 
 int HVN_replica_init(HVN_replica_t** replica)
 {
@@ -97,9 +106,10 @@ int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t*
         // TODO: register with location quorum.
     }
 
-    // TODO: create replica task.
-   
-    return HVN_ERROR;
+    taskcreate((void (*)(void*))HVN_replica_task, replica, HVN_REPLICA_STACK_SIZE);
+    HASH_ADD(hh, ctx->replicas, uuid, sizeof(uuid_t), replica);
+
+    return HVN_SUCCESS;
 }
 
 int HVN_replica_bootstrap_follower()

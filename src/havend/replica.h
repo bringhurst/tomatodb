@@ -20,9 +20,10 @@
  */
 
 #include "client.h"
+#include "context.h"
 #include "ut/uthash.h"
 
-#include "havend.h"
+#define HVN_REPLICA_STACK_SIZE 32768
 
 #define HVN_REPLICA_KEY_DEFAULT_LOCATION "/location"
 
@@ -35,6 +36,8 @@ typedef struct HVN_replica_t {
     UT_array* quorum_addrs;
     UT_hash_handle hh;
 } HVN_replica_t;
+
+void HVN_replica_task(HVN_replica_t* replica);
 
 int HVN_replica_init(HVN_replica_t** replica);
 void HVN_replica_free(HVN_replica_t* replica);
