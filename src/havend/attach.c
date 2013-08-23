@@ -31,6 +31,8 @@ extern HVN_loglevel HVN_debug_level;
 void HVN_attach_task(HVN_attach_t* client)
 {
     LOG(HVN_LOG_ERR, "Attach task is not implemented yet.");
+
+    //TODO: handle DATA commands and apply to client->replica
 }
 
 int HVN_replica_attach(HVN_router_t* router, uuid_t uuid)
@@ -46,7 +48,7 @@ int HVN_replica_attach(HVN_router_t* router, uuid_t uuid)
 
     LOG(HVN_LOG_DBG, "Client attached to a replica. Preparing to handle commands.");
     
-    if(HVN_attach_init(&client, router) != HVN_SUCCESS) {
+    if(HVN_attach_init(&client, router, replica) != HVN_SUCCESS) {
         LOG(HVN_LOG_INFO, "Failed to allocate memory to attach a new client.");
     }
 
@@ -54,7 +56,7 @@ int HVN_replica_attach(HVN_router_t* router, uuid_t uuid)
     return HVN_SUCCESS;
 }
 
-int HVN_attach_init(HVN_attach_t** client, HVN_router_t* router)
+int HVN_attach_init(HVN_attach_t** client, HVN_router_t* router, HVN_replica_t* replica)
 {
     *client = (HVN_attach_t*) malloc(sizeof(HVN_attach_t));
     if(*client == NULL) {
@@ -71,6 +73,7 @@ int HVN_attach_init(HVN_attach_t** client, HVN_router_t* router)
     strncpy((*client)->remote_addr, router->remote_addr, _POSIX_HOST_NAME_MAX);
     (*client)->fd = router->accept_fd;
     (*client)->remote_port = router->remote_port;
+    (*client)->replica = replica;
 
     return HVN_SUCCESS;
 }

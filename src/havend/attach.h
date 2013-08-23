@@ -21,11 +21,13 @@
 
 #include <stdio.h>
 
+#include "replica.h"
 #include "routing.h"
 
 #define HVN_ATTACH_STACK_SIZE (32768)
 
 typedef struct HVN_attach_t {
+    HVN_replica_t* replica;
     char* remote_addr;
     int remote_port;
     int fd;
@@ -34,7 +36,7 @@ typedef struct HVN_attach_t {
 void HVN_attach_task(HVN_attach_t* client);
 int HVN_replica_attach(HVN_router_t* router, uuid_t uuid);
 
-int HVN_attach_init(HVN_attach_t** client, HVN_router_t* router);
+int HVN_attach_init(HVN_attach_t** client, HVN_router_t* router, HVN_replica_t* replica);
 void HVN_attach_free(HVN_attach_t* client);
 
 #endif /* __HVN__HAVEND_ATTACH_H_ */
