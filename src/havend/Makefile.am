@@ -7,7 +7,7 @@ AM_CPPFLAGS += \
 bin_PROGRAMS = havend
 
 havend_SOURCES = \
-                 connection.c \
+                 client.c \
                  context.c \
                  havend.c \
                  proxy.c \

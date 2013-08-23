@@ -68,7 +68,7 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_havend_OBJECTS = connection.$(OBJEXT) context.$(OBJEXT) \
+am_havend_OBJECTS = client.$(OBJEXT) context.$(OBJEXT) \
 	havend.$(OBJEXT) proxy.$(OBJEXT) replica.$(OBJEXT) \
 	routing.$(OBJEXT) settings.$(OBJEXT)
 havend_OBJECTS = $(am_havend_OBJECTS)
@@ -253,7 +253,7 @@ AM_CPPFLAGS = -std=gnu99 -ggdb -W -Wall -Wextra -Wformat=1 -Winit-self \
 	-Winline -Wdisabled-optimization -Wshadow -Wwrite-strings \
 	-I$(top_srcdir) -I$(top_srcdir)/src/common
 havend_SOURCES = \
-                 connection.c \
+                 client.c \
                  context.c \
                  havend.c \
                  proxy.c \
@@ -353,7 +353,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/connection.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/client.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/context.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/havend.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/proxy.Po@am__quote@

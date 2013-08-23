@@ -19,7 +19,7 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
-#include "connection.h"
+#include "client.h"
 #include "ut/uthash.h"
 
 #include "havend.h"
@@ -27,7 +27,7 @@
 typedef struct HVN_replica_t {
     HVN_db_t* db;
     HVN_ctx_t* ctx;
-    HVN_conn_t* connections;
+    HVN_client_t* clients;
     int fd;
     uuid_t uuid;
     UT_hash_handle hh;

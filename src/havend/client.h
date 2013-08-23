@@ -1,3 +1,6 @@
+#ifndef __HVN__HAVEND_CLIENT_H_
+#define __HVN__HAVEND_CLIENT_H_
+
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
  *
@@ -16,19 +19,18 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
-#include "connection.h"
-#include "log.h"
+#include "havend.h"
 
-/** The stream to send log messages to. */
-extern FILE* HVN_debug_stream;
+#include <stdio.h>
 
-/** The log level to output. */
-extern HVN_loglevel HVN_debug_level;
+#define HVN_CLIENT_STACK_SIZE (32768)
 
-void HVN_conn_task(HVN_conn_t* conn)
-{
-    // TODO: modify conn->server to transition between states.
-    LOG(HVN_LOG_ERR, "Connection task is not implemented yet.");
-}
+typedef struct HVN_client_t {
+    char* remote_addr;
+    int remote_port;
+    int fd;
+} HVN_client_t;
 
-/* EOF */
+void HVN_client_task(HVN_client_t* client);
+
+#endif /* __HVN__HAVEND_CLIENT_H_ */
