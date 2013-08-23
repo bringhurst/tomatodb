@@ -27,18 +27,23 @@ extern HVN_loglevel HVN_debug_level;
 
 // Bootstrap a new location leader replica in the specified context. Set the
 // UUID of the new replica to the uuid pointer.
-int HVN_replica_bootstrap_location(HVN_ctx_t* ctx, uuid_t* uuid)
+int HVN_replica_bootstrap_location(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t* uuid)
 {
-    // TODO: determine what the path should be.
-    // TODO: call HVN_replica_bootstrap_leader(ctx, uuid, location_path_key)
+    if(ctx->location_addrs != NULL && utarray_len(ctx->location_addrs) > 0) {
+        LOG(HVN_LOG_ERR, "A location leader already exists.");
+        return HVN_ERROR;
+    } else {
+        //FIXME: free an existing location_addrs on ctx?
+        utarray_new(replica->quorum_addrs, &ut_str_icd);
+        ctx->location_addrs = replica->quorum_addrs;
+    }
 
-    LOG(HVN_LOG_ERR, "Bootstrap location is not implemented.");
-    return HVN_ERROR;
+    return HVN_replica_bootstrap_leader(replica, ctx, uuid, HVN_REPLICA_LOCATION_KEY);
 }
 
 // Bootstrap a new leader replica in the specified context. Set the UUID of
 // the new replica to the uuid pointer.
-int HVN_replica_bootstrap_leader(HVN_ctx_t* ctx, uuid_t* uuid, char* path_key)
+int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t* uuid, char* path_key)
 {
     // TODO: check for a valid path.
     // TODO: if applicable, register with location quorum.

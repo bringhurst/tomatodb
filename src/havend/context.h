@@ -22,17 +22,18 @@
 #include <uuid/uuid.h>
 
 #include "database.h"
+#include "ut/utarray.h"
 
 #define DEFAULT_LISTEN_ADDRESS "127.0.0.1"
 #define DEFAULT_LISTEN_PORT    (7854)
 
 typedef struct HVN_ctx_t {
     HVN_db_t* settings_db;
-    struct HVN_server_t* server_routes;
     char* local_state_path;
     char* listen_addr;
     int listen_port;
     int listen_fd;
+    UT_array* location_addrs;
     uuid_t process_uuid;
 } HVN_ctx_t;
 

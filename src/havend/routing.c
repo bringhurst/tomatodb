@@ -103,6 +103,7 @@ void HVN_routing_task(HVN_router_t* router)
     HVN_msg_client_control_t control_msg_data;
     char new_uuid_string[37];
     uuid_t new_uuid;
+    HVN_replica_t* new_replica;
 
     if(HVN_proto_handle_connect_msg(router->accept_fd) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Did not receive a valid connect message while routing.");
@@ -141,16 +142,14 @@ void HVN_routing_task(HVN_router_t* router)
             break;
 
         case HVN_CLNT_PROTO_CTRL_LOCATION:
-            LOG(HVN_LOG_DBG, "Handling control location message.");
-
-            if(HVN_replica_bootstrap_location(router->ctx, &new_uuid) == HVN_SUCCESS) {
+            new_replica = (HVN_replica_t*) calloc(1, sizeof(HVN_replica_t));
+            if(HVN_replica_bootstrap_location(new_replica, router->ctx, &new_uuid) == HVN_SUCCESS) {
                 uuid_unparse(new_uuid, new_uuid_string);
                 LOG(HVN_LOG_ERR, "Location quorum leader created with UUID `%s'.", new_uuid_string);
                 //TODO: return uuid to requestor?
             } else {
                 LOG(HVN_LOG_ERR, "Failed to bootstrap a location quorum leader.");
             }
-
             break;
 
         case HVN_CLNT_PROTO_CTRL_EXIT:
