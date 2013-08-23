@@ -40,8 +40,8 @@ int HVN_replica_follower(HVN_replica_t* replica);
 int HVN_replica_candidate(HVN_replica_t* replica);
 int HVN_replica_leader(HVN_replica_t* replica);
 
-int HVN_replica_bootstrap_leader(void);
+int HVN_replica_bootstrap_location(HVN_ctx_t* ctx, uuid_t* uuid);
+int HVN_replica_bootstrap_leader(HVN_ctx_t* ctx, uuid_t* uuid, char* path_key);
 int HVN_replica_bootstrap_follower(void);
-int HVN_replica_bootstrap_location(void);
 
 #endif /* __HVN__HAVEND_REPLICA_H */

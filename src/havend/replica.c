@@ -25,19 +25,20 @@ extern FILE* HVN_debug_stream;
 /** The log level to output. */
 extern HVN_loglevel HVN_debug_level;
 
-// TODO: functions to provide replica functionality. Replicas are defined as
-// followers, candidates, and leaders participating in a consensus quorum.
-
-int HVN_replica_bootstrap_location()
+// Bootstrap a new location leader replica in the specified context. Set the
+// UUID of the new replica to the uuid pointer.
+int HVN_replica_bootstrap_location(HVN_ctx_t* ctx, uuid_t* uuid)
 {
     // TODO: determine what the path should be.
-    // TODO: call HVN_replica_bootstrap_leader()
+    // TODO: call HVN_replica_bootstrap_leader(ctx, uuid, location_path_key)
 
     LOG(HVN_LOG_ERR, "Bootstrap location is not implemented.");
     return HVN_ERROR;
 }
 
-int HVN_replica_bootstrap_leader()
+// Bootstrap a new leader replica in the specified context. Set the UUID of
+// the new replica to the uuid pointer.
+int HVN_replica_bootstrap_leader(HVN_ctx_t* ctx, uuid_t* uuid, char* path_key)
 {
     // TODO: check for a valid path.
     // TODO: if applicable, register with location quorum.
