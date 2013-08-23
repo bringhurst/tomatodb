@@ -60,7 +60,7 @@ int HVN_msgpack_fdread(int fd, size_t* len, char** msg)
     }
 
     *len = ntohl(*len);
-    LOG(HVN_LOG_DBG, "Length of incoming msgpack message is `%zu'+4.", *len);
+    //LOG(HVN_LOG_DBG, "Length of incoming msgpack message is `%zu'+4.", *len);
 
     *msg = (char*) malloc(sizeof(char) * *len);
 
@@ -76,7 +76,7 @@ int HVN_fdwriten(int fd, char* buf, size_t len)
 {
     int rc;
 
-    LOG(HVN_LOG_INFO, "Entered HVN_fdwriten fd=%d, buf=`%s', len=`%zu'.", fd, buf, len);
+    //LOG(HVN_LOG_INFO, "Entered HVN_fdwriten fd=%d, buf=`%s', len=`%zu'.", fd, buf, len);
 
     while(len > 0) {
         if((rc = fdwrite(fd, buf, len)) <= 0) {
@@ -97,8 +97,6 @@ int HVN_fdwriten(int fd, char* buf, size_t len)
         len -= rc;
         buf += rc;
     }
-
-    LOG(HVN_LOG_INFO, "Leaving HVN_fdwriten.");
 
     return HVN_SUCCESS;
 }
