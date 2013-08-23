@@ -25,7 +25,7 @@ extern FILE* HVN_debug_stream;
 /** The log level to output. */
 extern HVN_loglevel HVN_debug_level;
 
-void HVN_connection_task(HVN_connection_t* conn)
+void HVN_conn_task(HVN_conn_t* conn)
 {
     // TODO: modify conn->server to transition between states.
     LOG(HVN_LOG_ERR, "Connection task is not implemented yet.");

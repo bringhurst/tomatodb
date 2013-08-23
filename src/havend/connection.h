@@ -23,15 +23,14 @@
 
 #include <stdio.h>
 
-#define HVN_CONNECTION_STACK_SIZE (32768)
+#define HVN_CONN_STACK_SIZE (32768)
 
-typedef struct HVN_connection_t {
-//    HVN_server_t* server;
+typedef struct HVN_conn_t {
     char* remote_addr;
     int remote_port;
     int fd;
-} HVN_connection_t;
+} HVN_conn_t;
 
-void HVN_connection_task(HVN_connection_t* conn);
+void HVN_conn_task(HVN_conn_t* conn);
 
 #endif /* __HVN__HAVEND_CONNECTION_H_ */
