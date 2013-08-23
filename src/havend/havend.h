@@ -19,39 +19,18 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
-#include "database.h"
-
-#include <stdlib.h>
-#include <uuid/uuid.h>
-#include <msgpack.h>
+#include "context.h"
 
 #define HVN_SETTINGS_DB_PREFIX "/settings"
 #define HVN_LOG_DB_PREFIX    "/log"
 #define HVN_GROUP_DB_PREFIX  "/group"
 
-#define DEFAULT_LISTEN_ADDRESS "127.0.0.1"
-#define DEFAULT_LISTEN_PORT    (7854)
-
-typedef struct HVN_ctx_t {
-    HVN_db_t* settings_db;
-    struct HVN_server_t* server_routes;
-    char* local_state_path;
-    char* listen_addr;
-    int listen_port;
-    int listen_fd;
-    uuid_t process_uuid;
-} HVN_ctx_t;
-
-int HVN_context_init(HVN_ctx_t** ctx);
-void HVN_context_free(HVN_ctx_t* ctx);
-
-int HVN_listen_and_accept(HVN_ctx_t* ctx);
-
 void HVN_print_version(void);
 void HVN_print_usage(void);
 
-void HVN_install_signal_handlers(void);
-
 int HVN_handle_havend_cli_args(HVN_ctx_t* ctx, int argc, char* argv[]);
+
+int HVN_listen_and_accept(HVN_ctx_t* ctx);
+void HVN_install_signal_handlers(void);
 
 #endif /* __HVN__HAVEND_HAVEND_H_ */

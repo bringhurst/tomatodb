@@ -20,14 +20,18 @@
 #include <errno.h>
 #include <getopt.h>
 #include <signal.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "config.h"
 #include "havend.h"
 #include "log.h"
 
+#include "context.h"
+#include "database.h"
 #include "routing.h"
 #include "settings.h"
-
 #include "task/task.h"
 
 /** The debug stream to write log messages to. */
@@ -35,29 +39,6 @@ FILE* HVN_debug_stream;
 
 /** The log level to write messages for. */
 HVN_loglevel HVN_debug_level;
-
-int HVN_context_init(HVN_ctx_t** ctx)
-{
-    *ctx = (HVN_ctx_t*) malloc(sizeof(HVN_ctx_t));
-
-    if(*ctx == NULL) {
-        LOG(HVN_LOG_ERR, "Malloc failed when allocating a context.");
-        return HVN_ERROR;
-    }
-
-    (*ctx)->listen_addr = (char*) malloc(sizeof(char) * _POSIX_HOST_NAME_MAX);
-    strcpy((*ctx)->listen_addr, DEFAULT_LISTEN_ADDRESS);
-
-    (*ctx)->listen_port = DEFAULT_LISTEN_PORT;
-
-    return HVN_SUCCESS;
-}
-
-void HVN_context_free(HVN_ctx_t* ctx)
-{
-    /* FIXME: properly free this thing. */
-    free(ctx);
-}
 
 // This is where we'll listen and accept for connections so we can launch
 // routing tasks.
@@ -232,7 +213,7 @@ void taskmain(int argc, char* argv[])
     LOG(HVN_LOG_INFO, "Hello! %s-%s is starting up.", \
         PACKAGE_NAME, PACKAGE_VERSION);
 
-    if(HVN_context_init(&ctx) != HVN_SUCCESS) {
+    if(HVN_ctx_init(&ctx) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Could not allocate the primary context.");
         taskexit(EXIT_FAILURE);
     }
@@ -260,7 +241,7 @@ void taskmain(int argc, char* argv[])
     }
 
     HVN_close_db(ctx->settings_db);
-    HVN_context_free(ctx);
+    HVN_ctx_free(ctx);
 
     LOG(HVN_LOG_INFO, "Goodbye! %s-%s is shutting down.", \
         PACKAGE_NAME, PACKAGE_VERSION);

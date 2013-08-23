@@ -1,3 +1,6 @@
+#ifndef __HVN__HAVEND_CONTEXT_H
+#define __HVN__HAVEND_CONTEXT_H
+
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
  *
@@ -16,15 +19,24 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
-#include "worker.h"
-#include "log.h"
+#include <uuid/uuid.h>
 
-/** The stream to send log messages to. */
-extern FILE* HVN_debug_stream;
+#include "database.h"
 
-/** The log level to output. */
-extern HVN_loglevel HVN_debug_level;
+#define DEFAULT_LISTEN_ADDRESS "127.0.0.1"
+#define DEFAULT_LISTEN_PORT    (7854)
 
-// TODO: management functions for proxies and replicas.
+typedef struct HVN_ctx_t {
+    HVN_db_t* settings_db;
+    struct HVN_server_t* server_routes;
+    char* local_state_path;
+    char* listen_addr;
+    int listen_port;
+    int listen_fd;
+    uuid_t process_uuid;
+} HVN_ctx_t;
 
-/* EOF */
+int HVN_ctx_init(HVN_ctx_t** ctx);
+void HVN_ctx_free(HVN_ctx_t* ctx);
+
+#endif /* __HVN__HAVEND_CONTEXT_H */
