@@ -29,11 +29,11 @@ extern HVN_loglevel HVN_debug_level;
 // UUID of the new replica to the uuid pointer.
 int HVN_replica_bootstrap_location(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t* uuid)
 {
-    if(ctx->location_addrs != NULL && utarray_len(ctx->location_addrs) > 0) {
+    if(ctx->location_addrs != NULL) {
         LOG(HVN_LOG_ERR, "A location leader already exists.");
+        //FIXME: allow override?
         return HVN_ERROR;
     } else {
-        //FIXME: free an existing location_addrs on ctx?
         utarray_new(replica->quorum_addrs, &ut_str_icd);
         ctx->location_addrs = replica->quorum_addrs;
     }
@@ -43,8 +43,11 @@ int HVN_replica_bootstrap_location(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_
 
 // Bootstrap a new leader replica in the specified context. Set the UUID of
 // the new replica to the uuid pointer.
-int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t* uuid, char* path_key)
+int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t* uuid, const char* path_key)
 {
+    LOG(HVN_LOG_INFO, "Bootstrapping a replica leader on interface `%s:%d'.", \
+            ctx->listen_addr, ctx->listen_port);
+
     // TODO: check for a valid path.
     // TODO: if applicable, register with location quorum.
     // TODO: initialize key value store.
