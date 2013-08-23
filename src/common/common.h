@@ -22,6 +22,8 @@
 // FIXME: make this configurable.
 #define HVN_BASE_STATE_DIR "/var/lib/haven"
 
+#define UUID_STR_LEN (36 + 1)
+
 #define HVN_SUCCESS (1)
 #define HVN_ERROR (-1)
 

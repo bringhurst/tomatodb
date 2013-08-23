@@ -76,7 +76,12 @@ int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t*
         LOG(HVN_LOG_DBG, "Using leader base key `%s'.", path_key);
     }
 
-    // TODO: create key value store (this generates a uuid).
+    // TODO: generate a uuid.
+
+    if(HVN_replica_bootstrap_db(ctx, replica) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Failed to bootstrap a new replica database.");
+        return HVN_ERROR;
+    }
 
     if(ctx->location_addrs == replica->quorum_addrs) {
         LOG(HVN_LOG_DBG, "This replica is the location service. Not attempting to register.");
@@ -98,6 +103,30 @@ int HVN_replica_bootstrap_follower()
 
     LOG(HVN_LOG_ERR, "Bootstrap follower is not implemented.");
     return HVN_ERROR;
+}
+
+int HVN_replica_bootstrap_db(HVN_ctx_t* ctx, HVN_replica_t* replica)
+{
+    char* db_path = (char*) malloc(sizeof(char) * _POSIX_PATH_MAX);
+    char* uuid_string = (char*) malloc(sizeof(char) * UUID_STR_LEN);
+    int offset, result;
+
+    offset = sprintf(db_path, "%s%s", \
+                     HVN_BASE_STATE_DIR, HVN_DATA_DB_PREFIX);
+
+    if(HVN_ensure_directory_exists(db_path) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Failed to create directory structure when preparing a replica DB.");
+        return HVN_ERROR;
+    }
+
+    uuid_unparse(replica->uuid, uuid_string);
+    sprintf(db_path + offset, "/%s", uuid_string);
+    result = HVN_db_init(&replica->db, db_path);
+
+    free(db_path);
+    free(uuid_string);
+
+    return result;
 }
 
 /* EOF */

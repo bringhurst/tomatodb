@@ -22,8 +22,7 @@
 #include "context.h"
 
 #define HVN_SETTINGS_DB_PREFIX "/settings"
-#define HVN_LOG_DB_PREFIX    "/log"
-#define HVN_GROUP_DB_PREFIX  "/group"
+#define HVN_DATA_DB_PREFIX     "/data"
 
 void HVN_print_version(void);
 void HVN_print_usage(void);

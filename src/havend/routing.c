@@ -101,7 +101,7 @@ void HVN_free_router(HVN_router_t* router)
 void HVN_routing_task(HVN_router_t* router)
 {
     HVN_msg_client_control_t control_msg_data;
-    char new_uuid_string[37];
+    char new_uuid_string[UUID_STR_LEN];
     uuid_t new_uuid;
     HVN_replica_t* new_replica;
 

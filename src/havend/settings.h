@@ -21,7 +21,6 @@
 
 #include "havend.h"
 
-#define UUID_STR_LEN (36 + 1)
 #define PROCESS_UUID_SETTINGS_PATH "/process_uuid"
 
 int HVN_set_process_uuid(HVN_ctx_t* ctx);

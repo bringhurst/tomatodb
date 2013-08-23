@@ -47,4 +47,6 @@ int HVN_replica_bootstrap_location(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_
 int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t* uuid, char* path_key);
 int HVN_replica_bootstrap_follower(void);
 
+int HVN_replica_bootstrap_db(HVN_ctx_t* ctx, HVN_replica_t* replica);
+
 #endif /* __HVN__HAVEND_REPLICA_H */
