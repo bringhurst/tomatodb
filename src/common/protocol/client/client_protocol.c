@@ -23,6 +23,7 @@
 
 #include "connect_msg.h"
 #include "control_msg.h"
+#include "data_msg.h"
 
 /** The debug stream to write log messages to. */
 extern FILE* HVN_debug_stream;
@@ -43,10 +44,10 @@ int HVN_clnt_proto_pack(int type, \
             return HVN_clnt_proto_pack_connect(msg_struct, scheme, len, msg);
             break;
         case HVN_CLNT_PROTO_MSG_TYPE_CONTROL:
-            LOG(HVN_LOG_WARN, "Pack not implemented for `%d'.", type);
+            return HVN_clnt_proto_pack_control(msg_struct, scheme, len, msg);
             break;
         case HVN_CLNT_PROTO_MSG_TYPE_DATA:
-            LOG(HVN_LOG_WARN, "Pack not implemented for `%d'.", type);
+            return HVN_clnt_proto_pack_data(msg_struct, scheme, len, msg);
             break;
         case HVN_CLNT_PROTO_MSG_TYPE_DISCOVER:
             LOG(HVN_LOG_WARN, "Pack not implemented for `%d'.", type);
@@ -58,10 +59,10 @@ int HVN_clnt_proto_pack(int type, \
             return HVN_clnt_proto_pack_connect_resp(msg_struct, scheme, len, msg);
             break;
         case HVN_CLNT_PROTO_MSG_TYPE_CONTROL_R:
-            LOG(HVN_LOG_WARN, "Pack not implemented for `%d'.", type);
+            return HVN_clnt_proto_pack_control_resp(msg_struct, scheme, len, msg);
             break;
         case HVN_CLNT_PROTO_MSG_TYPE_DATA_R:
-            LOG(HVN_LOG_WARN, "Pack not implemented for `%d'.", type);
+            return HVN_clnt_proto_pack_data_resp(msg_struct, scheme, len, msg);
             break;
         case HVN_CLNT_PROTO_MSG_TYPE_DISCOVER_R:
             LOG(HVN_LOG_WARN, "Pack not implemented for `%d'.", type);

@@ -21,40 +21,79 @@
 
 #include <stdint.h>
 
+#include "xtime.h"
+
 /* Client requests. */
-#define HVN_CLNT_PROTO_DATA_READ_WRITE               0x01
-#define HVN_CLNT_PROTO_DATA_UNSAFE_READ_WRITE        0x03
-#define HVN_CLNT_PROTO_DATA_TRANSACTION_READ_WRITE   0x02
-#define HVN_CLNT_PROTO_DATA_TRANSACTION_READ_ONLY    0x06
-#define HVN_CLNT_PROTO_DATA_SNAPSHOT_READ_TIMESTAMP  0x07
-#define HVN_CLNT_PROTO_DATA_SNAPSHOT_READ_BOUND      0x05
+#define HVN_CLNT_PROTO_DATA_VERB_READ     0x01
+#define HVN_CLNT_PROTO_DATA_VERB_WRITE    0x03
+#define HVN_CLNT_PROTO_DATA_VERB_DELETE   0x06
+#define HVN_CLNT_PROTO_DATA_VERB_WATCH    0x07
+#define HVN_CLNT_PROTO_DATA_VERB_UNWATCH  0x05
+#define HVN_CLNT_PROTO_DATA_TRANSACTION   0x04
+
+/* Client request modes. */
+#define HVN_CLNT_PROTO_DATA_MODE_RW       0x0C
+#define HVN_CLNT_PROTO_DATA_MODE_RO       0x0D
+#define HVN_CLNT_PROTO_DATA_MODE_RB       0x1D
+#define HVN_CLNT_PROTO_DATA_MODE_RT       0x1C
 
 /* Server responses. */
-#define HVN_CLNT_PROTO_DATA_R_OK                     0x04
-#define HVN_CLNT_PROTO_DATA_R_ERR                    0x0C
-
-/* Operations. */
-#define HVN_CLNT_PROTO_DATA_OP_GET                   0x0D
-#define HVN_CLNT_PROTO_DATA_OP_PUT                   0x0F
-#define HVN_CLNT_PROTO_DATA_OP_DELETE                0x0E
-
-typedef struct HVN_msg_client_data_op_t {
-    uint8_t type;
-    unsigned char uuid[16];
-    uint16_t key_len;
-    uint16_t value_len;
-    unsigned char payload[];
-} HVN_msg_client_data_op_t;
+#define HVN_CLNT_PROTO_DATA_R_OK          0x14
+#define HVN_CLNT_PROTO_DATA_R_ERR         0x34
 
 typedef struct HVN_msg_client_data_t {
-    uint8_t mode;
-    uint16_t op_count;
-    HVN_msg_client_data_op_t ops[];
+    uint16_t action;
+    uint16_t mode;
+    HVN_time_interval_t time;
+    char* key;
+    uint32_t value_len;
+    void* value;
 } HVN_msg_client_data_t;
 
 typedef struct HVN_msg_client_data_resp_t {
-    uint8_t status;
-    HVN_msg_client_data_op_t results[];
+    uint8_t success;
+    uint8_t err_code;
 } HVN_msg_client_data_resp_t;
+
+int HVN_clnt_proto_pack_data_msgpack(HVN_msg_client_data_t* data, \
+                                     size_t* len, \
+                                     char** msg);
+
+int HVN_clnt_proto_unpack_data_msgpack(HVN_msg_client_data_t* data, \
+                                       size_t len, \
+                                       char* msg);
+
+int HVN_clnt_proto_pack_data_resp_msgpack(HVN_msg_client_data_resp_t* data, \
+                                          size_t* len, \
+                                          char** msg);
+
+int HVN_clnt_proto_unpack_data_resp_msgpack(HVN_msg_client_data_resp_t* data, \
+                                            size_t len, \
+                                            char* msg);
+
+int HVN_clnt_proto_pack_data(HVN_msg_client_data_t* data, \
+                             int scheme, \
+                             size_t* len, \
+                             char** msg);
+
+int HVN_clnt_proto_unpack_data(HVN_msg_client_data_t* data, \
+                               int scheme, \
+                               size_t len, \
+                               char* msg);
+
+int HVN_clnt_proto_pack_data_resp(HVN_msg_client_data_resp_t* data, \
+                                  int scheme, \
+                                  size_t* len, \
+                                  char** msg);
+
+int HVN_clnt_proto_unpack_data_resp(HVN_msg_client_data_resp_t* data, \
+                                    int scheme, \
+                                    size_t len, \
+                                    char* msg);
+
+int HVN_proto_receive_data_msg(int fd, \
+                               HVN_msg_client_data_t* data_msg_data);
+
+int HVN_proto_send_data_resp_msg(int fd);
 
 #endif /* __HVN__HAVEND_CLIENT_PROTOCOL_DATA_MSG_H_ */
