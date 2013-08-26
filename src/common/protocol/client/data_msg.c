@@ -71,7 +71,23 @@ int HVN_clnt_proto_unpack_data_msgpack(HVN_msg_client_data_t* data, \
 
         if(root.type == MSGPACK_OBJECT_ARRAY && root.via.array.size == 6) {
             msg_type = root.via.array.ptr[0].via.u64;
+
             data->action = root.via.array.ptr[1].via.u64;
+            data->mode = root.via.array.ptr[2].via.u64;
+//FIXME:     data->time = root.via.array.ptr[3].via.array;
+
+            data->key = (char*) malloc(sizeof(char) * \
+                                       (root.via.array.ptr[4].via.raw.size + 1));
+            //FIXME: SECURITY HOLE! check bounds below!
+            memcpy(data->key, root.via.array.ptr[4].via.raw.ptr, \
+                   root.via.array.ptr[4].via.raw.size);
+            *(data->key + root.via.array.ptr[4].via.raw.size) = '\0';
+
+            data->value = (char*) malloc(root.via.array.ptr[4].via.raw.size);
+            //FIXME: SECURITY HOLE! check bounds below!
+            memcpy(data->value, root.via.array.ptr[5].via.raw.ptr, \
+                   root.via.array.ptr[5].via.raw.size);
+            data->value_len = root.via.array.ptr[5].via.raw.size;
         }
     }
 
