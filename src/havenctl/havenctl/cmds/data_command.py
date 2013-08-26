@@ -50,7 +50,7 @@ class CommandData():
             value = args[2]
 
         if ctl.conn.is_connected:
-            ctl.proto.send_data(ctl.conn, protocol_key, mode, earliest, latest, key, value):
+            ctl.proto.send_data(ctl.conn, protocol_key, mode, earliest, latest, key, value)
             ctl.proto.recv_data(ctl.conn)
         else:
             print("Connection to server failed.")

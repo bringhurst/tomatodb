@@ -93,7 +93,7 @@ class HavenProtocol():
         msg = msgpack.packb([
             verb,
             mode,
-            [earliest, latest]
+            [earliest, latest],
             key,
             value
         ])
