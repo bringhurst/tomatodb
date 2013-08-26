@@ -40,6 +40,13 @@ class CommandControl():
             print("Please see 'help control'.")
             return
 
+        if protocol_key == HavenProtocol.HVN_CLNT_PROTO_CTRL_ATTACH:
+            if len(args) < 2:
+                print("The attach subcommand requires a uuid argument.")
+                print("Please see 'help control'.")
+                return
+            uuid = args[1]
+
         if protocol_key == HavenProtocol.HVN_CLNT_PROTO_CTRL_FOLLOWER:
             if len(args) < 2:
                 print("The follower subcommand requires a uuid argument.")
