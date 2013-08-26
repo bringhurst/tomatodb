@@ -50,13 +50,6 @@ int HVN_listen_and_accept(HVN_ctx_t* ctx)
 
     *is_running = true;
 
-    // FIXME: clean up signal blocking
-    //HVN_handle_shutdown_signals(is_running);
-    struct sigaction sa;
-    memset(&sa, 0, sizeof sa);
-    sa.sa_handler = SIG_IGN;
-    sigaction(SIGPIPE, &sa, NULL);
-
     ctx->listen_fd = netannounce(TCP, ctx->listen_addr, ctx->listen_port);
 
     if(fdnoblock(ctx->listen_fd) < 0) {
@@ -104,9 +97,34 @@ void HVN_print_usage()
     fflush(stdout);
 }
 
+void HVN_signal_handle_SIGINT(int sig)
+{
+    char  c;
+
+    signal(sig, SIG_IGN);
+
+    printf("SIGINT encountered. Do you really want to quit? [y/n] ");
+    c = getchar();
+
+    if (c == 'y' || c == 'Y') {
+        // FIXME: shutdown properly.
+        exit(EXIT_FAILURE);
+    } else {
+        signal(SIGINT, HVN_signal_handle_SIGINT);
+    }
+
+    getchar(); // Get new line character
+}
+
 void HVN_install_signal_handlers(void)
 {
-    //FIXME: install signal handlers
+    struct sigaction sa;
+
+    signal(SIGINT, HVN_signal_handle_SIGINT);
+
+    memset(&sa, 0, sizeof sa);
+    sa.sa_handler = SIG_IGN;
+    sigaction(SIGPIPE, &sa, NULL);
 }
 
 int HVN_handle_havend_cli_args(HVN_ctx_t* ctx, int argc, char* argv[])

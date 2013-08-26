@@ -31,5 +31,6 @@ int HVN_handle_havend_cli_args(HVN_ctx_t* ctx, int argc, char* argv[]);
 
 int HVN_listen_and_accept(HVN_ctx_t* ctx);
 void HVN_install_signal_handlers(void);
+void HVN_signal_handle_SIGINT(int sig);
 
 #endif /* __HVN__HAVEND_HAVEND_H_ */
