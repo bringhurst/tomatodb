@@ -32,6 +32,8 @@ void HVN_attach_task(HVN_attach_t* client)
 {
     LOG(HVN_LOG_ERR, "Attach task is not implemented yet.");
 
+//void HVN_proto_print_data_msg(HVN_msg_client_data_t* data);
+
     //TODO: handle DATA commands and apply to client->replica
 }
 

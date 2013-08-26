@@ -96,4 +96,6 @@ int HVN_proto_receive_data_msg(int fd, \
 
 int HVN_proto_send_data_resp_msg(int fd);
 
+void HVN_proto_print_data_msg(HVN_msg_client_data_t* data);
+
 #endif /* __HVN__HAVEND_CLIENT_PROTOCOL_DATA_MSG_H_ */

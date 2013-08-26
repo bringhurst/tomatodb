@@ -233,4 +233,66 @@ int HVN_proto_send_data_resp_msg(int fd)
     return HVN_SUCCESS;
 }
 
+void HVN_proto_print_data_msg(HVN_msg_client_data_t* data)
+{
+    switch(data->action) {
+        case HVN_CLNT_PROTO_DATA_VERB_READ:
+            LOG(HVN_LOG_DBG, "Data message type is `read'.");
+            break;
+        case HVN_CLNT_PROTO_DATA_VERB_WRITE:
+            LOG(HVN_LOG_DBG, "Data message type is `write'.");
+            break;
+        case HVN_CLNT_PROTO_DATA_VERB_DELETE:
+            LOG(HVN_LOG_DBG, "Data message type is `delete'.");
+            break;
+
+        case HVN_CLNT_PROTO_DATA_VERB_WATCH:
+            LOG(HVN_LOG_DBG, "Data message type is `watch'.");
+            break;
+
+        case HVN_CLNT_PROTO_DATA_VERB_UNWATCH:
+            LOG(HVN_LOG_DBG, "Data message type is `unwatch'.");
+            break;
+
+        case HVN_CLNT_PROTO_DATA_TRANSACTION:
+            LOG(HVN_LOG_DBG, "Data message type is `transaction'.");
+            break;
+        default:
+            LOG(HVN_LOG_DBG, "Data message type is UNKNOWN.");
+            break;
+    }
+
+    switch(data->mode) {
+        case HVN_CLNT_PROTO_DATA_MODE_RW:
+            LOG(HVN_LOG_DBG, "Data message mode is `read-write'.");
+            break;
+        case HVN_CLNT_PROTO_DATA_MODE_RO:
+            LOG(HVN_LOG_DBG, "Data message mode is `read-only'.");
+            break;
+        case HVN_CLNT_PROTO_DATA_MODE_RB:
+            LOG(HVN_LOG_DBG, "Data message mode is `read-bounded'.");
+            break;
+        case HVN_CLNT_PROTO_DATA_MODE_RT:
+            LOG(HVN_LOG_DBG, "Data message mode is `read-timestamp'.");
+            break;
+        default:
+            LOG(HVN_LOG_DBG, "Data message mode is UNKNOWN.");
+            break;
+    }
+
+    if(data->key == NULL) {
+        LOG(HVN_LOG_DBG, "A key value was not included.");
+    } else {
+        LOG(HVN_LOG_DBG, "Data command has key of `%s'.", data->key);
+    }
+    
+    if(data->value == NULL) {
+        LOG(HVN_LOG_DBG, "A value was not included.");
+    } else {
+        LOG(HVN_LOG_DBG, "A value was included (length of `%d').", data->value_len);
+    }
+
+    HVN_time_interval_print(&(data->time));
+}
+
 /* EOF */
