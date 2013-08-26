@@ -95,28 +95,34 @@ int HVN_clnt_proto_unpack(int type, \
             return HVN_clnt_proto_unpack_control(msg_struct, scheme, len, msg);
             break;
         case HVN_CLNT_PROTO_MSG_TYPE_DATA:
-            LOG(HVN_LOG_WARN, "Unpack not implemented for `%d'.", type);
+            return HVN_clnt_proto_unpack_data(msg_struct, scheme, len, msg);
             break;
         case HVN_CLNT_PROTO_MSG_TYPE_DISCOVER:
             LOG(HVN_LOG_WARN, "Unpack not implemented for `%d'.", type);
+            return HVN_ERROR;
             break;
         case HVN_CLNT_PROTO_MSG_TYPE_HEARTBEAT:
             LOG(HVN_LOG_WARN, "Unpack not implemented for `%d'.", type);
+            return HVN_ERROR;
             break;
         case HVN_CLNT_PROTO_MSG_TYPE_CONNECT_R:
             return HVN_clnt_proto_unpack_connect_resp(msg_struct, scheme, len, msg);
             break;
         case HVN_CLNT_PROTO_MSG_TYPE_CONTROL_R:
             LOG(HVN_LOG_WARN, "Unpack not implemented for `%d'.", type);
+            return HVN_ERROR;
             break;
         case HVN_CLNT_PROTO_MSG_TYPE_DATA_R:
             LOG(HVN_LOG_WARN, "Unpack not implemented for `%d'.", type);
+            return HVN_ERROR;
             break;
         case HVN_CLNT_PROTO_MSG_TYPE_DISCOVER_R:
             LOG(HVN_LOG_WARN, "Unpack not implemented for `%d'.", type);
+            return HVN_ERROR;
             break;
         case HVN_CLNT_PROTO_MSG_TYPE_HEARTBEAT_R:
             LOG(HVN_LOG_WARN, "Unpack not implemented for `%d'.", type);
+            return HVN_ERROR;
             break;
         default:
             LOG(HVN_LOG_WARN, \

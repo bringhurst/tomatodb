@@ -91,6 +91,7 @@ class HavenProtocol():
 
     def send_data(self, conn, verb, mode, earliest, latest, key, value):
         msg = msgpack.packb([
+            HavenProtocol.HVN_CLNT_PROTO_MSG_TYPE_DATA,
             verb,
             mode,
             [earliest, latest],

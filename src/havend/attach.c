@@ -33,16 +33,17 @@ void HVN_attach_task(HVN_attach_t* client)
 {
     HVN_msg_client_data_t data_msg_data;
 
-    if(HVN_proto_receive_data_msg(client->fd, &data_msg_data) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Did not receive a valid data message while attached to a replica.");
-        taskexit(HVN_ERROR);
+    for(;;) {
+        if(HVN_proto_receive_data_msg(client->fd, &data_msg_data) != HVN_SUCCESS) {
+            LOG(HVN_LOG_ERR, "Did not receive a valid data message while attached to a replica.");
+            taskexit(HVN_ERROR);
+        }
+
+        HVN_proto_print_data_msg(&data_msg_data);
+        LOG(HVN_LOG_DBG, "Received a sane data msg.");
+
+        //TODO: handle DATA commands and apply to client->replica->db
     }
-
-    HVN_proto_print_data_msg(&data_msg_data);
-
-    LOG(HVN_LOG_DBG, "Received a sane data msg.");
-
-    //TODO: handle DATA commands and apply to client->replica->db
 }
 
 int HVN_replica_attach(HVN_router_t* router, uuid_t uuid)
