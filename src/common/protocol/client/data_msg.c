@@ -69,7 +69,7 @@ int HVN_clnt_proto_unpack_data_msgpack(HVN_msg_client_data_t* data, \
     if(msgpack_unpack_next(&unpacked, msg, len, NULL)) {
         msgpack_object root = unpacked.data;
 
-        if(root.type == MSGPACK_OBJECT_ARRAY && root.via.array.size == 4) {
+        if(root.type == MSGPACK_OBJECT_ARRAY && root.via.array.size == 6) {
             msg_type = root.via.array.ptr[0].via.u64;
             data->action = root.via.array.ptr[1].via.u64;
         }
