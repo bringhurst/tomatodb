@@ -37,6 +37,11 @@ void HVN_attach_task(HVN_attach_t* client)
         if(HVN_proto_receive_data_msg(client->fd, &data_msg_data) != HVN_SUCCESS) {
             LOG(HVN_LOG_ERR, "Did not receive a valid data message while attached to a replica.");
             taskexit(HVN_ERROR);
+        } else {
+            if(HVN_proto_send_data_resp_msg(client->fd) != HVN_SUCCESS) {
+                LOG(HVN_LOG_ERR, "Could not send a data message response while attached to a replica.");
+                taskexit(HVN_ERROR);
+            }
         }
 
         HVN_proto_print_data_msg(&data_msg_data);
