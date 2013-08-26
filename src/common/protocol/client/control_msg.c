@@ -17,6 +17,7 @@
  */
 
 #include <msgpack.h>
+#include <uuid/uuid.h>
 
 #include "log.h"
 #include "common.h"
@@ -68,6 +69,7 @@ int HVN_clnt_proto_unpack_control_msgpack(HVN_msg_client_control_t* data, \
     msgpack_unpacked unpacked;
     msgpack_unpacked_init(&unpacked);
     int16_t msg_type = 0;
+    char* uuid_buf;
 
     if(msgpack_unpack_next(&unpacked, msg, len, NULL)) {
         msgpack_object root = unpacked.data;
@@ -75,6 +77,24 @@ int HVN_clnt_proto_unpack_control_msgpack(HVN_msg_client_control_t* data, \
         if(root.type == MSGPACK_OBJECT_ARRAY && root.via.array.size == 4) {
             msg_type = root.via.array.ptr[0].via.u64;
             data->action = root.via.array.ptr[1].via.u64;
+
+            if(root.via.array.ptr[2].via.raw.size == UUID_STR_LEN - 1) {
+                LOG(HVN_LOG_DBG, "Control message UUID is a valid length.");
+
+                uuid_buf = (char*) malloc(sizeof(char) * UUID_STR_LEN);
+                memcpy(uuid_buf, root.via.array.ptr[2].via.raw.ptr, UUID_STR_LEN - 1);
+                uuid_buf[UUID_STR_LEN] = '\0';
+
+                if(uuid_parse(uuid_buf, data->uuid) == 0) {
+                    LOG(HVN_LOG_DBG, "Parsed a valid UUID from the control message.");
+                } else {
+                    LOG(HVN_LOG_DBG, "Did not parse a valid UUID from the control message (might not be a problem).");
+                }
+
+                free(uuid_buf);
+            } else {
+                LOG(HVN_LOG_DBG, "Control message UUID is not a valid length (`%d').", root.via.array.ptr[2].via.raw.size);
+            }
         }
     }
 

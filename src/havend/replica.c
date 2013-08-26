@@ -101,7 +101,8 @@ int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t*
     }
 
     if(ctx->location_addrs == replica->quorum_addrs) {
-        LOG(HVN_LOG_DBG, "This replica is the location service. Not attempting to register.");
+        LOG(HVN_LOG_DBG, "Not attempting to register with a remote location service " \
+                "(this replica is the location service).");
     } else {
         LOG(HVN_LOG_DBG, "Attempting to register with the location service.");
         // TODO: register with location quorum.
