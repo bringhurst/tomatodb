@@ -29,6 +29,24 @@ class HavenProtocol():
     HVN_CLNT_PROTO_MSG_TYPE_DISCOVER_R   = 0x0D
     HVN_CLNT_PROTO_MSG_TYPE_HEARTBEAT_R  = 0x0F
 
+    # Data client requests.
+    HVN_CLNT_PROTO_DATA_VERB_READ        = 0x01
+    HVN_CLNT_PROTO_DATA_VERB_WRITE       = 0x03
+    HVN_CLNT_PROTO_DATA_VERB_DELETE      = 0x06
+    HVN_CLNT_PROTO_DATA_VERB_WATCH       = 0x07
+    HVN_CLNT_PROTO_DATA_VERB_UNWATCH     = 0x05
+    HVN_CLNT_PROTO_DATA_TRANSACTION      = 0x04
+
+    # Data client request modes.
+    HVN_CLNT_PROTO_DATA_MODE_RW          = 0x0C
+    HVN_CLNT_PROTO_DATA_MODE_RO          = 0x0D
+    HVN_CLNT_PROTO_DATA_MODE_RB          = 0x1D
+    HVN_CLNT_PROTO_DATA_MODE_RT          = 0x1C
+
+    # Data server responses.
+    HVN_CLNT_PROTO_DATA_R_OK             = 0x14
+    HVN_CLNT_PROTO_DATA_R_ERR            = 0x34
+
     # Control client requests.
     HVN_CLNT_PROTO_CTRL_ATTACH           = 0x01
     HVN_CLNT_PROTO_CTRL_DESTROY          = 0x03
@@ -71,8 +89,20 @@ class HavenProtocol():
         print("Contents of received control response message: " + \
             str(msgpack.unpackb(msg)))
 
-    def send_data(self, conn):
-        print "not implemented"
+    def send_data(self, conn, verb, mode, earliest, latest, key, value):
+        msg = msgpack.packb([
+            verb,
+            mode,
+            [earliest, latest]
+            key,
+            value
+        ])
+        self.send(msg, conn)
+
+    def recv_data(self, conn):
+        msg = self.recv(conn)
+        print("Contents of received data response message: " + \
+            str(msgpack.unpackb(msg)))
 
     def send_discover(self, conn):
         print "not implemented"
