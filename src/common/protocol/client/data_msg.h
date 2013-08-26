@@ -19,6 +19,7 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
+#include <stddef.h>
 #include <stdint.h>
 
 #include "xtime.h"

@@ -16,6 +16,7 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
+#include "protocol/client/data_msg.h"
 #include "replica.h"
 #include "task/task.h"
 
@@ -30,11 +31,18 @@ extern HVN_loglevel HVN_debug_level;
 
 void HVN_attach_task(HVN_attach_t* client)
 {
-    LOG(HVN_LOG_ERR, "Attach task is not implemented yet.");
+    HVN_msg_client_data_t data_msg_data;
 
-//void HVN_proto_print_data_msg(HVN_msg_client_data_t* data);
+    if(HVN_proto_receive_data_msg(client->fd, &data_msg_data) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Did not receive a valid control message while routing.");
+        taskexit(HVN_ERROR);
+    }
 
-    //TODO: handle DATA commands and apply to client->replica
+    HVN_proto_print_data_msg(&data_msg_data);
+
+    LOG(HVN_LOG_DBG, "Received a sane data msg.");
+
+    //TODO: handle DATA commands and apply to client->replica->db
 }
 
 int HVN_replica_attach(HVN_router_t* router, uuid_t uuid)
