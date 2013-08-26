@@ -36,6 +36,10 @@ fi
 LT_INIT
 
 # Checks for required libraries.
+AC_CHECK_LIB([fuse], [fuse_main_compat2], [], \
+             [AC_MSG_ERROR([Function fuse_main_compat2 was not found in FUSE.
+Is libfuse-dev installed? Try running 'sudo apt-get install libfuse-dev'.])])
+
 AC_CHECK_LIB([leveldb], [leveldb_open], [], \
              [AC_MSG_ERROR([Function leveldb_open was not found in LevelDB.
 Is libleveldb-dev installed? Try running 'sudo apt-get install libleveldb-dev'.])])
@@ -76,6 +80,10 @@ AC_TRY_COMPILE([#include <sys/socket.h>],
                [AC_MSG_RESULT(no)]
 )
 
+# Check for large file support for FUSE.
+AC_SYS_LARGEFILE
+AC_FUNC_FSEEKO
+
 # Checks for library functions.
 AC_FUNC_MALLOC
 AC_FUNC_REALLOC
@@ -95,6 +103,7 @@ AC_CONFIG_FILES([Makefile                            \
                  src/common/protocol/server/Makefile \
                  src/common/task/Makefile            \
                  src/havenctl/Makefile               \
+                 src/haven/Makefile                  \
                  src/havend/Makefile                 \
                  doc/Makefile                        \
                  doc/man/Makefile                    \
