@@ -29,9 +29,6 @@ extern HVN_loglevel HVN_debug_level;
 int HVN_consensus_exec(HVN_attach_t* client, HVN_db_op_t* op)
 {
     // TODO: determine how many replicas are in the quorum.
-
-
-
 }
 
 /* EOF */
