@@ -16,6 +16,7 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
+#include "consensus.h"
 #include "protocol/client/data_msg.h"
 #include "replica.h"
 #include "task/task.h"
@@ -47,7 +48,11 @@ void HVN_attach_task(HVN_attach_t* client)
         HVN_proto_print_data_msg(&data_msg_data);
         LOG(HVN_LOG_DBG, "Received a sane data msg.");
 
-        //TODO: handle DATA commands and apply to client->replica->db
+        if(HVN_consensus_exec(client, (HVN_db_op_t*) &data_msg_data) != HVN_SUCCESS) {
+            LOG(HVN_LOG_ERR, "Failed to safely perform the specified operation.");
+        } else {
+            LOG(HVN_LOG_DBG, "Successfully performed the specified operation.");
+        }
     }
 }
 

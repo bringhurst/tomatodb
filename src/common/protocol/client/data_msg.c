@@ -305,10 +305,10 @@ void HVN_proto_print_data_msg(HVN_msg_client_data_t* data)
     if(data->value == NULL) {
         LOG(HVN_LOG_DBG, "A value was not included.");
     } else {
-        LOG(HVN_LOG_DBG, "A value was included (length of `%d').", data->value_len);
+        LOG(HVN_LOG_DBG, "A value was included (length of `%zu').", data->value_len);
     }
 
-    HVN_time_interval_print(&(data->time));
+    HVN_time_interval_print(&(data->time_stamp));
 }
 
 /* EOF */

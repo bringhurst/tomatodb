@@ -82,21 +82,6 @@ int HVN_db_destroy(HVN_db_t* db)
     return HVN_SUCCESS;
 }
 
-int HVN_db_write(HVN_db_trans_t* trans, char* key, size_t value_len, void* value)
-{
-
-}
-
-int HVN_db_read(HVN_db_trans_t* trans, char* key, size_t value_len, void** value)
-{
-
-}
-
-int HVN_db_exec(HVN_db_trans_t* trans)
-{
-
-}
-
 bool HVN_db_validate_key(char* key)
 {
     char* p = key;

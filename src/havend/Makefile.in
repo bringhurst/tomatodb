@@ -68,9 +68,9 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_havend_OBJECTS = attach.$(OBJEXT) context.$(OBJEXT) \
-	havend.$(OBJEXT) proxy.$(OBJEXT) replica.$(OBJEXT) \
-	routing.$(OBJEXT) settings.$(OBJEXT)
+am_havend_OBJECTS = attach.$(OBJEXT) consensus.$(OBJEXT) \
+	context.$(OBJEXT) havend.$(OBJEXT) proxy.$(OBJEXT) \
+	replica.$(OBJEXT) routing.$(OBJEXT) settings.$(OBJEXT)
 havend_OBJECTS = $(am_havend_OBJECTS)
 havend_DEPENDENCIES = ../common/libhaven_common.la
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -254,6 +254,7 @@ AM_CPPFLAGS = -std=gnu99 -ggdb -W -Wall -Wextra -Wformat=1 -Winit-self \
 	-I$(top_srcdir) -I$(top_srcdir)/src/common
 havend_SOURCES = \
                  attach.c \
+                 consensus.c \
                  context.c \
                  havend.c \
                  proxy.c \
@@ -354,6 +355,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/attach.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/consensus.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/context.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/havend.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/proxy.Po@am__quote@

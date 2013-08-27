@@ -24,6 +24,7 @@
 #include <leveldb/c.h>
 
 #include "common.h"
+#include "xtime.h"
 
 typedef struct HVN_db_t {
     char* path;
@@ -32,6 +33,16 @@ typedef struct HVN_db_t {
     leveldb_readoptions_t* read_options;
     leveldb_writeoptions_t* write_options;
 } HVN_db_t;
+
+typedef struct HVN_db_op_t {
+    uint16_t action;
+    uint16_t mode;
+    HVN_time_interval_t time_stamp;
+    char* key;
+    size_t key_len;
+    char* value;
+    size_t value_len;
+} HVN_db_op_t;
 
 int HVN_db_init(HVN_db_t** db, char* path);
 void HVN_db_close(HVN_db_t* db);

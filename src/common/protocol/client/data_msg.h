@@ -22,6 +22,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "database.h"
 #include "xtime.h"
 
 /* Client requests. */
@@ -42,14 +43,7 @@
 #define HVN_CLNT_PROTO_DATA_R_OK          0x14
 #define HVN_CLNT_PROTO_DATA_R_ERR         0x34
 
-typedef struct HVN_msg_client_data_t {
-    uint16_t action;
-    uint16_t mode;
-    HVN_time_interval_t time;
-    char* key;
-    uint32_t value_len;
-    void* value;
-} HVN_msg_client_data_t;
+typedef struct HVN_db_op_t HVN_msg_client_data_t;
 
 typedef struct HVN_msg_client_data_resp_t {
     uint8_t success;
