@@ -35,6 +35,7 @@
 #define HVN_CONSENSUS_MD_STATE_LEADER       'L'
 #define HVN_CONSENSUS_MD_STATE_FOLLOWER     'F'
 #define HVN_CONSENSUS_MD_STATE_CANDIDATE    'C'
+#define HVN_CONSENSUS_MD_STATE_HALT         'H'
 
 typedef struct HVN_consensus_vote_t {
     uint64_t candidate_term;
