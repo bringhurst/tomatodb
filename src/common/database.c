@@ -89,13 +89,12 @@ int HVN_db_unsafe_get(HVN_db_t* db, \
                       char** value, \
                       size_t* value_len)
 {
-    char* result = NULL;
     char* err = NULL;
 
-    leveldb_get(db->handle, db->read_options,
+    *value = leveldb_get(db->handle, db->read_options,
                 key, key_len, value_len, &err);
 
-    if(result == NULL) {
+    if(*value == NULL) {
         LOG(HVN_LOG_ERR, "Failed to get key `%s' from database.", key);
 
         if(err != NULL) {
