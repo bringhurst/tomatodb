@@ -48,6 +48,20 @@ int HVN_db_init(HVN_db_t** db, char* path);
 void HVN_db_close(HVN_db_t* db);
 int HVN_db_destroy(HVN_db_t* db);
 
+int HVN_db_unsafe_get(HVN_db_t* db, \
+                      char* key, \
+                      size_t key_len, \
+                      char** value, \
+                      size_t* value_len);
+int HVN_db_unsafe_put(HVN_db_t* db, \
+                      char* key, \
+                      size_t key_len, \
+                      char* value, \
+                      size_t value_len);
+int HVN_db_unsafe_delete(HVN_db_t* db, \
+                         char* key, \
+                         size_t key_len);
+
 bool HVN_db_validate_key(char* key);
 
 #endif /* __HVN_DATABASE_H */

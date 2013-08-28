@@ -17,6 +17,7 @@
  */
 
 #include <limits.h>
+#include <stdlib.h>
 #include <string.h>
 #include <netdb.h>
 
@@ -79,6 +80,72 @@ int HVN_db_destroy(HVN_db_t* db)
     }
 
     leveldb_free(db_err);
+    return HVN_SUCCESS;
+}
+
+int HVN_db_unsafe_get(HVN_db_t* db, \
+                      char* key, \
+                      size_t key_len, \
+                      char** value, \
+                      size_t* value_len)
+{
+    char* result = NULL;
+    char* err = NULL;
+
+    leveldb_get(db->handle, db->read_options,
+                key, key_len, value_len, &err);
+
+    if(result == NULL) {
+        LOG(HVN_LOG_ERR, "Failed to get key `%s' from database.", key);
+
+        if(err != NULL) {
+            LOG(HVN_LOG_ERR, "LevelDB reports error on get `%s'.", err);
+            free(err);
+        }
+
+        return HVN_ERROR;
+    }
+
+    return HVN_SUCCESS;
+}
+
+int HVN_db_unsafe_put(HVN_db_t* db, \
+                      char* key, \
+                      size_t key_len, \
+                      char* value, \
+                      size_t value_len)
+{
+    char* err = NULL;
+
+    leveldb_put(db->handle, db->write_options,
+                key, key_len, value, value_len, &err);
+
+    if(err != NULL) {
+        LOG(HVN_LOG_ERR, "LevelDB reports error on put `%s'.", err);
+        free(err);
+
+        return HVN_ERROR;
+    }
+
+    return HVN_SUCCESS;
+}
+
+int HVN_db_unsafe_delete(HVN_db_t* db, \
+                         char* key, \
+                         size_t key_len)
+{
+    char* err = NULL;
+
+    leveldb_delete(db->handle, db->write_options,
+                   key, key_len, &err);
+
+    if(err != NULL) {
+        LOG(HVN_LOG_ERR, "LevelDB reports error on delete `%s'.", err);
+        free(err);
+
+        return HVN_ERROR;
+    }
+
     return HVN_SUCCESS;
 }
 
