@@ -124,6 +124,9 @@ int HVN_replica_leader(HVN_replica_t* replica, char* role)
 {
     LOG(HVN_LOG_INFO, "Replica has entered leader state.");
 
+
+
+
     // TODO: Initialize nextIndex for each to last log index + 1.
 
     // TODO: Send initial empty AppendEntries RPCs (heartbeat) to each follower.

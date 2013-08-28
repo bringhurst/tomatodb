@@ -32,17 +32,16 @@
 #define HVN_CONSENSUS_MD_STATE              "/.consensus/local/state"
 #define HVN_CONSENSUS_MD_TERM               "/.consensus/local/term"
 
+/* Common log fmt keys. */
+#define HVN_CONSENSUS_MD_LOG_FMT_IDX        "/.consensus/local/log/%zu"
+#define HVN_CONSENSUS_MD_LOG_FMT_TERM       "/.consensus/local/log/%zu/term"
+#define HVN_CONSENSUS_MD_LOG_FMT_CMD        "/.consensus/local/log/%zu/command"
+
 /* Possible values for local state. */
 #define HVN_CONSENSUS_MD_STATE_LEADER       'L'
 #define HVN_CONSENSUS_MD_STATE_FOLLOWER     'F'
 #define HVN_CONSENSUS_MD_STATE_CANDIDATE    'C'
 #define HVN_CONSENSUS_MD_STATE_HALT         'H'
-
-typedef struct HVN_consensus_log_entry_t {
-    uint64_t term;
-    uint64_t index;
-    HVN_db_op_t* command;
-} HVN_consensus_log_entry_t;
 
 typedef struct HVN_consensus_vote_t {
     uint64_t candidate_term;
