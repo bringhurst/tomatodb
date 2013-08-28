@@ -16,6 +16,8 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
+#include <dirent.h>
+
 #include "consensus.h"
 #include "routing.h"
 #include "settings.h"
@@ -115,13 +117,11 @@ int HVN_replica_init(HVN_replica_t** replica)
         return HVN_ERROR;
     }
 
-    utarray_new((*replica)->quorum_addrs, &ut_str_icd);
     return HVN_SUCCESS;
 }
 
 void HVN_replica_free(HVN_replica_t* replica)
 {
-    utarray_free(replica->quorum_addrs);
     free(replica);
 }
 
@@ -131,14 +131,6 @@ int HVN_replica_bootstrap_location(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_
 {
     char* key = (char*) malloc(sizeof(char) * HVN_MAX_KEY_SIZE);
     strncpy(key, HVN_REPLICA_KEY_DEFAULT_LOCATION, HVN_MAX_KEY_SIZE);
-
-    if(ctx->location_addrs != NULL) {
-        LOG(HVN_LOG_ERR, "A location leader already exists.");
-        //FIXME: allow override?
-        return HVN_ERROR;
-    } else {
-        ctx->location_addrs = replica->quorum_addrs;
-    }
 
     return HVN_replica_bootstrap_leader(replica, ctx, uuid, key);
 }
@@ -172,6 +164,7 @@ int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t*
     }
 
     // FIXME: read location addrs from settings db.
+/***
     if(ctx->location_addrs == replica->quorum_addrs) {
         LOG(HVN_LOG_DBG, "Not attempting to register with a remote location service " \
                 "(this replica is the location service).");
@@ -179,6 +172,7 @@ int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t*
         LOG(HVN_LOG_DBG, "Attempting to register with the location service.");
         // TODO: register with location quorum.
     }
+***/
 
     if(HVN_db_unsafe_put(replica->db, HVN_CONSENSUS_MD_STATE, 1, \
                          (char*) &state, 1) != HVN_SUCCESS) {
@@ -224,6 +218,53 @@ int HVN_replica_bootstrap_db(HVN_replica_t* replica)
     free(uuid_string);
 
     return result;
+}
+
+int HVN_load_existing_replicas_from_disk(HVN_ctx_t* ctx)
+{
+    DIR *dir;
+    struct dirent *ent;
+    HVN_replica_t* replica;
+
+    char* db_base_path = (char*) malloc(sizeof(char) * _POSIX_PATH_MAX);
+    char* db_absolute_path = (char*) malloc(sizeof(char) * _POSIX_PATH_MAX);
+
+    int offset;
+
+    offset = sprintf(db_base_path, "%s%s", \
+                     HVN_BASE_STATE_DIR, HVN_DATA_DB_PREFIX);
+
+    if ((dir = opendir(db_base_path)) != NULL) {
+        while ((ent = readdir (dir)) != NULL) {
+            if(strlen(ent->d_name) == UUID_STR_LEN - 1) {
+                sprintf(db_absolute_path, "%s/%s", db_base_path, ent->d_name);
+                LOG(HVN_LOG_INFO, "Loading existing replica from `%s'.", db_absolute_path);
+
+                replica = (HVN_replica_t*) malloc(sizeof(HVN_replica_t));
+                replica->ctx = ctx;
+
+                if(HVN_db_init(&(replica->db), db_absolute_path) != HVN_SUCCESS) {
+                    LOG(HVN_LOG_INFO, "Failed to open replica DB with UUID of `%s'.", ent->d_name);
+                    free(replica);
+                    return HVN_ERROR;
+                }
+
+                if(uuid_parse(ent->d_name, replica->uuid) != 0) {
+                    LOG(HVN_LOG_INFO, "Failed to parse replica with UUID of `%s'.", ent->d_name);
+                    free(replica);
+                    return HVN_ERROR;
+                }
+
+                taskcreate((void (*)(void*))HVN_replica_task, replica, HVN_REPLICA_STACK_SIZE);
+                HASH_ADD(hh, ctx->replicas, uuid, sizeof(uuid_t), replica);
+            }
+        }
+        closedir(dir);
+    } else {
+        LOG(HVN_LOG_INFO, "Replica state directory can not be read. Server is starting empty.");
+    }
+
+    return HVN_SUCCESS;
 }
 
 /* EOF */

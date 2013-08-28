@@ -29,9 +29,7 @@
 typedef struct HVN_replica_t {
     HVN_db_t* db;
     HVN_ctx_t* ctx;
-    int fd;
     uuid_t uuid;
-    UT_array* quorum_addrs;
     UT_hash_handle hh;
 } HVN_replica_t;
 
@@ -49,5 +47,6 @@ int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t*
 int HVN_replica_bootstrap_follower(void);
 
 int HVN_replica_bootstrap_db(HVN_replica_t* replica);
+int HVN_load_existing_replicas_from_disk(HVN_ctx_t* ctx);
 
 #endif /* __HVN__HAVEND_REPLICA_H */

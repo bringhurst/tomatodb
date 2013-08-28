@@ -39,9 +39,9 @@ int HVN_ctx_init(HVN_ctx_t** ctx)
 
     (*ctx)->listen_addr = (char*) malloc(sizeof(char) * _POSIX_HOST_NAME_MAX);
     strcpy((*ctx)->listen_addr, DEFAULT_LISTEN_ADDRESS);
+    (*ctx)->replicas = NULL;
 
     (*ctx)->listen_port = DEFAULT_LISTEN_PORT;
-    (*ctx)->location_addrs = NULL;
 
     return HVN_SUCCESS;
 }

@@ -33,7 +33,6 @@ typedef struct HVN_ctx_t {
     char* listen_addr;
     int listen_port;
     int listen_fd;
-    UT_array* location_addrs;
     struct HVN_replica_t* replicas;
     uuid_t process_uuid;
 } HVN_ctx_t;
