@@ -30,6 +30,7 @@ typedef struct HVN_replica_t {
     HVN_db_t* db;
     HVN_ctx_t* ctx;
     uuid_t uuid;
+    bool is_active;
     UT_hash_handle hh;
 } HVN_replica_t;
 

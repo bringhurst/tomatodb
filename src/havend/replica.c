@@ -38,35 +38,56 @@ void HVN_replica_task(HVN_replica_t* replica)
     size_t role_len;
 
     LOG(HVN_LOG_DBG, "Entered replica task.");
+    replica->is_active = true;
 
-    if(HVN_db_unsafe_get(replica->db, \
-           HVN_CONSENSUS_MD_STATE, strlen(HVN_CONSENSUS_MD_STATE),
-           &role, &role_len) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Not loading this replica. Failed to read consensus state.");
-        return;
+    while(replica->is_active) {
+
+        *role = '\0';
+
+        if(HVN_db_unsafe_get(replica->db, \
+               HVN_CONSENSUS_MD_STATE, strlen(HVN_CONSENSUS_MD_STATE),
+               &role, &role_len) != HVN_SUCCESS) {
+            LOG(HVN_LOG_ERR, "Not loading this replica. Failed to read consensus state.");
+            return;
+        }
+
+        switch(*role) {
+            case HVN_CONSENSUS_MD_STATE_LEADER:
+                if(HVN_replica_leader(replica) != HVN_SUCCESS) {
+                    LOG(HVN_LOG_ERR, "Replica encountered an error while in the leader state.");
+                    taskexit(EXIT_FAILURE);
+                }
+                break;
+
+            case HVN_CONSENSUS_MD_STATE_FOLLOWER:
+                if(HVN_replica_follower(replica) != HVN_SUCCESS) {
+                    LOG(HVN_LOG_ERR, "Replica encountered an error while in the follower state.");
+                    taskexit(EXIT_FAILURE);
+                }
+                break;
+
+            case HVN_CONSENSUS_MD_STATE_CANDIDATE:
+                if(HVN_replica_candidate(replica) != HVN_SUCCESS) {
+                    LOG(HVN_LOG_ERR, "Replica encountered an error while in the candidate state.");
+                    taskexit(EXIT_FAILURE);
+                }
+                break;
+
+            default:
+                LOG(HVN_LOG_ERR, "Encountered unknown replica state. Exiting task.");
+                taskexit(EXIT_FAILURE);
+                break;
+        }
     }
 
-    switch(*role) {
-        case HVN_CONSENSUS_MD_STATE_LEADER:
-            LOG(HVN_LOG_INFO, "Starting a new replica task with initial role of leader.");
-            break;
-        case HVN_CONSENSUS_MD_STATE_FOLLOWER:
-            LOG(HVN_LOG_INFO, "Starting a new replica task with initial role of follower.");
-            break;
-        case HVN_CONSENSUS_MD_STATE_CANDIDATE:
-            LOG(HVN_LOG_INFO, "Starting a new replica task with initial role of candidate.");
-            break;
-        default:
-            LOG(HVN_LOG_ERR, "Encountered unknown replica state. Exiting task.");
-            taskexit(EXIT_FAILURE);
-            break;
-    }
-
+    LOG(HVN_LOG_INFO, "Replica is shutting down.");
     taskexit(EXIT_SUCCESS);
 }
 
 int HVN_replica_follower(HVN_replica_t* replica)
 {
+    LOG(HVN_LOG_INFO, "Replica has entered follower state.");
+
     // TODO: Respond to RPCs from candidates and leaders.
 
     // TODO: Convert to candidate if election timeout elapses without either
@@ -78,6 +99,8 @@ int HVN_replica_follower(HVN_replica_t* replica)
 
 int HVN_replica_candidate(HVN_replica_t* replica)
 {
+    LOG(HVN_LOG_INFO, "Replica has entered candidate state.");
+
     // TODO: Increment current Term, vote for self.
 
     // TODO: Reset election timeout.
@@ -94,6 +117,8 @@ int HVN_replica_candidate(HVN_replica_t* replica)
 
 int HVN_replica_leader(HVN_replica_t* replica)
 {
+    LOG(HVN_LOG_INFO, "Replica has entered leader state.");
+
     // TODO: Initialize nextIndex for each to last log index + 1.
 
     // TODO: Send initial empty AppendEntries RPCs (heartbeat) to each follower.
