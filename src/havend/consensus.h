@@ -66,6 +66,7 @@ typedef struct HVN_consensus_append_t {
 
 typedef struct HVN_consensus_append_resp_t {
     uint64_t term;
+    uint64_t conflict_term;
     bool success;
 } HVN_consensus_append_resp_t;
 
