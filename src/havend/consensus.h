@@ -22,17 +22,19 @@
 #include "attach.h"
 #include "database.h"
 
-/* Base directory to hold replicate state. */
-#define HVN_CONSENSUS_MD_BASE_KEY          "/.consensus"
-
 /* Consistently replicated keys. */
-#define HVN_CONSENSUS_MD_REPLICA_LIST      "replica_list"
-#define HVN_CONSENSUS_MD_ELECTION_TIMEOUT  "election_timeout"
+#define HVN_CONSENSUS_MD_REPLICA_LIST       "/.consensus/replica_list"
+#define HVN_CONSENSUS_MD_ELECTION_TIMEOUT   "/.consensus/election_timeout"
 
 /* Non-replicated local keys. */
-#define HVN_CONSENSUS_MD_COORDINATOR       "__local_coordinator"
-#define HVN_CONSENSUS_MD_STATE             "__local_state"
-#define HVN_CONSENSUS_MD_TERM              "__local_term"
+#define HVN_CONSENSUS_MD_LEADER             "/.consensus/local/leader"
+#define HVN_CONSENSUS_MD_STATE              "/.consensus/local/state"
+#define HVN_CONSENSUS_MD_TERM               "/.consensus/local/term"
+
+/* Possible values for local state. */
+#define HVN_CONSENSUS_MD_STATE_LEADER       0x01
+#define HVN_CONSENSUS_MD_STATE_FOLLOWER     0x03
+#define HVN_CONSENSUS_MD_STATE_CANDIDATE    0x06
 
 typedef struct HVN_consensus_vote_t {
     uint64_t candidate_term;
@@ -40,6 +42,11 @@ typedef struct HVN_consensus_vote_t {
     uint64_t last_log_term;
     uuid_t candidate_id;
 } HVN_consensus_vote_t;
+
+typedef struct HVN_consensus_vote_resp_t {
+    uint64_t term;
+    bool vote_granted;
+} HVN_consensus_vote_resp_t;
 
 typedef struct HVN_consensus_append_t {
     uint64_t leader_term;
@@ -49,6 +56,11 @@ typedef struct HVN_consensus_append_t {
     uuid_t leader_id;
     UT_array* log_entries;
 } HVN_consensus_append_t;
+
+typedef struct HVN_consensus_append_resp_t {
+    uint64_t term;
+    bool success;
+} HVN_consensus_append_resp_t;
 
 int HVN_consensus_exec(HVN_attach_t* client, HVN_db_op_t* op);
 

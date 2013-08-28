@@ -16,6 +16,7 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
+#include "consensus.h"
 #include "routing.h"
 #include "settings.h"
 #include "task/task.h"
@@ -31,10 +32,78 @@ extern HVN_loglevel HVN_debug_level;
 
 void HVN_replica_task(HVN_replica_t* replica)
 {
+    uint32_t replica_role;
+
     LOG(HVN_LOG_DBG, "Entered replica task.");
 
+    // TODO: check __state in database and store in replica_role.
+
+    switch(replica_role) {
+        case HVN_CONSENSUS_MD_STATE_LEADER:
+            
+            break;
+        case HVN_CONSENSUS_MD_STATE_FOLLOWER:
+            break;
+        case HVN_CONSENSUS_MD_STATE_CANDIDATE:
+            break;
+        default:
+            LOG(HVN_LOG_ERR, "Encountered unknown replica state. Exiting task.");
+            taskexit(EXIT_FAILURE);
+            break;
+    }
 
     taskexit(EXIT_SUCCESS);
+}
+
+int HVN_replica_follower(HVN_replica_t* replica)
+{
+    // TODO: Respond to RPCs from candidates and leaders.
+
+    // TODO: Convert to candidate if election timeout elapses without either
+    //           1. Receiving valid AppendEntries RPC, or
+    //           2. Granting vote to candidate.
+
+    return HVN_ERROR;
+}
+
+int HVN_replica_candidate(HVN_replica_t* replica)
+{
+    // TODO: Increment current Term, vote for self.
+
+    // TODO: Reset election timeout.
+
+    // TODO: Send RequestVote RPCs to all other servers, wait for either:
+    //           1. Votes received from majority of servers: become leader.
+    //           2. AppendEntries RPC received from new leader: step down.
+    //           3. Election timeout elapses without election resolution:
+    //               a. Increment term, state new election.
+    //           4. Discover higher term: step down.
+
+    return HVN_ERROR;
+}
+
+int HVN_replica_leader(HVN_replica_t* replica)
+{
+    // TODO: Initialize nextIndex for each to last log index + 1.
+
+    // TODO: Send initial empty AppendEntries RPCs (heartbeat) to each follower.
+    //           1. Repeat during idle periods to prevent election timeouts.
+
+    // TODO: Accept commands from clients, append new entries to local log.
+
+    // TODO: Whenever last log index is greater or equal to nextIndex for a follower:
+    //           1. Send AppendEntries RPC with log entries starting at nextIndex.
+    //               a. Update nextIndex if successful.
+    //               b. If AppendEntries fails because of log inconsistency, decrement
+    //                  nextIndex and retry.
+
+    // TODO: Mark entries commited if stored on a majority of servers and some entry
+    //       from current term is stored on a majority of servers. Apply newly committed
+    //       entries to state machine.
+
+    // TODO: Step down if currentTerm changes.
+
+    return HVN_ERROR;
 }
 
 int HVN_replica_init(HVN_replica_t** replica)
@@ -78,6 +147,8 @@ int HVN_replica_bootstrap_location(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_
 // the new replica to the uuid pointer.
 int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t* uuid, char* path_key)
 {
+    uint32_t state = HVN_CONSENSUS_MD_STATE_LEADER;
+
     LOG(HVN_LOG_INFO, "Bootstrapping a replica leader on interface `%s:%d'.", \
             ctx->listen_addr, ctx->listen_port);
 
@@ -100,12 +171,19 @@ int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t*
         return HVN_ERROR;
     }
 
+    // FIXME: read location addrs from settings db.
     if(ctx->location_addrs == replica->quorum_addrs) {
         LOG(HVN_LOG_DBG, "Not attempting to register with a remote location service " \
                 "(this replica is the location service).");
     } else {
         LOG(HVN_LOG_DBG, "Attempting to register with the location service.");
         // TODO: register with location quorum.
+    }
+
+    if(HVN_db_unsafe_put(replica->db, HVN_CONSENSUS_MD_STATE, 1, \
+                         (char*) &state, 1) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Failed to set the state for bootstrapping a leader.");
+        return HVN_ERROR;
     }
 
     taskcreate((void (*)(void*))HVN_replica_task, replica, HVN_REPLICA_STACK_SIZE);
