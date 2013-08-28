@@ -83,7 +83,7 @@ void HVN_replica_task(HVN_replica_t* replica)
                 break;
         }
 
-        free(*role);
+        free(role);
     }
 
     LOG(HVN_LOG_INFO, "Replica task is ending.");
@@ -123,13 +123,39 @@ int HVN_replica_candidate(HVN_replica_t* replica, char* role)
 
 int HVN_replica_leader(HVN_replica_t* replica, char* role)
 {
+    char* last_log_entry_key;
+    size_t last_log_entry_key_len;
+
+    char* op_packed;
+    size_t op_packed_len;
+
     LOG(HVN_LOG_INFO, "Replica has entered leader state.");
 
-    leveldb_iterator_t* log_iter = leveldb_create_iterator(replica->db->handle, replica->db->read_options);
-    leveldb_iter_seek_to_last(log_iter);
+    // Cache the local last log index.
+    if(HVN_replica_cache_last_log_index(replica) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Could not determine last log index.");
+        return HVN_ERROR;
+    } else {
+        LOG(HVN_LOG_INFO, "Last log index for this replica is `%zu'.", replica->last_log_index);
+    }
 
-    // TODO: get local last log index.
 
+    HVN_db_op_t* example_op1 = (HVN_db_op_t*) malloc(sizeof(HVN_db_op_t));
+
+    example_op1->action = HVN_CLNT_PROTO_DATA_VERB_WRITE;
+    example_op1->mode = HVN_CLNT_PROTO_DATA_MODE_RW;
+    example_op1->key = "foo";
+    example_op1->key_len = 3;
+    example_op1->value = "bar";
+    example_op1->value_len = 3;
+
+    HVN_clnt_proto_pack_data_msgpack((HVN_msg_client_data_t*) example_op1, &op_packed_len, &op_packed);
+
+    //FIXME: remove when done testing.
+    HVN_replica_append_to_log(replica, op_packed, op_packed_len);
+    HVN_replica_append_to_log(replica, op_packed, op_packed_len);
+    HVN_replica_append_to_log(replica, op_packed, op_packed_len);
+    HVN_replica_append_to_log(replica, op_packed, op_packed_len);
 
     // TODO: Initialize nextIndex for each follower to the local last log index + 1.
 
@@ -153,41 +179,57 @@ int HVN_replica_leader(HVN_replica_t* replica, char* role)
     return HVN_ERROR;
 }
 
-int HVN_replica_append_to_log(HVN_replica_t* replica, HVN_db_op_t* op)
+int HVN_replica_cache_last_log_index(HVN_replica_t* replica)
 {
-    //FIXME: remove examples, replace with real data.
-    uint64_t example_index = 8;
-    uint64_t example_term = 12;
+    size_t idx_len;
 
-    size_t example_op_packed_len;
-    char* example_op_packed;
+    if(HVN_db_unsafe_get(replica->db, \
+           HVN_CONSENSUS_MD_LAST_LOG_INDEX, strlen(HVN_CONSENSUS_MD_LAST_LOG_INDEX),
+           &(replica->last_log_index), &idx_len) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Could not determine the last log index.");
+        return HVN_ERROR;
+    }
+
+    return HVN_SUCCESS;
+}
+
+int HVN_replica_overwrite_last_log_index(HVN_replica_t* replica, uint64_t last_log_index)
+{
+    if(HVN_db_unsafe_put(replica->db, \
+           HVN_CONSENSUS_MD_LAST_LOG_INDEX, strlen(HVN_CONSENSUS_MD_LAST_LOG_INDEX), \
+           (char*) &last_log_index, 1) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Could not overwrite the last log index for this replica.");
+        return HVN_ERROR;
+    }
+
+    return HVN_SUCCESS;
+}
+
+int HVN_replica_append_to_log(HVN_replica_t* replica, char* packed_op, size_t packed_op_len)
+{
     char* err;
-
     leveldb_writebatch_t* log_batch;
 
     char* log_term_key = (char*) malloc(sizeof(char) * _POSIX_PATH_MAX);
     char* log_cmd_key = (char*) malloc(sizeof(char) * _POSIX_PATH_MAX);
 
-    HVN_db_op_t* example_op = (HVN_db_op_t*) malloc(sizeof(HVN_db_op_t));
-
-    example_op->action = HVN_CLNT_PROTO_DATA_VERB_WRITE;
-    example_op->mode = HVN_CLNT_PROTO_DATA_MODE_RW;
-    example_op->key = "foo";
-    example_op->key_len = 3;
-    example_op->value = "bar";
-    example_op->value_len = 3;
-
-    HVN_clnt_proto_pack_data_msgpack((HVN_msg_client_data_t*) example_op, &example_op_packed_len, &example_op_packed);
-
-    sprintf(log_term_key, HVN_CONSENSUS_MD_LOG_FMT_TERM, example_index);
-    sprintf(log_cmd_key, HVN_CONSENSUS_MD_LOG_FMT_CMD, example_index);
+    sprintf(log_term_key, HVN_CONSENSUS_MD_LOG_FMT_TERM, replica->current_term);
+    sprintf(log_cmd_key, HVN_CONSENSUS_MD_LOG_FMT_CMD, replica->last_log_index + 1);
 
     log_batch = leveldb_writebatch_create();
-
-    leveldb_writebatch_put(log_batch, log_term_key, strlen(log_term_key), &example_term, sizeof(uint64_t));
-    leveldb_writebatch_put(log_batch, log_cmd_key, strlen(log_cmd_key), &example_op_packed, example_op_packed_len);
-
+    leveldb_writebatch_put(log_batch, log_term_key, strlen(log_term_key), &(replica->current_term), sizeof(uint64_t));
+    leveldb_writebatch_put(log_batch, log_cmd_key, strlen(log_cmd_key), &packed_op, packed_op_len);
     leveldb_write(replica->db->handle, replica->db->write_options, log_batch, &err);
+
+    replica->last_log_index++;
+
+    if(HVN_replica_overwrite_last_log_index(replica, replica->last_log_index) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Could not update last log index.");
+        return HVN_ERROR;
+    }
+
+    free(log_term_key);
+    free(log_cmd_key);
 
     return HVN_SUCCESS;
 }
@@ -200,6 +242,9 @@ int HVN_replica_init(HVN_replica_t** replica)
         LOG(HVN_LOG_ERR, "Failed to allocate memory for a new replica.");
         return HVN_ERROR;
     }
+
+    (*replica)->last_log_index = 0;
+    (*replica)->current_term = 0;
 
     return HVN_SUCCESS;
 }
@@ -224,6 +269,9 @@ int HVN_replica_bootstrap_location(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_
 int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t* uuid, char* path_key)
 {
     char state = HVN_CONSENSUS_MD_STATE_LEADER;
+
+    uint64_t bootstrap_term = 0;
+    uint64_t bootstrap_index = 0;
 
     LOG(HVN_LOG_INFO, "Bootstrapping a replica leader on interface `%s:%d'.", \
             ctx->listen_addr, ctx->listen_port);
@@ -251,6 +299,20 @@ int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t*
            HVN_CONSENSUS_MD_STATE, strlen(HVN_CONSENSUS_MD_STATE), \
            &state, 1) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to set the state for bootstrapping a leader.");
+        return HVN_ERROR;
+    }
+
+    if(HVN_db_unsafe_put(replica->db, \
+           HVN_CONSENSUS_MD_TERM, strlen(HVN_CONSENSUS_MD_TERM), \
+           (char*) &bootstrap_term, 1) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Failed to set the state for bootstrapping a leader.");
+        return HVN_ERROR;
+    }
+
+    if(HVN_db_unsafe_put(replica->db, \
+           HVN_CONSENSUS_MD_LAST_LOG_INDEX, strlen(HVN_CONSENSUS_MD_LAST_LOG_INDEX), \
+           (char*) &bootstrap_index, 1) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Failed to set the initial log index for bootstrapping a leader.");
         return HVN_ERROR;
     }
 

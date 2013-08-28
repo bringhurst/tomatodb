@@ -28,7 +28,7 @@
 
 /* Non-replicated local persistent keys. */
 #define HVN_CONSENSUS_MD_LEADER             "/.consensus/local/leader"
-#define HVN_CONSENSUS_MD_LOG                "/.consensus/local/log"
+#define HVN_CONSENSUS_MD_LAST_LOG_INDEX     "/.consensus/local/last_log_index"
 #define HVN_CONSENSUS_MD_STATE              "/.consensus/local/state"
 #define HVN_CONSENSUS_MD_TERM               "/.consensus/local/term"
 

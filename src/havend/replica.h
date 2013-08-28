@@ -30,6 +30,8 @@ typedef struct HVN_replica_t {
     HVN_db_t* db;
     HVN_ctx_t* ctx;
     uuid_t uuid;
+    uint64_t current_term;
+    uint64_t last_log_index;
     UT_hash_handle hh;
 } HVN_replica_t;
 
