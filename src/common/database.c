@@ -37,17 +37,26 @@ extern HVN_loglevel HVN_debug_level;
 int HVN_db_init(HVN_db_t** db, char* path)
 {
     char* db_err = NULL;
+    leveldb_comparator_t* comparator;
 
     HVN_db_t* new_db = \
-                         (HVN_db_t*) malloc(sizeof(HVN_db_t));
+                       (HVN_db_t*) malloc(sizeof(HVN_db_t));
 
     if(!new_db) {
         LOG(HVN_LOG_ERR, "Could not initialize memory for a new database.");
         return HVN_ERROR;
     }
 
+    comparator = leveldb_comparator_create(NULL,
+                                           HVN_db_comparator_destroy,
+                                           HVN_db_comparator_compare,
+                                           HVN_db_comparator_name);
+
     new_db->options = leveldb_options_create();
+
+    leveldb_options_set_comparator(new_db->options, comparator);
     leveldb_options_set_create_if_missing(new_db->options, 1);
+
     new_db->handle = leveldb_open(new_db->options, path, &db_err);
 
     if(db_err != NULL) {
@@ -86,6 +95,30 @@ int HVN_db_destroy(HVN_db_t* db)
     return HVN_SUCCESS;
 }
 
+void HVN_db_comparator_destroy(void* arg)
+{
+    // FIXME: what does this do? Should something be here?
+}
+
+int HVN_db_comparator_compare(void* arg, const char* a, size_t alen,
+                              const char* b, size_t blen)
+{
+    int n = (alen < blen) ? alen : blen;
+
+    while(n--) {
+        if(*a++ != *b++) {
+            return *(unsigned char*)(a - 1) - *(unsigned char*)(b - 1);
+        }
+    }
+
+    return 0;
+}
+
+const char* HVN_db_comparator_name(void* arg)
+{
+    return HVN_DB_COMPARATOR_NAME;
+}
+
 int HVN_db_unsafe_get(HVN_db_t* db, \
                       char* key, \
                       size_t key_len, \
@@ -95,7 +128,7 @@ int HVN_db_unsafe_get(HVN_db_t* db, \
     char* err = NULL;
 
     *value = leveldb_get(db->handle, db->read_options,
-                key, key_len, value_len, &err);
+                         key, key_len, value_len, &err);
 
     if(*value == NULL) {
         LOG(HVN_LOG_ERR, "Failed to get key `%s' from database.", key);
@@ -159,8 +192,9 @@ bool HVN_db_validate_key(char* key)
 
     // FIXME: not designed for malicious intent.
 
-    while (*p++) {
-        if(*p == '\0') break;
+    while(*p++) {
+        if(*p == '\0') { break; }
+
         if((*p < 'a') || (*p > 'z')) {
             if((*p != '_') && (*p != '/')) {
                 LOG(HVN_LOG_DBG, "Returning false on %c", *p);

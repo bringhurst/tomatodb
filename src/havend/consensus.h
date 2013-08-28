@@ -26,8 +26,9 @@
 #define HVN_CONSENSUS_MD_REPLICA_LIST       "/.consensus/replica_list"
 #define HVN_CONSENSUS_MD_ELECTION_TIMEOUT   "/.consensus/election_timeout"
 
-/* Non-replicated local keys. */
+/* Non-replicated local persistent keys. */
 #define HVN_CONSENSUS_MD_LEADER             "/.consensus/local/leader"
+#define HVN_CONSENSUS_MD_LOG                "/.consensus/local/log"
 #define HVN_CONSENSUS_MD_STATE              "/.consensus/local/state"
 #define HVN_CONSENSUS_MD_TERM               "/.consensus/local/term"
 
@@ -36,6 +37,12 @@
 #define HVN_CONSENSUS_MD_STATE_FOLLOWER     'F'
 #define HVN_CONSENSUS_MD_STATE_CANDIDATE    'C'
 #define HVN_CONSENSUS_MD_STATE_HALT         'H'
+
+typedef struct HVN_consensus_log_entry_t {
+    uint64_t term;
+    uint64_t index;
+    HVN_db_op_t* command;
+} HVN_consensus_log_entry_t;
 
 typedef struct HVN_consensus_vote_t {
     uint64_t candidate_term;

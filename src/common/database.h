@@ -26,6 +26,8 @@
 #include "common.h"
 #include "xtime.h"
 
+#define HVN_DB_COMPARATOR_NAME "HVN_cmp_0001";
+
 typedef struct HVN_db_t {
     char* path;
     leveldb_t* handle;
@@ -61,6 +63,11 @@ int HVN_db_unsafe_put(HVN_db_t* db, \
 int HVN_db_unsafe_delete(HVN_db_t* db, \
                          char* key, \
                          size_t key_len);
+
+void HVN_db_comparator_destroy(void* arg);
+const char* HVN_db_comparator_name(void* arg);
+int HVN_db_comparator_compare(void* arg, const char* a, size_t alen,
+                              const char* b, size_t blen);
 
 bool HVN_db_validate_key(char* key);
 

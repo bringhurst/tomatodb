@@ -60,7 +60,8 @@ int HVN_time_now(HVN_time_interval_t* interval)
 
         timeradd(now_p, delta_p, latest_p);
         timersub(now_p, delta_p, earliest_p);
-    } else {
+    }
+    else {
         LOG(HVN_LOG_ERR, "Error on ntp_gettime. %s", strerror(errno));
         return HVN_ERROR;
     }
@@ -91,17 +92,20 @@ int HVN_time_check(HVN_time_interval_t* interval, bool* success, int mode)
     if(mode == HVN_TIME_CHECK_AFTER) {
         earliest_p = &(interval->latest);
         latest_p = &(now.earliest);
-    } else if(mode == HVN_TIME_CHECK_BEFORE) {
+    }
+    else if(mode == HVN_TIME_CHECK_BEFORE) {
         latest_p = &(interval->latest);
         earliest_p = &(now.earliest);
-    } else {
+    }
+    else {
         return HVN_ERROR;
     }
 
     if(timercmp(latest_p, earliest_p, <) != 0) {
         *success = true;
         return HVN_SUCCESS;
-    } else {
+    }
+    else {
         *success = false;
         return HVN_SUCCESS;
     }
@@ -126,7 +130,7 @@ void HVN_time_interval_print(HVN_time_interval_t* interval)
     strftime(fmt_latest, sizeof(fmt_latest), "%Y-%m-%d %H:%M:%S.%%06u %z", tm_latest);
     snprintf(buf_latest, sizeof(buf_latest), fmt_latest, interval->latest.tv_usec);
 
-    LOG(HVN_LOG_INFO, "HVN_time_interval:['%s', '%s']", buf_earliest, buf_latest); 
+    LOG(HVN_LOG_INFO, "HVN_time_interval:['%s', '%s']", buf_earliest, buf_latest);
 }
 
 int HVN_time_interval_validate(HVN_time_interval_t* interval)
