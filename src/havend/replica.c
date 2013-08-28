@@ -163,17 +163,6 @@ int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t*
         return HVN_ERROR;
     }
 
-    // FIXME: read location addrs from settings db.
-/***
-    if(ctx->location_addrs == replica->quorum_addrs) {
-        LOG(HVN_LOG_DBG, "Not attempting to register with a remote location service " \
-                "(this replica is the location service).");
-    } else {
-        LOG(HVN_LOG_DBG, "Attempting to register with the location service.");
-        // TODO: register with location quorum.
-    }
-***/
-
     if(HVN_db_unsafe_put(replica->db, HVN_CONSENSUS_MD_STATE, 1, \
                          (char*) &state, 1) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to set the state for bootstrapping a leader.");
