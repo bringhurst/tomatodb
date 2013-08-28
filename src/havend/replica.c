@@ -124,10 +124,10 @@ int HVN_replica_leader(HVN_replica_t* replica, char* role)
 {
     LOG(HVN_LOG_INFO, "Replica has entered leader state.");
 
+    // TODO: get local last log index.
 
 
-
-    // TODO: Initialize nextIndex for each to last log index + 1.
+    // TODO: Initialize nextIndex for each follower to the local last log index + 1.
 
     // TODO: Send initial empty AppendEntries RPCs (heartbeat) to each follower.
     //           1. Repeat during idle periods to prevent election timeouts.
