@@ -19,6 +19,7 @@
 #include <dirent.h>
 
 #include "consensus.h"
+#include "protocol/client/data_msg.h"
 #include "routing.h"
 #include "settings.h"
 #include "task/task.h"
@@ -124,6 +125,9 @@ int HVN_replica_leader(HVN_replica_t* replica, char* role)
 {
     LOG(HVN_LOG_INFO, "Replica has entered leader state.");
 
+    leveldb_iterator_t* log_iter = leveldb_create_iterator(replica->db->handle, replica->db->read_options);
+    leveldb_iter_seek_to_last(log_iter);
+
     // TODO: get local last log index.
 
 
@@ -132,7 +136,7 @@ int HVN_replica_leader(HVN_replica_t* replica, char* role)
     // TODO: Send initial empty AppendEntries RPCs (heartbeat) to each follower.
     //           1. Repeat during idle periods to prevent election timeouts.
 
-    // TODO: Accept commands from clients, append new entries to local log.
+    // TODO: Accept commands from clients (use channel), append new entries to local log.
 
     // TODO: Whenever last log index is greater or equal to nextIndex for a follower:
     //           1. Send AppendEntries RPC with log entries starting at nextIndex.
@@ -147,6 +151,45 @@ int HVN_replica_leader(HVN_replica_t* replica, char* role)
     // TODO: Step down if currentTerm changes.
 
     return HVN_ERROR;
+}
+
+int HVN_replica_append_to_log(HVN_replica_t* replica, HVN_db_op_t* op)
+{
+    //FIXME: remove examples, replace with real data.
+    uint64_t example_index = 8;
+    uint64_t example_term = 12;
+
+    size_t example_op_packed_len;
+    char* example_op_packed;
+    char* err;
+
+    leveldb_writebatch_t* log_batch;
+
+    char* log_term_key = (char*) malloc(sizeof(char) * _POSIX_PATH_MAX);
+    char* log_cmd_key = (char*) malloc(sizeof(char) * _POSIX_PATH_MAX);
+
+    HVN_db_op_t* example_op = (HVN_db_op_t*) malloc(sizeof(HVN_db_op_t));
+
+    example_op->action = HVN_CLNT_PROTO_DATA_VERB_WRITE;
+    example_op->mode = HVN_CLNT_PROTO_DATA_MODE_RW;
+    example_op->key = "foo";
+    example_op->key_len = 3;
+    example_op->value = "bar";
+    example_op->value_len = 3;
+
+    HVN_clnt_proto_pack_data_msgpack((HVN_msg_client_data_t*) example_op, &example_op_packed_len, &example_op_packed);
+
+    sprintf(log_term_key, HVN_CONSENSUS_MD_LOG_FMT_TERM, example_index);
+    sprintf(log_cmd_key, HVN_CONSENSUS_MD_LOG_FMT_CMD, example_index);
+
+    log_batch = leveldb_writebatch_create();
+
+    leveldb_writebatch_put(log_batch, log_term_key, strlen(log_term_key), &example_term, sizeof(uint64_t));
+    leveldb_writebatch_put(log_batch, log_cmd_key, strlen(log_cmd_key), &example_op_packed, example_op_packed_len);
+
+    leveldb_write(replica->db->handle, replica->db->write_options, log_batch, &err);
+
+    return HVN_SUCCESS;
 }
 
 int HVN_replica_init(HVN_replica_t** replica)

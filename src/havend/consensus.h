@@ -33,7 +33,6 @@
 #define HVN_CONSENSUS_MD_TERM               "/.consensus/local/term"
 
 /* Common log fmt keys. */
-#define HVN_CONSENSUS_MD_LOG_FMT_IDX        "/.consensus/local/log/%zu"
 #define HVN_CONSENSUS_MD_LOG_FMT_TERM       "/.consensus/local/log/%zu/term"
 #define HVN_CONSENSUS_MD_LOG_FMT_CMD        "/.consensus/local/log/%zu/command"
 
