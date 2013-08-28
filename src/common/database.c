@@ -186,6 +186,26 @@ int HVN_db_unsafe_delete(HVN_db_t* db, \
     return HVN_SUCCESS;
 }
 
+int HVN_db_unsafe_put_uint64(HVN_db_t* db, char* key, size_t key_len, uint64_t value)
+{
+
+}
+
+int HVN_db_unsafe_get_uint64(HVN_db_t* db, char* key, size_t key_len, uint64_t* value)
+{
+
+}
+
+int HVN_db_unsafe_put_string(HVN_db_t* db, char* key, size_t key_len, char* value, size_t value_len)
+{
+
+}
+
+int HVN_db_unsafe_get_string(HVN_db_t* db, char* key, size_t key_len, char** value, size_t* value_len)
+{
+
+}
+
 bool HVN_db_validate_key(char* key)
 {
     char* p = key;
