@@ -34,19 +34,27 @@ extern HVN_loglevel HVN_debug_level;
 
 void HVN_replica_task(HVN_replica_t* replica)
 {
-    uint32_t replica_role;
+    char* role;
+    size_t role_len;
 
     LOG(HVN_LOG_DBG, "Entered replica task.");
 
-    // TODO: check __state in database and store in replica_role.
+    if(HVN_db_unsafe_get(replica->db, \
+           HVN_CONSENSUS_MD_STATE, strlen(HVN_CONSENSUS_MD_STATE),
+           &role, &role_len) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Not loading this replica. Failed to read consensus state.");
+        return;
+    }
 
-    switch(replica_role) {
+    switch(*role) {
         case HVN_CONSENSUS_MD_STATE_LEADER:
-            
+            LOG(HVN_LOG_INFO, "Starting a new replica task with initial role of leader.");
             break;
         case HVN_CONSENSUS_MD_STATE_FOLLOWER:
+            LOG(HVN_LOG_INFO, "Starting a new replica task with initial role of follower.");
             break;
         case HVN_CONSENSUS_MD_STATE_CANDIDATE:
+            LOG(HVN_LOG_INFO, "Starting a new replica task with initial role of candidate.");
             break;
         default:
             LOG(HVN_LOG_ERR, "Encountered unknown replica state. Exiting task.");
@@ -139,7 +147,7 @@ int HVN_replica_bootstrap_location(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_
 // the new replica to the uuid pointer.
 int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t* uuid, char* path_key)
 {
-    uint32_t state = HVN_CONSENSUS_MD_STATE_LEADER;
+    char state = HVN_CONSENSUS_MD_STATE_LEADER;
 
     LOG(HVN_LOG_INFO, "Bootstrapping a replica leader on interface `%s:%d'.", \
             ctx->listen_addr, ctx->listen_port);
@@ -163,8 +171,9 @@ int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t*
         return HVN_ERROR;
     }
 
-    if(HVN_db_unsafe_put(replica->db, HVN_CONSENSUS_MD_STATE, 1, \
-                         (char*) &state, 1) != HVN_SUCCESS) {
+    if(HVN_db_unsafe_put(replica->db, \
+           HVN_CONSENSUS_MD_STATE, strlen(HVN_CONSENSUS_MD_STATE), \
+           &state, 1) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to set the state for bootstrapping a leader.");
         return HVN_ERROR;
     }

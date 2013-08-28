@@ -32,9 +32,9 @@
 #define HVN_CONSENSUS_MD_TERM               "/.consensus/local/term"
 
 /* Possible values for local state. */
-#define HVN_CONSENSUS_MD_STATE_LEADER       0x01
-#define HVN_CONSENSUS_MD_STATE_FOLLOWER     0x03
-#define HVN_CONSENSUS_MD_STATE_CANDIDATE    0x06
+#define HVN_CONSENSUS_MD_STATE_LEADER       'L'
+#define HVN_CONSENSUS_MD_STATE_FOLLOWER     'F'
+#define HVN_CONSENSUS_MD_STATE_CANDIDATE    'C'
 
 typedef struct HVN_consensus_vote_t {
     uint64_t candidate_term;

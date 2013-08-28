@@ -55,6 +55,9 @@ int HVN_db_init(HVN_db_t** db, char* path)
         return HVN_ERROR;
     }
 
+    new_db->read_options = leveldb_readoptions_create();
+    new_db->write_options = leveldb_writeoptions_create();
+
     new_db->path = path;
     *db = new_db;
 
@@ -115,6 +118,8 @@ int HVN_db_unsafe_put(HVN_db_t* db, \
                       size_t value_len)
 {
     char* err = NULL;
+
+    LOG(HVN_LOG_DBG, "Writing to database key `%s'.", key);
 
     leveldb_put(db->handle, db->write_options,
                 key, key_len, value, value_len, &err);
