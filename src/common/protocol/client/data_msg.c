@@ -126,6 +126,10 @@ int HVN_clnt_proto_unpack_data_resp_msgpack(HVN_msg_client_data_resp_t* data, \
         size_t len, \
         char* msg)
 {
+    HVN_INTENTIONALLY_UNUSED_VARIABLE(data);
+    HVN_INTENTIONALLY_UNUSED_VARIABLE(len);
+    HVN_INTENTIONALLY_UNUSED_VARIABLE(msg);
+
     return HVN_ERROR;
 }
 

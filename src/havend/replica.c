@@ -36,40 +36,44 @@ extern HVN_loglevel HVN_debug_level;
 void HVN_replica_task(HVN_replica_t* replica)
 {
     char* role;
-    size_t role_len;
     bool is_active = true;
 
     LOG(HVN_LOG_DBG, "Entered replica task.");
 
     while(is_active) {
 
-        if(HVN_db_unsafe_get(replica->db, \
-               HVN_CONSENSUS_MD_STATE, strlen(HVN_CONSENSUS_MD_STATE),
-               &role, &role_len) != HVN_SUCCESS) {
+        if(HVN_db_unsafe_get_char(replica->db, HVN_CONSENSUS_MD_STATE,
+                                  strlen(HVN_CONSENSUS_MD_STATE), &role) != HVN_SUCCESS) {
             LOG(HVN_LOG_ERR, "Not loading this replica. Failed to read consensus state.");
             return;
         }
 
         switch(*role) {
             case HVN_CONSENSUS_MD_STATE_LEADER:
+
                 if(HVN_replica_leader(replica, role) != HVN_SUCCESS) {
                     LOG(HVN_LOG_ERR, "Replica encountered an error while in the leader state.");
                     taskexit(EXIT_FAILURE);
                 }
+
                 break;
 
             case HVN_CONSENSUS_MD_STATE_FOLLOWER:
+
                 if(HVN_replica_follower(replica, role) != HVN_SUCCESS) {
                     LOG(HVN_LOG_ERR, "Replica encountered an error while in the follower state.");
                     taskexit(EXIT_FAILURE);
                 }
+
                 break;
 
             case HVN_CONSENSUS_MD_STATE_CANDIDATE:
+
                 if(HVN_replica_candidate(replica, role) != HVN_SUCCESS) {
                     LOG(HVN_LOG_ERR, "Replica encountered an error while in the candidate state.");
                     taskexit(EXIT_FAILURE);
                 }
+
                 break;
 
             case HVN_CONSENSUS_MD_STATE_HALT:
@@ -94,6 +98,9 @@ int HVN_replica_follower(HVN_replica_t* replica, char* role)
 {
     LOG(HVN_LOG_INFO, "Replica has entered follower state.");
 
+    HVN_INTENTIONALLY_UNUSED_VARIABLE(replica);
+    HVN_INTENTIONALLY_UNUSED_VARIABLE(role);
+
     // TODO: Respond to RPCs from candidates and leaders.
 
     // TODO: Convert to candidate if election timeout elapses without either
@@ -106,6 +113,9 @@ int HVN_replica_follower(HVN_replica_t* replica, char* role)
 int HVN_replica_candidate(HVN_replica_t* replica, char* role)
 {
     LOG(HVN_LOG_INFO, "Replica has entered candidate state.");
+
+    HVN_INTENTIONALLY_UNUSED_VARIABLE(replica);
+    HVN_INTENTIONALLY_UNUSED_VARIABLE(role);
 
     // TODO: Increment current Term, vote for self.
 
@@ -123,11 +133,10 @@ int HVN_replica_candidate(HVN_replica_t* replica, char* role)
 
 int HVN_replica_leader(HVN_replica_t* replica, char* role)
 {
-    char* last_log_entry_key;
-    size_t last_log_entry_key_len;
-
     char* op_packed;
     size_t op_packed_len;
+
+    HVN_INTENTIONALLY_UNUSED_VARIABLE(role);
 
     LOG(HVN_LOG_INFO, "Replica has entered leader state.");
 
@@ -135,7 +144,8 @@ int HVN_replica_leader(HVN_replica_t* replica, char* role)
     if(HVN_replica_cache_last_log_index(replica) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Could not determine last log index.");
         return HVN_ERROR;
-    } else {
+    }
+    else {
         LOG(HVN_LOG_INFO, "Last log index for this replica is `%zu'.", replica->last_log_index);
     }
 
@@ -143,9 +153,9 @@ int HVN_replica_leader(HVN_replica_t* replica, char* role)
 
     example_op1->action = HVN_CLNT_PROTO_DATA_VERB_WRITE;
     example_op1->mode = HVN_CLNT_PROTO_DATA_MODE_RW;
-    example_op1->key = "foo";
+    example_op1->key = (char*)"foo";
     example_op1->key_len = 3;
-    example_op1->value = "bar";
+    example_op1->value = (char*)"bar";
     example_op1->value_len = 3;
 
     HVN_clnt_proto_pack_data_msgpack((HVN_msg_client_data_t*) example_op1, &op_packed_len, &op_packed);
@@ -177,23 +187,24 @@ int HVN_replica_leader(HVN_replica_t* replica, char* role)
 
 int HVN_replica_cache_last_log_index(HVN_replica_t* replica)
 {
-    size_t idx_len;
+    uint64_t* last_log_index;
 
-    if(HVN_db_unsafe_get(replica->db, \
-           HVN_CONSENSUS_MD_LAST_LOG_INDEX, strlen(HVN_CONSENSUS_MD_LAST_LOG_INDEX),
-           &(replica->last_log_index), &idx_len) != HVN_SUCCESS) {
+    if(HVN_db_unsafe_get_uint64(replica->db, \
+                                HVN_CONSENSUS_MD_LAST_LOG_INDEX, strlen(HVN_CONSENSUS_MD_LAST_LOG_INDEX),
+                                &last_log_index) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Could not determine the last log index.");
         return HVN_ERROR;
     }
 
+    replica->last_log_index = *last_log_index;
     return HVN_SUCCESS;
 }
 
 int HVN_replica_overwrite_last_log_index(HVN_replica_t* replica, uint64_t last_log_index)
 {
-    if(HVN_db_unsafe_put(replica->db, \
-           HVN_CONSENSUS_MD_LAST_LOG_INDEX, strlen(HVN_CONSENSUS_MD_LAST_LOG_INDEX), \
-           (char*) &last_log_index, sizeof(uint64_t)) != HVN_SUCCESS) {
+    if(HVN_db_unsafe_put_uint64(replica->db, \
+                                HVN_CONSENSUS_MD_LAST_LOG_INDEX, strlen(HVN_CONSENSUS_MD_LAST_LOG_INDEX), \
+                                last_log_index) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Could not overwrite the last log index for this replica.");
         return HVN_ERROR;
     }
@@ -209,12 +220,14 @@ int HVN_replica_append_to_log(HVN_replica_t* replica, char* packed_op, size_t pa
     char* log_term_key = (char*) malloc(sizeof(char) * _POSIX_PATH_MAX);
     char* log_cmd_key = (char*) malloc(sizeof(char) * _POSIX_PATH_MAX);
 
+    uint64_t* current_term = &(replica->current_term);
+
     sprintf(log_term_key, HVN_CONSENSUS_MD_LOG_FMT_TERM, replica->current_term);
     sprintf(log_cmd_key, HVN_CONSENSUS_MD_LOG_FMT_CMD, replica->last_log_index + 1);
 
     log_batch = leveldb_writebatch_create();
-    leveldb_writebatch_put(log_batch, log_term_key, strlen(log_term_key), &(replica->current_term), sizeof(uint64_t));
-    leveldb_writebatch_put(log_batch, log_cmd_key, strlen(log_cmd_key), &packed_op, packed_op_len);
+    leveldb_writebatch_put(log_batch, log_term_key, strlen(log_term_key), (char*) current_term, sizeof(uint64_t));
+    leveldb_writebatch_put(log_batch, log_cmd_key, strlen(log_cmd_key), packed_op, packed_op_len);
     leveldb_write(replica->db->handle, replica->db->write_options, log_batch, &err);
 
     replica->last_log_index++;
@@ -270,19 +283,21 @@ int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t*
     uint64_t bootstrap_index = 0;
 
     LOG(HVN_LOG_INFO, "Bootstrapping a replica leader on interface `%s:%d'.", \
-            ctx->listen_addr, ctx->listen_port);
+        ctx->listen_addr, ctx->listen_port);
 
     if(HVN_db_validate_key(path_key) != true) {
         LOG(HVN_LOG_ERR, "Invalid leader base key format `%s'.", path_key);
         return HVN_ERROR;
-    } else {
+    }
+    else {
         LOG(HVN_LOG_DBG, "Using leader base key `%s'.", path_key);
     }
 
     if(HVN_generate_uuid(&replica->uuid) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to generate a new replica UUID.");
         return HVN_ERROR;
-    } else {
+    }
+    else {
         uuid_copy(*uuid, replica->uuid);
     }
 
@@ -291,23 +306,20 @@ int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t*
         return HVN_ERROR;
     }
 
-    if(HVN_db_unsafe_put(replica->db, \
-           HVN_CONSENSUS_MD_STATE, strlen(HVN_CONSENSUS_MD_STATE), \
-           &state, sizeof(char) * 1) != HVN_SUCCESS) {
+    if(HVN_db_unsafe_put_char(replica->db, HVN_CONSENSUS_MD_STATE,
+                              strlen(HVN_CONSENSUS_MD_STATE), state) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to set the state for bootstrapping a leader.");
         return HVN_ERROR;
     }
 
-    if(HVN_db_unsafe_put(replica->db, \
-           HVN_CONSENSUS_MD_TERM, strlen(HVN_CONSENSUS_MD_TERM), \
-           (char*) &bootstrap_term, sizeof(uint64_t)) != HVN_SUCCESS) {
+    if(HVN_db_unsafe_put_uint64(replica->db, HVN_CONSENSUS_MD_TERM,
+                                strlen(HVN_CONSENSUS_MD_TERM), bootstrap_term) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to set the state for bootstrapping a leader.");
         return HVN_ERROR;
     }
 
-    if(HVN_db_unsafe_put(replica->db, \
-           HVN_CONSENSUS_MD_LAST_LOG_INDEX, strlen(HVN_CONSENSUS_MD_LAST_LOG_INDEX), \
-           (char*) &bootstrap_index, sizeof(uint64_t)) != HVN_SUCCESS) {
+    if(HVN_db_unsafe_put_uint64(replica->db, HVN_CONSENSUS_MD_LAST_LOG_INDEX,
+                                strlen(HVN_CONSENSUS_MD_LAST_LOG_INDEX), bootstrap_index) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to set the initial log index for bootstrapping a leader.");
         return HVN_ERROR;
     }
@@ -354,20 +366,18 @@ int HVN_replica_bootstrap_db(HVN_replica_t* replica)
 
 int HVN_load_existing_replicas_from_disk(HVN_ctx_t* ctx)
 {
-    DIR *dir;
-    struct dirent *ent;
+    DIR* dir;
+    struct dirent* ent;
     HVN_replica_t* replica;
 
     char* db_base_path = (char*) malloc(sizeof(char) * _POSIX_PATH_MAX);
     char* db_absolute_path = (char*) malloc(sizeof(char) * _POSIX_PATH_MAX);
 
-    int offset;
+    sprintf(db_base_path, "%s%s", \
+            HVN_BASE_STATE_DIR, HVN_DATA_DB_PREFIX);
 
-    offset = sprintf(db_base_path, "%s%s", \
-                     HVN_BASE_STATE_DIR, HVN_DATA_DB_PREFIX);
-
-    if ((dir = opendir(db_base_path)) != NULL) {
-        while ((ent = readdir (dir)) != NULL) {
+    if((dir = opendir(db_base_path)) != NULL) {
+        while((ent = readdir(dir)) != NULL) {
             if(strlen(ent->d_name) == UUID_STR_LEN - 1) {
                 sprintf(db_absolute_path, "%s/%s", db_base_path, ent->d_name);
                 LOG(HVN_LOG_INFO, "Loading existing replica from `%s'.", db_absolute_path);
@@ -391,8 +401,10 @@ int HVN_load_existing_replicas_from_disk(HVN_ctx_t* ctx)
                 HASH_ADD(hh, ctx->replicas, uuid, sizeof(uuid_t), replica);
             }
         }
+
         closedir(dir);
-    } else {
+    }
+    else {
         LOG(HVN_LOG_INFO, "Replica state directory can not be read. Server is starting empty.");
     }
 

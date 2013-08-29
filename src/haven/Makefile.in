@@ -244,11 +244,11 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CPPFLAGS = -std=gnu99 -ggdb -W -Wall -Wextra -Wformat=1 -Winit-self \
-	-Wmissing-include-dirs -Wswitch-default -Wswitch-enum \
-	-Wuninitialized -Wunknown-pragmas -Wstrict-aliasing \
-	-Wfloat-equal -Wundef -Wbad-function-cast -Wcast-align \
-	-Wstrict-prototypes -Wmissing-prototypes -Wredundant-decls \
-	-Winline -Wdisabled-optimization -Wshadow -Wwrite-strings \
+	-Wmissing-include-dirs -Wswitch-enum -Wuninitialized \
+	-Wunknown-pragmas -Wstrict-aliasing -Wfloat-equal -Wundef \
+	-Wbad-function-cast -Wcast-align -Wstrict-prototypes \
+	-Wmissing-prototypes -Wredundant-decls -Winline \
+	-Wdisabled-optimization -Wshadow -Wwrite-strings \
 	-D_FILE_OFFSET_BITS=64 -I$(top_srcdir) \
 	-I$(top_srcdir)/src/common
 haven_SOURCES = \

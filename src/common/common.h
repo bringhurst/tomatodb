@@ -35,6 +35,8 @@
 #define _POSIX_PATH_MAX 4096
 #endif
 
+#define HVN_INTENTIONALLY_UNUSED_VARIABLE(x) (void)(x)
+
 #define HVN_MAX_KEY_SIZE _POSIX_PATH_MAX
 
 int HVN_ensure_directory_exists(char* path);

@@ -38,7 +38,8 @@ void HVN_attach_task(HVN_attach_t* client)
         if(HVN_proto_receive_data_msg(client->fd, &data_msg_data) != HVN_SUCCESS) {
             LOG(HVN_LOG_ERR, "Did not receive a valid data message while attached to a replica.");
             taskexit(HVN_ERROR);
-        } else {
+        }
+        else {
             if(HVN_proto_send_data_resp_msg(client->fd) != HVN_SUCCESS) {
                 LOG(HVN_LOG_ERR, "Could not send a data message response while attached to a replica.");
                 taskexit(HVN_ERROR);
@@ -50,7 +51,8 @@ void HVN_attach_task(HVN_attach_t* client)
 
         if(HVN_consensus_exec(client, (HVN_db_op_t*) &data_msg_data) != HVN_SUCCESS) {
             LOG(HVN_LOG_ERR, "Failed to safely perform the specified operation.");
-        } else {
+        }
+        else {
             LOG(HVN_LOG_DBG, "Successfully performed the specified operation.");
         }
     }
@@ -62,13 +64,14 @@ int HVN_replica_attach(HVN_router_t* router, uuid_t uuid)
     HVN_replica_t* replica;
 
     HASH_FIND(hh, router->ctx->replicas, uuid, sizeof(uuid_t), replica);
+
     if(replica == NULL) {
         LOG(HVN_LOG_ERR, "Attempted to attach to a replica which doesn't exit in this instance.");
         return HVN_ERROR;
     }
 
     LOG(HVN_LOG_DBG, "Client attached to a replica. Preparing to handle commands.");
-    
+
     if(HVN_attach_init(&client, router, replica) != HVN_SUCCESS) {
         LOG(HVN_LOG_INFO, "Failed to allocate memory to attach a new client.");
     }
@@ -80,12 +83,14 @@ int HVN_replica_attach(HVN_router_t* router, uuid_t uuid)
 int HVN_attach_init(HVN_attach_t** client, HVN_router_t* router, HVN_replica_t* replica)
 {
     *client = (HVN_attach_t*) malloc(sizeof(HVN_attach_t));
+
     if(*client == NULL) {
         LOG(HVN_LOG_ERR, "Failed to allocate memory for a new client attach.");
         return HVN_ERROR;
     }
 
     (*client)->remote_addr = (char*) malloc(sizeof(char) * _POSIX_HOST_NAME_MAX);
+
     if((*client)->remote_addr == NULL) {
         LOG(HVN_LOG_ERR, "Failed to allocate memory for the address of a new client attach.");
         return HVN_ERROR;

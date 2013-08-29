@@ -97,6 +97,7 @@ int HVN_db_destroy(HVN_db_t* db)
 
 void HVN_db_comparator_destroy(void* arg)
 {
+    HVN_INTENTIONALLY_UNUSED_VARIABLE(arg);
     // FIXME: what does this do? Should something be here?
 }
 
@@ -104,6 +105,7 @@ int HVN_db_comparator_compare(void* arg, const char* a, size_t alen,
                               const char* b, size_t blen)
 {
     int n = (alen < blen) ? alen : blen;
+    HVN_INTENTIONALLY_UNUSED_VARIABLE(arg);
 
     while(n--) {
         if(*a++ != *b++) {
@@ -116,11 +118,12 @@ int HVN_db_comparator_compare(void* arg, const char* a, size_t alen,
 
 const char* HVN_db_comparator_name(void* arg)
 {
+    HVN_INTENTIONALLY_UNUSED_VARIABLE(arg);
     return HVN_DB_COMPARATOR_NAME;
 }
 
 int HVN_db_unsafe_get(HVN_db_t* db, \
-                      char* key, \
+                      const char* key, \
                       size_t key_len, \
                       char** value, \
                       size_t* value_len)
@@ -145,7 +148,7 @@ int HVN_db_unsafe_get(HVN_db_t* db, \
 }
 
 int HVN_db_unsafe_put(HVN_db_t* db, \
-                      char* key, \
+                      const char* key, \
                       size_t key_len, \
                       char* value, \
                       size_t value_len)
@@ -168,7 +171,7 @@ int HVN_db_unsafe_put(HVN_db_t* db, \
 }
 
 int HVN_db_unsafe_delete(HVN_db_t* db, \
-                         char* key, \
+                         const char* key, \
                          size_t key_len)
 {
     char* err = NULL;
@@ -186,7 +189,7 @@ int HVN_db_unsafe_delete(HVN_db_t* db, \
     return HVN_SUCCESS;
 }
 
-int HVN_db_unsafe_put_uint64(HVN_db_t* db, char* key, size_t key_len, uint64_t value)
+int HVN_db_unsafe_put_uint64(HVN_db_t* db, const char* key, size_t key_len, uint64_t value)
 {
     if(HVN_db_unsafe_put(db, key, key_len, (char*) &value, sizeof(uint64_t)) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Could not write a uint64 to the database.");
@@ -196,7 +199,7 @@ int HVN_db_unsafe_put_uint64(HVN_db_t* db, char* key, size_t key_len, uint64_t v
     return HVN_SUCCESS;
 }
 
-int HVN_db_unsafe_get_uint64(HVN_db_t* db, char* key, size_t key_len, uint64_t** value)
+int HVN_db_unsafe_get_uint64(HVN_db_t* db, const char* key, size_t key_len, uint64_t** value)
 {
     size_t value_len;
 
@@ -208,7 +211,7 @@ int HVN_db_unsafe_get_uint64(HVN_db_t* db, char* key, size_t key_len, uint64_t**
     return HVN_SUCCESS;
 }
 
-int HVN_db_unsafe_put_char(HVN_db_t* db, char* key, size_t key_len, char value)
+int HVN_db_unsafe_put_char(HVN_db_t* db, const char* key, size_t key_len, char value)
 {
     if(HVN_db_unsafe_put(db, key, key_len, &value, sizeof(char)) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Could not write a char to the database.");
@@ -218,7 +221,7 @@ int HVN_db_unsafe_put_char(HVN_db_t* db, char* key, size_t key_len, char value)
     return HVN_SUCCESS;
 }
 
-int HVN_db_unsafe_get_char(HVN_db_t* db, char* key, size_t key_len, char **value)
+int HVN_db_unsafe_get_char(HVN_db_t* db, const char* key, size_t key_len, char** value)
 {
     size_t value_len;
 
@@ -230,7 +233,7 @@ int HVN_db_unsafe_get_char(HVN_db_t* db, char* key, size_t key_len, char **value
     return HVN_SUCCESS;
 }
 
-int HVN_db_unsafe_put_string(HVN_db_t* db, char* key, size_t key_len, char* value, size_t value_len)
+int HVN_db_unsafe_put_string(HVN_db_t* db, const char* key, size_t key_len, char* value, size_t value_len)
 {
     if(HVN_db_unsafe_put(db, key, key_len, (char*) &value, sizeof(char) * value_len) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Could not write a string to the database.");
@@ -240,7 +243,7 @@ int HVN_db_unsafe_put_string(HVN_db_t* db, char* key, size_t key_len, char* valu
     return HVN_SUCCESS;
 }
 
-int HVN_db_unsafe_get_string(HVN_db_t* db, char* key, size_t key_len, char** value, size_t* value_len)
+int HVN_db_unsafe_get_string(HVN_db_t* db, const char* key, size_t key_len, char** value, size_t* value_len)
 {
     if(HVN_db_unsafe_get(db, key, key_len, value,  value_len) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Could not read a string from the database.");
@@ -250,9 +253,9 @@ int HVN_db_unsafe_get_string(HVN_db_t* db, char* key, size_t key_len, char** val
     return HVN_SUCCESS;
 }
 
-bool HVN_db_validate_key(char* key)
+bool HVN_db_validate_key(const char* key)
 {
-    char* p = key;
+    const char* p = key;
 
     // FIXME: not designed for malicious intent.
 

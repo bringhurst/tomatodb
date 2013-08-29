@@ -30,6 +30,7 @@
 
 #include "context.h"
 #include "database.h"
+#include "replica.h"
 #include "routing.h"
 #include "settings.h"
 #include "task/task.h"
@@ -106,10 +107,11 @@ void HVN_signal_handle_SIGINT(int sig)
     printf("SIGINT encountered. Do you really want to quit? [y/n] ");
     c = getchar();
 
-    if (c == 'y' || c == 'Y') {
+    if(c == 'y' || c == 'Y') {
         // FIXME: shutdown properly.
         exit(EXIT_FAILURE);
-    } else {
+    }
+    else {
         signal(SIGINT, HVN_signal_handle_SIGINT);
     }
 

@@ -51,31 +51,31 @@ void HVN_db_close(HVN_db_t* db);
 int HVN_db_destroy(HVN_db_t* db);
 
 int HVN_db_unsafe_get(HVN_db_t* db, \
-                      char* key, \
+                      const char* key, \
                       size_t key_len, \
                       char** value, \
                       size_t* value_len);
 int HVN_db_unsafe_put(HVN_db_t* db, \
-                      char* key, \
+                      const char* key, \
                       size_t key_len, \
                       char* value, \
                       size_t value_len);
 int HVN_db_unsafe_delete(HVN_db_t* db, \
-                         char* key, \
+                         const char* key, \
                          size_t key_len);
 
-int HVN_db_unsafe_put_uint64(HVN_db_t* db, char* key, size_t key_len, uint64_t value);
-int HVN_db_unsafe_get_uint64(HVN_db_t* db, char* key, size_t key_len, uint64_t** value);
-int HVN_db_unsafe_put_char(HVN_db_t* db, char* key, size_t key_len, char value);
-int HVN_db_unsafe_get_char(HVN_db_t* db, char* key, size_t key_len, char **value);
-int HVN_db_unsafe_put_string(HVN_db_t* db, char* key, size_t key_len, char* value, size_t value_len);
-int HVN_db_unsafe_get_string(HVN_db_t* db, char* key, size_t key_len, char** value, size_t* value_len);
+int HVN_db_unsafe_put_uint64(HVN_db_t* db, const char* key, size_t key_len, uint64_t value);
+int HVN_db_unsafe_get_uint64(HVN_db_t* db, const char* key, size_t key_len, uint64_t** value);
+int HVN_db_unsafe_put_char(HVN_db_t* db, const char* key, size_t key_len, char value);
+int HVN_db_unsafe_get_char(HVN_db_t* db, const char* key, size_t key_len, char** value);
+int HVN_db_unsafe_put_string(HVN_db_t* db, const char* key, size_t key_len, char* value, size_t value_len);
+int HVN_db_unsafe_get_string(HVN_db_t* db, const char* key, size_t key_len, char** value, size_t* value_len);
 
 void HVN_db_comparator_destroy(void* arg);
 const char* HVN_db_comparator_name(void* arg);
 int HVN_db_comparator_compare(void* arg, const char* a, size_t alen,
                               const char* b, size_t blen);
 
-bool HVN_db_validate_key(char* key);
+bool HVN_db_validate_key(const char* key);
 
 #endif /* __HVN_DATABASE_H */

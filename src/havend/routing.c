@@ -113,11 +113,13 @@ void HVN_routing_task(HVN_router_t* router)
     if(HVN_proto_receive_control_msg(router->accept_fd, &control_msg_data) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Did not receive a valid control message while routing.");
         taskexit(HVN_ERROR);
-    } else {
+    }
+    else {
         if(HVN_proto_send_control_resp_msg(router->accept_fd) != HVN_SUCCESS) {
             LOG(HVN_LOG_ERR, "Failed to send a response to the control message.");
             taskexit(HVN_ERROR);
-        } else {
+        }
+        else {
             LOG(HVN_LOG_DBG, "Sent response to control message.");
         }
     }
@@ -127,12 +129,15 @@ void HVN_routing_task(HVN_router_t* router)
     switch(control_msg_data.action) {
 
         case HVN_CLNT_PROTO_CTRL_ATTACH:
+
             if(HVN_replica_attach(router, control_msg_data.uuid) != HVN_SUCCESS) {
                 uuid_unparse(control_msg_data.uuid, new_uuid_string);
                 LOG(HVN_LOG_ERR, "Failed to attach to UUID `%s'.", new_uuid_string);
-            } else {
+            }
+            else {
                 LOG(HVN_LOG_DBG, "Attach completed.");
             }
+
             break;
 
         case HVN_CLNT_PROTO_CTRL_PROXY:
@@ -147,26 +152,32 @@ void HVN_routing_task(HVN_router_t* router)
 
         case HVN_CLNT_PROTO_CTRL_LEADER:
             HVN_replica_init(&new_replica);
+
             if(HVN_replica_bootstrap_leader(new_replica, router->ctx, \
-                        &new_uuid, control_msg_data.path) == HVN_SUCCESS) {
+                                            &new_uuid, control_msg_data.path) == HVN_SUCCESS) {
                 uuid_unparse(new_uuid, new_uuid_string);
                 LOG(HVN_LOG_ERR, "Quorum leader created with UUID `%s'.", new_uuid_string);
                 //TODO: return uuid to requestor?
-            } else {
+            }
+            else {
                 LOG(HVN_LOG_ERR, "Failed to bootstrap a quorum leader.");
             }
+
             break;
 
         case HVN_CLNT_PROTO_CTRL_LOCATION:
             HVN_replica_init(&new_replica);
+
             if(HVN_replica_bootstrap_location(new_replica, router->ctx, \
-                        &new_uuid) == HVN_SUCCESS) {
+                                              &new_uuid) == HVN_SUCCESS) {
                 uuid_unparse(new_uuid, new_uuid_string);
                 LOG(HVN_LOG_ERR, "Location quorum leader created with UUID `%s'.", new_uuid_string);
                 //TODO: return uuid to requestor?
-            } else {
+            }
+            else {
                 LOG(HVN_LOG_ERR, "Failed to bootstrap a location quorum leader.");
             }
+
             break;
 
         case HVN_CLNT_PROTO_CTRL_EXIT:
