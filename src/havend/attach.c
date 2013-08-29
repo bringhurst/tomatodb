@@ -49,11 +49,11 @@ void HVN_attach_task(HVN_attach_t* client)
         HVN_proto_print_data_msg(&data_msg_data);
         LOG(HVN_LOG_DBG, "Received a sane data msg.");
 
-        if(HVN_consensus_exec(client, (HVN_db_op_t*) &data_msg_data) != HVN_SUCCESS) {
-            LOG(HVN_LOG_ERR, "Failed to safely perform the specified operation.");
+        if(channbsendp(client->replica->attach_chan, &data_msg_data) != 1) {
+            LOG(HVN_LOG_ERR, "Failed to send the data message to the appropriate replica.");
         }
         else {
-            LOG(HVN_LOG_DBG, "Successfully performed the specified operation.");
+            LOG(HVN_LOG_DBG, "Successfully sent the data message to the appropriate replica.");
         }
     }
 }
