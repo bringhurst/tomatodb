@@ -99,6 +99,7 @@ int HVN_replica_leader(HVN_replica_t* replica, char* role)
     //           1. Repeat during idle periods to prevent election timeouts.
 
     // Accept data commands from clients.
+    LOG(HVN_LOG_DBG, "Replica is waiting for client data messages.");
     client_data_msg = chanrecvp(replica->attach_chan);
 
     HVN_proto_print_data_msg(client_data_msg);
@@ -255,7 +256,7 @@ int HVN_replica_init(HVN_replica_t** replica)
     (*replica)->current_term = 0;
 
     (*replica)->attach_chan = chancreate(\
-        sizeof(HVN_msg_client_data_t*), 1);
+        sizeof(HVN_msg_client_data_t*), 0);
 
     return HVN_SUCCESS;
 }
@@ -384,7 +385,11 @@ int HVN_load_existing_replicas_from_disk(HVN_ctx_t* ctx)
                 sprintf(db_absolute_path, "%s/%s", db_base_path, ent->d_name);
                 LOG(HVN_LOG_INFO, "Loading existing replica from `%s'.", db_absolute_path);
 
-                replica = (HVN_replica_t*) malloc(sizeof(HVN_replica_t));
+                if(HVN_replica_init(&replica) != HVN_SUCCESS) {
+                    LOG(HVN_LOG_ERR, "Failed to allocate memory for replica `%s'.", ent->d_name);
+                    return HVN_ERROR;
+                }
+
                 replica->ctx = ctx;
 
                 if(HVN_db_init(&(replica->db), db_absolute_path) != HVN_SUCCESS) {
