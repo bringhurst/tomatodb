@@ -124,8 +124,6 @@ void HVN_routing_task(HVN_router_t* router)
         }
     }
 
-    //LOG(HVN_LOG_DBG, "Received a sane control messsage.");
-
     switch(control_msg_data.action) {
 
         case HVN_CLNT_PROTO_CTRL_ATTACH:
