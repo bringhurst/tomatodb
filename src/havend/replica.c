@@ -88,6 +88,8 @@ int HVN_replica_leader(HVN_replica_t* replica, char* role)
         LOG(HVN_LOG_INFO, "Last log index for this replica is `%zu'.", replica->last_log_index);
     }
 
+    // TODO: Cache replica list from disk.
+
     HVN_db_op_t* example_op1 = (HVN_db_op_t*) malloc(sizeof(HVN_db_op_t));
 
     example_op1->action = HVN_CLNT_PROTO_DATA_VERB_WRITE;
@@ -99,12 +101,11 @@ int HVN_replica_leader(HVN_replica_t* replica, char* role)
 
     HVN_clnt_proto_pack_data_msgpack((HVN_msg_client_data_t*) example_op1, &op_packed_len, &op_packed);
 
-    //FIXME: remove when done testing.
     HVN_replica_append_to_log(replica, op_packed, op_packed_len);
 
-    // TODO: Initialize nextIndex for each follower to the local last log index + 1.
+    // TODO: Skip until client command accept works -- so followers can join the quorum. Initialize nextIndex for each follower to the local last log index + 1.
 
-    // TODO: Send initial empty AppendEntries RPCs (heartbeat) to each follower.
+    // TODO: Skip until client command accept works. Send initial empty AppendEntries RPCs (heartbeat) to each follower.
     //           1. Repeat during idle periods to prevent election timeouts.
 
     // TODO: Accept commands from clients (use channel), append new entries to local log.
