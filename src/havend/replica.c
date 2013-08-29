@@ -33,67 +33,6 @@ extern FILE* HVN_debug_stream;
 /** The log level to output. */
 extern HVN_loglevel HVN_debug_level;
 
-void HVN_replica_task(HVN_replica_t* replica)
-{
-    char* role;
-    bool is_active = true;
-
-    LOG(HVN_LOG_DBG, "Entered replica task.");
-
-    while(is_active) {
-
-        if(HVN_db_unsafe_get_char(replica->db, HVN_CONSENSUS_MD_STATE,
-                                  strlen(HVN_CONSENSUS_MD_STATE), &role) != HVN_SUCCESS) {
-            LOG(HVN_LOG_ERR, "Not loading this replica. Failed to read consensus state.");
-            return;
-        }
-
-        switch(*role) {
-            case HVN_CONSENSUS_MD_STATE_LEADER:
-
-                if(HVN_replica_leader(replica, role) != HVN_SUCCESS) {
-                    LOG(HVN_LOG_ERR, "Replica encountered an error while in the leader state.");
-                    taskexit(EXIT_FAILURE);
-                }
-
-                break;
-
-            case HVN_CONSENSUS_MD_STATE_FOLLOWER:
-
-                if(HVN_replica_follower(replica, role) != HVN_SUCCESS) {
-                    LOG(HVN_LOG_ERR, "Replica encountered an error while in the follower state.");
-                    taskexit(EXIT_FAILURE);
-                }
-
-                break;
-
-            case HVN_CONSENSUS_MD_STATE_CANDIDATE:
-
-                if(HVN_replica_candidate(replica, role) != HVN_SUCCESS) {
-                    LOG(HVN_LOG_ERR, "Replica encountered an error while in the candidate state.");
-                    taskexit(EXIT_FAILURE);
-                }
-
-                break;
-
-            case HVN_CONSENSUS_MD_STATE_HALT:
-                LOG(HVN_LOG_ERR, "Replica is preparing to shut down.");
-                is_active = false;
-                break;
-
-            default:
-                LOG(HVN_LOG_ERR, "Encountered unknown replica state. Exiting task.");
-                taskexit(EXIT_FAILURE);
-                break;
-        }
-
-        free(role);
-    }
-
-    LOG(HVN_LOG_INFO, "Replica task is ending.");
-    taskexit(EXIT_SUCCESS);
-}
-
 int HVN_replica_follower(HVN_replica_t* replica, char* role)
 {
     LOG(HVN_LOG_INFO, "Replica has entered follower state.");
@@ -161,7 +100,7 @@ int HVN_replica_leader(HVN_replica_t* replica, char* role)
     HVN_clnt_proto_pack_data_msgpack((HVN_msg_client_data_t*) example_op1, &op_packed_len, &op_packed);
 
     //FIXME: remove when done testing.
-    //HVN_replica_append_to_log(replica, op_packed, op_packed_len);
+    HVN_replica_append_to_log(replica, op_packed, op_packed_len);
 
     // TODO: Initialize nextIndex for each follower to the local last log index + 1.
 
@@ -241,6 +180,67 @@ int HVN_replica_append_to_log(HVN_replica_t* replica, char* packed_op, size_t pa
     free(log_cmd_key);
 
     return HVN_SUCCESS;
+}
+
+void HVN_replica_task(HVN_replica_t* replica)
+{
+    char* role;
+    bool is_active = true;
+
+    LOG(HVN_LOG_DBG, "Entered replica task.");
+
+    while(is_active) {
+
+        if(HVN_db_unsafe_get_char(replica->db, HVN_CONSENSUS_MD_STATE,
+                                  strlen(HVN_CONSENSUS_MD_STATE), &role) != HVN_SUCCESS) {
+            LOG(HVN_LOG_ERR, "Not loading this replica. Failed to read consensus state.");
+            return;
+        }
+
+        switch(*role) {
+            case HVN_CONSENSUS_MD_STATE_LEADER:
+
+                if(HVN_replica_leader(replica, role) != HVN_SUCCESS) {
+                    LOG(HVN_LOG_ERR, "Replica encountered an error while in the leader state.");
+                    taskexit(EXIT_FAILURE);
+                }
+
+                break;
+
+            case HVN_CONSENSUS_MD_STATE_FOLLOWER:
+
+                if(HVN_replica_follower(replica, role) != HVN_SUCCESS) {
+                    LOG(HVN_LOG_ERR, "Replica encountered an error while in the follower state.");
+                    taskexit(EXIT_FAILURE);
+                }
+
+                break;
+
+            case HVN_CONSENSUS_MD_STATE_CANDIDATE:
+
+                if(HVN_replica_candidate(replica, role) != HVN_SUCCESS) {
+                    LOG(HVN_LOG_ERR, "Replica encountered an error while in the candidate state.");
+                    taskexit(EXIT_FAILURE);
+                }
+
+                break;
+
+            case HVN_CONSENSUS_MD_STATE_HALT:
+                LOG(HVN_LOG_ERR, "Replica is preparing to shut down.");
+                is_active = false;
+                break;
+
+            default:
+                LOG(HVN_LOG_ERR, "Encountered unknown replica state. Exiting task.");
+                taskexit(EXIT_FAILURE);
+                break;
+        }
+
+        free(role);
+    }
+
+    LOG(HVN_LOG_INFO, "Replica task is ending.");
+    taskexit(EXIT_SUCCESS);
 }
 
 int HVN_replica_init(HVN_replica_t** replica)
