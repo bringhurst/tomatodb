@@ -37,12 +37,6 @@ typedef struct HVN_replica_t {
     UT_hash_handle hh;
 } HVN_replica_t;
 
-typedef struct HVN_replica_addr_t {
-    char* address;
-    int port;
-    uuid_t uuid;
-} HVN_replica_addr_t;
-
 void HVN_replica_task(HVN_replica_t* replica);
 
 int HVN_replica_init(HVN_replica_t** replica);

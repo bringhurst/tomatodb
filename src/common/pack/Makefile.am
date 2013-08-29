@@ -12,6 +12,7 @@ libhaven_common_pack_la_LDFLAGS = $(LIB_LDFLAGS)
 libhaven_common_pack_la_SOURCES = \
                                   msgpack_helper.c \
                                   pack.c \
+                                  addr_struct.c \
                                   connect_msg.c \
                                   control_msg.c \
                                   data_msg.c \
