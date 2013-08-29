@@ -64,6 +64,13 @@ int HVN_db_unsafe_delete(HVN_db_t* db, \
                          char* key, \
                          size_t key_len);
 
+int HVN_db_unsafe_put_uint64(HVN_db_t* db, char* key, size_t key_len, uint64_t value);
+int HVN_db_unsafe_get_uint64(HVN_db_t* db, char* key, size_t key_len, uint64_t** value);
+int HVN_db_unsafe_put_char(HVN_db_t* db, char* key, size_t key_len, char value);
+int HVN_db_unsafe_get_char(HVN_db_t* db, char* key, size_t key_len, char **value);
+int HVN_db_unsafe_put_string(HVN_db_t* db, char* key, size_t key_len, char* value, size_t value_len);
+int HVN_db_unsafe_get_string(HVN_db_t* db, char* key, size_t key_len, char** value, size_t* value_len);
+
 void HVN_db_comparator_destroy(void* arg);
 const char* HVN_db_comparator_name(void* arg);
 int HVN_db_comparator_compare(void* arg, const char* a, size_t alen,

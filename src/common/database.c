@@ -188,7 +188,7 @@ int HVN_db_unsafe_delete(HVN_db_t* db, \
 
 int HVN_db_unsafe_put_uint64(HVN_db_t* db, char* key, size_t key_len, uint64_t value)
 {
-    if(HVN_db_unsafe_put(db, key, key_len, &value, sizeof(uint64_t)) != HVN_SUCCESS) {
+    if(HVN_db_unsafe_put(db, key, key_len, (char*) &value, sizeof(uint64_t)) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Could not write a uint64 to the database.");
         return HVN_ERROR;
     }
@@ -196,11 +196,11 @@ int HVN_db_unsafe_put_uint64(HVN_db_t* db, char* key, size_t key_len, uint64_t v
     return HVN_SUCCESS;
 }
 
-int HVN_db_unsafe_get_uint64(HVN_db_t* db, char* key, size_t key_len, uint64_t* value)
+int HVN_db_unsafe_get_uint64(HVN_db_t* db, char* key, size_t key_len, uint64_t** value)
 {
     size_t value_len;
 
-    if(HVN_db_unsafe_get(db, key, key_len, value,  &value_len) != HVN_SUCCESS) {
+    if(HVN_db_unsafe_get(db, key, key_len, (char**) value,  &value_len) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Could not read a uint64 from the database.");
         return HVN_ERROR;
     }
@@ -210,22 +210,44 @@ int HVN_db_unsafe_get_uint64(HVN_db_t* db, char* key, size_t key_len, uint64_t* 
 
 int HVN_db_unsafe_put_char(HVN_db_t* db, char* key, size_t key_len, char value)
 {
+    if(HVN_db_unsafe_put(db, key, key_len, &value, sizeof(char)) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Could not write a char to the database.");
+        return HVN_ERROR;
+    }
 
+    return HVN_SUCCESS;
 }
 
-int HVN_db_unsafe_get_char(HVN_db_t* db, char* key, size_t key_len, char value)
+int HVN_db_unsafe_get_char(HVN_db_t* db, char* key, size_t key_len, char **value)
 {
+    size_t value_len;
 
+    if(HVN_db_unsafe_get(db, key, key_len, value,  &value_len) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Could not read a char from the database.");
+        return HVN_ERROR;
+    }
+
+    return HVN_SUCCESS;
 }
 
 int HVN_db_unsafe_put_string(HVN_db_t* db, char* key, size_t key_len, char* value, size_t value_len)
 {
+    if(HVN_db_unsafe_put(db, key, key_len, (char*) &value, sizeof(char) * value_len) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Could not write a string to the database.");
+        return HVN_ERROR;
+    }
 
+    return HVN_SUCCESS;
 }
 
 int HVN_db_unsafe_get_string(HVN_db_t* db, char* key, size_t key_len, char** value, size_t* value_len)
 {
+    if(HVN_db_unsafe_get(db, key, key_len, value,  value_len) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Could not read a string from the database.");
+        return HVN_ERROR;
+    }
 
+    return HVN_SUCCESS;
 }
 
 bool HVN_db_validate_key(char* key)
