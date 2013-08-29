@@ -101,6 +101,9 @@ int HVN_replica_leader(HVN_replica_t* replica, char* role)
     // Accept data commands from clients.
     client_data_msg = chanrecvp(replica->attach_chan);
 
+    HVN_proto_print_data_msg(client_data_msg);
+    LOG(HVN_LOG_DBG, "Replica received a data msg.");
+
     // Pack and append to local log.
     HVN_clnt_proto_pack_data_msgpack(client_data_msg, &op_packed_len, &op_packed);
     HVN_replica_append_to_log(replica, op_packed, op_packed_len);

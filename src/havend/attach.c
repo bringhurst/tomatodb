@@ -46,9 +46,6 @@ void HVN_attach_task(HVN_attach_t* client)
             }
         }
 
-        HVN_proto_print_data_msg(&data_msg_data);
-        LOG(HVN_LOG_DBG, "Received a sane data msg.");
-
         if(channbsendp(client->replica->attach_chan, &data_msg_data) != 1) {
             LOG(HVN_LOG_ERR, "Failed to send the data message to the appropriate replica.");
         }
