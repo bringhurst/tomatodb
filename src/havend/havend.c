@@ -92,7 +92,8 @@ void HVN_print_version()
 // Print a usage message.
 void HVN_print_usage()
 {
-    printf("usage: havend [-hv] [--debug=<fatal,err,warn,info,dbg>]\n"
+    printf("usage: havend [-adhpv] [--help] [--version]\n"
+           "              [--debug=<fatal,err,warn,info,dbg>]\n"
            "              [-a <addr> | --listen-address=<addr>]\n"
            "              [-p <port> | --listen-port=<port>]\n");
     fflush(stdout);
