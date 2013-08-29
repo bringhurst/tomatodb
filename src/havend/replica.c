@@ -74,6 +74,7 @@ int HVN_replica_leader(HVN_replica_t* replica, char* role)
 {
     char* op_packed;
     size_t op_packed_len;
+    HVN_msg_client_data_t* client_data_msg;
 
     HVN_INTENTIONALLY_UNUSED_VARIABLE(role);
 
@@ -90,17 +91,6 @@ int HVN_replica_leader(HVN_replica_t* replica, char* role)
 
     // TODO: Cache replica list from disk.
 
-    HVN_db_op_t* example_op1 = (HVN_db_op_t*) malloc(sizeof(HVN_db_op_t));
-
-    example_op1->action = HVN_CLNT_PROTO_DATA_VERB_WRITE;
-    example_op1->mode = HVN_CLNT_PROTO_DATA_MODE_RW;
-    example_op1->key = (char*)"foo";
-    example_op1->key_len = 3;
-    example_op1->value = (char*)"bar";
-    example_op1->value_len = 3;
-
-    HVN_clnt_proto_pack_data_msgpack((HVN_msg_client_data_t*) example_op1, &op_packed_len, &op_packed);
-
     HVN_replica_append_to_log(replica, op_packed, op_packed_len);
 
     // TODO: Skip until client command accept works -- so followers can join the quorum. Initialize nextIndex for each follower to the local last log index + 1.
@@ -108,7 +98,12 @@ int HVN_replica_leader(HVN_replica_t* replica, char* role)
     // TODO: Skip until client command accept works. Send initial empty AppendEntries RPCs (heartbeat) to each follower.
     //           1. Repeat during idle periods to prevent election timeouts.
 
-    // TODO: Accept commands from clients (use channel), append new entries to local log.
+    // Accept data commands from clients.
+    client_data_msg = chanrecvp(replica->attach_chan);
+
+    // Pack and append to local log.
+    HVN_clnt_proto_pack_data_msgpack(client_data_msg, &op_packed_len, &op_packed);
+    HVN_replica_append_to_log(replica, op_packed, op_packed_len);
 
     // TODO: Whenever last log index is greater or equal to nextIndex for a follower:
     //           1. Send AppendEntries RPC with log entries starting at nextIndex.
@@ -255,6 +250,9 @@ int HVN_replica_init(HVN_replica_t** replica)
 
     (*replica)->last_log_index = 0;
     (*replica)->current_term = 0;
+
+    (*replica)->attach_chan = chancreate(\
+        sizeof(HVN_msg_client_data_t*), 1);
 
     return HVN_SUCCESS;
 }

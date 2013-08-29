@@ -20,6 +20,7 @@
  */
 
 #include "context.h"
+#include "task/task.h"
 #include "ut/uthash.h"
 
 #define HVN_REPLICA_STACK_SIZE 32768
@@ -32,6 +33,7 @@ typedef struct HVN_replica_t {
     uuid_t uuid;
     uint64_t current_term;
     uint64_t last_log_index;
+    Channel* attach_chan;
     UT_hash_handle hh;
 } HVN_replica_t;
 
