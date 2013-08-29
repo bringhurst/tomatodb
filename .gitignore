@@ -12,6 +12,7 @@
 Makefile
 *.o
 *.pyc
+/src/haven/haven
 /src/havenctl/build
 /src/havenctl/dist
 /src/havenctl/havenctl.egg-info
