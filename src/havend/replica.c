@@ -86,12 +86,10 @@ int HVN_replica_leader(HVN_replica_t* replica, char* role)
         return HVN_ERROR;
     }
     else {
-        LOG(HVN_LOG_INFO, "Last log index for this replica is `%zu'.", replica->last_log_index);
+        LOG(HVN_LOG_INFO, "Last log index for this leader replica is `%zu'.", replica->last_log_index);
     }
 
     // TODO: Cache replica list from disk.
-
-    HVN_replica_append_to_log(replica, op_packed, op_packed_len);
 
     // TODO: Skip until client command accept works -- so followers can join the quorum. Initialize nextIndex for each follower to the local last log index + 1.
 
@@ -99,11 +97,11 @@ int HVN_replica_leader(HVN_replica_t* replica, char* role)
     //           1. Repeat during idle periods to prevent election timeouts.
 
     // Accept data commands from clients.
-    LOG(HVN_LOG_DBG, "Replica is waiting for client data messages.");
+    LOG(HVN_LOG_DBG, "Leader replica is waiting for client data messages.");
     client_data_msg = chanrecvp(replica->attach_chan);
 
     HVN_proto_print_data_msg(client_data_msg);
-    LOG(HVN_LOG_DBG, "Replica received a data msg.");
+    LOG(HVN_LOG_DBG, "Leader replica received a data msg.");
 
     // Pack and append to local log.
     HVN_clnt_proto_pack_data_msgpack(client_data_msg, &op_packed_len, &op_packed);
@@ -121,7 +119,7 @@ int HVN_replica_leader(HVN_replica_t* replica, char* role)
 
     // TODO: Step down if currentTerm changes.
 
-    return HVN_ERROR;
+    return HVN_SUCCESS;
 }
 
 int HVN_replica_cache_last_log_index(HVN_replica_t* replica)
