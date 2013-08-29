@@ -1,5 +1,5 @@
-#ifndef __HVN__HAVEND_CLIENT_PROTOCOL_DISCOVER_MSG_H_
-#define __HVN__HAVEND_CLIENT_PROTOCOL_DISCOVER_MSG_H_
+#ifndef __HVN__COMMON_PACK_HEARTBEAT_MSG_H_
+#define __HVN__COMMON_PACK_HEARTBEAT_MSG_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -19,12 +19,12 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
-typedef struct HVN_msg_client_discover_t {
+typedef struct HVN_msg_client_heartbeat_t {
 
-} HVN_msg_client_discover_t;
+} HVN_msg_client_heartbeat_t;
 
-typedef struct HVN_msg_client_discover_resp_t {
+typedef struct HVN_msg_client_heartbeat_resp_t {
 
-} HVN_msg_client_discover_resp_t;
+} HVN_msg_client_heartbeat_resp_t;
 
-#endif /* __HVN__HAVEND_CLIENT_PROTOCOL_DISCOVER_MSG_H_ */
+#endif /* __HVN__COMMON_PACK_HEARTBEAT_MSG_H_ */

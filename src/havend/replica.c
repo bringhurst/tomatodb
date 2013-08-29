@@ -19,7 +19,7 @@
 #include <dirent.h>
 
 #include "consensus.h"
-#include "protocol/client/data_msg.h"
+#include "pack/data_msg.h"
 #include "routing.h"
 #include "settings.h"
 #include "task/task.h"

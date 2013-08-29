@@ -1,6 +1,6 @@
 include $(top_srcdir)/common.mk
 
-SUBDIRS = halloc protocol task
+SUBDIRS = halloc pack task
 
 AM_CPPFLAGS += \
            -I$(top_srcdir) \
@@ -18,7 +18,7 @@ libhaven_common_la_SOURCES = \
 libhaven_common_la_LIBADD = \
                              halloc/libhaven_common_halloc.la \
                              task/libhaven_common_task.la \
-                             protocol/libhaven_common_protocol.la \
+                             pack/libhaven_common_pack.la \
                              $(leveldb_LIBS) \
                              $(uuid_LIBS)
 

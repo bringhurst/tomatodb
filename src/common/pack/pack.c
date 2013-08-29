@@ -19,7 +19,7 @@
 #include "log.h"
 #include "common.h"
 
-#include "client_protocol.h"
+#include "pack.h"
 
 #include "connect_msg.h"
 #include "control_msg.h"

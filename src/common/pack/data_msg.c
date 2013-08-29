@@ -22,7 +22,7 @@
 #include "log.h"
 #include "common.h"
 
-#include "client_protocol.h"
+#include "pack.h"
 #include "data_msg.h"
 
 /** The debug stream to write log messages to. */

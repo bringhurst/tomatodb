@@ -1,5 +1,5 @@
-#ifndef __HVN__HAVEND_CLIENT_PROTOCOL_DATA_MSG_H_
-#define __HVN__HAVEND_CLIENT_PROTOCOL_DATA_MSG_H_
+#ifndef __HVN__COMMON_PACK_DATA_MSG_H_
+#define __HVN__COMMON_PACK_DATA_MSG_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -93,4 +93,4 @@ int HVN_proto_send_data_resp_msg(int fd);
 
 void HVN_proto_print_data_msg(HVN_msg_client_data_t* data);
 
-#endif /* __HVN__HAVEND_CLIENT_PROTOCOL_DATA_MSG_H_ */
+#endif /* __HVN__COMMON_PACK_DATA_MSG_H_ */

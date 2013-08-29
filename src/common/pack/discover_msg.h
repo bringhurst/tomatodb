@@ -1,3 +1,6 @@
+#ifndef __HVN__COMMON_PACK_DISCOVER_MSG_H_
+#define __HVN__COMMON_PACK_DISCOVER_MSG_H_
+
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
  *
@@ -16,4 +19,12 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
-/* EOF */
+typedef struct HVN_msg_client_discover_t {
+
+} HVN_msg_client_discover_t;
+
+typedef struct HVN_msg_client_discover_resp_t {
+
+} HVN_msg_client_discover_resp_t;
+
+#endif /* __HVN__COMMON_PACK_DISCOVER_MSG_H_ */

@@ -22,9 +22,9 @@
 
 #include "attach.h"
 #include "log.h"
-#include "protocol/client/client_protocol.h"
-#include "protocol/client/connect_msg.h"
-#include "protocol/client/control_msg.h"
+#include "pack/pack.h"
+#include "pack/connect_msg.h"
+#include "pack/control_msg.h"
 #include "replica.h"
 #include "task/task.h"
 

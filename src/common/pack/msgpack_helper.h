@@ -1,5 +1,5 @@
-#ifndef __HVN__HAVEND_CLIENT_PROTOCOL_HEARTBEAT_MSG_H_
-#define __HVN__HAVEND_CLIENT_PROTOCOL_HEARTBEAT_MSG_H_
+#ifndef __HVN__COMMON_PACK_MSGPACK_HELPER_H_
+#define __HVN__COMMON_PACK_MSGPACK_HELPER_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -19,12 +19,12 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
-typedef struct HVN_msg_client_heartbeat_t {
+#include <stddef.h>
 
-} HVN_msg_client_heartbeat_t;
+int HVN_msgpack_fdread(int fd, size_t* len, char** msg);
+int HVN_msgpack_fdwrite(int fd, size_t len, char* msg);
 
-typedef struct HVN_msg_client_heartbeat_resp_t {
+int HVN_fdreadn(int fd, char* buf, size_t len);
+int HVN_fdwriten(int fd, char* buf, size_t len);
 
-} HVN_msg_client_heartbeat_resp_t;
-
-#endif /* __HVN__HAVEND_CLIENT_PROTOCOL_HEARTBEAT_MSG_H_ */
+#endif /* __HVN__COMMON_PACK_MSGPACK_HELPER_H_ */

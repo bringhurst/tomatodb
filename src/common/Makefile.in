@@ -67,8 +67,7 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 libhaven_common_la_DEPENDENCIES = halloc/libhaven_common_halloc.la \
-	task/libhaven_common_task.la \
-	protocol/libhaven_common_protocol.la
+	task/libhaven_common_task.la pack/libhaven_common_pack.la
 am_libhaven_common_la_OBJECTS = libhaven_common_la-common.lo \
 	libhaven_common_la-database.lo libhaven_common_la-xtime.lo
 libhaven_common_la_OBJECTS = $(am_libhaven_common_la_OBJECTS)
@@ -293,7 +292,7 @@ AM_CPPFLAGS = -std=gnu99 -ggdb -W -Wall -Wextra -Wformat=1 -Winit-self \
 	-Wmissing-prototypes -Wredundant-decls -Winline \
 	-Wdisabled-optimization -Wshadow -Wwrite-strings \
 	-I$(top_srcdir) -I$(top_srcdir)/src/common
-SUBDIRS = halloc protocol task
+SUBDIRS = halloc pack task
 noinst_LTLIBRARIES = libhaven_common.la
 libhaven_common_la_LDFLAGS = $(LIB_LDFLAGS)
 libhaven_common_la_SOURCES = \
@@ -304,7 +303,7 @@ libhaven_common_la_SOURCES = \
 libhaven_common_la_LIBADD = \
                              halloc/libhaven_common_halloc.la \
                              task/libhaven_common_task.la \
-                             protocol/libhaven_common_protocol.la \
+                             pack/libhaven_common_pack.la \
                              $(leveldb_LIBS) \
                              $(uuid_LIBS)
 

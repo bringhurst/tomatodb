@@ -17,7 +17,7 @@
  */
 
 #include "consensus.h"
-#include "protocol/client/data_msg.h"
+#include "pack/data_msg.h"
 #include "replica.h"
 #include "task/task.h"
 

@@ -100,9 +100,7 @@ AC_CONFIG_FILES([Makefile                            \
                  src/Makefile                        \
                  src/common/Makefile                 \
                  src/common/halloc/Makefile          \
-                 src/common/protocol/Makefile        \
-                 src/common/protocol/client/Makefile \
-                 src/common/protocol/server/Makefile \
+                 src/common/pack/Makefile            \
                  src/common/task/Makefile            \
                  src/havenctl/Makefile               \
                  src/haven/Makefile                  \

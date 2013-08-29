@@ -1,5 +1,5 @@
-#ifndef __HVN__HAVEND_CLIENT_PROTOCOL_CONTROL_MSG_H_
-#define __HVN__HAVEND_CLIENT_PROTOCOL_CONTROL_MSG_H_
+#ifndef __HVN__COMMON_PACK_CONTROL_MSG_H_
+#define __HVN__COMMON_PACK_CONTROL_MSG_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -89,4 +89,4 @@ int HVN_proto_receive_control_msg(int fd, \
 
 int HVN_proto_send_control_resp_msg(int fd);
 
-#endif /* __HVN__HAVEND_CLIENT_PROTOCOL_CONTROL_MSG_H_ */
+#endif /* __HVN__COMMON_PACK_CONTROL_MSG_H_ */
