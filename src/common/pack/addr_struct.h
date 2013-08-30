@@ -35,6 +35,7 @@ int HVN_pack_addr_msgpack(UT_array* addrs, \
                           UT_string** result);
 
 int HVN_unpack_addr_msgpack(UT_array** result, \
-                            char* addrs);
+                            char* addrs, \
+                            size_t addrs_len);
 
 #endif /* __HVN__COMMON_PACK_ADDR_STRUCT_H_ */
