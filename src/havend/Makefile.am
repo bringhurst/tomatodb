@@ -12,7 +12,6 @@ havend_SOURCES = \
                  consensus.c \
                  context.c \
                  havend.c \
-                 proxy.c \
                  replica.c \
                  routing.c \
                  settings.c
