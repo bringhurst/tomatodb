@@ -22,28 +22,19 @@
 #include <stdint.h>
 #include <uuid/uuid.h>
 
+#include "ut/utarray.h"
+#include "ut/utstring.h"
+
 typedef struct HVN_addr_t {
     char* address;
     int port;
     uuid_t uuid;
 } HVN_addr_t;
 
-int HVN_pack_addr_msgpack(HVN_addr_t* data, \
-                          size_t* len, \
-                          char** msg);
+int HVN_pack_addr_msgpack(UT_array* addrs, \
+                          UT_string** result);
 
-int HVN_unpack_addr_msgpack(HVN_addr_t* data, \
-                            size_t len, \
-                            char* msg);
-
-int HVN_pack_addr(HVN_addr_t* data, \
-                  int scheme, \
-                  size_t* len, \
-                  char** msg);
-
-int HVN_unpack_addr(HVN_addr_t* data, \
-                    int scheme, \
-                    size_t len, \
-                    char* msg);
+int HVN_unpack_addr_msgpack(UT_array** result, \
+                            char* addrs);
 
 #endif /* __HVN__COMMON_PACK_ADDR_STRUCT_H_ */

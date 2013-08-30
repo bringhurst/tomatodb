@@ -21,8 +21,8 @@
 #include "log.h"
 #include "common.h"
 
-#include "pack.h"
 #include "addr_struct.h"
+#include "pack.h"
 
 /** The debug stream to write log messages to. */
 extern FILE* HVN_debug_stream;
@@ -30,32 +30,34 @@ extern FILE* HVN_debug_stream;
 /** The log level to write messages for. */
 extern HVN_loglevel HVN_debug_level;
 
-int HVN_pack_addr_msgpack(HVN_addr_t* data, \
-                          size_t* len, \
-                          char** msg)
+int HVN_pack_addr_msgpack(UT_array* addrs, \
+                          UT_string** result)
 {
-    size_t addr_len = strlen(data->address);
-    size_t uuid_len = sizeof(data->uuid);
+    HVN_addr_t* data = NULL;
+    size_t addr_len, uuid_len;
+
+    utstring_new(*result);
 
     msgpack_sbuffer sbuf;
     msgpack_sbuffer_init(&sbuf);
 
     msgpack_packer pk;
     msgpack_packer_init(&pk, &sbuf, msgpack_sbuffer_write);
+    msgpack_pack_array(&pk, utarray_len(addrs));
 
-    msgpack_pack_array(&pk, 3);
+    while((data = (HVN_addr_t*) utarray_next(addrs, data))) {
+        addr_len = strlen(data->address);
+        msgpack_pack_raw(&pk, addr_len);
+        msgpack_pack_raw_body(&pk, data->address, addr_len);
 
-    msgpack_pack_raw(&pk, addr_len);
-    msgpack_pack_raw_body(&pk, data->address, addr_len);
+        msgpack_pack_uint32(&pk, data->port);
 
-    msgpack_pack_uint32(&pk, data->port);
-
-    msgpack_pack_raw(&pk, uuid_len);
-    msgpack_pack_raw_body(&pk, data->uuid, uuid_len);
-
-    *msg = (char*) malloc(sizeof(char) * sbuf.size);
-    memcpy(*msg, sbuf.data, sbuf.size);
-    *len = sbuf.size;
+        uuid_len = sizeof(data->uuid);
+        msgpack_pack_raw(&pk, uuid_len);
+        msgpack_pack_raw_body(&pk, data->uuid, uuid_len);
+    }
+  
+    utstring_bincpy(*result, sbuf.data, sbuf.size);
 
     // FIXME: double free here?
     //msgpack_sbuffer_free(&sbuf);
@@ -64,15 +66,19 @@ int HVN_pack_addr_msgpack(HVN_addr_t* data, \
     return HVN_SUCCESS;
 }
 
-int HVN_unpack_addr_msgpack(HVN_addr_t* data, \
-                            size_t len, \
-                            char* msg)
+int HVN_unpack_addr_msgpack(UT_array** result, \
+                            char* addrs)
 {
+    UT_icd HVN_addr_t_icd = {
+        sizeof(HVN_addr_t),
+        NULL, NULL, NULL
+    };
+
     msgpack_unpacked unpacked;
     msgpack_unpacked_init(&unpacked);
     int16_t msg_type = 0;
     char* uuid_buf;
-
+/*
     if(msgpack_unpack_next(&unpacked, msg, len, NULL)) {
         msgpack_object root = unpacked.data;
 
@@ -101,7 +107,7 @@ int HVN_unpack_addr_msgpack(HVN_addr_t* data, \
             }
         }
     }
-
+*/
     if(msg_type != HVN_CLNT_PROTO_MSG_TYPE_CONNECT) {
         LOG(HVN_LOG_ERR, "Unexpected msg type when unpacking a connect message (%d).", msg_type);
         return HVN_ERROR;
@@ -109,44 +115,6 @@ int HVN_unpack_addr_msgpack(HVN_addr_t* data, \
 
     msgpack_unpacked_destroy(&unpacked);
     return HVN_SUCCESS;
-}
-
-int HVN_pack_addr(HVN_addr_t* data, \
-                  int scheme, \
-                  size_t* len, \
-                  char** msg)
-{
-    int result;
-
-    switch(scheme) {
-        case HVN_CLNT_PROTO_PACK_TYPE_MSGPACK:
-            result = HVN_pack_addr_msgpack(data, len, msg);
-            break;
-        default:
-            LOG(HVN_LOG_WARN, "Pack scheme `%d' not recognized.", scheme);
-            result = HVN_ERROR;
-    }
-
-    return result;
-}
-
-int HVN_unpack_addr(HVN_addr_t* data, \
-                    int scheme, \
-                    size_t len, \
-                    char* msg)
-{
-    int result;
-
-    switch(scheme) {
-        case HVN_CLNT_PROTO_PACK_TYPE_MSGPACK:
-            result = HVN_unpack_addr_msgpack(data, len, msg);
-            break;
-        default:
-            LOG(HVN_LOG_WARN, "Unpack scheme `%d' not recognized.", scheme);
-            result = HVN_ERROR;
-    }
-
-    return result;
 }
 
 /* EOF */
