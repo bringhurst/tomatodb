@@ -30,7 +30,7 @@
 
 #include "context.h"
 #include "database.h"
-#include "replica.h"
+#include "bootstrap.h"
 #include "routing.h"
 #include "settings.h"
 #include "task/task.h"
@@ -256,7 +256,7 @@ void taskmain(int argc, char* argv[])
         taskexit(EXIT_FAILURE);
     }
 
-    if(HVN_load_existing_replicas_from_disk(ctx) != HVN_SUCCESS) {
+    if(HVN_bootstrap_replicas_from_disk(ctx) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Could not read existing replicas from disk.");
         taskexit(EXIT_FAILURE);
     }

@@ -48,12 +48,6 @@ int HVN_replica_follower(HVN_replica_t* replica, char* role);
 int HVN_replica_candidate(HVN_replica_t* replica, char* role);
 int HVN_replica_leader(HVN_replica_t* replica, char* role);
 
-int HVN_replica_bootstrap_location(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t* uuid);
-int HVN_replica_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t* uuid, char* path_key);
-int HVN_replica_bootstrap_follower(void);
-int HVN_replica_bootstrap_db(HVN_replica_t* replica);
-
-int HVN_load_existing_replicas_from_disk(HVN_ctx_t* ctx);
 int HVN_replica_cache_last_log_index(HVN_replica_t* replica);
 int HVN_replica_overwrite_last_log_index(HVN_replica_t* replica, uint64_t last_log_index);
 int HVN_replica_append_to_log(HVN_replica_t* replica, char* packed_op, size_t packed_op_len);

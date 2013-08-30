@@ -25,7 +25,7 @@
 #include "pack/pack.h"
 #include "pack/connect_msg.h"
 #include "pack/control_msg.h"
-#include "replica.h"
+#include "bootstrap.h"
 #include "task/task.h"
 
 #include "routing.h"
@@ -151,7 +151,7 @@ void HVN_routing_task(HVN_router_t* router)
         case HVN_CLNT_PROTO_CTRL_LEADER:
             HVN_replica_init(&new_replica);
 
-            if(HVN_replica_bootstrap_leader(new_replica, router->ctx, \
+            if(HVN_bootstrap_leader(new_replica, router->ctx, \
                                             &new_uuid, control_msg_data.path) == HVN_SUCCESS) {
                 uuid_unparse(new_uuid, new_uuid_string);
                 LOG(HVN_LOG_ERR, "Quorum leader created with UUID `%s'.", new_uuid_string);
@@ -166,7 +166,7 @@ void HVN_routing_task(HVN_router_t* router)
         case HVN_CLNT_PROTO_CTRL_LOCATION:
             HVN_replica_init(&new_replica);
 
-            if(HVN_replica_bootstrap_location(new_replica, router->ctx, \
+            if(HVN_bootstrap_location(new_replica, router->ctx, \
                                               &new_uuid) == HVN_SUCCESS) {
                 uuid_unparse(new_uuid, new_uuid_string);
                 LOG(HVN_LOG_ERR, "Location quorum leader created with UUID `%s'.", new_uuid_string);

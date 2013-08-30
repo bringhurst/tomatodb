@@ -8,6 +8,7 @@ bin_PROGRAMS = havend
 
 havend_SOURCES = \
                  attach.c \
+                 bootstrap.c \
                  consensus.c \
                  context.c \
                  havend.c \
