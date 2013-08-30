@@ -98,7 +98,7 @@ int HVN_replica_leader(HVN_replica_t* replica, char* role)
 
     // Accept data commands from clients.
     LOG(HVN_LOG_DBG, "Leader replica is waiting for client data messages.");
-    client_data_msg = chanrecvp(replica->attach_chan);
+    client_data_msg = chanrecvp(replica->data_chan);
 
     HVN_proto_print_data_msg(client_data_msg);
     LOG(HVN_LOG_DBG, "Leader replica received a data msg.");
@@ -253,7 +253,7 @@ int HVN_replica_init(HVN_replica_t** replica)
     (*replica)->last_log_index = 0;
     (*replica)->current_term = 0;
 
-    (*replica)->attach_chan = chancreate(\
+    (*replica)->data_chan = chancreate(\
         sizeof(HVN_msg_client_data_t*), 0);
 
     return HVN_SUCCESS;

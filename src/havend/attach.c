@@ -46,7 +46,7 @@ void HVN_attach_task(HVN_attach_t* client)
             }
         }
 
-        if(chansendp(client->replica->attach_chan, &data_msg_data) != 1) {
+        if(chansendp(client->replica->data_chan, &data_msg_data) != 1) {
             LOG(HVN_LOG_ERR, "Failed to send the data message to the appropriate replica.");
         }
         else {

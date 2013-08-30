@@ -33,7 +33,9 @@ typedef struct HVN_replica_t {
     uuid_t uuid;
     uint64_t current_term;
     uint64_t last_log_index;
-    Channel* attach_chan;
+    Channel* data_chan;
+    Channel* vote_chan;
+    Channel* append_chan;
     UT_hash_handle hh;
 } HVN_replica_t;
 
