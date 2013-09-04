@@ -36,7 +36,6 @@ typedef struct HVN_msg_append_t {
 
 typedef struct HVN_msg_append_resp_t {
     uint64_t term;
-    uint64_t conflict_term;
     bool success;
 } HVN_msg_append_resp_t;
 

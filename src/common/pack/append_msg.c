@@ -42,9 +42,15 @@ int HVN_proto_pack_append_msgpack(HVN_msg_append_t* data, \
 
     msgpack_pack_array(&pk, 5);
     msgpack_pack_uint16(&pk, HVN_PROTO_MSG_TYPE_APPEND);
-    msgpack_pack_uint16(&pk, data->action);
 
-    // TODO: pack the rest of the struct.
+
+    msgpack_pack_uint64(&pk, data->leader_term);
+    msgpack_pack_uint64(&pk, data->commit_index);
+    msgpack_pack_uint64(&pk, data->prev_log_index);
+    msgpack_pack_uint64(&pk, data->prev_log_term);
+
+    // TODO: pack leader uuid
+    // TODO: pack append entries
 
     *msg = (char*) malloc(sizeof(char) * sbuf.size);
     memcpy(*msg, sbuf.data, sbuf.size);
@@ -71,22 +77,14 @@ int HVN_proto_unpack_append_msgpack(HVN_msg_append_t* data, \
         if(root.type == MSGPACK_OBJECT_ARRAY && root.via.array.size == 6) {
             msg_type = root.via.array.ptr[0].via.u64;
 
-            data->action = root.via.array.ptr[1].via.u64;
-            data->mode = root.via.array.ptr[2].via.u64;
-//FIXME:     data->time = root.via.array.ptr[3].via.array;
+            data->leader_term = root.via.array.ptr[1].via.u64;
+            data->commit_index = root.via.array.ptr[2].via.u64;
+            data->prev_log_index = root.via.array.ptr[2].via.u64;
+            data->prev_log_term = root.via.array.ptr[2].via.u64;
 
-            data->key = (char*) malloc(sizeof(char) * \
-                                       (root.via.array.ptr[4].via.raw.size + 1));
-            //FIXME: SECURITY HOLE! check bounds below!
-            memcpy(data->key, root.via.array.ptr[4].via.raw.ptr, \
-                   root.via.array.ptr[4].via.raw.size);
-            *(data->key + root.via.array.ptr[4].via.raw.size) = '\0';
+            // TODO: unpack leader uuid
+            // TODO: unpack append entries
 
-            data->value = (char*) malloc(root.via.array.ptr[4].via.raw.size);
-            //FIXME: SECURITY HOLE! check bounds below!
-            memcpy(data->value, root.via.array.ptr[5].via.raw.ptr, \
-                   root.via.array.ptr[5].via.raw.size);
-            data->value_len = root.via.array.ptr[5].via.raw.size;
         }
     }
 
@@ -110,8 +108,8 @@ int HVN_proto_pack_append_resp_msgpack(HVN_msg_append_resp_t* data, \
     msgpack_packer_init(&pck, &sbuf, msgpack_sbuffer_write);
     msgpack_pack_array(&pck, 2);
 
+    msgpack_pack_uint64(&pck, data->term);
     msgpack_pack_uint8(&pck, data->success);
-    msgpack_pack_uint8(&pck, data->err_code);
 
     *len = sbuf.size;
     *msg = (char*) malloc(sizeof(char) * sbuf.size);
