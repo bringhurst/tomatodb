@@ -208,7 +208,7 @@ int HVN_proto_unpack_append_resp(HVN_msg_append_resp_t* data, \
     return result;
 }
 
-int HVN_receive_append_msg(int fd, \
+int HVN_proto_receive_append_msg(int fd, \
                          HVN_msg_append_t* append_msg_data)
 {
     size_t len = 0;
