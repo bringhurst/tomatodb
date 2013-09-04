@@ -62,18 +62,18 @@ void HVN_attach_append(HVN_attach_t* client)
             LOG(HVN_LOG_ERR, "Did not receive a valid append message while attached to a replica.");
             taskexit(HVN_ERROR);
         }
-        else {
-            if(HVN_proto_send_append_resp_msg(client->fd) != HVN_SUCCESS) {
-                LOG(HVN_LOG_ERR, "Could not send a append message response while attached to a replica.");
-                taskexit(HVN_ERROR);
-            }
-        }
 
         if(chansendp(client->replica->append_chan, &append_msg_data) != 1) {
             LOG(HVN_LOG_ERR, "Failed to send the append message to the appropriate replica.");
+            taskexit(HVN_ERROR);
         }
         else {
             LOG(HVN_LOG_DBG, "Successfully sent the append message to the appropriate replica.");
+        }
+
+        if(HVN_proto_send_append_resp_msg(client->fd) != HVN_SUCCESS) {
+            LOG(HVN_LOG_ERR, "Could not send a append message response while attached to a replica.");
+            taskexit(HVN_ERROR);
         }
     }
 }
@@ -87,18 +87,18 @@ void HVN_attach_vote(HVN_attach_t* client)
             LOG(HVN_LOG_ERR, "Did not receive a valid vote message while attached to a replica.");
             taskexit(HVN_ERROR);
         }
-        else {
-            if(HVN_proto_send_vote_resp_msg(client->fd) != HVN_SUCCESS) {
-                LOG(HVN_LOG_ERR, "Could not send a vote message response while attached to a replica.");
-                taskexit(HVN_ERROR);
-            }
-        }
 
         if(chansendp(client->replica->vote_chan, &vote_msg_data) != 1) {
             LOG(HVN_LOG_ERR, "Failed to send the vote message to the appropriate replica.");
+            taskexit(HVN_ERROR);
         }
         else {
             LOG(HVN_LOG_DBG, "Successfully sent the vote message to the appropriate replica.");
+        }
+
+        if(HVN_proto_send_vote_resp_msg(client->fd) != HVN_SUCCESS) {
+            LOG(HVN_LOG_ERR, "Could not send a vote message response while attached to a replica.");
+            taskexit(HVN_ERROR);
         }
     }
 }
@@ -112,18 +112,18 @@ void HVN_attach_data(HVN_attach_t* client)
             LOG(HVN_LOG_ERR, "Did not receive a valid data message while attached to a replica.");
             taskexit(HVN_ERROR);
         }
-        else {
-            if(HVN_proto_send_data_resp_msg(client->fd) != HVN_SUCCESS) {
-                LOG(HVN_LOG_ERR, "Could not send a data message response while attached to a replica.");
-                taskexit(HVN_ERROR);
-            }
-        }
 
         if(chansendp(client->replica->data_chan, &data_msg_data) != 1) {
             LOG(HVN_LOG_ERR, "Failed to send the data message to the appropriate replica.");
+            taskexit(HVN_ERROR);
         }
         else {
             LOG(HVN_LOG_DBG, "Successfully sent the data message to the appropriate replica.");
+        }
+
+        if(HVN_proto_send_data_resp_msg(client->fd) != HVN_SUCCESS) {
+            LOG(HVN_LOG_ERR, "Could not send a data message response while attached to a replica.");
+            taskexit(HVN_ERROR);
         }
     }
 }
