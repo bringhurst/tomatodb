@@ -126,7 +126,7 @@ void HVN_routing_task(HVN_router_t* router)
 
     switch(control_msg_data.action) {
 
-        case HVN_CLNT_PROTO_CTRL_ATTACH:
+        case HVN_PROTO_CTRL_ATTACH:
 
             if(HVN_replica_attach(router, control_msg_data.uuid) != HVN_SUCCESS) {
                 uuid_unparse(control_msg_data.uuid, new_uuid_string);
@@ -138,17 +138,17 @@ void HVN_routing_task(HVN_router_t* router)
 
             break;
 
-        case HVN_CLNT_PROTO_CTRL_PROXY:
+        case HVN_PROTO_CTRL_PROXY:
             LOG(HVN_LOG_DBG, "Handling control proxy message.");
             LOG(HVN_LOG_ERR, "Not implemented yet.");
             break;
 
-        case HVN_CLNT_PROTO_CTRL_FOLLOWER:
+        case HVN_PROTO_CTRL_FOLLOWER:
             LOG(HVN_LOG_DBG, "Handling control follower message.");
             LOG(HVN_LOG_ERR, "Not implemented yet.");
             break;
 
-        case HVN_CLNT_PROTO_CTRL_LEADER:
+        case HVN_PROTO_CTRL_LEADER:
             HVN_replica_init(&new_replica);
 
             if(HVN_bootstrap_leader(new_replica, router->ctx, \
@@ -163,7 +163,7 @@ void HVN_routing_task(HVN_router_t* router)
 
             break;
 
-        case HVN_CLNT_PROTO_CTRL_LOCATION:
+        case HVN_PROTO_CTRL_LOCATION:
             HVN_replica_init(&new_replica);
 
             if(HVN_bootstrap_location(new_replica, router->ctx, \
@@ -178,12 +178,12 @@ void HVN_routing_task(HVN_router_t* router)
 
             break;
 
-        case HVN_CLNT_PROTO_CTRL_EXIT:
+        case HVN_PROTO_CTRL_EXIT:
             LOG(HVN_LOG_DBG, "Handling control exit message.");
             LOG(HVN_LOG_ERR, "Not implemented yet.");
             break;
 
-        case HVN_CLNT_PROTO_CTRL_DESTROY:
+        case HVN_PROTO_CTRL_DESTROY:
             LOG(HVN_LOG_DBG, "Handling control destroy message.");
             LOG(HVN_LOG_ERR, "Not implemented yet.");
             break;

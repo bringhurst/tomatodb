@@ -24,11 +24,11 @@
 #include "replica.h"
 #include "routing.h"
 
-#define HVN_ATTACH_STACK_SIZE (32768)
+#define HVN_ATTACH_STACK_SIZE  (32768)
 
-#define HVN_ATTACH_CLNT_MODE_DATA    0x01
-#define HVN_ATTACH_CLNT_MODE_VOTE    0x03
-#define HVN_ATTACH_CLNT_MODE_APPEND  0x02
+#define HVN_ATTACH_MODE_DATA    0x01
+#define HVN_ATTACH_MODE_VOTE    0x03
+#define HVN_ATTACH_MODE_APPEND  0x02
 
 typedef struct HVN_attach_t {
     HVN_replica_t* replica;

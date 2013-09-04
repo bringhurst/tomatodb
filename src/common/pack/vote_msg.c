@@ -201,8 +201,8 @@ int HVN_proto_unpack_vote_resp(HVN_msg_vote_resp_t* data, \
     return result;
 }
 
-int HVN_receive_vote_msg(int fd, \
-                         HVN_msg_vote_t* vote_msg_data)
+int HVN_proto_receive_vote_msg(int fd, \
+                               HVN_msg_vote_t* vote_msg_data)
 {
     size_t len = 0;
     char* msg;

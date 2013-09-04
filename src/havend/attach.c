@@ -17,7 +17,9 @@
  */
 
 #include "consensus.h"
+#include "pack/append_msg.h"
 #include "pack/data_msg.h"
+#include "pack/vote_msg.h"
 #include "replica.h"
 #include "task/task.h"
 
@@ -33,15 +35,15 @@ extern HVN_loglevel HVN_debug_level;
 void HVN_attach_task(HVN_attach_t* client)
 {
     switch(client->mode) {
-        case HVN_ATTACH_CLNT_MODE_DATA:
+        case HVN_ATTACH_MODE_DATA:
             HVN_attach_data(client);
             break;
 
-        case HVN_ATTACH_CLNT_MODE_VOTE:
+        case HVN_ATTACH_MODE_VOTE:
             HVN_attach_vote(client);
             break;
 
-        case HVN_ATTACH_CLNT_MODE_APPEND:
+        case HVN_ATTACH_MODE_APPEND:
             HVN_attach_append(client);
             break;
 
@@ -53,7 +55,7 @@ void HVN_attach_task(HVN_attach_t* client)
 
 void HVN_attach_append(HVN_attach_t* client)
 {
-    HVN_consensus_append_t append_msg_data;
+    HVN_msg_append_t append_msg_data;
 
     for(;;) {
         if(HVN_proto_receive_append_msg(client->fd, &append_msg_data) != HVN_SUCCESS) {
@@ -78,7 +80,7 @@ void HVN_attach_append(HVN_attach_t* client)
 
 void HVN_attach_vote(HVN_attach_t* client)
 {
-    HVN_consensus_vote_t vote_msg_data;
+    HVN_msg_vote_t vote_msg_data;
 
     for(;;) {
         if(HVN_proto_receive_vote_msg(client->fd, &vote_msg_data) != HVN_SUCCESS) {
