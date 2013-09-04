@@ -42,33 +42,6 @@
 #define HVN_CONSENSUS_MD_STATE_CANDIDATE    'C'
 #define HVN_CONSENSUS_MD_STATE_HALT         'H'
 
-typedef struct HVN_consensus_vote_t {
-    uint64_t candidate_term;
-    uint64_t last_log_index;
-    uint64_t last_log_term;
-    uuid_t candidate_id;
-} HVN_consensus_vote_t;
-
-typedef struct HVN_consensus_vote_resp_t {
-    uint64_t term;
-    bool vote_granted;
-} HVN_consensus_vote_resp_t;
-
-typedef struct HVN_consensus_append_t {
-    uint64_t leader_term;
-    uint64_t prev_log_index;
-    uint64_t prev_log_term;
-    uint64_t commit_index;
-    uuid_t leader_id;
-    UT_array* log_entries;
-} HVN_consensus_append_t;
-
-typedef struct HVN_consensus_append_resp_t {
-    uint64_t term;
-    uint64_t conflict_term;
-    bool success;
-} HVN_consensus_append_resp_t;
-
 int HVN_consensus_exec(HVN_attach_t* client, HVN_db_op_t* op);
 
 #endif /* __HVN__HAVEND_CONSENSUS_H */

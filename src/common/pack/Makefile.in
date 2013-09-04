@@ -68,14 +68,16 @@ CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 libhaven_common_pack_la_DEPENDENCIES =
 am_libhaven_common_pack_la_OBJECTS =  \
-	libhaven_common_pack_la-msgpack_helper.lo \
-	libhaven_common_pack_la-pack.lo \
 	libhaven_common_pack_la-addr_struct.lo \
+	libhaven_common_pack_la-append_msg.lo \
 	libhaven_common_pack_la-connect_msg.lo \
 	libhaven_common_pack_la-control_msg.lo \
 	libhaven_common_pack_la-data_msg.lo \
 	libhaven_common_pack_la-discover_msg.lo \
-	libhaven_common_pack_la-heartbeat_msg.lo
+	libhaven_common_pack_la-heartbeat_msg.lo \
+	libhaven_common_pack_la-msgpack_helper.lo \
+	libhaven_common_pack_la-pack.lo \
+	libhaven_common_pack_la-vote_msg.lo
 libhaven_common_pack_la_OBJECTS =  \
 	$(am_libhaven_common_pack_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -265,14 +267,16 @@ AM_CPPFLAGS = -std=gnu99 -ggdb -W -Wall -Wextra -Wformat=1 -Winit-self \
 noinst_LTLIBRARIES = libhaven_common_pack.la
 libhaven_common_pack_la_LDFLAGS = $(LIB_LDFLAGS)
 libhaven_common_pack_la_SOURCES = \
-                                  msgpack_helper.c \
-                                  pack.c \
                                   addr_struct.c \
+                                  append_msg.c \
                                   connect_msg.c \
                                   control_msg.c \
                                   data_msg.c \
                                   discover_msg.c \
-                                  heartbeat_msg.c
+                                  heartbeat_msg.c \
+                                  msgpack_helper.c \
+                                  pack.c \
+                                  vote_msg.c
 
 libhaven_common_pack_la_LIBADD = \
                                  $(msgpack_LIBS) \
@@ -336,6 +340,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhaven_common_pack_la-addr_struct.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhaven_common_pack_la-append_msg.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhaven_common_pack_la-connect_msg.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhaven_common_pack_la-control_msg.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhaven_common_pack_la-data_msg.Plo@am__quote@
@@ -343,6 +348,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhaven_common_pack_la-heartbeat_msg.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhaven_common_pack_la-msgpack_helper.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhaven_common_pack_la-pack.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhaven_common_pack_la-vote_msg.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -365,26 +371,19 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
 
-libhaven_common_pack_la-msgpack_helper.lo: msgpack_helper.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_pack_la_CFLAGS) $(CFLAGS) -MT libhaven_common_pack_la-msgpack_helper.lo -MD -MP -MF $(DEPDIR)/libhaven_common_pack_la-msgpack_helper.Tpo -c -o libhaven_common_pack_la-msgpack_helper.lo `test -f 'msgpack_helper.c' || echo '$(srcdir)/'`msgpack_helper.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhaven_common_pack_la-msgpack_helper.Tpo $(DEPDIR)/libhaven_common_pack_la-msgpack_helper.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='msgpack_helper.c' object='libhaven_common_pack_la-msgpack_helper.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_pack_la_CFLAGS) $(CFLAGS) -c -o libhaven_common_pack_la-msgpack_helper.lo `test -f 'msgpack_helper.c' || echo '$(srcdir)/'`msgpack_helper.c
-
-libhaven_common_pack_la-pack.lo: pack.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_pack_la_CFLAGS) $(CFLAGS) -MT libhaven_common_pack_la-pack.lo -MD -MP -MF $(DEPDIR)/libhaven_common_pack_la-pack.Tpo -c -o libhaven_common_pack_la-pack.lo `test -f 'pack.c' || echo '$(srcdir)/'`pack.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhaven_common_pack_la-pack.Tpo $(DEPDIR)/libhaven_common_pack_la-pack.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pack.c' object='libhaven_common_pack_la-pack.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_pack_la_CFLAGS) $(CFLAGS) -c -o libhaven_common_pack_la-pack.lo `test -f 'pack.c' || echo '$(srcdir)/'`pack.c
-
 libhaven_common_pack_la-addr_struct.lo: addr_struct.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_pack_la_CFLAGS) $(CFLAGS) -MT libhaven_common_pack_la-addr_struct.lo -MD -MP -MF $(DEPDIR)/libhaven_common_pack_la-addr_struct.Tpo -c -o libhaven_common_pack_la-addr_struct.lo `test -f 'addr_struct.c' || echo '$(srcdir)/'`addr_struct.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhaven_common_pack_la-addr_struct.Tpo $(DEPDIR)/libhaven_common_pack_la-addr_struct.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='addr_struct.c' object='libhaven_common_pack_la-addr_struct.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_pack_la_CFLAGS) $(CFLAGS) -c -o libhaven_common_pack_la-addr_struct.lo `test -f 'addr_struct.c' || echo '$(srcdir)/'`addr_struct.c
+
+libhaven_common_pack_la-append_msg.lo: append_msg.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_pack_la_CFLAGS) $(CFLAGS) -MT libhaven_common_pack_la-append_msg.lo -MD -MP -MF $(DEPDIR)/libhaven_common_pack_la-append_msg.Tpo -c -o libhaven_common_pack_la-append_msg.lo `test -f 'append_msg.c' || echo '$(srcdir)/'`append_msg.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhaven_common_pack_la-append_msg.Tpo $(DEPDIR)/libhaven_common_pack_la-append_msg.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='append_msg.c' object='libhaven_common_pack_la-append_msg.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_pack_la_CFLAGS) $(CFLAGS) -c -o libhaven_common_pack_la-append_msg.lo `test -f 'append_msg.c' || echo '$(srcdir)/'`append_msg.c
 
 libhaven_common_pack_la-connect_msg.lo: connect_msg.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_pack_la_CFLAGS) $(CFLAGS) -MT libhaven_common_pack_la-connect_msg.lo -MD -MP -MF $(DEPDIR)/libhaven_common_pack_la-connect_msg.Tpo -c -o libhaven_common_pack_la-connect_msg.lo `test -f 'connect_msg.c' || echo '$(srcdir)/'`connect_msg.c
@@ -420,6 +419,27 @@ libhaven_common_pack_la-heartbeat_msg.lo: heartbeat_msg.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='heartbeat_msg.c' object='libhaven_common_pack_la-heartbeat_msg.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_pack_la_CFLAGS) $(CFLAGS) -c -o libhaven_common_pack_la-heartbeat_msg.lo `test -f 'heartbeat_msg.c' || echo '$(srcdir)/'`heartbeat_msg.c
+
+libhaven_common_pack_la-msgpack_helper.lo: msgpack_helper.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_pack_la_CFLAGS) $(CFLAGS) -MT libhaven_common_pack_la-msgpack_helper.lo -MD -MP -MF $(DEPDIR)/libhaven_common_pack_la-msgpack_helper.Tpo -c -o libhaven_common_pack_la-msgpack_helper.lo `test -f 'msgpack_helper.c' || echo '$(srcdir)/'`msgpack_helper.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhaven_common_pack_la-msgpack_helper.Tpo $(DEPDIR)/libhaven_common_pack_la-msgpack_helper.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='msgpack_helper.c' object='libhaven_common_pack_la-msgpack_helper.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_pack_la_CFLAGS) $(CFLAGS) -c -o libhaven_common_pack_la-msgpack_helper.lo `test -f 'msgpack_helper.c' || echo '$(srcdir)/'`msgpack_helper.c
+
+libhaven_common_pack_la-pack.lo: pack.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_pack_la_CFLAGS) $(CFLAGS) -MT libhaven_common_pack_la-pack.lo -MD -MP -MF $(DEPDIR)/libhaven_common_pack_la-pack.Tpo -c -o libhaven_common_pack_la-pack.lo `test -f 'pack.c' || echo '$(srcdir)/'`pack.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhaven_common_pack_la-pack.Tpo $(DEPDIR)/libhaven_common_pack_la-pack.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='pack.c' object='libhaven_common_pack_la-pack.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_pack_la_CFLAGS) $(CFLAGS) -c -o libhaven_common_pack_la-pack.lo `test -f 'pack.c' || echo '$(srcdir)/'`pack.c
+
+libhaven_common_pack_la-vote_msg.lo: vote_msg.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_pack_la_CFLAGS) $(CFLAGS) -MT libhaven_common_pack_la-vote_msg.lo -MD -MP -MF $(DEPDIR)/libhaven_common_pack_la-vote_msg.Tpo -c -o libhaven_common_pack_la-vote_msg.lo `test -f 'vote_msg.c' || echo '$(srcdir)/'`vote_msg.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhaven_common_pack_la-vote_msg.Tpo $(DEPDIR)/libhaven_common_pack_la-vote_msg.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='vote_msg.c' object='libhaven_common_pack_la-vote_msg.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhaven_common_pack_la_CFLAGS) $(CFLAGS) -c -o libhaven_common_pack_la-vote_msg.lo `test -f 'vote_msg.c' || echo '$(srcdir)/'`vote_msg.c
 
 mostlyclean-libtool:
 	-rm -f *.lo

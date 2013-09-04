@@ -10,14 +10,16 @@ noinst_LTLIBRARIES = libhaven_common_pack.la
 libhaven_common_pack_la_LDFLAGS = $(LIB_LDFLAGS)
 
 libhaven_common_pack_la_SOURCES = \
-                                  msgpack_helper.c \
-                                  pack.c \
                                   addr_struct.c \
+                                  append_msg.c \
                                   connect_msg.c \
                                   control_msg.c \
                                   data_msg.c \
                                   discover_msg.c \
-                                  heartbeat_msg.c
+                                  heartbeat_msg.c \
+                                  msgpack_helper.c \
+                                  pack.c \
+                                  vote_msg.c
 
 libhaven_common_pack_la_LIBADD = \
                                  $(msgpack_LIBS) \
