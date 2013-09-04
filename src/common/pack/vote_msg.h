@@ -19,6 +19,8 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
+#include <uuid/uuid.h>
+
 typedef struct HVN_msg_vote_t {
     uint64_t candidate_term;
     uint64_t last_log_index;
