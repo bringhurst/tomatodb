@@ -79,8 +79,8 @@ int HVN_proto_unpack_append_msgpack(HVN_msg_append_t* data, \
 
             data->leader_term = root.via.array.ptr[1].via.u64;
             data->commit_index = root.via.array.ptr[2].via.u64;
-            data->prev_log_index = root.via.array.ptr[2].via.u64;
-            data->prev_log_term = root.via.array.ptr[2].via.u64;
+            data->prev_log_index = root.via.array.ptr[3].via.u64;
+            data->prev_log_term = root.via.array.ptr[4].via.u64;
 
             // TODO: unpack leader uuid
             // TODO: unpack append entries
