@@ -19,20 +19,24 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
-typedef struct HVN_consensus_append_t {
+#include <uuid/uuid.h>
+
+#include "ut/utarray.h"
+
+typedef struct HVN_msg_append_t {
     uint64_t leader_term;
     uint64_t prev_log_index;
     uint64_t prev_log_term;
     uint64_t commit_index;
     uuid_t leader_id;
     UT_array* log_entries;
-} HVN_consensus_append_t;
+} HVN_msg_append_t;
 
-typedef struct HVN_consensus_append_resp_t {
+typedef struct HVN_msg_append_resp_t {
     uint64_t term;
     uint64_t conflict_term;
     bool success;
-}
+} HVN_msg_append_resp_t;
 
 int HVN_proto_pack_append_msgpack(HVN_msg_append_t* data, \
                                   size_t* len, \
