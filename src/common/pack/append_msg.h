@@ -27,9 +27,9 @@
 
 typedef struct HVN_msg_append_t {
     uint64_t leader_term;
+    uint64_t commit_index;
     uint64_t prev_log_index;
     uint64_t prev_log_term;
-    uint64_t commit_index;
     uuid_t leader_id;
     UT_array* log_entries;
 } HVN_msg_append_t;
