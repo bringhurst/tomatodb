@@ -50,14 +50,14 @@ class HavenCtl(cmd.Cmd):
             Transition the remote server into the specified state and function.
        
             States:
-                'attach <uuid>'    - Attach the current connection to a resource to prepare for data commands.
-                'destroy'          - Tell the remove server to delete itself and exit.
-                'exit'             - Tell the remote server to exit.
-                'follower <uuid>'  - Follow the quorum (or lonely leader) with the specified uuid.
-                'leader <path>'    - Create a new generic leader for the specified path.
-                'location'         - Create a new location leader.
-                'proxy'            - Become a proxy for end user client commands.
-                'router'           - Become idle until transitioned into another state.
+                'attach <mode> <uuid>' - Attach the to a replica and prepare for data, vote, or append commands.
+                'destroy'              - Tell the remove server to delete itself and exit.
+                'exit'                 - Tell the remote server to exit.
+                'follower <uuid>'      - Follow the quorum (or lonely leader) with the specified uuid.
+                'leader <path>'        - Create a new generic leader for the specified path.
+                'location'             - Create a new location leader.
+                'proxy'                - Become a proxy for end user client commands.
+                'router'               - Become idle until transitioned into another state.
         """
         CommandControl().handle(self, line)
 
