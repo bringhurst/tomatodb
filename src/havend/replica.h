@@ -36,6 +36,7 @@ typedef struct HVN_replica_t {
     Channel* data_chan;
     Channel* vote_chan;
     Channel* append_chan;
+    UT_array* foreign_replicas;
     UT_hash_handle hh;
 } HVN_replica_t;
 

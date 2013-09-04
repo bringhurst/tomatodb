@@ -195,7 +195,7 @@ int HVN_replica_init(HVN_replica_t** replica)
     (*replica)->current_term = 0;
 
     (*replica)->data_chan = chancreate(\
-        sizeof(HVN_msg_client_data_t*), 0);
+                                       sizeof(HVN_msg_client_data_t*), 0);
 
     return HVN_SUCCESS;
 }
