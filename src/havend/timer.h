@@ -48,4 +48,7 @@ void HVN_timer_die(HVN_timer_t* timer);
 int HVN_timer_increment(HVN_timer_t* timer, \
                         struct timeval* value);
 
+void HVN_timer_timeval_add_ms(struct timeval *time, \
+                              unsigned long ms);
+
 #endif /* __HVN__HAVEND_TIMER_H_ */

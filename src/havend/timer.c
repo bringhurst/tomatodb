@@ -30,7 +30,49 @@ extern HVN_loglevel HVN_debug_level;
 
 void HVN_timer_task(HVN_timer_t* timer)
 {
-    //TODO: stuff
+    struct timeval* increment_by = NULL;
+    struct timeval* elapsed;
+    struct timeval* zero;
+
+    struct timeval* remaining_p = &(timer->remaining);
+    struct timeval* max_p = &(timer->max);
+
+    elapsed = (struct timeval*) malloc(sizeof(struct timeval));
+    zero = (struct timeval*) malloc(sizeof(struct timeval));
+
+    timerclear(zero);    
+
+    while(timercmp(remaining_p, zero, >)) {
+        timerclear(elapsed);
+        HVN_timer_timeval_add_ms(elapsed, taskdelay((remaining_p->tv_sec * 1000) + (remaining_p->tv_usec / 1000)));
+
+        //FIXME: needs fresh memory?
+        timersub(remaining_p, elapsed, remaining_p);
+
+        while((increment_by = chanrecvp(timer->chan_increment)) != NULL) {
+            timeradd(remaining_p, increment_by, remaining_p);
+        }
+
+        if(timerisset(remaining_p) == 0) {
+            // The timer has expired.
+            if(timer->die == true) {
+                LOG(HVN_LOG_DBG, "A dead timer has expired.");
+                taskexit(HVN_SUCCESS);
+            } else {
+                LOG(HVN_LOG_DBG, "A live timer has expired. Executing callback.");
+                (*(timer->cb))(timer->arg);
+                taskexit(HVN_SUCCESS);
+            }
+        }
+
+        if(timercmp(remaining_p, max_p, >)) {
+            remaining_p->tv_sec = max_p->tv_sec;
+            remaining_p->tv_usec = max_p->tv_usec;
+        }
+    }
+
+    free(zero);
+    free(elapsed);
 }
 
 int HVN_timer_init(HVN_timer_t** timer, \
@@ -92,6 +134,16 @@ int HVN_timer_increment(HVN_timer_t* timer, struct timeval* value)
     }
 
     return HVN_SUCCESS;
+}
+
+void HVN_timer_timeval_add_ms(struct timeval *time, unsigned long ms) {
+    time->tv_sec = time->tv_sec + (ms / 1000);
+    time->tv_usec = time->tv_usec + ((ms % 1000) * 1000);
+
+    if (time->tv_usec > 1000000) {
+        time->tv_usec -= 1000000;
+        time->tv_sec++;
+    }
 }
 
 /* EOF */
