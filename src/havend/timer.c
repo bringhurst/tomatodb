@@ -50,6 +50,7 @@ void HVN_timer_task(HVN_timer_t* timer)
 
         if(timer->die == true) {
             LOG(HVN_LOG_DBG, "A dead timer has expired.");
+            HVN_timer_free(timer);
             taskexit(HVN_SUCCESS);
         }
 
