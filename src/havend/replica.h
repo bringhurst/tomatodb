@@ -31,11 +31,18 @@ typedef struct HVN_replica_t {
     HVN_db_t* db;
     HVN_ctx_t* ctx;
     uuid_t uuid;
+
     uint64_t current_term;
     uint64_t last_log_index;
-    Channel* data_chan;
-    Channel* vote_chan;
-    Channel* append_chan;
+
+    Channel* data_chan_in;
+    Channel* vote_chan_in;
+    Channel* append_chan_in;
+
+    Channel* data_chan_out;
+    Channel* vote_chan_out;
+    Channel* append_chan_out;
+
     UT_array* foreign_replicas;
     UT_hash_handle hh;
 } HVN_replica_t;

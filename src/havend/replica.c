@@ -20,7 +20,9 @@
 
 #include "consensus.h"
 #include "pack/addr_struct.h"
+#include "pack/append_msg.h"
 #include "pack/data_msg.h"
+#include "pack/vote_msg.h"
 #include "routing.h"
 #include "settings.h"
 #include "task/task.h"
@@ -194,8 +196,13 @@ int HVN_replica_init(HVN_replica_t** replica)
     (*replica)->last_log_index = 0;
     (*replica)->current_term = 0;
 
-    (*replica)->data_chan = chancreate(\
-                                       sizeof(HVN_msg_client_data_t*), 0);
+    (*replica)->append_chan_in = chancreate(sizeof(HVN_msg_append_t*), 0);
+    (*replica)->data_chan_in = chancreate(sizeof(HVN_msg_client_data_t*), 0);
+    (*replica)->vote_chan_in = chancreate(sizeof(HVN_msg_vote_t*), 0);
+
+    (*replica)->append_chan_out = chancreate(sizeof(HVN_msg_append_resp_t*), 0);
+    (*replica)->data_chan_out = chancreate(sizeof(HVN_msg_client_data_resp_t*), 0);
+    (*replica)->vote_chan_out = chancreate(sizeof(HVN_msg_vote_resp_t*), 0);
 
     return HVN_SUCCESS;
 }
