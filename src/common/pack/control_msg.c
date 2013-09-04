@@ -31,9 +31,9 @@ extern FILE* HVN_debug_stream;
 /** The log level to write messages for. */
 extern HVN_loglevel HVN_debug_level;
 
-int HVN_clnt_proto_pack_control_msgpack(HVN_msg_client_control_t* data, \
-                                        size_t* len, \
-                                        char** msg)
+int HVN_proto_pack_control_msgpack(HVN_msg_client_control_t* data, \
+                                   size_t* len, \
+                                   char** msg)
 {
     msgpack_sbuffer sbuf;
     msgpack_sbuffer_init(&sbuf);
@@ -42,7 +42,7 @@ int HVN_clnt_proto_pack_control_msgpack(HVN_msg_client_control_t* data, \
     msgpack_packer_init(&pk, &sbuf, msgpack_sbuffer_write);
 
     msgpack_pack_array(&pk, 5);
-    msgpack_pack_uint16(&pk, HVN_CLNT_PROTO_MSG_TYPE_CONTROL);
+    msgpack_pack_uint16(&pk, HVN_PROTO_MSG_TYPE_CONTROL);
     msgpack_pack_uint16(&pk, data->action);
 
     msgpack_pack_raw(&pk, sizeof(data->uuid));
@@ -62,9 +62,9 @@ int HVN_clnt_proto_pack_control_msgpack(HVN_msg_client_control_t* data, \
     return HVN_SUCCESS;
 }
 
-int HVN_clnt_proto_unpack_control_msgpack(HVN_msg_client_control_t* data, \
-        size_t len, \
-        char* msg)
+int HVN_proto_unpack_control_msgpack(HVN_msg_client_control_t* data, \
+                                     size_t len, \
+                                     char* msg)
 {
     msgpack_unpacked unpacked;
     msgpack_unpacked_init(&unpacked);
@@ -98,7 +98,7 @@ int HVN_clnt_proto_unpack_control_msgpack(HVN_msg_client_control_t* data, \
         }
     }
 
-    if(msg_type != HVN_CLNT_PROTO_MSG_TYPE_CONTROL) {
+    if(msg_type != HVN_PROTO_MSG_TYPE_CONTROL) {
         LOG(HVN_LOG_ERR, "Unexpected msg type when unpacking a control message (%d).", msg_type);
         return HVN_ERROR;
     }
@@ -107,9 +107,9 @@ int HVN_clnt_proto_unpack_control_msgpack(HVN_msg_client_control_t* data, \
     return HVN_SUCCESS;
 }
 
-int HVN_clnt_proto_pack_control_resp_msgpack(HVN_msg_client_control_resp_t* data, \
-        size_t* len, \
-        char** msg)
+int HVN_proto_pack_control_resp_msgpack(HVN_msg_client_control_resp_t* data, \
+                                        size_t* len, \
+                                        char** msg)
 {
     msgpack_sbuffer sbuf;
     msgpack_sbuffer_init(&sbuf);
@@ -129,9 +129,9 @@ int HVN_clnt_proto_pack_control_resp_msgpack(HVN_msg_client_control_resp_t* data
     return HVN_SUCCESS;
 }
 
-int HVN_clnt_proto_unpack_control_resp_msgpack(HVN_msg_client_control_resp_t* data, \
-        size_t len, \
-        char* msg)
+int HVN_proto_unpack_control_resp_msgpack(HVN_msg_client_control_resp_t* data, \
+                                          size_t len, \
+                                          char* msg)
 {
     HVN_INTENTIONALLY_UNUSED_VARIABLE(data);
     HVN_INTENTIONALLY_UNUSED_VARIABLE(len);
@@ -140,16 +140,16 @@ int HVN_clnt_proto_unpack_control_resp_msgpack(HVN_msg_client_control_resp_t* da
     return HVN_ERROR;
 }
 
-int HVN_clnt_proto_pack_control(HVN_msg_client_control_t* data, \
-                                int scheme, \
-                                size_t* len, \
-                                char** msg)
+int HVN_proto_pack_control(HVN_msg_client_control_t* data, \
+                           int scheme, \
+                           size_t* len, \
+                           char** msg)
 {
     int result;
 
     switch(scheme) {
-        case HVN_CLNT_PROTO_PACK_TYPE_MSGPACK:
-            result = HVN_clnt_proto_pack_control_msgpack(data, len, msg);
+        case HVN_PROTO_PACK_TYPE_MSGPACK:
+            result = HVN_proto_pack_control_msgpack(data, len, msg);
             break;
         default:
             LOG(HVN_LOG_WARN, "Pack scheme `%d' not recognized.", scheme);
@@ -159,7 +159,7 @@ int HVN_clnt_proto_pack_control(HVN_msg_client_control_t* data, \
     return result;
 }
 
-int HVN_clnt_proto_unpack_control(HVN_msg_client_control_t* data, \
+int HVN_proto_unpack_control(HVN_msg_client_control_t* data, \
                                   int scheme, \
                                   size_t len, \
                                   char* msg)
@@ -167,8 +167,8 @@ int HVN_clnt_proto_unpack_control(HVN_msg_client_control_t* data, \
     int result;
 
     switch(scheme) {
-        case HVN_CLNT_PROTO_PACK_TYPE_MSGPACK:
-            result = HVN_clnt_proto_unpack_control_msgpack(data, len, msg);
+        case HVN_PROTO_PACK_TYPE_MSGPACK:
+            result = HVN_proto_unpack_control_msgpack(data, len, msg);
             break;
         default:
             LOG(HVN_LOG_WARN, "Unpack scheme `%d' not recognized.", scheme);
@@ -178,7 +178,7 @@ int HVN_clnt_proto_unpack_control(HVN_msg_client_control_t* data, \
     return result;
 }
 
-int HVN_clnt_proto_pack_control_resp(HVN_msg_client_control_resp_t* data, \
+int HVN_proto_pack_control_resp(HVN_msg_client_control_resp_t* data, \
                                      int scheme, \
                                      size_t* len, \
                                      char** msg)
@@ -186,8 +186,8 @@ int HVN_clnt_proto_pack_control_resp(HVN_msg_client_control_resp_t* data, \
     int result;
 
     switch(scheme) {
-        case HVN_CLNT_PROTO_PACK_TYPE_MSGPACK:
-            result = HVN_clnt_proto_pack_control_resp_msgpack(data, len, msg);
+        case HVN_PROTO_PACK_TYPE_MSGPACK:
+            result = HVN_proto_pack_control_resp_msgpack(data, len, msg);
             break;
         default:
             LOG(HVN_LOG_WARN, "Pack scheme `%d' not recognized.", scheme);
@@ -197,7 +197,7 @@ int HVN_clnt_proto_pack_control_resp(HVN_msg_client_control_resp_t* data, \
     return result;
 }
 
-int HVN_clnt_proto_unpack_control_resp(HVN_msg_client_control_resp_t* data, \
+int HVN_proto_unpack_control_resp(HVN_msg_client_control_resp_t* data, \
                                        int scheme, \
                                        size_t len, \
                                        char* msg)
@@ -205,8 +205,8 @@ int HVN_clnt_proto_unpack_control_resp(HVN_msg_client_control_resp_t* data, \
     int result;
 
     switch(scheme) {
-        case HVN_CLNT_PROTO_PACK_TYPE_MSGPACK:
-            result = HVN_clnt_proto_unpack_control_resp_msgpack(data, len, msg);
+        case HVN_PROTO_PACK_TYPE_MSGPACK:
+            result = HVN_proto_unpack_control_resp_msgpack(data, len, msg);
             break;
         default:
             LOG(HVN_LOG_WARN, "Unpack scheme `%d' not recognized.", scheme);
@@ -227,9 +227,9 @@ int HVN_proto_receive_control_msg(int fd, \
         return HVN_ERROR;
     }
 
-    if(HVN_clnt_proto_unpack(HVN_CLNT_PROTO_MSG_TYPE_CONTROL, \
-                             HVN_CLNT_PROTO_PACK_TYPE_MSGPACK, \
-                             control_msg_data, len, msg) != HVN_SUCCESS) {
+    if(HVN_proto_unpack(HVN_PROTO_MSG_TYPE_CONTROL, \
+                        HVN_PROTO_PACK_TYPE_MSGPACK, \
+                        control_msg_data, len, msg) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to unpack a control message.");
         return HVN_ERROR;
     }
@@ -244,9 +244,9 @@ int HVN_proto_send_control_resp_msg(int fd)
     size_t len = 0;
     char* msg;
 
-    if(HVN_clnt_proto_pack(HVN_CLNT_PROTO_MSG_TYPE_CONTROL_R, \
-                           HVN_CLNT_PROTO_PACK_TYPE_MSGPACK, \
-                           &control_resp_msg_data, &len, &msg) != HVN_SUCCESS) {
+    if(HVN_proto_pack(HVN_PROTO_MSG_TYPE_CONTROL_R, \
+                      HVN_PROTO_PACK_TYPE_MSGPACK, \
+                      &control_resp_msg_data, &len, &msg) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to pack a control message response.");
         return HVN_ERROR;
     }
