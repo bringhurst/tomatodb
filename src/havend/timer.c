@@ -44,9 +44,16 @@ void HVN_timer_task(HVN_timer_t* timer)
 
     while(timercmp(remaining_p, zero, >)) {
         timerclear(elapsed);
-        HVN_timer_timeval_add_ms(elapsed, taskdelay((remaining_p->tv_sec * 1000) + (remaining_p->tv_usec / 1000)));
+        HVN_timer_timeval_add_ms(elapsed, taskdelay(\
+                                 (remaining_p->tv_sec * 1000) + \
+                                 (remaining_p->tv_usec / 1000)));
 
-        //FIXME: needs fresh memory?
+        if(timer->die == true) {
+            LOG(HVN_LOG_DBG, "A dead timer has expired.");
+            taskexit(HVN_SUCCESS);
+        }
+
+        //FIXME: needs fresh memory to store the result?
         timersub(remaining_p, elapsed, remaining_p);
 
         while((increment_by = chanrecvp(timer->chan_increment)) != NULL) {
@@ -54,17 +61,12 @@ void HVN_timer_task(HVN_timer_t* timer)
         }
 
         if(timerisset(remaining_p) == 0) {
-            // The timer has expired.
-            if(timer->die == true) {
-                LOG(HVN_LOG_DBG, "A dead timer has expired.");
-                taskexit(HVN_SUCCESS);
-            } else {
-                LOG(HVN_LOG_DBG, "A live timer has expired. Executing callback.");
-                (*(timer->cb))(timer->arg);
-                taskexit(HVN_SUCCESS);
-            }
+            LOG(HVN_LOG_DBG, "A live timer has expired. Executing callback and exiting timer task.");
+            (*(timer->cb))(timer->arg);
+            taskexit(HVN_SUCCESS);
         }
 
+        // Don't let the remaining time surpass the max time.
         if(timercmp(remaining_p, max_p, >)) {
             remaining_p->tv_sec = max_p->tv_sec;
             remaining_p->tv_usec = max_p->tv_usec;
