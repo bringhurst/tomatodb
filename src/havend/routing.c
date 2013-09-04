@@ -152,7 +152,7 @@ void HVN_routing_task(HVN_router_t* router)
             HVN_replica_init(&new_replica);
 
             if(HVN_bootstrap_leader(new_replica, router->ctx, \
-                                            &new_uuid, control_msg_data.path) == HVN_SUCCESS) {
+                                    &new_uuid, control_msg_data.path) == HVN_SUCCESS) {
                 uuid_unparse(new_uuid, new_uuid_string);
                 LOG(HVN_LOG_ERR, "Quorum leader created with UUID `%s'.", new_uuid_string);
                 //TODO: return uuid to requestor?
@@ -167,7 +167,7 @@ void HVN_routing_task(HVN_router_t* router)
             HVN_replica_init(&new_replica);
 
             if(HVN_bootstrap_location(new_replica, router->ctx, \
-                                              &new_uuid) == HVN_SUCCESS) {
+                                      &new_uuid) == HVN_SUCCESS) {
                 uuid_unparse(new_uuid, new_uuid_string);
                 LOG(HVN_LOG_ERR, "Location quorum leader created with UUID `%s'.", new_uuid_string);
                 //TODO: return uuid to requestor?
