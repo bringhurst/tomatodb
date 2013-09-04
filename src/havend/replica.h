@@ -31,7 +31,9 @@
 typedef struct HVN_replica_t {
     HVN_db_t* db;
     HVN_ctx_t* ctx;
+
     HVN_timer_t* timer;
+    struct timeval* timeout;
 
     Channel* data_chan_in;
     Channel* vote_chan_in;
