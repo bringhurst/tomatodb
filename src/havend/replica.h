@@ -21,6 +21,7 @@
 
 #include "context.h"
 #include "task/task.h"
+#include "timer.h"
 #include "ut/uthash.h"
 
 #define HVN_REPLICA_STACK_SIZE 32768
@@ -30,10 +31,7 @@
 typedef struct HVN_replica_t {
     HVN_db_t* db;
     HVN_ctx_t* ctx;
-    uuid_t uuid;
-
-    uint64_t current_term;
-    uint64_t last_log_index;
+    HVN_timer_t* timer;
 
     Channel* data_chan_in;
     Channel* vote_chan_in;
@@ -44,6 +42,12 @@ typedef struct HVN_replica_t {
     Channel* append_chan_out;
 
     UT_array* foreign_replicas;
+
+    uuid_t uuid;
+
+    uint64_t current_term;
+    uint64_t last_log_index;
+
     UT_hash_handle hh;
 } HVN_replica_t;
 

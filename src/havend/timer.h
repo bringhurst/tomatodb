@@ -42,6 +42,7 @@ int HVN_timer_init(HVN_timer_t** timer, \
                    int channel_backlog, \
                    void (*func)(void* arg), \
                    void* arg);
+
 void HVN_timer_free(HVN_timer_t* timer);
 
 void HVN_timer_die(HVN_timer_t* timer);
