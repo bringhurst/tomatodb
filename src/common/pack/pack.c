@@ -21,9 +21,11 @@
 
 #include "pack.h"
 
+#include "append_msg.h"
 #include "connect_msg.h"
 #include "control_msg.h"
 #include "data_msg.h"
+#include "vote_msg.h"
 
 /** The debug stream to write log messages to. */
 extern FILE* HVN_debug_stream;

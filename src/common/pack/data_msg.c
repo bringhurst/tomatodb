@@ -31,9 +31,9 @@ extern FILE* HVN_debug_stream;
 /** The log level to write messages for. */
 extern HVN_loglevel HVN_debug_level;
 
-int HVN_clnt_proto_pack_data_msgpack(HVN_msg_client_data_t* data, \
-                                        size_t* len, \
-                                        char** msg)
+int HVN_proto_pack_data_msgpack(HVN_msg_client_data_t* data, \
+                                size_t* len, \
+                                char** msg)
 {
     msgpack_sbuffer sbuf;
     msgpack_sbuffer_init(&sbuf);
@@ -42,7 +42,7 @@ int HVN_clnt_proto_pack_data_msgpack(HVN_msg_client_data_t* data, \
     msgpack_packer_init(&pk, &sbuf, msgpack_sbuffer_write);
 
     msgpack_pack_array(&pk, 5);
-    msgpack_pack_uint16(&pk, HVN_CLNT_PROTO_MSG_TYPE_DATA);
+    msgpack_pack_uint16(&pk, HVN_PROTO_MSG_TYPE_DATA);
     msgpack_pack_uint16(&pk, data->action);
 
     // TODO: pack the rest of the struct.
@@ -58,9 +58,9 @@ int HVN_clnt_proto_pack_data_msgpack(HVN_msg_client_data_t* data, \
     return HVN_SUCCESS;
 }
 
-int HVN_clnt_proto_unpack_data_msgpack(HVN_msg_client_data_t* data, \
-        size_t len, \
-        char* msg)
+int HVN_proto_unpack_data_msgpack(HVN_msg_client_data_t* data, \
+                                  size_t len, \
+                                  char* msg)
 {
     msgpack_unpacked unpacked;
     msgpack_unpacked_init(&unpacked);
@@ -91,7 +91,7 @@ int HVN_clnt_proto_unpack_data_msgpack(HVN_msg_client_data_t* data, \
         }
     }
 
-    if(msg_type != HVN_CLNT_PROTO_MSG_TYPE_DATA) {
+    if(msg_type != HVN_PROTO_MSG_TYPE_DATA) {
         LOG(HVN_LOG_ERR, "Unexpected msg type when unpacking a data message (%d).", msg_type);
         return HVN_ERROR;
     }
@@ -100,9 +100,9 @@ int HVN_clnt_proto_unpack_data_msgpack(HVN_msg_client_data_t* data, \
     return HVN_SUCCESS;
 }
 
-int HVN_clnt_proto_pack_data_resp_msgpack(HVN_msg_client_data_resp_t* data, \
-        size_t* len, \
-        char** msg)
+int HVN_proto_pack_data_resp_msgpack(HVN_msg_client_data_resp_t* data, \
+                                     size_t* len, \
+                                     char** msg)
 {
     msgpack_sbuffer sbuf;
     msgpack_sbuffer_init(&sbuf);
@@ -122,9 +122,9 @@ int HVN_clnt_proto_pack_data_resp_msgpack(HVN_msg_client_data_resp_t* data, \
     return HVN_SUCCESS;
 }
 
-int HVN_clnt_proto_unpack_data_resp_msgpack(HVN_msg_client_data_resp_t* data, \
-        size_t len, \
-        char* msg)
+int HVN_proto_unpack_data_resp_msgpack(HVN_msg_client_data_resp_t* data, \
+                                       size_t len, \
+                                       char* msg)
 {
     HVN_INTENTIONALLY_UNUSED_VARIABLE(data);
     HVN_INTENTIONALLY_UNUSED_VARIABLE(len);
@@ -133,16 +133,16 @@ int HVN_clnt_proto_unpack_data_resp_msgpack(HVN_msg_client_data_resp_t* data, \
     return HVN_ERROR;
 }
 
-int HVN_clnt_proto_pack_data(HVN_msg_client_data_t* data, \
-                                int scheme, \
-                                size_t* len, \
-                                char** msg)
+int HVN_proto_pack_data(HVN_msg_client_data_t* data, \
+                        int scheme, \
+                        size_t* len, \
+                        char** msg)
 {
     int result;
 
     switch(scheme) {
-        case HVN_CLNT_PROTO_PACK_TYPE_MSGPACK:
-            result = HVN_clnt_proto_pack_data_msgpack(data, len, msg);
+        case HVN_PROTO_PACK_TYPE_MSGPACK:
+            result = HVN_proto_pack_data_msgpack(data, len, msg);
             break;
         default:
             LOG(HVN_LOG_WARN, "Pack scheme `%d' not recognized.", scheme);
@@ -152,16 +152,16 @@ int HVN_clnt_proto_pack_data(HVN_msg_client_data_t* data, \
     return result;
 }
 
-int HVN_clnt_proto_unpack_data(HVN_msg_client_data_t* data, \
-                                  int scheme, \
-                                  size_t len, \
-                                  char* msg)
+int HVN_proto_unpack_data(HVN_msg_client_data_t* data, \
+                          int scheme, \
+                          size_t len, \
+                          char* msg)
 {
     int result;
 
     switch(scheme) {
-        case HVN_CLNT_PROTO_PACK_TYPE_MSGPACK:
-            result = HVN_clnt_proto_unpack_data_msgpack(data, len, msg);
+        case HVN_PROTO_PACK_TYPE_MSGPACK:
+            result = HVN_proto_unpack_data_msgpack(data, len, msg);
             break;
         default:
             LOG(HVN_LOG_WARN, "Unpack scheme `%d' not recognized.", scheme);
@@ -171,7 +171,7 @@ int HVN_clnt_proto_unpack_data(HVN_msg_client_data_t* data, \
     return result;
 }
 
-int HVN_clnt_proto_pack_data_resp(HVN_msg_client_data_resp_t* data, \
+int HVN_proto_pack_data_resp(HVN_msg_client_data_resp_t* data, \
                                      int scheme, \
                                      size_t* len, \
                                      char** msg)
@@ -179,8 +179,8 @@ int HVN_clnt_proto_pack_data_resp(HVN_msg_client_data_resp_t* data, \
     int result;
 
     switch(scheme) {
-        case HVN_CLNT_PROTO_PACK_TYPE_MSGPACK:
-            result = HVN_clnt_proto_pack_data_resp_msgpack(data, len, msg);
+        case HVN_PROTO_PACK_TYPE_MSGPACK:
+            result = HVN_proto_pack_data_resp_msgpack(data, len, msg);
             break;
         default:
             LOG(HVN_LOG_WARN, "Pack scheme `%d' not recognized.", scheme);
@@ -190,7 +190,7 @@ int HVN_clnt_proto_pack_data_resp(HVN_msg_client_data_resp_t* data, \
     return result;
 }
 
-int HVN_clnt_proto_unpack_data_resp(HVN_msg_client_data_resp_t* data, \
+int HVN_proto_unpack_data_resp(HVN_msg_client_data_resp_t* data, \
                                        int scheme, \
                                        size_t len, \
                                        char* msg)
@@ -198,8 +198,8 @@ int HVN_clnt_proto_unpack_data_resp(HVN_msg_client_data_resp_t* data, \
     int result;
 
     switch(scheme) {
-        case HVN_CLNT_PROTO_PACK_TYPE_MSGPACK:
-            result = HVN_clnt_proto_unpack_data_resp_msgpack(data, len, msg);
+        case HVN_PROTO_PACK_TYPE_MSGPACK:
+            result = HVN_proto_unpack_data_resp_msgpack(data, len, msg);
             break;
         default:
             LOG(HVN_LOG_WARN, "Unpack scheme `%d' not recognized.", scheme);
@@ -220,9 +220,9 @@ int HVN_proto_receive_data_msg(int fd, \
         return HVN_ERROR;
     }
 
-    if(HVN_clnt_proto_unpack(HVN_CLNT_PROTO_MSG_TYPE_DATA, \
-                             HVN_CLNT_PROTO_PACK_TYPE_MSGPACK, \
-                             data_msg_data, len, msg) != HVN_SUCCESS) {
+    if(HVN_proto_unpack(HVN_PROTO_MSG_TYPE_DATA, \
+                        HVN_PROTO_PACK_TYPE_MSGPACK, \
+                        data_msg_data, len, msg) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to unpack a data message.");
         return HVN_ERROR;
     }
@@ -237,9 +237,9 @@ int HVN_proto_send_data_resp_msg(int fd)
     size_t len = 0;
     char* msg;
 
-    if(HVN_clnt_proto_pack(HVN_CLNT_PROTO_MSG_TYPE_DATA_R, \
-                           HVN_CLNT_PROTO_PACK_TYPE_MSGPACK, \
-                           &data_resp_msg_data, &len, &msg) != HVN_SUCCESS) {
+    if(HVN_proto_pack(HVN_PROTO_MSG_TYPE_DATA_R, \
+                      HVN_PROTO_PACK_TYPE_MSGPACK, \
+                      &data_resp_msg_data, &len, &msg) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to pack a data message response.");
         return HVN_ERROR;
     }
@@ -256,25 +256,25 @@ int HVN_proto_send_data_resp_msg(int fd)
 void HVN_proto_print_data_msg(HVN_msg_client_data_t* data)
 {
     switch(data->action) {
-        case HVN_CLNT_PROTO_DATA_VERB_READ:
+        case HVN_PROTO_DATA_VERB_READ:
             LOG(HVN_LOG_DBG, "Data message type is `read'.");
             break;
-        case HVN_CLNT_PROTO_DATA_VERB_WRITE:
+        case HVN_PROTO_DATA_VERB_WRITE:
             LOG(HVN_LOG_DBG, "Data message type is `write'.");
             break;
-        case HVN_CLNT_PROTO_DATA_VERB_DELETE:
+        case HVN_PROTO_DATA_VERB_DELETE:
             LOG(HVN_LOG_DBG, "Data message type is `delete'.");
             break;
 
-        case HVN_CLNT_PROTO_DATA_VERB_WATCH:
+        case HVN_PROTO_DATA_VERB_WATCH:
             LOG(HVN_LOG_DBG, "Data message type is `watch'.");
             break;
 
-        case HVN_CLNT_PROTO_DATA_VERB_UNWATCH:
+        case HVN_PROTO_DATA_VERB_UNWATCH:
             LOG(HVN_LOG_DBG, "Data message type is `unwatch'.");
             break;
 
-        case HVN_CLNT_PROTO_DATA_TRANSACTION:
+        case HVN_PROTO_DATA_TRANSACTION:
             LOG(HVN_LOG_DBG, "Data message type is `transaction'.");
             break;
         default:
@@ -283,16 +283,16 @@ void HVN_proto_print_data_msg(HVN_msg_client_data_t* data)
     }
 
     switch(data->mode) {
-        case HVN_CLNT_PROTO_DATA_MODE_RW:
+        case HVN_PROTO_DATA_MODE_RW:
             LOG(HVN_LOG_DBG, "Data message mode is `read-write'.");
             break;
-        case HVN_CLNT_PROTO_DATA_MODE_RO:
+        case HVN_PROTO_DATA_MODE_RO:
             LOG(HVN_LOG_DBG, "Data message mode is `read-only'.");
             break;
-        case HVN_CLNT_PROTO_DATA_MODE_RB:
+        case HVN_PROTO_DATA_MODE_RB:
             LOG(HVN_LOG_DBG, "Data message mode is `read-bounded'.");
             break;
-        case HVN_CLNT_PROTO_DATA_MODE_RT:
+        case HVN_PROTO_DATA_MODE_RT:
             LOG(HVN_LOG_DBG, "Data message mode is `read-timestamp'.");
             break;
         default:

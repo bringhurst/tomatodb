@@ -19,6 +19,8 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
+#include <stdbool.h>
+#include <stdint.h>
 #include <uuid/uuid.h>
 
 #include "ut/utarray.h"
