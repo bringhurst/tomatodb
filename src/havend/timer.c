@@ -51,6 +51,8 @@ void HVN_timer_task(HVN_timer_t* timer)
         if(timer->die == true) {
             LOG(HVN_LOG_DBG, "A dead timer has expired.");
             HVN_timer_free(timer);
+            free(zero);
+            free(elapsed);
             taskexit(HVN_SUCCESS);
         }
 
@@ -64,6 +66,9 @@ void HVN_timer_task(HVN_timer_t* timer)
         if(timerisset(remaining_p) == 0) {
             LOG(HVN_LOG_DBG, "A live timer has expired. Executing callback and exiting timer task.");
             (*(timer->cb))(timer->arg);
+            HVN_timer_free(timer);
+            free(zero);
+            free(elapsed);
             taskexit(HVN_SUCCESS);
         }
 
@@ -74,6 +79,7 @@ void HVN_timer_task(HVN_timer_t* timer)
         }
     }
 
+    HVN_timer_free(timer);
     free(zero);
     free(elapsed);
 }
