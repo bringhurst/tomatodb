@@ -16,6 +16,8 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
+#include <stdlib.h>
+
 #include "log.h"
 #include "timer.h"
 

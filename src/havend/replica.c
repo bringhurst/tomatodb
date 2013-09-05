@@ -47,15 +47,16 @@ int HVN_replica_follower(HVN_replica_t* replica)
         return HVN_ERROR;
     }
 
-    HVN_timer_start(replica->election_timer, default_follower_timeout);
+    HVN_timer_reset(replica->election_timer, default_follower_timeout);
 
+    // TODO: implement the following switch statement (described in the TODOs below).
+    // switch(alt(alts)) {
+    //     case VOTE
+    //     case APPEND
+    //     case TIMEOUT
+    //     case SHUTDOWN
 
-, replica->election_timeout, \
-                      HVN_TIMER_CHANNEL_BACKLOG, (void (*)(void *)) HVN_replica_follower_handle_timeout, \
-                      (void*) replica) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Could not create an election timer for this follower replica.");
-        return HVN_ERROR;
-    }
+    // TODO: Switch on chan alt array.
 
     // TODO: Respond to RPCs from candidates and leaders.
 
