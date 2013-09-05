@@ -18,6 +18,7 @@
 
 #include <stdlib.h>
 
+#include "common.h"
 #include "log.h"
 #include "timer.h"
 
@@ -31,10 +32,16 @@ int HVN_timer_init(HVN_timer_t** timer)
 {
     *timer = (HVN_timer_t*) malloc(sizeof(HVN_timer_t));
 
-    (*timer)->c = chancreate(sizeof(uint32_t), HVN_TIMER_CHANNEL_BACKLOG);
+    if(*timer == NULL) {
+        LOG(HVN_LOG_ERR, "Failed to allocate a new timer.");
+        return HVN_ERROR;
+    }
+
+    (*timer)->c = chancreate(sizeof(HVN_timer_t*), HVN_TIMER_CHANNEL_BACKLOG);
     (*timer)->cancel = false;
 
     taskcreate((void (*)(void *)) HVN_timer_task, *timer, HVN_TIMER_STACK_SIZE);
+    return HVN_SUCCESS;
 }
 
 void HVN_timer_task(HVN_timer_t* timer)
@@ -44,17 +51,27 @@ void HVN_timer_task(HVN_timer_t* timer)
 
 void HVN_timer_reset(HVN_timer_t* timer, uint32_t ms)
 {
-
+    HVN_timer_t* nt = (HVN_timer_t*) malloc(sizeof(HVN_timer_t));
+    nt->r = ms;
+    chansendp(timer->c, nt);
 }
 
 void HVN_timer_cancel(HVN_timer_t* timer)
 {
-
+    HVN_timer_t* nt = (HVN_timer_t*) malloc(sizeof(HVN_timer_t));
+    nt->cancel = true;
+    chansendp(timer->c, nt);
 }
 
 void HVN_timer_free(HVN_timer_t* timer)
 {
+    HVN_timer_t* tmp = NULL;
 
+    while((tmp = timer->t)) {
+        chanfree(timer->c);
+        free(timer);
+        timer = tmp;
+    }
 }
 
 /* EOF */

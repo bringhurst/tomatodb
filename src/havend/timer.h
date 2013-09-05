@@ -29,7 +29,7 @@
 
 typedef struct HVN_timer_t {
     Channel* c;
-    unsigned int r;
+    uint32_t r;
     struct HVN_timer_t* t;
     bool cancel;
 } HVN_timer_t;
@@ -37,7 +37,7 @@ typedef struct HVN_timer_t {
 int HVN_timer_init(HVN_timer_t** timer);
 void HVN_timer_task(HVN_timer_t* timer);
 
-void HVN_timer_reset(HVN_timer_t* timer, unsigned int ms);
+void HVN_timer_reset(HVN_timer_t* timer, uint32_t ms);
 void HVN_timer_cancel(HVN_timer_t* timer);
 
 void HVN_timer_free(HVN_timer_t* timer);
