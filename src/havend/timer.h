@@ -28,7 +28,8 @@
 #define HVN_TIMER_CHANNEL_BACKLOG  10
 
 typedef struct HVN_timer_t {
-    Channel* c;
+    Channel* timer_chan;
+    Channel* alarm_chan;
     uint32_t r;
     struct HVN_timer_t* t;
     bool cancel;

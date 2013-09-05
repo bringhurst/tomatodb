@@ -37,8 +37,10 @@ int HVN_timer_init(HVN_timer_t** timer)
         return HVN_ERROR;
     }
 
-    (*timer)->c = chancreate(sizeof(HVN_timer_t*), HVN_TIMER_CHANNEL_BACKLOG);
     (*timer)->cancel = false;
+
+    (*timer)->timer_chan = chancreate(sizeof(HVN_timer_t*), HVN_TIMER_CHANNEL_BACKLOG);
+    (*timer)->alarm_chan = chancreate(sizeof(HVN_timer_t*), HVN_TIMER_CHANNEL_BACKLOG);
 
     taskcreate((void (*)(void *)) HVN_timer_task, *timer, HVN_TIMER_STACK_SIZE);
     return HVN_SUCCESS;
@@ -46,7 +48,33 @@ int HVN_timer_init(HVN_timer_t** timer)
 
 void HVN_timer_task(HVN_timer_t* timer)
 {
-    // receive all from channel and append to list.
+    HVN_timer_t* nt = NULL;
+    bool cancel = false;
+
+    int remaining_time = 0;
+    int elapsed_time = 0;
+
+    for(;;) {
+        while((nt = chanrecvp(timer->timer_chan))) {
+            nt->t = timer->t;
+            timer->t = nt;
+            if(timer->t->cancel == true) {
+                LOG(HVN_LOG_DBG, "A timer was canceled.");
+                HVN_timer_free(timer);
+                break;
+            }
+        }
+
+        if(timer->t) {
+            elapsed_time = taskdelay(timer->t->r);
+
+            //while
+        } else {
+            LOG(HVN_LOG_DBG, "A timer was triggered. Sending alarm.");
+            // TODO: Fire alarm here, no time is remaining.
+            break;
+        }
+    }
 }
 
 void HVN_timer_reset(HVN_timer_t* timer, uint32_t ms)
@@ -54,8 +82,7 @@ void HVN_timer_reset(HVN_timer_t* timer, uint32_t ms)
     HVN_timer_t* nt = (HVN_timer_t*) malloc(sizeof(HVN_timer_t));
     nt->r = ms;
     nt->cancel = false;
-
-    chansendp(timer->c, nt);
+    chansendp(timer->timer_chan, nt);
 }
 
 void HVN_timer_cancel(HVN_timer_t* timer)
@@ -63,7 +90,7 @@ void HVN_timer_cancel(HVN_timer_t* timer)
     HVN_timer_t* nt = (HVN_timer_t*) malloc(sizeof(HVN_timer_t));
     nt->r = 0;
     nt->cancel = true;
-    chansendp(timer->c, nt);
+    chansendp(timer->timer_chan, nt);
 }
 
 void HVN_timer_free(HVN_timer_t* timer)
@@ -71,12 +98,14 @@ void HVN_timer_free(HVN_timer_t* timer)
     HVN_timer_t* tmp = NULL;
 
     while((tmp = timer->t)) {
-        chanfree(timer->c);
+        chanfree(timer->timer_chan);
+        chanfree(timer->alarm_chan);
         free(timer);
         timer = tmp;
     }
     if(timer) {
-        chanfree(timer->c);
+        chanfree(timer->timer_chan);
+        chanfree(timer->alarm_chan);
         free(timer);
     }
 }
