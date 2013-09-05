@@ -27,15 +27,18 @@
 #define HVN_TIMER_STACK_SIZE       32768
 #define HVN_TIMER_CHANNEL_BACKLOG  10
 
+#define HVN_TIMER_ALARM_MAGIC      0xDEADBEEF
+
 typedef struct HVN_timer_t {
     Channel* timer_chan;
     Channel* alarm_chan;
     uint32_t r;
-    struct HVN_timer_t* t;
+    struct HVN_timer_t* next;
     bool cancel;
 } HVN_timer_t;
 
 int HVN_timer_init(HVN_timer_t** timer);
+void HVN_timer_start(HVN_timer_t* timer);
 void HVN_timer_task(HVN_timer_t* timer);
 
 void HVN_timer_reset(HVN_timer_t* timer, uint32_t ms);

@@ -42,39 +42,57 @@ int HVN_timer_init(HVN_timer_t** timer)
     (*timer)->timer_chan = chancreate(sizeof(HVN_timer_t*), HVN_TIMER_CHANNEL_BACKLOG);
     (*timer)->alarm_chan = chancreate(sizeof(HVN_timer_t*), HVN_TIMER_CHANNEL_BACKLOG);
 
-    taskcreate((void (*)(void *)) HVN_timer_task, *timer, HVN_TIMER_STACK_SIZE);
     return HVN_SUCCESS;
+}
+
+void HVN_timer_start(HVN_timer_t* timer)
+{
+    taskcreate((void (*)(void *)) HVN_timer_task, (void*) timer, HVN_TIMER_STACK_SIZE);
 }
 
 void HVN_timer_task(HVN_timer_t* timer)
 {
     HVN_timer_t* nt = NULL;
+    HVN_timer_t* xt = NULL;
     bool cancel = false;
 
-    int remaining_time = 0;
+    int old_time = 0;
     int elapsed_time = 0;
 
     for(;;) {
         while((nt = chanrecvp(timer->timer_chan))) {
-            nt->t = timer->t;
-            timer->t = nt;
-            if(timer->t->cancel == true) {
-                LOG(HVN_LOG_DBG, "A timer was canceled.");
+            nt->next = timer->next;
+            timer->next = nt;
+            if(timer->next->cancel == true) {
+                LOG(HVN_LOG_DBG, "A timer was canceled. Exiting timer task.");
                 HVN_timer_free(timer);
                 break;
             }
         }
 
-        if(timer->t) {
-            elapsed_time = taskdelay(timer->t->r);
+        if(timer->next) {
+            elapsed_time = taskdelay(timer->next->r);
 
-            //while
+            nt = timer;
+            while((nt = nt->next)) {
+                old_time = nt->r;
+                nt->r -= elapsed_time;
+
+                if(nt->r - old_time > 0) {
+                    // nt->r wrapped around, so let's remove nt from timer->t.
+                    xt = nt->next;
+                    free(xt);
+                    timer->next = xt;
+                }
+            }
         } else {
-            LOG(HVN_LOG_DBG, "A timer was triggered. Sending alarm.");
-            // TODO: Fire alarm here, no time is remaining.
+            LOG(HVN_LOG_DBG, "A timer was triggered. Sending alarm, then exiting timer task.");
+            chansendul(timer->alarm_chan, HVN_TIMER_ALARM_MAGIC);
             break;
         }
     }
+
+    taskexit(EXIT_SUCCESS);
 }
 
 void HVN_timer_reset(HVN_timer_t* timer, uint32_t ms)
@@ -97,7 +115,7 @@ void HVN_timer_free(HVN_timer_t* timer)
 {
     HVN_timer_t* tmp = NULL;
 
-    while((tmp = timer->t)) {
+    while((tmp = timer->next)) {
         chanfree(timer->timer_chan);
         chanfree(timer->alarm_chan);
         free(timer);
