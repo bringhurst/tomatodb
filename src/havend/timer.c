@@ -53,8 +53,7 @@ void HVN_timer_start(HVN_timer_t* timer)
 void HVN_timer_task(HVN_timer_t* timer)
 {
     HVN_timer_t* nt = NULL;
-    HVN_timer_t* xt = NULL;
-    bool cancel = false;
+    HVN_timer_t* pt = NULL;
 
     int old_time = 0;
     int elapsed_time = 0;
@@ -74,16 +73,19 @@ void HVN_timer_task(HVN_timer_t* timer)
             elapsed_time = taskdelay(timer->next->r);
 
             nt = timer;
+            pt = timer;
+
             while((nt = nt->next)) {
                 old_time = nt->r;
                 nt->r -= elapsed_time;
 
                 if(nt->r - old_time > 0) {
                     // nt->r wrapped around, so let's remove nt from timer->t.
-                    xt = nt->next;
-                    free(xt);
-                    timer->next = xt;
+                    pt->next = nt->next;
+                    free(nt);
+                    nt = pt->next;
                 }
+                pt = nt;
             }
         } else {
             LOG(HVN_LOG_DBG, "A timer was triggered. Sending alarm, then exiting timer task.");

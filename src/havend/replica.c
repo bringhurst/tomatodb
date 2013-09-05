@@ -48,6 +48,7 @@ int HVN_replica_follower(HVN_replica_t* replica)
     }
 
     HVN_timer_reset(replica->election_timer, default_follower_timeout);
+    HVN_timer_start(replica->election_timer);
 
     // TODO: implement the following switch statement (described in the TODOs below).
     // switch(alt(alts)) {
