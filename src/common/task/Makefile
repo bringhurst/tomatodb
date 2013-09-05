@@ -67,7 +67,7 @@ CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 libhaven_common_task_la_LIBADD =
 am_libhaven_common_task_la_OBJECTS = asm.lo channel.lo context.lo \
-	fd.lo net.lo print.lo qlock.lo rendez.lo task.lo
+	fd.lo net.lo print.lo qlock.lo rendez.lo task.lo timer.lo
 libhaven_common_task_la_OBJECTS =  \
 	$(am_libhaven_common_task_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
@@ -270,7 +270,8 @@ libhaven_common_task_la_SOURCES = \
                                   print.c \
                                   qlock.c \
                                   rendez.c \
-                                  task.c
+                                  task.c \
+                                  timer.c
 
 all: all-am
 
@@ -333,6 +334,7 @@ include ./$(DEPDIR)/print.Plo
 include ./$(DEPDIR)/qlock.Plo
 include ./$(DEPDIR)/rendez.Plo
 include ./$(DEPDIR)/task.Plo
+include ./$(DEPDIR)/timer.Plo
 
 .S.o:
 	$(AM_V_CPPAS)$(CPPASCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
