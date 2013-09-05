@@ -117,15 +117,20 @@ int HVN_replica_leader(HVN_replica_t* replica)
 
 void HVN_replica_follower_handle_timeout(HVN_replica_t* replica) {
     *(replica->target_role) = HVN_CONSENSUS_MD_STATE_CANDIDATE;
+
+    //TODO: send messages to replica->*_chan to tell it to shut down?
 }
 
 void HVN_replica_candidate_handle_timeout(HVN_replica_t* replica) {
     //TODO: increment term
     *(replica->target_role) = HVN_CONSENSUS_MD_STATE_CANDIDATE;
+
+    //TODO: send messages to replica->*_chan to tell it to shut down?
 }
 
 void HVN_replica_leader_handle_timeout(HVN_replica_t* replica) {
     //TODO: send empty append messages to replicas.
+    //TODO: step down if current term changes.
 }
 
 int HVN_replica_persist_state(HVN_replica_t* replica, \
