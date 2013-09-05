@@ -24,7 +24,8 @@
 
 #include "task/task.h"
 
-#define HVN_TIMER_STACK_SIZE  (32768)
+#define HVN_TIMER_STACK_SIZE       32768
+#define HVN_TIMER_CHANNEL_BACKLOG  50
 
 typedef struct HVN_timer_t {
     Channel* chan_increment;

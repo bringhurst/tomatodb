@@ -36,12 +36,16 @@ extern FILE* HVN_debug_stream;
 /** The log level to output. */
 extern HVN_loglevel HVN_debug_level;
 
-int HVN_replica_follower(HVN_replica_t* replica, char* role)
+int HVN_replica_follower(HVN_replica_t* replica)
 {
     LOG(HVN_LOG_INFO, "Replica has entered follower state.");
 
-    HVN_INTENTIONALLY_UNUSED_VARIABLE(replica);
-    HVN_INTENTIONALLY_UNUSED_VARIABLE(role);
+    if(HVN_timer_init(&(replica->election_timer), replica->election_timeout, \
+                      HVN_TIMER_CHANNEL_BACKLOG, (void (*)(void *)) HVN_replica_follower_handle_timeout, \
+                      (void*) replica) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Could not create an election timer for this follower replica.");
+        return HVN_ERROR;
+    }
 
     // TODO: Respond to RPCs from candidates and leaders.
 
@@ -52,12 +56,11 @@ int HVN_replica_follower(HVN_replica_t* replica, char* role)
     return HVN_ERROR;
 }
 
-int HVN_replica_candidate(HVN_replica_t* replica, char* role)
+int HVN_replica_candidate(HVN_replica_t* replica)
 {
     LOG(HVN_LOG_INFO, "Replica has entered candidate state.");
 
     HVN_INTENTIONALLY_UNUSED_VARIABLE(replica);
-    HVN_INTENTIONALLY_UNUSED_VARIABLE(role);
 
     // TODO: Increment current Term, vote for self.
 
@@ -73,7 +76,7 @@ int HVN_replica_candidate(HVN_replica_t* replica, char* role)
     return HVN_ERROR;
 }
 
-int HVN_replica_leader(HVN_replica_t* replica, char* role)
+int HVN_replica_leader(HVN_replica_t* replica)
 {
     UT_array* replicas;
     UT_array* log;
@@ -112,6 +115,18 @@ int HVN_replica_leader(HVN_replica_t* replica, char* role)
     return HVN_SUCCESS;
 }
 
+void HVN_replica_follower_handle_timeout(HVN_replica_t* replica) {
+    *(replica->target_role) = HVN_CONSENSUS_MD_STATE_CANDIDATE;
+}
+
+void HVN_replica_candidate_handle_timeout(HVN_replica_t* replica) {
+    //TODO: increment term
+    *(replica->target_role) = HVN_CONSENSUS_MD_STATE_CANDIDATE;
+}
+
+void HVN_replica_leader_handle_timeout(HVN_replica_t* replica) {
+    //TODO: send empty append messages to replicas.
+}
 
 int HVN_replica_persist_state(HVN_replica_t* replica, \
                               UT_array* log, \
@@ -125,7 +140,6 @@ int HVN_replica_persist_state(HVN_replica_t* replica, \
 
 void HVN_replica_task(HVN_replica_t* replica)
 {
-    char* role;
     bool is_active = true;
 
     LOG(HVN_LOG_DBG, "Entered replica task.");
@@ -133,15 +147,15 @@ void HVN_replica_task(HVN_replica_t* replica)
     while(is_active) {
 
         if(HVN_db_unsafe_get_char(replica->db, HVN_CONSENSUS_MD_STATE,
-                                  strlen(HVN_CONSENSUS_MD_STATE), &role) != HVN_SUCCESS) {
+                                  strlen(HVN_CONSENSUS_MD_STATE), &(replica->target_role)) != HVN_SUCCESS) {
             LOG(HVN_LOG_ERR, "Not loading this replica. Failed to read consensus state.");
             return;
         }
 
-        switch(*role) {
+        switch(*(replica->target_role)) {
             case HVN_CONSENSUS_MD_STATE_LEADER:
 
-                if(HVN_replica_leader(replica, role) != HVN_SUCCESS) {
+                if(HVN_replica_leader(replica) != HVN_SUCCESS) {
                     LOG(HVN_LOG_ERR, "Replica encountered an error while in the leader state.");
                     taskexit(EXIT_FAILURE);
                 }
@@ -150,7 +164,7 @@ void HVN_replica_task(HVN_replica_t* replica)
 
             case HVN_CONSENSUS_MD_STATE_FOLLOWER:
 
-                if(HVN_replica_follower(replica, role) != HVN_SUCCESS) {
+                if(HVN_replica_follower(replica) != HVN_SUCCESS) {
                     LOG(HVN_LOG_ERR, "Replica encountered an error while in the follower state.");
                     taskexit(EXIT_FAILURE);
                 }
@@ -159,7 +173,7 @@ void HVN_replica_task(HVN_replica_t* replica)
 
             case HVN_CONSENSUS_MD_STATE_CANDIDATE:
 
-                if(HVN_replica_candidate(replica, role) != HVN_SUCCESS) {
+                if(HVN_replica_candidate(replica) != HVN_SUCCESS) {
                     LOG(HVN_LOG_ERR, "Replica encountered an error while in the candidate state.");
                     taskexit(EXIT_FAILURE);
                 }
@@ -176,8 +190,6 @@ void HVN_replica_task(HVN_replica_t* replica)
                 taskexit(EXIT_FAILURE);
                 break;
         }
-
-        free(role);
     }
 
     LOG(HVN_LOG_INFO, "Replica task is ending.");

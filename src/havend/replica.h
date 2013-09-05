@@ -43,8 +43,8 @@ typedef struct HVN_replica_t {
     Channel* vote_chan_out;
     Channel* append_chan_out;
 
+    char* target_role;
     UT_array* foreign_replicas;
-
     uuid_t uuid;
 
     uint64_t current_term;
@@ -58,9 +58,13 @@ void HVN_replica_task(HVN_replica_t* replica);
 int HVN_replica_init(HVN_replica_t** replica);
 void HVN_replica_free(HVN_replica_t* replica);
 
-int HVN_replica_follower(HVN_replica_t* replica, char* role);
-int HVN_replica_candidate(HVN_replica_t* replica, char* role);
-int HVN_replica_leader(HVN_replica_t* replica, char* role);
+int HVN_replica_follower(HVN_replica_t* replica);
+int HVN_replica_candidate(HVN_replica_t* replica);
+int HVN_replica_leader(HVN_replica_t* replica);
+
+void HVN_replica_follower_handle_timeout(HVN_replica_t* replica);
+void HVN_replica_candidate_handle_timeout(HVN_replica_t* replica);
+void HVN_replica_leader_handle_timeout(HVN_replica_t* replica);
 
 int HVN_replica_cache_last_log_index(HVN_replica_t* replica);
 int HVN_replica_overwrite_last_log_index(HVN_replica_t* replica, uint64_t last_log_index);
