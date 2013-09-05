@@ -46,19 +46,22 @@ int HVN_timer_init(HVN_timer_t** timer)
 
 void HVN_timer_task(HVN_timer_t* timer)
 {
-
+    // receive all from channel and append to list.
 }
 
 void HVN_timer_reset(HVN_timer_t* timer, uint32_t ms)
 {
     HVN_timer_t* nt = (HVN_timer_t*) malloc(sizeof(HVN_timer_t));
     nt->r = ms;
+    nt->cancel = false;
+
     chansendp(timer->c, nt);
 }
 
 void HVN_timer_cancel(HVN_timer_t* timer)
 {
     HVN_timer_t* nt = (HVN_timer_t*) malloc(sizeof(HVN_timer_t));
+    nt->r = 0;
     nt->cancel = true;
     chansendp(timer->c, nt);
 }
