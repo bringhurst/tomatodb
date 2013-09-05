@@ -38,9 +38,19 @@ extern HVN_loglevel HVN_debug_level;
 
 int HVN_replica_follower(HVN_replica_t* replica)
 {
+    unsigned int default_follower_timeout = 5000;
+
     LOG(HVN_LOG_INFO, "Replica has entered follower state.");
 
-    if(HVN_timer_init(&(replica->election_timer), replica->election_timeout, \
+    if(HVN_timer_init(&(replica->election_timer)) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Could not allocate an election timer for this follower replica.");
+        return HVN_ERROR;
+    }
+
+    HVN_timer_start(replica->election_timer, default_follower_timeout);
+
+
+, replica->election_timeout, \
                       HVN_TIMER_CHANNEL_BACKLOG, (void (*)(void *)) HVN_replica_follower_handle_timeout, \
                       (void*) replica) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Could not create an election timer for this follower replica.");

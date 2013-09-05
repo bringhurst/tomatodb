@@ -70,8 +70,7 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_havend_OBJECTS = attach.$(OBJEXT) bootstrap.$(OBJEXT) \
 	consensus.$(OBJEXT) context.$(OBJEXT) havend.$(OBJEXT) \
-	replica.$(OBJEXT) routing.$(OBJEXT) settings.$(OBJEXT) \
-	timer.$(OBJEXT)
+	replica.$(OBJEXT) routing.$(OBJEXT) settings.$(OBJEXT)
 havend_OBJECTS = $(am_havend_OBJECTS)
 havend_DEPENDENCIES = ../common/libhaven_common.la
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -261,8 +260,7 @@ havend_SOURCES = \
                  havend.c \
                  replica.c \
                  routing.c \
-                 settings.c \
-                 timer.c
+                 settings.c
 
 havend_LDADD = ../common/libhaven_common.la
 all: all-am
@@ -364,7 +362,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/replica.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/routing.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/settings.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/timer.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

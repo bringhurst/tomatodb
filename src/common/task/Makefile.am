@@ -15,5 +15,4 @@ libhaven_common_task_la_SOURCES = \
                                   print.c \
                                   qlock.c \
                                   rendez.c \
-                                  task.c \
-                                  timer.c
+                                  task.c

@@ -25,32 +25,21 @@
 #include "task/task.h"
 
 #define HVN_TIMER_STACK_SIZE       32768
-#define HVN_TIMER_CHANNEL_BACKLOG  50
+#define HVN_TIMER_CHANNEL_BACKLOG  10
 
 typedef struct HVN_timer_t {
-    Channel* chan_increment;
-    void (*cb)(void *);
-    void *arg;
-    struct timeval remaining;
-    struct timeval max;
-    bool die;
+    Channel* c;
+    unsigned int r;
+    struct HVN_timer_t* t;
+    bool cancel;
 } HVN_timer_t;
 
+int HVN_timer_init(HVN_timer_t** timer);
 void HVN_timer_task(HVN_timer_t* timer);
 
-int HVN_timer_init(HVN_timer_t** timer, \
-                   struct timeval* max, \
-                   int channel_backlog, \
-                   void (*func)(void* arg), \
-                   void* arg);
+void HVN_timer_reset(HVN_timer_t* timer, unsigned int ms);
+void HVN_timer_cancel(HVN_timer_t* timer);
 
 void HVN_timer_free(HVN_timer_t* timer);
-
-void HVN_timer_die(HVN_timer_t* timer);
-int HVN_timer_increment(HVN_timer_t* timer, \
-                        struct timeval* value);
-
-void HVN_timer_timeval_add_ms(struct timeval *time, \
-                              unsigned long ms);
 
 #endif /* __HVN__HAVEND_TIMER_H_ */

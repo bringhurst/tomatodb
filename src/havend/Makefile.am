@@ -14,7 +14,6 @@ havend_SOURCES = \
                  havend.c \
                  replica.c \
                  routing.c \
-                 settings.c \
-                 timer.c
+                 settings.c
 
 havend_LDADD = ../common/libhaven_common.la
