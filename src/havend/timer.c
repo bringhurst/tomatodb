@@ -72,6 +72,10 @@ void HVN_timer_free(HVN_timer_t* timer)
         free(timer);
         timer = tmp;
     }
+    if(timer) {
+        chanfree(timer->c);
+        free(timer);
+    }
 }
 
 /* EOF */
