@@ -11,23 +11,27 @@ import struct
 
 class HavenProtocol():
 
-    # Version info.
-    HVN_CLIENT_PROTOCOL_VERSION          = 0x01
-    HVN_CLIENT_PROTOCOL_MAGIC            = 0xDECAFBAD
+    # Overall protocol version.
+    HVN_PROTOCOL_VERSION                 = 0x01
+    HVN_PROTOCOL_MAGIC                   = 0xDECAFBAD
 
     # Client request msg types.
-    HVN_CLNT_PROTO_MSG_TYPE_CONNECT      = 0x01
-    HVN_CLNT_PROTO_MSG_TYPE_CONTROL      = 0x03
-    HVN_CLNT_PROTO_MSG_TYPE_DATA         = 0x02
-    HVN_CLNT_PROTO_MSG_TYPE_DISCOVER     = 0x06
-    HVN_CLNT_PROTO_MSG_TYPE_HEARTBEAT    = 0x07
+    HVN_PROTO_MSG_TYPE_APPEND            = 0x01
+    HVN_PROTO_MSG_TYPE_CONNECT           = 0x03
+    HVN_PROTO_MSG_TYPE_CONTROL           = 0x02
+    HVN_PROTO_MSG_TYPE_DATA              = 0x06
+    HVN_PROTO_MSG_TYPE_DISCOVER          = 0x07
+    HVN_PROTO_MSG_TYPE_HEARTBEAT         = 0x05
+    HVN_PROTO_MSG_TYPE_VOTE              = 0x04
 
     # Server response msg types.
-    HVN_CLNT_PROTO_MSG_TYPE_CONNECT_R    = 0x05
-    HVN_CLNT_PROTO_MSG_TYPE_CONTROL_R    = 0x04
-    HVN_CLNT_PROTO_MSG_TYPE_DATA_R       = 0x0C
-    HVN_CLNT_PROTO_MSG_TYPE_DISCOVER_R   = 0x0D
-    HVN_CLNT_PROTO_MSG_TYPE_HEARTBEAT_R  = 0x0F
+    HVN_PROTO_MSG_TYPE_APPEND_R          = 0x0C
+    HVN_PROTO_MSG_TYPE_CONNECT_R         = 0x0D
+    HVN_PROTO_MSG_TYPE_CONTROL_R         = 0x0F
+    HVN_PROTO_MSG_TYPE_DATA_R            = 0x0E
+    HVN_PROTO_MSG_TYPE_DISCOVER_R        = 0x0A
+    HVN_PROTO_MSG_TYPE_HEARTBEAT_R       = 0x0B
+    HVN_PROTO_MSG_TYPE_VOTE_R            = 0x09
 
     # Data client requests.
     HVN_CLNT_PROTO_DATA_VERB_READ        = 0x01
@@ -64,9 +68,9 @@ class HavenProtocol():
 
     def send_connect(self, conn):
         msg = msgpack.packb([
-            HavenProtocol.HVN_CLNT_PROTO_MSG_TYPE_CONNECT,
-            HavenProtocol.HVN_CLIENT_PROTOCOL_MAGIC,
-            HavenProtocol.HVN_CLIENT_PROTOCOL_VERSION
+            HavenProtocol.HVN_PROTO_MSG_TYPE_CONNECT,
+            HavenProtocol.HVN_PROTOCOL_MAGIC,
+            HavenProtocol.HVN_PROTOCOL_VERSION
         ])
         self.send(msg, conn)
 
@@ -77,7 +81,7 @@ class HavenProtocol():
 
     def send_control(self, conn, action, uuid=None, path=None):
         msg = msgpack.packb([
-            HavenProtocol.HVN_CLNT_PROTO_MSG_TYPE_CONTROL,
+            HavenProtocol.HVN_PROTO_MSG_TYPE_CONTROL,
             action,
             uuid,
             path
@@ -91,7 +95,7 @@ class HavenProtocol():
 
     def send_data(self, conn, verb, mode, earliest, latest, key, value):
         msg = msgpack.packb([
-            HavenProtocol.HVN_CLNT_PROTO_MSG_TYPE_DATA,
+            HavenProtocol.HVN_PROTO_MSG_TYPE_DATA,
             verb,
             mode,
             [earliest, latest],

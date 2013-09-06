@@ -218,7 +218,7 @@ int HVN_replica_attach(HVN_router_t* router, uuid_t uuid)
     HASH_FIND(hh, router->ctx->replicas, uuid, sizeof(uuid_t), replica);
 
     if(replica == NULL) {
-        LOG(HVN_LOG_ERR, "Attempted to attach to a replica which doesn't exit in this instance.");
+        LOG(HVN_LOG_ERR, "Attempted to attach to a replica which doesn't exist in this instance.");
         return HVN_ERROR;
     }
 
