@@ -32,34 +32,67 @@ int HVN_replica_leader(HVN_replica_t* replica)
     HVN_addr_t* vote;
     uint64_t term;
 
+    HVN_db_op_t data_msg;
+    uint32_t heartbeat_result = 0;
+    unsigned int default_leader_heartbeat = 5000;
+    static Alt alts[HVN_REPLICA_LEADER_ALT_NK + 1];
+
     LOG(HVN_LOG_INFO, "Replica has entered leader state.");
 
-    // TODO: Skip until client command accept works -- so followers can join the quorum. Initialize nextIndex for each follower to the local last log index + 1.
+    // TODO: Initialize nextIndex for each follower to the local last log index + 1.
 
-    // TODO: Skip until client command accept works. Send initial empty AppendEntries RPCs (heartbeat) to each follower.
-    //           1. Repeat during idle periods to prevent election timeouts.
+    if(HVN_timer_init(&(replica->election_timer)) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Could not allocate a heartbeat timer for this leader replica.");
+        return HVN_ERROR;
+    }
 
-    // Accept data commands from clients.
-    LOG(HVN_LOG_DBG, "Leader replica is waiting for client data messages.");
-    //client_data_msg = chanrecvp(replica->data_chan);
-    //HVN_proto_print_data_msg(client_data_msg);
-    //LOG(HVN_LOG_DBG, "Leader replica received a data msg.");
+    HVN_timer_reset(replica->election_timer, default_leader_heartbeat);
 
-    // Pack and append to local log.
-    //HVN_clnt_proto_pack_data_msgpack(client_data_msg, &op_packed_len, &op_packed);
-    //HVN_replica_append_to_log(replica, op_packed, op_packed_len);
+    alts[HVN_REPLICA_LEADER_ALT_DATA_KEY].c = replica->data_chan_in;
+    alts[HVN_REPLICA_LEADER_ALT_DATA_KEY].v = &data_msg;
+    alts[HVN_REPLICA_LEADER_ALT_DATA_KEY].op = CHANRCV;
 
-    // TODO: Whenever last log index is greater or equal to nextIndex for a follower:
-    //           1. Send AppendEntries RPC with log entries starting at nextIndex.
-    //               a. Update nextIndex if successful.
-    //               b. If AppendEntries fails because of log inconsistency, decrement
-    //                  nextIndex and retry.
+    alts[HVN_REPLICA_LEADER_ALT_TIMER_KEY].c = replica->election_timer->alarm_chan;
+    alts[HVN_REPLICA_LEADER_ALT_TIMER_KEY].v = &heartbeat_result;
+    alts[HVN_REPLICA_LEADER_ALT_TIMER_KEY].op = CHANRCV;
 
-    // TODO: Mark entries commited if stored on a majority of servers and some entry
-    //       from current term is stored on a majority of servers. Apply newly committed
-    //       entries to state machine.
+    HVN_timer_start(replica->election_timer);
 
-    // TODO: Step down if currentTerm changes.
+    // TODO: Send initial empty AppendEntries RPCs (heartbeat) to each follower.
+
+    switch(chanalt(alts)) {
+
+        case HVN_REPLICA_LEADER_ALT_DATA_KEY:
+            LOG(HVN_LOG_DBG, "This leader received a data message.");
+            //HVN_proto_print_data_msg(client_data_msg);
+            // TODO: Append data messages to local log.
+
+            // Pack and append to local log.
+            //HVN_clnt_proto_pack_data_msgpack(client_data_msg, &op_packed_len, &op_packed);
+            //HVN_replica_append_to_log(replica, op_packed, op_packed_len);
+
+            // TODO: Whenever last log index is greater or equal to nextIndex for a follower:
+            //           1. Send AppendEntries RPC with log entries starting at nextIndex.
+            //               a. Update nextIndex if successful.
+            //               b. If AppendEntries fails because of log inconsistency, decrement
+            //                  nextIndex and retry.
+
+            // TODO: Mark entries commited if stored on a majority of servers and some entry
+            //       from current term is stored on a majority of servers. Apply newly committed
+            //       entries to state machine.
+
+            // TODO: Step down if currentTerm changes.
+            break;
+
+        case HVN_REPLICA_LEADER_ALT_TIMER_KEY:
+            LOG(HVN_LOG_DBG, "This leader received a heartbeat alarm.");
+            // TODO: Send empty append messages (heartbeat) to each follower.
+            break;
+
+        default:
+            LOG(HVN_LOG_ERR, "Unknown index received for leader alt array.");
+            break;
+    }
 
     return HVN_SUCCESS;
 }
