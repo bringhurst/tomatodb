@@ -83,7 +83,9 @@ int HVN_proto_unpack_control_msgpack(HVN_msg_client_control_t* data, \
 
                 uuid_buf = (char*) malloc(sizeof(char) * UUID_STR_LEN);
                 memcpy(uuid_buf, root.via.array.ptr[2].via.raw.ptr, UUID_STR_LEN - 1);
-                uuid_buf[UUID_STR_LEN] = '\0';
+                uuid_buf[UUID_STR_LEN - 1] = '\0';
+
+                LOG(HVN_LOG_DBG, "UUID from the control message is `%s'.", uuid_buf);
 
                 if(uuid_parse(uuid_buf, data->uuid) == 0) {
                     LOG(HVN_LOG_DBG, "Parsed a valid UUID from the control message.");

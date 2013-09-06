@@ -187,7 +187,7 @@ void HVN_attach_recv_data(HVN_attach_t* client)
     HVN_msg_data_t* data_msg_data = (HVN_msg_data_t*) malloc(sizeof(HVN_msg_data_t));
     HVN_attach_msg_t* attach_msg = (HVN_attach_msg_t*) malloc(sizeof(HVN_attach_msg_t));
 
-    if(data_msg_data != NULL && attach_msg != NULL) {
+    if(data_msg_data == NULL || attach_msg == NULL) {
         LOG(HVN_LOG_ERR, "Could not allocate memory to send a data msg to a replica.");
         taskexit(HVN_ERROR);
     }
