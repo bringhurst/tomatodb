@@ -18,6 +18,7 @@
 
 #include "consensus.h"
 #include "pack/append_msg.h"
+#include "pack/control_msg.h"
 #include "pack/data_msg.h"
 #include "pack/vote_msg.h"
 #include "replica.h"
@@ -41,15 +42,15 @@ void HVN_attach_task(HVN_attach_t* client)
 void HVN_attach_recv(HVN_attach_t* client)
 {
     switch(client->mode) {
-        case HVN_ATTACH_MODE_DATA:
+        case HVN_PROTO_CTRL_ATTACH_DATA:
             HVN_attach_recv_data(client);
             break;
 
-        case HVN_ATTACH_MODE_VOTE:
+        case HVN_PROTO_CTRL_ATTACH_VOTE:
             HVN_attach_recv_vote(client);
             break;
 
-        case HVN_ATTACH_MODE_APPEND:
+        case HVN_PROTO_CTRL_ATTACH_APPEND:
             HVN_attach_recv_append(client);
             break;
 
@@ -210,7 +211,7 @@ void HVN_attach_recv_data(HVN_attach_t* client)
     }
 }
 
-int HVN_replica_attach(HVN_router_t* router, uuid_t uuid)
+int HVN_replica_attach(HVN_router_t* router, uuid_t uuid, uint32_t mode)
 {
     HVN_attach_t* client;
     HVN_replica_t* replica;
@@ -224,7 +225,7 @@ int HVN_replica_attach(HVN_router_t* router, uuid_t uuid)
 
     LOG(HVN_LOG_DBG, "Client attached to a replica. Preparing to handle commands.");
 
-    if(HVN_attach_init(&client, router, replica) != HVN_SUCCESS) {
+    if(HVN_attach_init(&client, router, replica, mode) != HVN_SUCCESS) {
         LOG(HVN_LOG_INFO, "Failed to allocate memory to attach a new client.");
     }
 
@@ -232,7 +233,10 @@ int HVN_replica_attach(HVN_router_t* router, uuid_t uuid)
     return HVN_SUCCESS;
 }
 
-int HVN_attach_init(HVN_attach_t** client, HVN_router_t* router, HVN_replica_t* replica)
+int HVN_attach_init(HVN_attach_t** client, \
+                    HVN_router_t* router, \
+                    HVN_replica_t* replica, \
+                    uint32_t mode)
 {
     *client = (HVN_attach_t*) malloc(sizeof(HVN_attach_t));
 
@@ -252,6 +256,7 @@ int HVN_attach_init(HVN_attach_t** client, HVN_router_t* router, HVN_replica_t* 
     (*client)->fd = router->accept_fd;
     (*client)->remote_port = router->remote_port;
     (*client)->replica = replica;
+    (*client)->mode = mode;
 
     (*client)->append_reply_chan = chancreate(sizeof(HVN_msg_append_resp_t*), \
                                               HVN_ATTACH_CHANNEL_BACKLOG);

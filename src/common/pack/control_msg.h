@@ -22,19 +22,21 @@
 #include <stdint.h>
 
 /* Client requests. */
-#define HVN_PROTO_CTRL_ATTACH       0x01
-#define HVN_PROTO_CTRL_DESTROY      0x03
-#define HVN_PROTO_CTRL_EXIT         0x02
-#define HVN_PROTO_CTRL_FOLLOWER     0x06
-#define HVN_PROTO_CTRL_LEADER       0x07
-#define HVN_PROTO_CTRL_LOCATION     0x05
-#define HVN_PROTO_CTRL_PROXY        0x04
-#define HVN_PROTO_CTRL_ROUTER       0x0C
+#define HVN_PROTO_CTRL_ATTACH_APPEND  0x01
+#define HVN_PROTO_CTRL_ATTACH_DATA    0x03
+#define HVN_PROTO_CTRL_ATTACH_VOTE    0x02
+#define HVN_PROTO_CTRL_DESTROY        0x06
+#define HVN_PROTO_CTRL_EXIT           0x07
+#define HVN_PROTO_CTRL_FOLLOWER       0x05
+#define HVN_PROTO_CTRL_LEADER         0x04
+#define HVN_PROTO_CTRL_LOCATION       0x0C
+#define HVN_PROTO_CTRL_PROXY          0x0D
+#define HVN_PROTO_CTRL_ROUTER         0x0F
 
 /* Server responses. */
-#define HVN_PROTO_CTRL_R_OK         0x0D
-#define HVN_PROTO_CTRL_R_ERR        0x1D
-#define HVN_PROTO_CTRL_R_NOT_FOUND  0x1C
+#define HVN_PROTO_CTRL_R_OK           0x0E
+#define HVN_PROTO_CTRL_R_ERR          0x1E
+#define HVN_PROTO_CTRL_R_NOT_FOUND    0x1F
 
 typedef struct HVN_msg_client_control_t {
     uint16_t action;
