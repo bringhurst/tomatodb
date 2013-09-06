@@ -60,32 +60,30 @@ int HVN_replica_follower(HVN_replica_t* replica)
 
     HVN_timer_start(replica->election_timer);
 
-    for(;;) {
-        switch(chanalt(alts)) {
+    switch(chanalt(alts)) {
 
-            case HVN_REPLICA_FOLLOWER_ALT_APPEND_KEY:
-                LOG(HVN_LOG_DBG, "This follower received an append message.");
-                // TODO: respond to requestor
-                break;
+        case HVN_REPLICA_FOLLOWER_ALT_APPEND_KEY:
+            LOG(HVN_LOG_DBG, "This follower received an append message.");
+            // TODO: respond to requestor
+            break;
 
-            case HVN_REPLICA_FOLLOWER_ALT_TIMER_KEY:
-                LOG(HVN_LOG_DBG, "Received a follower timeout alarm.");
+        case HVN_REPLICA_FOLLOWER_ALT_TIMER_KEY:
+            LOG(HVN_LOG_DBG, "Received a follower timeout alarm.");
 
-                // TODO: Convert to candidate if election timeout elapses without either
-                //           1. Receiving valid AppendEntries RPC, or
-                //           2. Granting vote to candidate.
+            // TODO: Convert to candidate if election timeout elapses without either
+            //           1. Receiving valid AppendEntries RPC, or
+            //           2. Granting vote to candidate.
 
-                break;
+            break;
 
-            case HVN_REPLICA_FOLLOWER_ALT_VOTE_KEY:
-                LOG(HVN_LOG_DBG, "This follower received a vote message.");
-                // TODO: respond to requestor
-                break;
+        case HVN_REPLICA_FOLLOWER_ALT_VOTE_KEY:
+            LOG(HVN_LOG_DBG, "This follower received a vote message.");
+            // TODO: respond to requestor
+            break;
 
-            default:
-                LOG(HVN_LOG_ERR, "Unknown index received for follower alt array.");
-                break;
-        }
+        default:
+            LOG(HVN_LOG_ERR, "Unknown index received for follower alt array.");
+            break;
     }
 
     return HVN_ERROR;
