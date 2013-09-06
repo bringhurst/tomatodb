@@ -69,9 +69,10 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_havend_OBJECTS = attach.$(OBJEXT) bootstrap.$(OBJEXT) \
-	consensus.$(OBJEXT) context.$(OBJEXT) follower.$(OBJEXT) \
-	havend.$(OBJEXT) replica.$(OBJEXT) routing.$(OBJEXT) \
-	settings.$(OBJEXT) timer.$(OBJEXT)
+	candidate.$(OBJEXT) consensus.$(OBJEXT) context.$(OBJEXT) \
+	follower.$(OBJEXT) havend.$(OBJEXT) leader.$(OBJEXT) \
+	replica.$(OBJEXT) routing.$(OBJEXT) settings.$(OBJEXT) \
+	timer.$(OBJEXT)
 havend_OBJECTS = $(am_havend_OBJECTS)
 havend_DEPENDENCIES = ../common/libhaven_common.la
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -256,10 +257,12 @@ AM_CPPFLAGS = -std=gnu99 -ggdb -W -Wall -Wextra -Wformat=1 -Winit-self \
 havend_SOURCES = \
                  attach.c \
                  bootstrap.c \
+                 candidate.c \
                  consensus.c \
                  context.c \
                  follower.c \
                  havend.c \
+                 leader.c \
                  replica.c \
                  routing.c \
                  settings.c \
@@ -359,10 +362,12 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/attach.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bootstrap.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/candidate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/consensus.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/context.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/follower.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/havend.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/leader.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/replica.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/routing.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/settings.Po@am__quote@

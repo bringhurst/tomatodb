@@ -59,9 +59,6 @@ void HVN_replica_task(HVN_replica_t* replica);
 int HVN_replica_init(HVN_replica_t** replica);
 void HVN_replica_free(HVN_replica_t* replica);
 
-int HVN_replica_candidate(HVN_replica_t* replica);
-int HVN_replica_leader(HVN_replica_t* replica);
-
 int HVN_replica_persist_state(HVN_replica_t* replica, \
                               UT_array* log, \
                               HVN_addr_t* term_vote, \

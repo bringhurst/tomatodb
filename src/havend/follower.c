@@ -16,11 +16,12 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
-#include "follower.h"
 #include "log.h"
 #include "pack/append_msg.h"
 #include "pack/vote_msg.h"
 #include "task/task.h"
+
+#include "follower.h"
 
 /** The stream to send log messages to. */
 extern FILE* HVN_debug_stream;

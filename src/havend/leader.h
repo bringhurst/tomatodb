@@ -1,5 +1,5 @@
-#ifndef __HVN__HAVEND_FOLLOWER_H
-#define __HVN__HAVEND_FOLLOWER_H
+#ifndef __HVN__HAVEND_LEADER_H
+#define __HVN__HAVEND_LEADER_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -21,12 +21,11 @@
 
 #include "replica.h"
 
-#define HVN_REPLICA_FOLLOWER_ALT_NK  3
+#define HVN_REPLICA_LEADER_ALT_NK  2
 
-#define HVN_REPLICA_FOLLOWER_ALT_APPEND_KEY  0
-#define HVN_REPLICA_FOLLOWER_ALT_TIMER_KEY   1
-#define HVN_REPLICA_FOLLOWER_ALT_VOTE_KEY    2
+#define HVN_REPLICA_LEADER_ALT_DATA_KEY  0
+#define HVN_REPLICA_LEADER_ALT_TIMER_KEY   1
 
-int HVN_replica_follower(HVN_replica_t* replica);
+int HVN_replica_leader(HVN_replica_t* replica);
 
-#endif /* __HVN__HAVEND_FOLLOWER_H */
+#endif /* __HVN__HAVEND_LEADER_H */

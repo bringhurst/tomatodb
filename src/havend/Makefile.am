@@ -9,10 +9,12 @@ bin_PROGRAMS = havend
 havend_SOURCES = \
                  attach.c \
                  bootstrap.c \
+                 candidate.c \
                  consensus.c \
                  context.c \
                  follower.c \
                  havend.c \
+                 leader.c \
                  replica.c \
                  routing.c \
                  settings.c \
