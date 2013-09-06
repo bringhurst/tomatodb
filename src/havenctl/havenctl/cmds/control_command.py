@@ -23,7 +23,7 @@ class CommandControl():
             return
 
         opts = {
-            "attach":   HavenProtocol.HVN_CLNT_PROTO_CTRL_ATTACH,
+            "attach":   HavenProtocol.HVN_CLNT_PROTO_CTRL_ATTACH_DATA,
             "destroy":  HavenProtocol.HVN_CLNT_PROTO_CTRL_DESTROY,
             "exit":     HavenProtocol.HVN_CLNT_PROTO_CTRL_EXIT,
             "follower": HavenProtocol.HVN_CLNT_PROTO_CTRL_FOLLOWER,
@@ -40,7 +40,7 @@ class CommandControl():
             print("Please see 'help control'.")
             return
 
-        if protocol_key == HavenProtocol.HVN_CLNT_PROTO_CTRL_ATTACH:
+        if protocol_key == HavenProtocol.HVN_CLNT_PROTO_CTRL_ATTACH_DATA:
             if len(args) < 2:
                 print("The attach subcommand requires a uuid argument.")
                 print("Please see 'help control'.")

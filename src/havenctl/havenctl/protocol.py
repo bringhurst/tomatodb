@@ -52,19 +52,21 @@ class HavenProtocol():
     HVN_CLNT_PROTO_DATA_R_ERR            = 0x34
 
     # Control client requests.
-    HVN_CLNT_PROTO_CTRL_ATTACH           = 0x01
-    HVN_CLNT_PROTO_CTRL_DESTROY          = 0x03
-    HVN_CLNT_PROTO_CTRL_EXIT             = 0x02
-    HVN_CLNT_PROTO_CTRL_FOLLOWER         = 0x06
-    HVN_CLNT_PROTO_CTRL_LEADER           = 0x07
-    HVN_CLNT_PROTO_CTRL_LOCATION         = 0x05
-    HVN_CLNT_PROTO_CTRL_PROXY            = 0x04
-    HVN_CLNT_PROTO_CTRL_ROUTER           = 0x0C
+    HVN_PROTO_CTRL_ATTACH_APPEND         = 0x01
+    HVN_PROTO_CTRL_ATTACH_DATA           = 0x03
+    HVN_PROTO_CTRL_ATTACH_VOTE           = 0x02
+    HVN_PROTO_CTRL_DESTROY               = 0x06
+    HVN_PROTO_CTRL_EXIT                  = 0x07
+    HVN_PROTO_CTRL_FOLLOWER              = 0x05
+    HVN_PROTO_CTRL_LEADER                = 0x04
+    HVN_PROTO_CTRL_LOCATION              = 0x0C
+    HVN_PROTO_CTRL_PROXY                 = 0x0D
+    HVN_PROTO_CTRL_ROUTER                = 0x0F
 
     # Control server responses.
-    HVN_CLNT_PROTO_CTRL_R_OK             = 0x0D
-    HVN_CLNT_PROTO_CTRL_R_ERR            = 0x1D
-    HVN_CLNT_PROTO_CTRL_R_NOT_FOUND      = 0x1C
+    HVN_PROTO_CTRL_R_OK                  = 0x0E
+    HVN_PROTO_CTRL_R_ERR                 = 0x1E
+    HVN_PROTO_CTRL_R_NOT_FOUND           = 0x1F
 
     def send_connect(self, conn):
         msg = msgpack.packb([
