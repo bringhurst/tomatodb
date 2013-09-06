@@ -75,7 +75,7 @@ void HVN_timer_task(HVN_timer_t* timer)
                 break;
             }
 
-            LOG(HVN_LOG_DBG, "Appending `%d' ms to this timer task.", next->r);
+            //LOG(HVN_LOG_DBG, "Appending `%d' ms to this timer task.", next->r);
             recv_time = next->r;
             utarray_push_back(timer->t, &recv_time);
             free(next);
