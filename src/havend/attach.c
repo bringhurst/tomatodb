@@ -42,15 +42,15 @@ void HVN_attach_recv(HVN_attach_t* client)
 {
     switch(client->mode) {
         case HVN_ATTACH_MODE_DATA:
-            HVN_attach_data(client);
+            HVN_attach_recv_data(client);
             break;
 
         case HVN_ATTACH_MODE_VOTE:
-            HVN_attach_vote(client);
+            HVN_attach_recv_vote(client);
             break;
 
         case HVN_ATTACH_MODE_APPEND:
-            HVN_attach_append(client);
+            HVN_attach_recv_append(client);
             break;
 
         default:
@@ -123,7 +123,7 @@ void HVN_attach_send_task(HVN_attach_t* client)
     }
 }
 
-void HVN_attach_append(HVN_attach_t* client)
+void HVN_attach_recv_append(HVN_attach_t* client)
 {
     HVN_msg_append_t append_msg_data;
 
@@ -143,7 +143,7 @@ void HVN_attach_append(HVN_attach_t* client)
     }
 }
 
-void HVN_attach_vote(HVN_attach_t* client)
+void HVN_attach_recv_vote(HVN_attach_t* client)
 {
     HVN_msg_vote_t vote_msg_data;
 
@@ -163,7 +163,7 @@ void HVN_attach_vote(HVN_attach_t* client)
     }
 }
 
-void HVN_attach_data(HVN_attach_t* client)
+void HVN_attach_recv_data(HVN_attach_t* client)
 {
     HVN_msg_data_t data_msg_data;
 

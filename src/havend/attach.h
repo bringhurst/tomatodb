@@ -61,9 +61,9 @@ void HVN_attach_task(HVN_attach_t* client);
 void HVN_attach_recv(HVN_attach_t* client);
 void HVN_attach_send_task(HVN_attach_t* client);
 
-void HVN_attach_append(HVN_attach_t* client);
-void HVN_attach_vote(HVN_attach_t* client);
-void HVN_attach_data(HVN_attach_t* client);
+void HVN_attach_recv_append(HVN_attach_t* client);
+void HVN_attach_recv_vote(HVN_attach_t* client);
+void HVN_attach_recv_data(HVN_attach_t* client);
 
 int HVN_replica_attach(HVN_router_t* router, uuid_t uuid);
 int HVN_attach_init(HVN_attach_t** client, HVN_router_t* router, HVN_replica_t* replica);
