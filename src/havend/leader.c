@@ -34,7 +34,7 @@ int HVN_replica_leader(HVN_replica_t* replica)
 
     HVN_db_op_t data_msg;
     uint32_t heartbeat_result = 0;
-    unsigned int default_leader_heartbeat = 5000;
+    unsigned int default_leader_heartbeat = 10;
     static Alt alts[HVN_REPLICA_LEADER_ALT_NK + 1];
 
     LOG(HVN_LOG_INFO, "Replica has entered leader state.");

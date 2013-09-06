@@ -35,6 +35,7 @@ extern HVN_loglevel HVN_debug_level;
 
 void HVN_attach_task(HVN_attach_t* client)
 {
+    taskname("attach");
     taskcreate((void (*)(void*))HVN_attach_send_task, client, HVN_ATTACH_STACK_SIZE);
     HVN_attach_recv(client);
 }
@@ -65,12 +66,13 @@ void HVN_attach_recv(HVN_attach_t* client)
 void HVN_attach_send_task(HVN_attach_t* client)
 {
     static Alt alts[HVN_ATTACH_SEND_ALT_NK + 1];
-
     uint32_t exit_msg;
 
     HVN_msg_append_resp_t append_msg;
     HVN_msg_data_resp_t data_msg;
     HVN_msg_vote_resp_t vote_msg;
+
+    taskname("attach (send)");
 
     alts[HVN_ATTACH_SEND_ALT_APPEND_KEY].c = client->append_reply_chan;
     alts[HVN_ATTACH_SEND_ALT_APPEND_KEY].v = &append_msg;

@@ -105,6 +105,8 @@ void HVN_routing_task(HVN_router_t* router)
     uuid_t new_uuid;
     HVN_replica_t* new_replica;
 
+    taskname("router");
+
     if(HVN_proto_handle_connect_msg(router->accept_fd) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Did not receive a valid connect message while routing.");
         taskexit(HVN_ERROR);

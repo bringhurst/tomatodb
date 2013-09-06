@@ -58,6 +58,8 @@ void HVN_timer_task(HVN_timer_t* timer)
     int old_time = 0;
     int elapsed_time = 0;
 
+    taskname("timer");
+
     for(;;) {
         while((nt = chanrecvp(timer->timer_chan))) {
             nt->next = timer->next;

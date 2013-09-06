@@ -53,6 +53,8 @@ void HVN_replica_task(HVN_replica_t* replica)
 {
     bool is_active = true;
 
+    taskname("replica");
+    taskstate("new");
     LOG(HVN_LOG_DBG, "Entered replica task.");
 
     while(is_active) {
@@ -65,7 +67,7 @@ void HVN_replica_task(HVN_replica_t* replica)
 
         switch(*(replica->target_role)) {
             case HVN_CONSENSUS_MD_STATE_LEADER:
-
+                taskstate("leader");
                 if(HVN_replica_leader(replica) != HVN_SUCCESS) {
                     LOG(HVN_LOG_ERR, "Replica encountered an error while in the leader state.");
                     taskexit(EXIT_FAILURE);
@@ -74,7 +76,7 @@ void HVN_replica_task(HVN_replica_t* replica)
                 break;
 
             case HVN_CONSENSUS_MD_STATE_FOLLOWER:
-
+                taskstate("follower");
                 if(HVN_replica_follower(replica) != HVN_SUCCESS) {
                     LOG(HVN_LOG_ERR, "Replica encountered an error while in the follower state.");
                     taskexit(EXIT_FAILURE);
@@ -83,7 +85,7 @@ void HVN_replica_task(HVN_replica_t* replica)
                 break;
 
             case HVN_CONSENSUS_MD_STATE_CANDIDATE:
-
+                taskstate("candidate");
                 if(HVN_replica_candidate(replica) != HVN_SUCCESS) {
                     LOG(HVN_LOG_ERR, "Replica encountered an error while in the candidate state.");
                     taskexit(EXIT_FAILURE);
@@ -92,11 +94,13 @@ void HVN_replica_task(HVN_replica_t* replica)
                 break;
 
             case HVN_CONSENSUS_MD_STATE_HALT:
+                taskstate("halting");
                 LOG(HVN_LOG_ERR, "Replica is preparing to shut down.");
                 is_active = false;
                 break;
 
             default:
+                taskstate("unknown");
                 LOG(HVN_LOG_ERR, "Encountered unknown replica state. Exiting task.");
                 taskexit(EXIT_FAILURE);
                 break;
