@@ -120,7 +120,7 @@ int HVN_replica_init(HVN_replica_t** replica)
     (*replica)->current_term = 0;
 
     (*replica)->append_chan = chancreate(sizeof(HVN_msg_append_t*), 0);
-    (*replica)->data_chan = chancreate(sizeof(HVN_msg_client_data_t*), 0);
+    (*replica)->data_chan = chancreate(sizeof(HVN_msg_data_t*), 0);
     (*replica)->vote_chan = chancreate(sizeof(HVN_msg_vote_t*), 0);
 
     return HVN_SUCCESS;

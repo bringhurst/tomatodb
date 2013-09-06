@@ -31,7 +31,7 @@ extern FILE* HVN_debug_stream;
 /** The log level to write messages for. */
 extern HVN_loglevel HVN_debug_level;
 
-int HVN_proto_pack_data_msgpack(HVN_msg_client_data_t* data, \
+int HVN_proto_pack_data_msgpack(HVN_msg_data_t* data, \
                                 size_t* len, \
                                 char** msg)
 {
@@ -58,7 +58,7 @@ int HVN_proto_pack_data_msgpack(HVN_msg_client_data_t* data, \
     return HVN_SUCCESS;
 }
 
-int HVN_proto_unpack_data_msgpack(HVN_msg_client_data_t* data, \
+int HVN_proto_unpack_data_msgpack(HVN_msg_data_t* data, \
                                   size_t len, \
                                   char* msg)
 {
@@ -100,7 +100,7 @@ int HVN_proto_unpack_data_msgpack(HVN_msg_client_data_t* data, \
     return HVN_SUCCESS;
 }
 
-int HVN_proto_pack_data_resp_msgpack(HVN_msg_client_data_resp_t* data, \
+int HVN_proto_pack_data_resp_msgpack(HVN_msg_data_resp_t* data, \
                                      size_t* len, \
                                      char** msg)
 {
@@ -122,7 +122,7 @@ int HVN_proto_pack_data_resp_msgpack(HVN_msg_client_data_resp_t* data, \
     return HVN_SUCCESS;
 }
 
-int HVN_proto_unpack_data_resp_msgpack(HVN_msg_client_data_resp_t* data, \
+int HVN_proto_unpack_data_resp_msgpack(HVN_msg_data_resp_t* data, \
                                        size_t len, \
                                        char* msg)
 {
@@ -133,7 +133,7 @@ int HVN_proto_unpack_data_resp_msgpack(HVN_msg_client_data_resp_t* data, \
     return HVN_ERROR;
 }
 
-int HVN_proto_pack_data(HVN_msg_client_data_t* data, \
+int HVN_proto_pack_data(HVN_msg_data_t* data, \
                         int scheme, \
                         size_t* len, \
                         char** msg)
@@ -152,7 +152,7 @@ int HVN_proto_pack_data(HVN_msg_client_data_t* data, \
     return result;
 }
 
-int HVN_proto_unpack_data(HVN_msg_client_data_t* data, \
+int HVN_proto_unpack_data(HVN_msg_data_t* data, \
                           int scheme, \
                           size_t len, \
                           char* msg)
@@ -171,7 +171,7 @@ int HVN_proto_unpack_data(HVN_msg_client_data_t* data, \
     return result;
 }
 
-int HVN_proto_pack_data_resp(HVN_msg_client_data_resp_t* data, \
+int HVN_proto_pack_data_resp(HVN_msg_data_resp_t* data, \
                                      int scheme, \
                                      size_t* len, \
                                      char** msg)
@@ -190,7 +190,7 @@ int HVN_proto_pack_data_resp(HVN_msg_client_data_resp_t* data, \
     return result;
 }
 
-int HVN_proto_unpack_data_resp(HVN_msg_client_data_resp_t* data, \
+int HVN_proto_unpack_data_resp(HVN_msg_data_resp_t* data, \
                                        int scheme, \
                                        size_t len, \
                                        char* msg)
@@ -210,7 +210,7 @@ int HVN_proto_unpack_data_resp(HVN_msg_client_data_resp_t* data, \
 }
 
 int HVN_proto_receive_data_msg(int fd, \
-                                  HVN_msg_client_data_t* data_msg_data)
+                                  HVN_msg_data_t* data_msg_data)
 {
     size_t len = 0;
     char* msg;
@@ -231,15 +231,14 @@ int HVN_proto_receive_data_msg(int fd, \
     return HVN_SUCCESS;
 }
 
-int HVN_proto_send_data_resp_msg(int fd)
+int HVN_proto_send_data_resp_msg(int fd, HVN_msg_data_resp_t* resp)
 {
-    HVN_msg_client_data_resp_t data_resp_msg_data;
     size_t len = 0;
     char* msg;
 
     if(HVN_proto_pack(HVN_PROTO_MSG_TYPE_DATA_R, \
                       HVN_PROTO_PACK_TYPE_MSGPACK, \
-                      &data_resp_msg_data, &len, &msg) != HVN_SUCCESS) {
+                      resp, &len, &msg) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to pack a data message response.");
         return HVN_ERROR;
     }
@@ -253,7 +252,7 @@ int HVN_proto_send_data_resp_msg(int fd)
     return HVN_SUCCESS;
 }
 
-void HVN_proto_print_data_msg(HVN_msg_client_data_t* data)
+void HVN_proto_print_data_msg(HVN_msg_data_t* data)
 {
     switch(data->action) {
         case HVN_PROTO_DATA_VERB_READ:

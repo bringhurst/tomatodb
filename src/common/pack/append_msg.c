@@ -228,15 +228,14 @@ int HVN_proto_receive_append_msg(int fd, \
     return HVN_SUCCESS;
 }
 
-int HVN_proto_send_append_resp_msg(int fd)
+int HVN_proto_send_append_resp_msg(int fd, HVN_msg_append_resp_t* resp)
 {
-    HVN_msg_append_resp_t append_resp_msg_data;
     size_t len = 0;
     char* msg;
 
     if(HVN_proto_pack(HVN_PROTO_MSG_TYPE_APPEND_R, \
                       HVN_PROTO_PACK_TYPE_MSGPACK, \
-                      &append_resp_msg_data, &len, &msg) != HVN_SUCCESS) {
+                      &resp, &len, &msg) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to pack a append message response.");
         return HVN_ERROR;
     }

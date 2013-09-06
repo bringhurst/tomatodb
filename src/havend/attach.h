@@ -24,14 +24,26 @@
 #include "replica.h"
 #include "routing.h"
 
-#define HVN_ATTACH_STACK_SIZE  (32768)
+#define HVN_ATTACH_STACK_SIZE       32768
+#define HVN_ATTACH_CHANNEL_BACKLOG  10
 
 #define HVN_ATTACH_MODE_DATA    0x01
 #define HVN_ATTACH_MODE_VOTE    0x03
 #define HVN_ATTACH_MODE_APPEND  0x02
 
+#define HVN_ATTACH_SEND_ALT_NK  4
+
+#define HVN_ATTACH_SEND_ALT_APPEND_KEY  0
+#define HVN_ATTACH_SEND_ALT_DATA_KEY    1
+#define HVN_ATTACH_SEND_ALT_EXIT_KEY    2
+#define HVN_ATTACH_SEND_ALT_VOTE_KEY    3
+
 typedef struct HVN_attach_t {
     HVN_replica_t* replica;
+    Channel* append_reply_chan;
+    Channel* data_reply_chan;
+    Channel* vote_reply_chan;
+    Channel* exit_chan;
     char* remote_addr;
     int remote_port;
     int mode;
@@ -39,22 +51,22 @@ typedef struct HVN_attach_t {
 } HVN_attach_t;
 
 typedef struct HVN_attach_msg_t {
-    Channel* reply_chan;
+    Channel* append_reply_chan;
+    Channel* data_reply_chan;
+    Channel* vote_reply_chan;
     void* msg;
 } HVN_attach_msg_t;
 
 void HVN_attach_task(HVN_attach_t* client);
+void HVN_attach_recv(HVN_attach_t* client);
+void HVN_attach_send_task(HVN_attach_t* client);
 
 void HVN_attach_append(HVN_attach_t* client);
 void HVN_attach_vote(HVN_attach_t* client);
 void HVN_attach_data(HVN_attach_t* client);
 
-int HVN_replica_attach(HVN_router_t* router, \
-                       uuid_t uuid);
-
-int HVN_attach_init(HVN_attach_t** client, \
-                    HVN_router_t* router, \
-                    HVN_replica_t* replica);
+int HVN_replica_attach(HVN_router_t* router, uuid_t uuid);
+int HVN_attach_init(HVN_attach_t** client, HVN_router_t* router, HVN_replica_t* replica);
 void HVN_attach_free(HVN_attach_t* client);
 
 #endif /* __HVN__HAVEND_ATTACH_H_ */

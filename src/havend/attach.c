@@ -34,6 +34,12 @@ extern HVN_loglevel HVN_debug_level;
 
 void HVN_attach_task(HVN_attach_t* client)
 {
+    taskcreate((void (*)(void*))HVN_attach_send_task, client, HVN_ATTACH_STACK_SIZE);
+    HVN_attach_recv(client);
+}
+
+void HVN_attach_recv(HVN_attach_t* client)
+{
     switch(client->mode) {
         case HVN_ATTACH_MODE_DATA:
             HVN_attach_data(client);
@@ -50,6 +56,70 @@ void HVN_attach_task(HVN_attach_t* client)
         default:
             LOG(HVN_LOG_ERR, "Encountered an unrecognized attach mode.");
             break;
+    }
+
+    //TODO: send message to attach send task to shutdown
+}
+
+void HVN_attach_send_task(HVN_attach_t* client)
+{
+    static Alt alts[HVN_ATTACH_SEND_ALT_NK + 1];
+
+    uint32_t exit_msg;
+
+    HVN_msg_append_resp_t append_msg;
+    HVN_msg_data_resp_t data_msg;
+    HVN_msg_vote_resp_t vote_msg;
+
+    alts[HVN_ATTACH_SEND_ALT_APPEND_KEY].c = client->append_reply_chan;
+    alts[HVN_ATTACH_SEND_ALT_APPEND_KEY].v = &append_msg;
+    alts[HVN_ATTACH_SEND_ALT_APPEND_KEY].op = CHANRCV;
+
+    alts[HVN_ATTACH_SEND_ALT_DATA_KEY].c = client->data_reply_chan;
+    alts[HVN_ATTACH_SEND_ALT_DATA_KEY].v = &data_msg;
+    alts[HVN_ATTACH_SEND_ALT_DATA_KEY].op = CHANRCV;
+
+    alts[HVN_ATTACH_SEND_ALT_EXIT_KEY].c = client->exit_chan;
+    alts[HVN_ATTACH_SEND_ALT_EXIT_KEY].v = &exit_msg;
+    alts[HVN_ATTACH_SEND_ALT_EXIT_KEY].op = CHANRCV;
+
+    alts[HVN_ATTACH_SEND_ALT_VOTE_KEY].c = client->vote_reply_chan;
+    alts[HVN_ATTACH_SEND_ALT_VOTE_KEY].v = &vote_msg;
+    alts[HVN_ATTACH_SEND_ALT_VOTE_KEY].op = CHANRCV;
+
+    for(;;) {
+        switch(chanalt(alts)) {
+
+            case HVN_ATTACH_SEND_ALT_APPEND_KEY:
+                if(HVN_proto_send_append_resp_msg(client->fd, &append_msg) != HVN_SUCCESS) {
+                    LOG(HVN_LOG_ERR, "Could not send a append message response while attached to a replica.");
+                    taskexit(HVN_ERROR);
+                }
+                break;
+
+            case HVN_ATTACH_SEND_ALT_DATA_KEY:
+                if(HVN_proto_send_data_resp_msg(client->fd, &data_msg) != HVN_SUCCESS) {
+                    LOG(HVN_LOG_ERR, "Could not send a data message response while attached to a replica.");
+                    taskexit(HVN_ERROR);
+                }
+                break;
+
+            case HVN_ATTACH_SEND_ALT_EXIT_KEY:
+                LOG(HVN_LOG_DBG, "Exiting attach send task.");
+                taskexit(HVN_ERROR);
+                break;
+
+            case HVN_ATTACH_SEND_ALT_VOTE_KEY:
+                if(HVN_proto_send_vote_resp_msg(client->fd, &vote_msg) != HVN_SUCCESS) {
+                    LOG(HVN_LOG_ERR, "Could not send a vote message response while attached to a replica.");
+                    taskexit(HVN_ERROR);
+                }
+                break;
+
+            default:
+                LOG(HVN_LOG_DBG, "This attach task eceived an unknown message type from a replica.");
+                break;
+        }
     }
 }
 
@@ -69,11 +139,6 @@ void HVN_attach_append(HVN_attach_t* client)
         }
         else {
             LOG(HVN_LOG_DBG, "Successfully sent the append message to the appropriate replica.");
-        }
-
-        if(HVN_proto_send_append_resp_msg(client->fd) != HVN_SUCCESS) {
-            LOG(HVN_LOG_ERR, "Could not send a append message response while attached to a replica.");
-            taskexit(HVN_ERROR);
         }
     }
 }
@@ -95,17 +160,12 @@ void HVN_attach_vote(HVN_attach_t* client)
         else {
             LOG(HVN_LOG_DBG, "Successfully sent the vote message to the appropriate replica.");
         }
-
-        if(HVN_proto_send_vote_resp_msg(client->fd) != HVN_SUCCESS) {
-            LOG(HVN_LOG_ERR, "Could not send a vote message response while attached to a replica.");
-            taskexit(HVN_ERROR);
-        }
     }
 }
 
 void HVN_attach_data(HVN_attach_t* client)
 {
-    HVN_msg_client_data_t data_msg_data;
+    HVN_msg_data_t data_msg_data;
 
     for(;;) {
         if(HVN_proto_receive_data_msg(client->fd, &data_msg_data) != HVN_SUCCESS) {
@@ -119,11 +179,6 @@ void HVN_attach_data(HVN_attach_t* client)
         }
         else {
             LOG(HVN_LOG_DBG, "Successfully sent the data message to the appropriate replica.");
-        }
-
-        if(HVN_proto_send_data_resp_msg(client->fd) != HVN_SUCCESS) {
-            LOG(HVN_LOG_ERR, "Could not send a data message response while attached to a replica.");
-            taskexit(HVN_ERROR);
         }
     }
 }
@@ -170,6 +225,12 @@ int HVN_attach_init(HVN_attach_t** client, HVN_router_t* router, HVN_replica_t* 
     (*client)->fd = router->accept_fd;
     (*client)->remote_port = router->remote_port;
     (*client)->replica = replica;
+
+    (*client)->append_reply_chan = chancreate(sizeof(HVN_attach_msg_t*), HVN_ATTACH_CHANNEL_BACKLOG);
+    (*client)->data_reply_chan = chancreate(sizeof(HVN_attach_msg_t*), HVN_ATTACH_CHANNEL_BACKLOG);
+    (*client)->vote_reply_chan = chancreate(sizeof(HVN_attach_msg_t*), HVN_ATTACH_CHANNEL_BACKLOG);
+
+    (*client)->exit_chan = chancreate(sizeof(uint32_t), HVN_ATTACH_CHANNEL_BACKLOG);
 
     return HVN_SUCCESS;
 }

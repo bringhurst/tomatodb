@@ -223,15 +223,14 @@ int HVN_proto_receive_vote_msg(int fd, \
     return HVN_SUCCESS;
 }
 
-int HVN_proto_send_vote_resp_msg(int fd)
+int HVN_proto_send_vote_resp_msg(int fd, HVN_msg_vote_resp_t* resp)
 {
-    HVN_msg_vote_resp_t vote_resp_msg_data;
     size_t len = 0;
     char* msg;
 
     if(HVN_proto_pack(HVN_PROTO_MSG_TYPE_VOTE_R, \
                       HVN_PROTO_PACK_TYPE_MSGPACK, \
-                      &vote_resp_msg_data, &len, &msg) != HVN_SUCCESS) {
+                      &resp, &len, &msg) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to pack a vote message response.");
         return HVN_ERROR;
     }

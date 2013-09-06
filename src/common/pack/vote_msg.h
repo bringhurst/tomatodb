@@ -72,7 +72,7 @@ int HVN_proto_unpack_vote_resp(HVN_msg_vote_resp_t* data, \
 int HVN_proto_receive_vote_msg(int fd, \
                                HVN_msg_vote_t* vote_msg_data);
 
-int HVN_proto_send_vote_resp_msg(int fd);
+int HVN_proto_send_vote_resp_msg(int fd, HVN_msg_vote_resp_t* resp);
 
 void HVN_proto_print_vote_msg(HVN_msg_vote_t* data);
 
