@@ -67,7 +67,7 @@ void HVN_timer_task(HVN_timer_t* timer)
     for(;;) {
         while(timer->timer_chan->nbuf > 0) {
             next = chanrecvp(timer->timer_chan);
-            taskstate("receiving");
+
             if(next->cancel == true) {
                 LOG(HVN_LOG_DBG, "A timer was canceled. Exiting timer task.");
                 taskstate("exiting");
@@ -78,7 +78,7 @@ void HVN_timer_task(HVN_timer_t* timer)
             LOG(HVN_LOG_DBG, "Appending `%d' ms to this timer task.", next->r);
             recv_time = next->r;
             utarray_push_back(timer->t, &recv_time);
-            free(next);
+            HVN_timer_free(next);
         }
 
         if(utarray_len(timer->t) > 0) {
