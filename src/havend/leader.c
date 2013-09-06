@@ -34,7 +34,7 @@ int HVN_replica_leader(HVN_replica_t* replica)
 
     HVN_db_op_t data_msg;
     uint32_t heartbeat_result = 0;
-    unsigned int default_leader_heartbeat = 10;
+    int default_leader_heartbeat = 5000;
     static Alt alts[HVN_REPLICA_LEADER_ALT_NK + 1];
 
     LOG(HVN_LOG_INFO, "Replica has entered leader state.");
@@ -46,8 +46,6 @@ int HVN_replica_leader(HVN_replica_t* replica)
         return HVN_ERROR;
     }
 
-    HVN_timer_reset(replica->election_timer, default_leader_heartbeat);
-
     alts[HVN_REPLICA_LEADER_ALT_DATA_KEY].c = replica->data_chan;
     alts[HVN_REPLICA_LEADER_ALT_DATA_KEY].v = &data_msg;
     alts[HVN_REPLICA_LEADER_ALT_DATA_KEY].op = CHANRCV;
@@ -56,9 +54,10 @@ int HVN_replica_leader(HVN_replica_t* replica)
     alts[HVN_REPLICA_LEADER_ALT_TIMER_KEY].v = &heartbeat_result;
     alts[HVN_REPLICA_LEADER_ALT_TIMER_KEY].op = CHANRCV;
 
-    HVN_timer_start(replica->election_timer);
-
     // TODO: Send initial empty AppendEntries RPCs (heartbeat) to each follower.
+
+    HVN_timer_reset(replica->election_timer, default_leader_heartbeat);
+    HVN_timer_start(replica->election_timer);
 
     switch(chanalt(alts)) {
 
