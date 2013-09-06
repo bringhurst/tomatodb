@@ -23,14 +23,14 @@ class CommandControl():
             return
 
         opts = {
-            "attach":   HavenProtocol.HVN_CLNT_PROTO_CTRL_ATTACH_DATA,
-            "destroy":  HavenProtocol.HVN_CLNT_PROTO_CTRL_DESTROY,
-            "exit":     HavenProtocol.HVN_CLNT_PROTO_CTRL_EXIT,
-            "follower": HavenProtocol.HVN_CLNT_PROTO_CTRL_FOLLOWER,
-            "leader":   HavenProtocol.HVN_CLNT_PROTO_CTRL_LEADER,
-            "location": HavenProtocol.HVN_CLNT_PROTO_CTRL_LOCATION,
-            "proxy":    HavenProtocol.HVN_CLNT_PROTO_CTRL_PROXY,
-            "router":   HavenProtocol.HVN_CLNT_PROTO_CTRL_ROUTER
+            "attach":   HavenProtocol.HVN_PROTO_CTRL_ATTACH_DATA,
+            "destroy":  HavenProtocol.HVN_PROTO_CTRL_DESTROY,
+            "exit":     HavenProtocol.HVN_PROTO_CTRL_EXIT,
+            "follower": HavenProtocol.HVN_PROTO_CTRL_FOLLOWER,
+            "leader":   HavenProtocol.HVN_PROTO_CTRL_LEADER,
+            "location": HavenProtocol.HVN_PROTO_CTRL_LOCATION,
+            "proxy":    HavenProtocol.HVN_PROTO_CTRL_PROXY,
+            "router":   HavenProtocol.HVN_PROTO_CTRL_ROUTER
         }
 
         if args[0].lower() in opts.keys():
@@ -40,21 +40,21 @@ class CommandControl():
             print("Please see 'help control'.")
             return
 
-        if protocol_key == HavenProtocol.HVN_CLNT_PROTO_CTRL_ATTACH_DATA:
+        if protocol_key == HavenProtocol.HVN_PROTO_CTRL_ATTACH_DATA:
             if len(args) < 2:
                 print("The attach subcommand requires a uuid argument.")
                 print("Please see 'help control'.")
                 return
             uuid = args[1]
 
-        if protocol_key == HavenProtocol.HVN_CLNT_PROTO_CTRL_FOLLOWER:
+        if protocol_key == HavenProtocol.HVN_PROTO_CTRL_FOLLOWER:
             if len(args) < 2:
                 print("The follower subcommand requires a uuid argument.")
                 print("Please see 'help control'.")
                 return
             uuid = args[1]
 
-        if protocol_key == HavenProtocol.HVN_CLNT_PROTO_CTRL_LEADER:
+        if protocol_key == HavenProtocol.HVN_PROTO_CTRL_LEADER:
             if len(args) < 2:
                 print("The leader subcommand requires a path argument.")
                 print("Please see 'help control'.")
