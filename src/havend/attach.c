@@ -125,15 +125,24 @@ void HVN_attach_send_task(HVN_attach_t* client)
 
 void HVN_attach_recv_append(HVN_attach_t* client)
 {
-    HVN_msg_append_t append_msg_data;
+    HVN_msg_append_t* append_msg_data = (HVN_msg_append_t*) malloc(sizeof(HVN_msg_append_t));
+    HVN_attach_msg_t* attach_msg = (HVN_attach_msg_t*) malloc(sizeof(HVN_attach_msg_t));
+
+    if(append_msg_data != NULL && attach_msg != NULL) {
+        LOG(HVN_LOG_ERR, "Could not allocate memory to send an append msg to a replica.");
+        taskexit(HVN_ERROR);
+    }
+
+    attach_msg->msg = append_msg_data;
+    attach_msg->append_reply_chan = client->append_reply_chan;
 
     for(;;) {
-        if(HVN_proto_receive_append_msg(client->fd, &append_msg_data) != HVN_SUCCESS) {
+        if(HVN_proto_receive_append_msg(client->fd, append_msg_data) != HVN_SUCCESS) {
             LOG(HVN_LOG_ERR, "Did not receive a valid append message while attached to a replica.");
             taskexit(HVN_ERROR);
         }
 
-        if(chansendp(client->replica->append_chan, &append_msg_data) != 1) {
+        if(chansendp(client->replica->append_chan, attach_msg) != 1) {
             LOG(HVN_LOG_ERR, "Failed to send the append message to the appropriate replica.");
             taskexit(HVN_ERROR);
         }
@@ -145,15 +154,24 @@ void HVN_attach_recv_append(HVN_attach_t* client)
 
 void HVN_attach_recv_vote(HVN_attach_t* client)
 {
-    HVN_msg_vote_t vote_msg_data;
+    HVN_msg_vote_t* vote_msg_data = (HVN_msg_vote_t*) malloc(sizeof(HVN_msg_vote_t));
+    HVN_attach_msg_t* attach_msg = (HVN_attach_msg_t*) malloc(sizeof(HVN_attach_msg_t));
+
+    if(vote_msg_data != NULL && attach_msg != NULL) {
+        LOG(HVN_LOG_ERR, "Could not allocate memory to send a vote msg to a replica.");
+        taskexit(HVN_ERROR);
+    }
+
+    attach_msg->msg = vote_msg_data;
+    attach_msg->vote_reply_chan = client->vote_reply_chan;
 
     for(;;) {
-        if(HVN_proto_receive_vote_msg(client->fd, &vote_msg_data) != HVN_SUCCESS) {
+        if(HVN_proto_receive_vote_msg(client->fd, vote_msg_data) != HVN_SUCCESS) {
             LOG(HVN_LOG_ERR, "Did not receive a valid vote message while attached to a replica.");
             taskexit(HVN_ERROR);
         }
 
-        if(chansendp(client->replica->vote_chan, &vote_msg_data) != 1) {
+        if(chansendp(client->replica->vote_chan, attach_msg) != 1) {
             LOG(HVN_LOG_ERR, "Failed to send the vote message to the appropriate replica.");
             taskexit(HVN_ERROR);
         }
@@ -165,15 +183,24 @@ void HVN_attach_recv_vote(HVN_attach_t* client)
 
 void HVN_attach_recv_data(HVN_attach_t* client)
 {
-    HVN_msg_data_t data_msg_data;
+    HVN_msg_data_t* data_msg_data = (HVN_msg_data_t*) malloc(sizeof(HVN_msg_data_t));
+    HVN_attach_msg_t* attach_msg = (HVN_attach_msg_t*) malloc(sizeof(HVN_attach_msg_t));
+
+    if(data_msg_data != NULL && attach_msg != NULL) {
+        LOG(HVN_LOG_ERR, "Could not allocate memory to send a data msg to a replica.");
+        taskexit(HVN_ERROR);
+    }
+
+    attach_msg->msg = data_msg_data;
+    attach_msg->data_reply_chan = client->data_reply_chan;
 
     for(;;) {
-        if(HVN_proto_receive_data_msg(client->fd, &data_msg_data) != HVN_SUCCESS) {
+        if(HVN_proto_receive_data_msg(client->fd, data_msg_data) != HVN_SUCCESS) {
             LOG(HVN_LOG_ERR, "Did not receive a valid data message while attached to a replica.");
             taskexit(HVN_ERROR);
         }
 
-        if(chansendp(client->replica->data_chan, &data_msg_data) != 1) {
+        if(chansendp(client->replica->data_chan, attach_msg) != 1) {
             LOG(HVN_LOG_ERR, "Failed to send the data message to the appropriate replica.");
             taskexit(HVN_ERROR);
         }
