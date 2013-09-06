@@ -48,7 +48,7 @@ int HVN_replica_candidate(HVN_replica_t* replica)
 
     HVN_timer_reset(replica->election_timer, default_candidate_timeout);
 
-    alts[HVN_REPLICA_CANDIDATE_ALT_APPEND_KEY].c = replica->append_chan_in;
+    alts[HVN_REPLICA_CANDIDATE_ALT_APPEND_KEY].c = replica->append_chan;
     alts[HVN_REPLICA_CANDIDATE_ALT_APPEND_KEY].v = &append_msg;
     alts[HVN_REPLICA_CANDIDATE_ALT_APPEND_KEY].op = CHANRCV;
 
@@ -56,7 +56,7 @@ int HVN_replica_candidate(HVN_replica_t* replica)
     alts[HVN_REPLICA_CANDIDATE_ALT_TIMER_KEY].v = &timeout_result;
     alts[HVN_REPLICA_CANDIDATE_ALT_TIMER_KEY].op = CHANRCV;
 
-    alts[HVN_REPLICA_CANDIDATE_ALT_VOTE_KEY].c = replica->vote_chan_in;
+    alts[HVN_REPLICA_CANDIDATE_ALT_VOTE_KEY].c = replica->vote_chan;
     alts[HVN_REPLICA_CANDIDATE_ALT_VOTE_KEY].v = &vote_msg;
     alts[HVN_REPLICA_CANDIDATE_ALT_VOTE_KEY].op = CHANRCV;
 

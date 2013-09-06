@@ -63,7 +63,7 @@ void HVN_attach_append(HVN_attach_t* client)
             taskexit(HVN_ERROR);
         }
 
-        if(chansendp(client->replica->append_chan_in, &append_msg_data) != 1) {
+        if(chansendp(client->replica->append_chan, &append_msg_data) != 1) {
             LOG(HVN_LOG_ERR, "Failed to send the append message to the appropriate replica.");
             taskexit(HVN_ERROR);
         }
@@ -88,7 +88,7 @@ void HVN_attach_vote(HVN_attach_t* client)
             taskexit(HVN_ERROR);
         }
 
-        if(chansendp(client->replica->vote_chan_in, &vote_msg_data) != 1) {
+        if(chansendp(client->replica->vote_chan, &vote_msg_data) != 1) {
             LOG(HVN_LOG_ERR, "Failed to send the vote message to the appropriate replica.");
             taskexit(HVN_ERROR);
         }
@@ -113,7 +113,7 @@ void HVN_attach_data(HVN_attach_t* client)
             taskexit(HVN_ERROR);
         }
 
-        if(chansendp(client->replica->data_chan_in, &data_msg_data) != 1) {
+        if(chansendp(client->replica->data_chan, &data_msg_data) != 1) {
             LOG(HVN_LOG_ERR, "Failed to send the data message to the appropriate replica.");
             taskexit(HVN_ERROR);
         }

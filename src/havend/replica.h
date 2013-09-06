@@ -36,13 +36,9 @@ typedef struct HVN_replica_t {
     HVN_timer_t* election_timer;
     struct timeval* election_timeout;
 
-    Channel* data_chan_in;
-    Channel* vote_chan_in;
-    Channel* append_chan_in;
-
-    Channel* data_chan_out;
-    Channel* vote_chan_out;
-    Channel* append_chan_out;
+    Channel* data_chan;
+    Channel* vote_chan;
+    Channel* append_chan;
 
     char* target_role;
     UT_array* foreign_replicas;

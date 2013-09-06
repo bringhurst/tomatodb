@@ -38,6 +38,11 @@ typedef struct HVN_attach_t {
     int fd;
 } HVN_attach_t;
 
+typedef struct HVN_attach_msg_t {
+    Channel* reply_chan;
+    void* msg;
+} HVN_attach_msg_t;
+
 void HVN_attach_task(HVN_attach_t* client);
 
 void HVN_attach_append(HVN_attach_t* client);

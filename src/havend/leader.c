@@ -48,7 +48,7 @@ int HVN_replica_leader(HVN_replica_t* replica)
 
     HVN_timer_reset(replica->election_timer, default_leader_heartbeat);
 
-    alts[HVN_REPLICA_LEADER_ALT_DATA_KEY].c = replica->data_chan_in;
+    alts[HVN_REPLICA_LEADER_ALT_DATA_KEY].c = replica->data_chan;
     alts[HVN_REPLICA_LEADER_ALT_DATA_KEY].v = &data_msg;
     alts[HVN_REPLICA_LEADER_ALT_DATA_KEY].op = CHANRCV;
 
