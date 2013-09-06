@@ -11,6 +11,7 @@ havend_SOURCES = \
                  bootstrap.c \
                  consensus.c \
                  context.c \
+                 follower.c \
                  havend.c \
                  replica.c \
                  routing.c \

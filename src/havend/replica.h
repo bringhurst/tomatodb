@@ -20,6 +20,7 @@
  */
 
 #include "context.h"
+#include "pack/addr_struct.h"
 #include "task/task.h"
 #include "timer.h"
 #include "ut/uthash.h"
@@ -58,16 +59,12 @@ void HVN_replica_task(HVN_replica_t* replica);
 int HVN_replica_init(HVN_replica_t** replica);
 void HVN_replica_free(HVN_replica_t* replica);
 
-int HVN_replica_follower(HVN_replica_t* replica);
 int HVN_replica_candidate(HVN_replica_t* replica);
 int HVN_replica_leader(HVN_replica_t* replica);
 
-void HVN_replica_follower_handle_timeout(HVN_replica_t* replica);
-void HVN_replica_candidate_handle_timeout(HVN_replica_t* replica);
-void HVN_replica_leader_handle_timeout(HVN_replica_t* replica);
-
-int HVN_replica_cache_last_log_index(HVN_replica_t* replica);
-int HVN_replica_overwrite_last_log_index(HVN_replica_t* replica, uint64_t last_log_index);
-int HVN_replica_append_to_log(HVN_replica_t* replica, char* packed_op, size_t packed_op_len);
+int HVN_replica_persist_state(HVN_replica_t* replica, \
+                              UT_array* log, \
+                              HVN_addr_t* term_vote, \
+                              uint64_t current_term);
 
 #endif /* __HVN__HAVEND_REPLICA_H */

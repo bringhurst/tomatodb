@@ -19,6 +19,7 @@
 #include <dirent.h>
 
 #include "consensus.h"
+#include "follower.h"
 #include "pack/addr_struct.h"
 #include "pack/append_msg.h"
 #include "pack/data_msg.h"
@@ -35,38 +36,6 @@ extern FILE* HVN_debug_stream;
 
 /** The log level to output. */
 extern HVN_loglevel HVN_debug_level;
-
-int HVN_replica_follower(HVN_replica_t* replica)
-{
-    unsigned int default_follower_timeout = 5000;
-
-    LOG(HVN_LOG_INFO, "Replica has entered follower state.");
-
-    if(HVN_timer_init(&(replica->election_timer)) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Could not allocate an election timer for this follower replica.");
-        return HVN_ERROR;
-    }
-
-    HVN_timer_reset(replica->election_timer, default_follower_timeout);
-    HVN_timer_start(replica->election_timer);
-
-    // TODO: implement the following switch statement (described in the TODOs below).
-    // switch(alt(alts)) {
-    //     case VOTE
-    //     case APPEND
-    //     case TIMEOUT
-    //     case SHUTDOWN
-
-    // TODO: Switch on chan alt array.
-
-    // TODO: Respond to RPCs from candidates and leaders.
-
-    // TODO: Convert to candidate if election timeout elapses without either
-    //           1. Receiving valid AppendEntries RPC, or
-    //           2. Granting vote to candidate.
-
-    return HVN_ERROR;
-}
 
 int HVN_replica_candidate(HVN_replica_t* replica)
 {
@@ -125,24 +94,6 @@ int HVN_replica_leader(HVN_replica_t* replica)
     // TODO: Step down if currentTerm changes.
 
     return HVN_SUCCESS;
-}
-
-void HVN_replica_follower_handle_timeout(HVN_replica_t* replica) {
-    *(replica->target_role) = HVN_CONSENSUS_MD_STATE_CANDIDATE;
-
-    //TODO: send messages to replica->*_chan to tell it to shut down?
-}
-
-void HVN_replica_candidate_handle_timeout(HVN_replica_t* replica) {
-    //TODO: increment term
-    *(replica->target_role) = HVN_CONSENSUS_MD_STATE_CANDIDATE;
-
-    //TODO: send messages to replica->*_chan to tell it to shut down?
-}
-
-void HVN_replica_leader_handle_timeout(HVN_replica_t* replica) {
-    //TODO: send empty append messages to replicas.
-    //TODO: step down if current term changes.
 }
 
 int HVN_replica_persist_state(HVN_replica_t* replica, \
