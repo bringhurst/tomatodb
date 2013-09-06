@@ -226,11 +226,15 @@ int HVN_attach_init(HVN_attach_t** client, HVN_router_t* router, HVN_replica_t* 
     (*client)->remote_port = router->remote_port;
     (*client)->replica = replica;
 
-    (*client)->append_reply_chan = chancreate(sizeof(HVN_attach_msg_t*), HVN_ATTACH_CHANNEL_BACKLOG);
-    (*client)->data_reply_chan = chancreate(sizeof(HVN_attach_msg_t*), HVN_ATTACH_CHANNEL_BACKLOG);
-    (*client)->vote_reply_chan = chancreate(sizeof(HVN_attach_msg_t*), HVN_ATTACH_CHANNEL_BACKLOG);
+    (*client)->append_reply_chan = chancreate(sizeof(HVN_msg_append_resp_t*), \
+                                              HVN_ATTACH_CHANNEL_BACKLOG);
+    (*client)->data_reply_chan = chancreate(sizeof(HVN_msg_data_resp_t*), \
+                                            HVN_ATTACH_CHANNEL_BACKLOG);
+    (*client)->vote_reply_chan = chancreate(sizeof(HVN_msg_vote_resp_t*), \
+                                            HVN_ATTACH_CHANNEL_BACKLOG);
 
-    (*client)->exit_chan = chancreate(sizeof(uint32_t), HVN_ATTACH_CHANNEL_BACKLOG);
+    (*client)->exit_chan = chancreate(sizeof(uint32_t), \
+                                      HVN_ATTACH_CHANNEL_BACKLOG);
 
     return HVN_SUCCESS;
 }
