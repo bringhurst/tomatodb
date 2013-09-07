@@ -49,7 +49,7 @@ int HVN_timer_init(HVN_timer_t** timer)
 
 void HVN_timer_start(HVN_timer_t* timer)
 {
-    taskcreate((void (*)(void *)) HVN_timer_task, (void*) timer, HVN_TIMER_STACK_SIZE);
+    taskcreate((void (*)(void*)) HVN_timer_task, (void*) timer, HVN_TIMER_STACK_SIZE);
 }
 
 void HVN_timer_task(HVN_timer_t* timer)
@@ -93,11 +93,13 @@ void HVN_timer_task(HVN_timer_t* timer)
                     ele_time = (int*) utarray_next(timer->t, ele_time)) {
 
                 *ele_time -= elapsed_time;
+
                 if(*ele_time < 0) {
                     utarray_erase(timer->t, 0, 1);
                 }
             }
-        } else {
+        }
+        else {
             LOG(HVN_LOG_DBG, "A timer was triggered. Sending alarm, then exiting timer task.");
             chansendul(timer->alarm_chan, HVN_TIMER_ALARM_MAGIC);
             break;

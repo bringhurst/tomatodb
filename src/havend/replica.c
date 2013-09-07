@@ -68,6 +68,7 @@ void HVN_replica_task(HVN_replica_t* replica)
         switch(*(replica->target_role)) {
             case HVN_CONSENSUS_MD_STATE_LEADER:
                 taskstate("leader");
+
                 if(HVN_replica_leader(replica) != HVN_SUCCESS) {
                     LOG(HVN_LOG_ERR, "Replica encountered an error while in the leader state.");
                     taskexit(EXIT_FAILURE);
@@ -77,6 +78,7 @@ void HVN_replica_task(HVN_replica_t* replica)
 
             case HVN_CONSENSUS_MD_STATE_FOLLOWER:
                 taskstate("follower");
+
                 if(HVN_replica_follower(replica) != HVN_SUCCESS) {
                     LOG(HVN_LOG_ERR, "Replica encountered an error while in the follower state.");
                     taskexit(EXIT_FAILURE);
@@ -86,6 +88,7 @@ void HVN_replica_task(HVN_replica_t* replica)
 
             case HVN_CONSENSUS_MD_STATE_CANDIDATE:
                 taskstate("candidate");
+
                 if(HVN_replica_candidate(replica) != HVN_SUCCESS) {
                     LOG(HVN_LOG_ERR, "Replica encountered an error while in the candidate state.");
                     taskexit(EXIT_FAILURE);

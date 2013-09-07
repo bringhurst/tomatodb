@@ -131,6 +131,7 @@ void HVN_routing_task(HVN_router_t* router)
         case HVN_PROTO_CTRL_ATTACH_APPEND:
         case HVN_PROTO_CTRL_ATTACH_DATA:
         case HVN_PROTO_CTRL_ATTACH_VOTE:
+
             if(HVN_replica_attach(router, control_msg_data.uuid, control_msg_data.action) != HVN_SUCCESS) {
                 uuid_unparse(control_msg_data.uuid, new_uuid_string);
                 LOG(HVN_LOG_ERR, "Failed to attach to UUID `%s'.", new_uuid_string);
