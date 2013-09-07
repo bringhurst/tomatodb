@@ -261,9 +261,8 @@ AM_CPPFLAGS = -std=gnu99 -ggdb -W -Wall -Wextra -Wformat=1 -Winit-self \
 	-Wunknown-pragmas -Wstrict-aliasing -Wfloat-equal -Wundef \
 	-Wbad-function-cast -Wcast-align -Wstrict-prototypes \
 	-Wmissing-prototypes -Wredundant-decls -Winline \
-	-Wdisabled-optimization -Wshadow -Wwrite-strings \
-	-I$(top_srcdir) -I$(top_srcdir)/src/common \
-	-I$(top_srcdir)/src/common/pack
+	-Wdisabled-optimization -Wshadow -I$(top_srcdir) \
+	-I$(top_srcdir)/src/common -I$(top_srcdir)/src/common/pack
 noinst_LTLIBRARIES = libhaven_common_pack.la
 libhaven_common_pack_la_LDFLAGS = $(LIB_LDFLAGS)
 libhaven_common_pack_la_SOURCES = \
