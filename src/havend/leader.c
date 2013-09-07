@@ -56,8 +56,7 @@ int HVN_replica_leader(HVN_replica_t* replica)
 
     // TODO: Send initial empty AppendEntries RPCs (heartbeat) to each follower.
 
-    HVN_timer_reset(replica->election_timer, default_leader_heartbeat);
-    HVN_timer_start(replica->election_timer);
+    HVN_timer_start(replica->election_timer, default_leader_heartbeat);
 
     switch(chanalt(alts)) {
 

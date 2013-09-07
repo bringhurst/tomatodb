@@ -46,8 +46,6 @@ int HVN_replica_candidate(HVN_replica_t* replica)
         return HVN_ERROR;
     }
 
-    HVN_timer_reset(replica->election_timer, default_candidate_timeout);
-
     alts[HVN_REPLICA_CANDIDATE_ALT_APPEND_KEY].c = replica->append_chan;
     alts[HVN_REPLICA_CANDIDATE_ALT_APPEND_KEY].v = &append_msg;
     alts[HVN_REPLICA_CANDIDATE_ALT_APPEND_KEY].op = CHANRCV;
@@ -62,7 +60,7 @@ int HVN_replica_candidate(HVN_replica_t* replica)
 
     // TODO: Send RequestVote RPCs to all other servers
 
-    HVN_timer_start(replica->election_timer);
+    HVN_timer_start(replica->election_timer, default_candidate_timeout);
 
     switch(chanalt(alts)) {
 

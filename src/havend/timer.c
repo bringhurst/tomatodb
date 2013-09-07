@@ -47,8 +47,9 @@ int HVN_timer_init(HVN_timer_t** timer)
     return HVN_SUCCESS;
 }
 
-void HVN_timer_start(HVN_timer_t* timer)
+void HVN_timer_start(HVN_timer_t* timer, int ms)
 {
+    HVN_timer_reset(timer, ms);
     taskcreate((void (*)(void*)) HVN_timer_task, (void*) timer, HVN_TIMER_STACK_SIZE);
 }
 

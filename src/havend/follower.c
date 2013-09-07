@@ -45,8 +45,6 @@ int HVN_replica_follower(HVN_replica_t* replica)
         return HVN_ERROR;
     }
 
-    HVN_timer_reset(replica->election_timer, default_follower_timeout);
-
     alts[HVN_REPLICA_FOLLOWER_ALT_APPEND_KEY].c = replica->append_chan;
     alts[HVN_REPLICA_FOLLOWER_ALT_APPEND_KEY].v = &append_msg;
     alts[HVN_REPLICA_FOLLOWER_ALT_APPEND_KEY].op = CHANRCV;
@@ -59,7 +57,7 @@ int HVN_replica_follower(HVN_replica_t* replica)
     alts[HVN_REPLICA_FOLLOWER_ALT_VOTE_KEY].v = &vote_msg;
     alts[HVN_REPLICA_FOLLOWER_ALT_VOTE_KEY].op = CHANRCV;
 
-    HVN_timer_start(replica->election_timer);
+    HVN_timer_start(replica->election_timer, default_follower_timeout);
 
     switch(chanalt(alts)) {
 

@@ -39,7 +39,7 @@ typedef struct HVN_timer_t {
 } HVN_timer_t;
 
 int HVN_timer_init(HVN_timer_t** timer);
-void HVN_timer_start(HVN_timer_t* timer);
+void HVN_timer_start(HVN_timer_t* timer, int ms);
 void HVN_timer_task(HVN_timer_t* timer);
 
 void HVN_timer_reset(HVN_timer_t* timer, int ms);
