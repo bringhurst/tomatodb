@@ -251,6 +251,7 @@ int HVN_proto_send_append_resp_msg(int fd, HVN_msg_append_resp_t* resp)
 
 void HVN_proto_print_append_msg(HVN_msg_append_t* data)
 {
+    HVN_INTENTIONALLY_UNUSED_VARIABLE(data);
     //TODO
 }
 

@@ -246,6 +246,7 @@ int HVN_proto_send_vote_resp_msg(int fd, HVN_msg_vote_resp_t* resp)
 
 void HVN_proto_print_vote_msg(HVN_msg_vote_t* data)
 {
+    HVN_INTENTIONALLY_UNUSED_VARIABLE(data);
     //TODO
 }
 
