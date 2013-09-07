@@ -44,14 +44,17 @@ void HVN_attach_recv(HVN_attach_t* client)
 {
     switch(client->mode) {
         case HVN_PROTO_CTRL_ATTACH_DATA:
+            taskstate("receive/data");
             HVN_attach_recv_data(client);
             break;
 
         case HVN_PROTO_CTRL_ATTACH_VOTE:
+            taskstate("receive/vote");
             HVN_attach_recv_vote(client);
             break;
 
         case HVN_PROTO_CTRL_ATTACH_APPEND:
+            taskstate("receive/append");
             HVN_attach_recv_append(client);
             break;
 
@@ -72,7 +75,7 @@ void HVN_attach_send_task(HVN_attach_t* client)
     HVN_msg_data_resp_t data_msg;
     HVN_msg_vote_resp_t vote_msg;
 
-    taskname("attach (send)");
+    taskstate("send");
 
     alts[HVN_ATTACH_SEND_ALT_APPEND_KEY].c = client->append_reply_chan;
     alts[HVN_ATTACH_SEND_ALT_APPEND_KEY].v = &append_msg;
@@ -94,7 +97,7 @@ void HVN_attach_send_task(HVN_attach_t* client)
         switch(chanalt(alts)) {
 
             case HVN_ATTACH_SEND_ALT_APPEND_KEY:
-
+                taskstate("send/append");
                 if(HVN_proto_send_append_resp_msg(client->fd, &append_msg) != HVN_SUCCESS) {
                     LOG(HVN_LOG_ERR, "Could not send a append message response while attached to a replica.");
                     taskexit(HVN_ERROR);
@@ -103,7 +106,7 @@ void HVN_attach_send_task(HVN_attach_t* client)
                 break;
 
             case HVN_ATTACH_SEND_ALT_DATA_KEY:
-
+                taskstate("send/data");
                 if(HVN_proto_send_data_resp_msg(client->fd, &data_msg) != HVN_SUCCESS) {
                     LOG(HVN_LOG_ERR, "Could not send a data message response while attached to a replica.");
                     taskexit(HVN_ERROR);
@@ -112,12 +115,13 @@ void HVN_attach_send_task(HVN_attach_t* client)
                 break;
 
             case HVN_ATTACH_SEND_ALT_EXIT_KEY:
+                taskstate("send/exit");
                 LOG(HVN_LOG_DBG, "Exiting attach send task.");
                 taskexit(HVN_ERROR);
                 break;
 
             case HVN_ATTACH_SEND_ALT_VOTE_KEY:
-
+                taskstate("send/vote");
                 if(HVN_proto_send_vote_resp_msg(client->fd, &vote_msg) != HVN_SUCCESS) {
                     LOG(HVN_LOG_ERR, "Could not send a vote message response while attached to a replica.");
                     taskexit(HVN_ERROR);

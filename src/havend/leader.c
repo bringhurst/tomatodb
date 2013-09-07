@@ -40,6 +40,8 @@ int HVN_replica_leader(HVN_replica_t* replica)
     static Alt alts[HVN_REPLICA_LEADER_ALT_NK + 1];
 
     HVN_attach_msg_t data_attach_msg;
+    data_attach_msg.msg = NULL;
+
     HVN_msg_data_t* data_msg;
     HVN_msg_data_resp_t* data_msg_resp = (HVN_msg_data_resp_t*) malloc(sizeof(HVN_msg_data_resp_t));
 
@@ -68,11 +70,18 @@ int HVN_replica_leader(HVN_replica_t* replica)
 
         case HVN_REPLICA_LEADER_ALT_DATA_KEY:
             LOG(HVN_LOG_DBG, "This leader received a data message.");
+
+            if(data_attach_msg.msg == NULL) {
+                LOG(HVN_LOG_DBG, "Received an attach wrapper without a valid message.");
+                break;
+            }
+
             data_msg = data_attach_msg.msg;
             HVN_proto_print_data_msg(data_msg);
 
             data_msg_resp->success = HVN_PROTO_DATA_R_OK;
             data_msg_resp->err_code = 0;
+
             chansendp(data_attach_msg.data_reply_chan, data_msg_resp);
 
             // TODO: Append data messages to local log.
