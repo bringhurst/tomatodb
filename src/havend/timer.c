@@ -100,7 +100,7 @@ void HVN_timer_task(HVN_timer_t* timer)
             }
         }
         else {
-            LOG(HVN_LOG_DBG, "A timer was triggered. Sending alarm, then exiting timer task.");
+            //LOG(HVN_LOG_DBG, "A timer was triggered. Sending alarm, then exiting timer task.");
             chansendul(timer->alarm_chan, HVN_TIMER_ALARM_MAGIC);
             break;
         }

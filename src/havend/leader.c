@@ -37,7 +37,7 @@ int HVN_replica_leader(HVN_replica_t* replica)
     int default_leader_heartbeat = 5000;
     static Alt alts[HVN_REPLICA_LEADER_ALT_NK + 1];
 
-    LOG(HVN_LOG_INFO, "Replica has entered leader state.");
+    //LOG(HVN_LOG_INFO, "Replica has entered leader state.");
 
     // TODO: Initialize nextIndex for each follower to the local last log index + 1.
 
@@ -63,7 +63,7 @@ int HVN_replica_leader(HVN_replica_t* replica)
 
         case HVN_REPLICA_LEADER_ALT_DATA_KEY:
             LOG(HVN_LOG_DBG, "This leader received a data message.");
-            //HVN_proto_print_data_msg(client_data_msg);
+            HVN_proto_print_data_msg(data_msg);
             // TODO: Append data messages to local log.
 
             // Pack and append to local log.
