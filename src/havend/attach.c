@@ -60,7 +60,7 @@ void HVN_attach_recv(HVN_attach_t* client)
             break;
     }
 
-    //TODO: send message to attach send task to shutdown
+    //TODO: send a message to attach-send-task to let it shutdown
 }
 
 void HVN_attach_send_task(HVN_attach_t* client)

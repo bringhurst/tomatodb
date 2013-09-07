@@ -16,8 +16,11 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
-#include "leader.h"
+#include "attach.h"
 #include "log.h"
+#include "pack/data_msg.h"
+
+#include "leader.h"
 
 /** The stream to send log messages to. */
 extern FILE* HVN_debug_stream;
@@ -32,10 +35,13 @@ int HVN_replica_leader(HVN_replica_t* replica)
     HVN_addr_t* vote;
     uint64_t term;
 
-    HVN_db_op_t data_msg;
     uint32_t heartbeat_result = 0;
     int default_leader_heartbeat = 5000;
     static Alt alts[HVN_REPLICA_LEADER_ALT_NK + 1];
+
+    HVN_attach_msg_t data_attach_msg;
+    HVN_msg_data_t* data_msg;
+    HVN_msg_data_resp_t* data_msg_resp = (HVN_msg_data_resp_t*) malloc(sizeof(HVN_msg_data_resp_t));
 
     //LOG(HVN_LOG_INFO, "Replica has entered leader state.");
 
@@ -47,7 +53,7 @@ int HVN_replica_leader(HVN_replica_t* replica)
     }
 
     alts[HVN_REPLICA_LEADER_ALT_DATA_KEY].c = replica->data_chan;
-    alts[HVN_REPLICA_LEADER_ALT_DATA_KEY].v = &data_msg;
+    alts[HVN_REPLICA_LEADER_ALT_DATA_KEY].v = &data_attach_msg;
     alts[HVN_REPLICA_LEADER_ALT_DATA_KEY].op = CHANRCV;
 
     alts[HVN_REPLICA_LEADER_ALT_TIMER_KEY].c = replica->election_timer->alarm_chan;
@@ -62,7 +68,13 @@ int HVN_replica_leader(HVN_replica_t* replica)
 
         case HVN_REPLICA_LEADER_ALT_DATA_KEY:
             LOG(HVN_LOG_DBG, "This leader received a data message.");
+            data_msg = data_attach_msg.msg;
             HVN_proto_print_data_msg(data_msg);
+
+            data_msg_resp->success = HVN_PROTO_DATA_R_OK;
+            data_msg_resp->err_code = 0;
+            chansendp(data_attach_msg.data_reply_chan, data_msg_resp);
+
             // TODO: Append data messages to local log.
 
             // Pack and append to local log.
