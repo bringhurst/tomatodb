@@ -32,10 +32,48 @@ extern HVN_loglevel HVN_debug_level;
 
 void HVN_hook_task(HVN_hook_t* hook)
 {
-    HVN_INTENTIONALLY_UNUSED_VARIABLE(hook);
+    if(HVN_hook_prepare(hook->remote_address, hook->remote_port, \
+            &(hook->fd_append), HVN_PROTO_CTRL_ATTACH_APPEND) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Could not create an append hook connection.");
+        taskexit(EXIT_FAILURE);
+    }
 
-    // TODO: create two sockets to the remote replica, one for vote and for append.
-    // TODO: create two channels that allow the replica to send to the two sockets.
+    if(HVN_hook_prepare(hook->remote_address, hook->remote_port, \
+            &(hook->fd_vote), HVN_PROTO_CTRL_ATTACH_VOTE) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Could not create an vote hook connection.");
+        taskexit(EXIT_FAILURE);
+    }
+
+    // TODO: setup alts array with the two channels.
+
+    for(;;) {
+        switch(chanalt(alts)) {
+            case <append>:
+                write to append fd
+                break;
+            case <vote>:
+                write to vote fd
+                break;
+            default:
+                LOG(HVN_LOG_ERR, "A replica sent a hook an unknown message.");
+                taskexit(EXIT_FAILURE);
+        }
+    }
+}
+
+int HVN_hook_prepare(char* address, int port, int* fd, uint32_t mode)
+{
+    *fd = netdial(TCP, address, port);
+    if(*fd < 1) {
+        LOG(LOG_HVN_ERR, "Failed to open a hook socket.");
+        return HVN_ERROR;
+    }
+
+    // TODO: send a connect message.
+
+    // TODO: send a control attach message.
+
+    return HVN_SUCCESS;
 }
 
 int HVN_hook_init(HVN_hook_t** hook, uuid_t uuid, int port, char* address)
