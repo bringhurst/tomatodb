@@ -55,8 +55,10 @@ int HVN_hook_init(HVN_hook_t** hook, uuid_t uuid, int port, char* address)
     }
 
     (*hook)->remote_port = port;
-    uuid_copy((*hook)->remote_uuid, uuid);
     strncpy((*hook)->remote_address, address, _POSIX_HOST_NAME_MAX);
+
+    // FIXME: allocate mem for remote_uuid?
+    uuid_copy((*hook)->remote_uuid, uuid);
 
     (*hook)->fd_append = -1;
     (*hook)->fd_vote = -1;
