@@ -1,3 +1,6 @@
+#ifndef __HVN__HAVEND_HOOK_H
+#define __HVN__HAVEND_HOOK_H
+
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
  *
@@ -16,17 +19,15 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
-#include "hook.h"
+typedef struct HVN_hook_t {
+    uuid_t remote_uuid;
+    int report_port;
+    char* remote_address;
+    int fd_append;
+    int fd_vote;
+    Channel* append_chan;
+    Channel* vote_chan;
+    Channel* exit_chan;
+} HVN_hook_t;
 
-/** The stream to send log messages to. */
-extern FILE* HVN_debug_stream;
-
-/** The log level to output. */
-extern HVN_loglevel HVN_debug_level;
-
-// for each replica,
-//    create a hook task for each remote replica
-//    each hook creates two sockets to the remote replica, one for vote and for append.
-//    each hook creates two channels that allow the replica to send to the two sockets.
-
-/* EOF */
+#endif /* __HVN__HAVEND_HOOK_H */
