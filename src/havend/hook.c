@@ -70,4 +70,13 @@ int HVN_hook_init(HVN_hook_t** hook, uuid_t uuid, int port, char* address)
     return HVN_SUCCESS;
 }
 
+void HVN_hook_free(HVN_hook_t* hook)
+{
+    free(hook->remote_address);
+    chanfree(hook->append_chan);
+    chanfree(hook->vote_chan);
+    chanfree(hook->exit_chan);
+    free(hook);
+}
+
 /* EOF */

@@ -43,5 +43,6 @@ typedef struct HVN_hook_t {
 
 void HVN_hook_task(HVN_hook_t* hook);
 int HVN_hook_init(HVN_hook_t** hook, uuid_t uuid, int port, char* address);
+void HVN_hook_free(HVN_hook_t* hook);
 
 #endif /* __HVN__HAVEND_HOOK_H */
