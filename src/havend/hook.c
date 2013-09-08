@@ -74,13 +74,19 @@ void HVN_hook_task(HVN_hook_t* hook)
             case HVN_HOOK_ALT_APPEND_KEY:
                 taskstate("write/append");
                 LOG(HVN_LOG_DBG, "A replica sent this hook an append message.");
-                // TODO: pack and send to append fd.
+                if(HVN_proto_send_append_msg(*fd) != HVN_SUCCESS) {
+                    LOG(HVN_LOG_ERR, "Failed to send a hook append message.");
+                    return HVN_ERROR;
+                }
                 break;
 
             case HVN_HOOK_ALT_VOTE_KEY:
                 taskstate("write/vote");
                 LOG(HVN_LOG_DBG, "A replica sent this hook a vote message.");
-                // TODO: pack and send to vote fd.
+                if(HVN_proto_send_vote_msg(*fd) != HVN_SUCCESS) {
+                    LOG(HVN_LOG_ERR, "Failed to send a hook vote message.");
+                    return HVN_ERROR;
+                }
                 break;
 
             case HVN_HOOK_ALT_EXIT_KEY:
