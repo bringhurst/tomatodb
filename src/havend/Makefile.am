@@ -14,6 +14,7 @@ havend_SOURCES = \
                  context.c \
                  follower.c \
                  havend.c \
+                 hook.c \
                  leader.c \
                  replica.c \
                  routing.c \

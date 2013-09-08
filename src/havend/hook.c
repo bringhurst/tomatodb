@@ -16,6 +16,12 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
+#include <stdlib.h>
+
+#include "common.h"
+#include "pack/append_msg.h"
+#include "pack/vote_msg.h"
+
 #include "hook.h"
 
 /** The stream to send log messages to. */
@@ -24,9 +30,42 @@ extern FILE* HVN_debug_stream;
 /** The log level to output. */
 extern HVN_loglevel HVN_debug_level;
 
-// for each replica,
-//    create a hook task for each remote replica
-//    each hook creates two sockets to the remote replica, one for vote and for append.
-//    each hook creates two channels that allow the replica to send to the two sockets.
+void HVN_hook_task(HVN_hook_t* hook)
+{
+    HVN_INTENTIONALLY_UNUSED_VARIABLE(hook);
+
+    // TODO: create two sockets to the remote replica, one for vote and for append.
+    // TODO: create two channels that allow the replica to send to the two sockets.
+}
+
+int HVN_hook_init(HVN_hook_t** hook, uuid_t uuid, int port, char* address)
+{
+    *hook = (HVN_hook_t*) malloc(sizeof(HVN_hook_t));
+
+    if(*hook == NULL) {
+        LOG(HVN_LOG_ERR, "Could not allocate memory for a replica hook.");
+        return HVN_ERROR;
+    }
+
+    (*hook)->remote_address = (char*) malloc(sizeof(char) * _POSIX_HOST_NAME_MAX);
+
+    if((*hook)->remote_address == NULL) {
+        LOG(HVN_LOG_ERR, "Could not allocate memory for a replica hook address.");
+        return HVN_ERROR;
+    }
+
+    (*hook)->remote_port = port;
+    uuid_copy((*hook)->remote_uuid, uuid);
+    strncpy((*hook)->remote_address, address, _POSIX_HOST_NAME_MAX);
+
+    (*hook)->fd_append = -1;
+    (*hook)->fd_vote = -1;
+
+    (*hook)->append_chan = chancreate(sizeof(HVN_msg_append_t*), HVN_HOOK_APPEND_CHANNEL_BACKLOG);
+    (*hook)->vote_chan = chancreate(sizeof(HVN_msg_vote_t*), HVN_HOOK_VOTE_CHANNEL_BACKLOG);
+    (*hook)->exit_chan = chancreate(sizeof(uint32_t), 0);
+
+    return HVN_SUCCESS;
+}
 
 /* EOF */

@@ -16915,6 +16915,17 @@ _ACEOF
 
 fi
 
+ac_fn_c_check_type "$LINENO" "ssize_t" "ac_cv_type_ssize_t" "$ac_includes_default"
+if test "x$ac_cv_type_ssize_t" = xyes; then :
+
+else
+
+cat >>confdefs.h <<_ACEOF
+#define ssize_t int
+_ACEOF
+
+fi
+
 ac_fn_c_find_uintX_t "$LINENO" "32" "ac_cv_c_uint32_t"
 case $ac_cv_c_uint32_t in #(
   no|yes) ;; #(

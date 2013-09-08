@@ -19,15 +19,29 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
+#include <uuid/uuid.h>
+
+#include "log.h"
+#include "task/task.h"
+
+#define HVN_HOOK_APPEND_CHANNEL_BACKLOG  10
+#define HVN_HOOK_VOTE_CHANNEL_BACKLOG  10
+
 typedef struct HVN_hook_t {
     uuid_t remote_uuid;
-    int report_port;
+
+    int remote_port;
     char* remote_address;
+
     int fd_append;
     int fd_vote;
+
     Channel* append_chan;
     Channel* vote_chan;
     Channel* exit_chan;
 } HVN_hook_t;
+
+void HVN_hook_task(HVN_hook_t* hook);
+int HVN_hook_init(HVN_hook_t** hook, uuid_t uuid, int port, char* address);
 
 #endif /* __HVN__HAVEND_HOOK_H */

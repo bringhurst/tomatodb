@@ -70,9 +70,9 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_havend_OBJECTS = attach.$(OBJEXT) bootstrap.$(OBJEXT) \
 	candidate.$(OBJEXT) consensus.$(OBJEXT) context.$(OBJEXT) \
-	follower.$(OBJEXT) havend.$(OBJEXT) leader.$(OBJEXT) \
-	replica.$(OBJEXT) routing.$(OBJEXT) settings.$(OBJEXT) \
-	timer.$(OBJEXT)
+	follower.$(OBJEXT) havend.$(OBJEXT) hook.$(OBJEXT) \
+	leader.$(OBJEXT) replica.$(OBJEXT) routing.$(OBJEXT) \
+	settings.$(OBJEXT) timer.$(OBJEXT)
 havend_OBJECTS = $(am_havend_OBJECTS)
 havend_DEPENDENCIES = ../common/libhaven_common.la
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -247,7 +247,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-AM_CPPFLAGS = -std=gnu99 -ggdb -W -Wall -Wextra -Wformat=1 -Winit-self \
+AM_CPPFLAGS = -std=gnu99 -ggdb -W -Wall -Wextra -Winit-self \
 	-Wmissing-include-dirs -Wswitch-enum -Wuninitialized \
 	-Wunknown-pragmas -Wstrict-aliasing -Wfloat-equal -Wundef \
 	-Wbad-function-cast -Wcast-align -Wstrict-prototypes \
@@ -262,6 +262,7 @@ havend_SOURCES = \
                  context.c \
                  follower.c \
                  havend.c \
+                 hook.c \
                  leader.c \
                  replica.c \
                  routing.c \
@@ -367,6 +368,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/context.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/follower.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/havend.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hook.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/leader.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/replica.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/routing.Po@am__quote@
