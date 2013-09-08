@@ -204,7 +204,6 @@ void HVN_attach_recv_data(HVN_attach_t* client)
         taskexit(HVN_ERROR);
     }
 
-    attach_msg->msg = data_msg_data;
     attach_msg->data_reply_chan = client->data_reply_chan;
 
     for(;;) {
@@ -212,6 +211,8 @@ void HVN_attach_recv_data(HVN_attach_t* client)
             LOG(HVN_LOG_ERR, "Did not receive a valid data message while attached to a replica.");
             taskexit(HVN_ERROR);
         }
+
+        attach_msg->msg = data_msg_data;
 
         if(chansendp(client->replica->data_chan, attach_msg) != 1) {
             LOG(HVN_LOG_ERR, "Failed to send the data message to the appropriate replica.");

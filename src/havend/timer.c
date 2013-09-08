@@ -62,6 +62,8 @@ void HVN_timer_task(HVN_timer_t* timer)
     int elapsed_time = 0;
     int recv_time = 0;
 
+    //LOG(HVN_LOG_DBG, "Entering timer task.");
+
     taskname("timer");
     taskstate("new");
 
@@ -107,6 +109,7 @@ void HVN_timer_task(HVN_timer_t* timer)
         }
     }
 
+    //LOG(HVN_LOG_DBG, "Leaving timer task.");
     taskexit(EXIT_SUCCESS);
 }
 
