@@ -63,7 +63,10 @@ int HVN_proto_unpack_connect_resp(HVN_msg_client_connect_resp_t* data, \
                                   char* msg);
 
 int HVN_proto_receive_connect_msg(int fd);
+int HVN_proto_send_connect_msg(int fd);
+
 int HVN_proto_send_connect_resp_msg(int fd);
+
 int HVN_proto_handle_connect_msg(int fd);
 
 #endif /* __HVN__COMMON_PACK_CONNECT_MSG_H_ */

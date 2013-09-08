@@ -226,6 +226,28 @@ int HVN_proto_receive_connect_msg(int fd)
     return HVN_SUCCESS;
 }
 
+int HVN_proto_send_connect_msg(int fd)
+{
+    HVN_msg_client_connect_t connect_msg_data;
+    size_t len = 0;
+    char* msg;
+
+    if(HVN_proto_pack(HVN_PROTO_MSG_TYPE_CONNECT, \
+                      HVN_PROTO_PACK_TYPE_MSGPACK, \
+                      &connect_msg_data, &len, &msg) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Failed to pack a connect message.");
+        return HVN_ERROR;
+    }
+
+    if(HVN_msgpack_fdwrite(fd, len, msg) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Failed to write a connect message to the socket.");
+        return HVN_ERROR;
+    }
+
+    free(msg);
+    return HVN_SUCCESS;
+}
+
 int HVN_proto_send_connect_resp_msg(int fd)
 {
     HVN_msg_client_connect_resp_t connect_resp_msg_data;
@@ -240,7 +262,7 @@ int HVN_proto_send_connect_resp_msg(int fd)
     }
 
     if(HVN_msgpack_fdwrite(fd, len, msg) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Failed to write a connect message to the socket.");
+        LOG(HVN_LOG_ERR, "Failed to write a connect message response to the socket.");
         return HVN_ERROR;
     }
 

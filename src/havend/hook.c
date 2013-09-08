@@ -20,6 +20,7 @@
 
 #include "common.h"
 #include "pack/append_msg.h"
+#include "pack/connect_msg.h"
 #include "pack/control_msg.h"
 #include "pack/vote_msg.h"
 
@@ -101,10 +102,15 @@ int HVN_hook_prepare(char* address, int port, int* fd, uint32_t mode)
         return HVN_ERROR;
     }
 
-    // TODO: send a generic connect message.
+    if(HVN_proto_send_connect_msg(*fd) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Failed to send a hook connect message.");
+        return HVN_ERROR;
+    }
 
-    // TODO: send a control attach message based on what mode is.
-    HVN_INTENTIONALLY_UNUSED_VARIABLE(mode);
+    if(HVN_proto_send_control_msg(*fd, mode) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Failed to send a hook connect message.");
+        return HVN_ERROR;
+    }
 
     return HVN_SUCCESS;
 }
