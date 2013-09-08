@@ -24,6 +24,8 @@
 #include "log.h"
 #include "task/task.h"
 
+#define HVN_HOOK_STACK_SIZE  32768
+
 #define HVN_HOOK_APPEND_CHANNEL_BACKLOG  10
 #define HVN_HOOK_VOTE_CHANNEL_BACKLOG  10
 

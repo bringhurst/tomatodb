@@ -67,6 +67,7 @@ int HVN_hook_init(HVN_hook_t** hook, uuid_t uuid, int port, char* address)
     (*hook)->vote_chan = chancreate(sizeof(HVN_msg_vote_t*), HVN_HOOK_VOTE_CHANNEL_BACKLOG);
     (*hook)->exit_chan = chancreate(sizeof(uint32_t), 0);
 
+    taskcreate((void (*)(void*)) HVN_hook_task, (void*) (*hook), HVN_HOOK_STACK_SIZE);
     return HVN_SUCCESS;
 }
 
