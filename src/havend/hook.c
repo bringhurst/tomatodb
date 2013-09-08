@@ -44,7 +44,7 @@ void HVN_hook_task(HVN_hook_t* hook)
         taskexit(EXIT_FAILURE);
     }
 
-    // TODO: setup alts array with the two channels.
+    // TODO: setup alts array with the two channels for receiving messages from replicas.
 
     for(;;) {
         switch(chanalt(alts)) {
@@ -69,9 +69,9 @@ int HVN_hook_prepare(char* address, int port, int* fd, uint32_t mode)
         return HVN_ERROR;
     }
 
-    // TODO: send a connect message.
+    // TODO: send a generic connect message.
 
-    // TODO: send a control attach message.
+    // TODO: send a control attach message based on what mode is.
 
     return HVN_SUCCESS;
 }
