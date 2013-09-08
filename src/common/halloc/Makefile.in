@@ -249,9 +249,8 @@ top_srcdir = @top_srcdir@
 AM_CPPFLAGS = -std=gnu99 -ggdb -W -Wall -Wextra -Winit-self \
 	-Wmissing-include-dirs -Wswitch-enum -Wuninitialized \
 	-Wunknown-pragmas -Wstrict-aliasing -Wfloat-equal -Wundef \
-	-Wbad-function-cast -Wcast-align -Wstrict-prototypes \
-	-Wmissing-prototypes -Wredundant-decls -Winline \
-	-Wdisabled-optimization -Wshadow \
+	-Wbad-function-cast -Wstrict-prototypes -Wmissing-prototypes \
+	-Wredundant-decls -Winline -Wdisabled-optimization -Wshadow \
 	-I$(top_srcdir)/src/common/halloc
 noinst_LTLIBRARIES = libhaven_common_halloc.la
 libhaven_common_halloc_la_LDFLAGS = $(LIB_LDFLAGS)
