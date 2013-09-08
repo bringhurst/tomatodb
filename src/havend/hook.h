@@ -26,6 +26,12 @@
 
 #define HVN_HOOK_STACK_SIZE  32768
 
+#define HVN_HOOK_ALT_NK  3
+
+#define HVN_HOOK_ALT_APPEND_KEY  0
+#define HVN_HOOK_ALT_EXIT_KEY    1
+#define HVN_HOOK_ALT_VOTE_KEY    2
+
 #define HVN_HOOK_APPEND_CHANNEL_BACKLOG  10
 #define HVN_HOOK_VOTE_CHANNEL_BACKLOG  10
 
@@ -44,6 +50,8 @@ typedef struct HVN_hook_t {
 } HVN_hook_t;
 
 void HVN_hook_task(HVN_hook_t* hook);
+int HVN_hook_prepare(char* address, int port, int* fd, uint32_t mode);
+
 int HVN_hook_init(HVN_hook_t** hook, uuid_t uuid, int port, char* address);
 void HVN_hook_free(HVN_hook_t* hook);
 

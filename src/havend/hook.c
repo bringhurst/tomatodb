@@ -20,6 +20,7 @@
 
 #include "common.h"
 #include "pack/append_msg.h"
+#include "pack/control_msg.h"
 #include "pack/vote_msg.h"
 
 #include "hook.h"
@@ -32,6 +33,16 @@ extern HVN_loglevel HVN_debug_level;
 
 void HVN_hook_task(HVN_hook_t* hook)
 {
+    static Alt alts[HVN_HOOK_ALT_NK + 1];
+
+    HVN_msg_append_t append_msg;
+    HVN_msg_vote_t vote_msg;
+
+    uint32_t exit_result;
+
+    taskname("hook");
+    taskstate("new");
+
     if(HVN_hook_prepare(hook->remote_address, hook->remote_port, \
             &(hook->fd_append), HVN_PROTO_CTRL_ATTACH_APPEND) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Could not create an append hook connection.");
@@ -44,16 +55,37 @@ void HVN_hook_task(HVN_hook_t* hook)
         taskexit(EXIT_FAILURE);
     }
 
-    // TODO: setup alts array with the two channels for receiving messages from replicas.
+    alts[HVN_HOOK_ALT_APPEND_KEY].c = hook->append_chan;
+    alts[HVN_HOOK_ALT_APPEND_KEY].v = &append_msg;
+    alts[HVN_HOOK_ALT_APPEND_KEY].op = CHANRCV;
+
+    alts[HVN_HOOK_ALT_VOTE_KEY].c = hook->vote_chan;
+    alts[HVN_HOOK_ALT_VOTE_KEY].v = &vote_msg;
+    alts[HVN_HOOK_ALT_VOTE_KEY].op = CHANRCV;
+
+    alts[HVN_HOOK_ALT_EXIT_KEY].c = hook->exit_chan;
+    alts[HVN_HOOK_ALT_EXIT_KEY].v = &exit_result;
+    alts[HVN_HOOK_ALT_EXIT_KEY].op = CHANRCV;
 
     for(;;) {
+        taskstate("idle");
         switch(chanalt(alts)) {
-            case <append>:
-                write to append fd
+            case HVN_HOOK_ALT_APPEND_KEY:
+                taskstate("write/append");
+                LOG(HVN_LOG_DBG, "A replica sent this hook an append message.");
+                // TODO: pack and send to append fd.
                 break;
-            case <vote>:
-                write to vote fd
+
+            case HVN_HOOK_ALT_VOTE_KEY:
+                taskstate("write/vote");
+                LOG(HVN_LOG_DBG, "A replica sent this hook a vote message.");
+                // TODO: pack and send to vote fd.
                 break;
+
+            case HVN_HOOK_ALT_EXIT_KEY:
+                LOG(HVN_LOG_DBG, "A replica sent this hook an exit message.");
+                taskexit(EXIT_SUCCESS);
+
             default:
                 LOG(HVN_LOG_ERR, "A replica sent a hook an unknown message.");
                 taskexit(EXIT_FAILURE);
@@ -65,13 +97,14 @@ int HVN_hook_prepare(char* address, int port, int* fd, uint32_t mode)
 {
     *fd = netdial(TCP, address, port);
     if(*fd < 1) {
-        LOG(LOG_HVN_ERR, "Failed to open a hook socket.");
+        LOG(HVN_LOG_ERR, "Failed to open a hook socket.");
         return HVN_ERROR;
     }
 
     // TODO: send a generic connect message.
 
     // TODO: send a control attach message based on what mode is.
+    HVN_INTENTIONALLY_UNUSED_VARIABLE(mode);
 
     return HVN_SUCCESS;
 }
