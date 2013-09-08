@@ -35,6 +35,11 @@ int HVN_replica_leader(HVN_replica_t* replica)
     HVN_addr_t* vote;
     uint64_t term;
 
+    HVN_INTENTIONALLY_UNUSED_VARIABLE(replicas);
+    HVN_INTENTIONALLY_UNUSED_VARIABLE(log);
+    HVN_INTENTIONALLY_UNUSED_VARIABLE(vote);
+    HVN_INTENTIONALLY_UNUSED_VARIABLE(term);
+
     uint32_t heartbeat_result = 0;
     int default_leader_heartbeat = 5000;
     static Alt alts[HVN_REPLICA_LEADER_ALT_NK + 1];

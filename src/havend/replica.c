@@ -44,6 +44,11 @@ int HVN_replica_persist_state(HVN_replica_t* replica, \
                               HVN_addr_t* term_vote, \
                               uint64_t current_term)
 {
+    HVN_INTENTIONALLY_UNUSED_VARIABLE(replica);
+    HVN_INTENTIONALLY_UNUSED_VARIABLE(log);
+    HVN_INTENTIONALLY_UNUSED_VARIABLE(term_vote);
+    HVN_INTENTIONALLY_UNUSED_VARIABLE(current_term);
+
     //TODO persist log, vote, and term to leveldb.
 
     return HVN_ERROR;
