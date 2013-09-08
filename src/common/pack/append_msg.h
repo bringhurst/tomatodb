@@ -78,6 +78,8 @@ int HVN_proto_unpack_append_resp(HVN_msg_append_resp_t* data, \
 int HVN_proto_receive_append_msg(int fd, \
                                  HVN_msg_append_t* append_msg_data);
 
+int HVN_proto_send_append_msg(int fd, HVN_msg_append_t* append_msg);
+
 int HVN_proto_send_append_resp_msg(int fd, HVN_msg_append_resp_t* resp);
 
 void HVN_proto_print_append_msg(HVN_msg_append_t* data);

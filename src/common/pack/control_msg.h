@@ -89,6 +89,8 @@ int HVN_proto_unpack_control_resp(HVN_msg_client_control_resp_t* data, \
 int HVN_proto_receive_control_msg(int fd, \
                                   HVN_msg_client_control_t* control_msg_data);
 
+int HVN_proto_send_control_msg(int fd);
+
 int HVN_proto_send_control_resp_msg(int fd);
 
 #endif /* __HVN__COMMON_PACK_CONTROL_MSG_H_ */

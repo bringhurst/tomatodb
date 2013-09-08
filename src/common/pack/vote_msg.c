@@ -223,6 +223,27 @@ int HVN_proto_receive_vote_msg(int fd, \
     return HVN_SUCCESS;
 }
 
+int HVN_proto_send_vote_msg(int fd, HVN_msg_vote_t* vote_msg)
+{
+    size_t len = 0;
+    char* msg;
+
+    if(HVN_proto_pack(HVN_PROTO_MSG_TYPE_VOTE, \
+                      HVN_PROTO_PACK_TYPE_MSGPACK, \
+                      &vote_msg, &len, &msg) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Failed to pack a vote message.");
+        return HVN_ERROR;
+    }
+
+    if(HVN_msgpack_fdwrite(fd, len, msg) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Failed to write a vote message to the socket.");
+        return HVN_ERROR;
+    }
+
+    free(msg);
+    return HVN_SUCCESS;
+}
+
 int HVN_proto_send_vote_resp_msg(int fd, HVN_msg_vote_resp_t* resp)
 {
     size_t len = 0;
@@ -236,7 +257,7 @@ int HVN_proto_send_vote_resp_msg(int fd, HVN_msg_vote_resp_t* resp)
     }
 
     if(HVN_msgpack_fdwrite(fd, len, msg) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Failed to write a vote message to the socket.");
+        LOG(HVN_LOG_ERR, "Failed to write a vote message response to the socket.");
         return HVN_ERROR;
     }
 

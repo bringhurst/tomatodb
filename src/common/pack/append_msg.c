@@ -228,6 +228,27 @@ int HVN_proto_receive_append_msg(int fd, \
     return HVN_SUCCESS;
 }
 
+int HVN_proto_send_append_msg(int fd, HVN_msg_append_t* append_msg)
+{
+    size_t len = 0;
+    char* msg;
+
+    if(HVN_proto_pack(HVN_PROTO_MSG_TYPE_APPEND, \
+                      HVN_PROTO_PACK_TYPE_MSGPACK, \
+                      &append_msg, &len, &msg) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Failed to pack a append message.");
+        return HVN_ERROR;
+    }
+
+    if(HVN_msgpack_fdwrite(fd, len, msg) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Failed to write a append message to the socket.");
+        return HVN_ERROR;
+    }
+
+    free(msg);
+    return HVN_SUCCESS;
+}
+
 int HVN_proto_send_append_resp_msg(int fd, HVN_msg_append_resp_t* resp)
 {
     size_t len = 0;
@@ -241,7 +262,7 @@ int HVN_proto_send_append_resp_msg(int fd, HVN_msg_append_resp_t* resp)
     }
 
     if(HVN_msgpack_fdwrite(fd, len, msg) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Failed to write a append message to the socket.");
+        LOG(HVN_LOG_ERR, "Failed to write a append message response to the socket.");
         return HVN_ERROR;
     }
 

@@ -240,6 +240,28 @@ int HVN_proto_receive_control_msg(int fd, \
     return HVN_SUCCESS;
 }
 
+int HVN_proto_send_control_msg(int fd)
+{
+    HVN_msg_client_control_t control_msg;
+    size_t len = 0;
+    char* msg;
+
+    if(HVN_proto_pack(HVN_PROTO_MSG_TYPE_CONTROL, \
+                      HVN_PROTO_PACK_TYPE_MSGPACK, \
+                      &control_msg, &len, &msg) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Failed to pack a control message.");
+        return HVN_ERROR;
+    }
+
+    if(HVN_msgpack_fdwrite(fd, len, msg) != HVN_SUCCESS) {
+        LOG(HVN_LOG_ERR, "Failed to write a control message to the socket.");
+        return HVN_ERROR;
+    }
+
+    free(msg);
+    return HVN_SUCCESS;
+}
+
 int HVN_proto_send_control_resp_msg(int fd)
 {
     HVN_msg_client_control_resp_t control_resp_msg_data;
@@ -254,7 +276,7 @@ int HVN_proto_send_control_resp_msg(int fd)
     }
 
     if(HVN_msgpack_fdwrite(fd, len, msg) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Failed to write a control message to the socket.");
+        LOG(HVN_LOG_ERR, "Failed to write a control message response to the socket.");
         return HVN_ERROR;
     }
 

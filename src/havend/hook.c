@@ -74,7 +74,7 @@ void HVN_hook_task(HVN_hook_t* hook)
             case HVN_HOOK_ALT_APPEND_KEY:
                 taskstate("write/append");
                 LOG(HVN_LOG_DBG, "A replica sent this hook an append message.");
-                if(HVN_proto_send_append_msg(hook->fd_append) != HVN_SUCCESS) {
+                if(HVN_proto_send_append_msg(hook->fd_append, NULL /* TODO */) != HVN_SUCCESS) {
                     LOG(HVN_LOG_ERR, "Failed to send a hook append message.");
                     taskexit(EXIT_FAILURE);
                 }
@@ -83,7 +83,7 @@ void HVN_hook_task(HVN_hook_t* hook)
             case HVN_HOOK_ALT_VOTE_KEY:
                 taskstate("write/vote");
                 LOG(HVN_LOG_DBG, "A replica sent this hook a vote message.");
-                if(HVN_proto_send_vote_msg(hook->fd_vote) != HVN_SUCCESS) {
+                if(HVN_proto_send_vote_msg(hook->fd_vote, NULL /* TODO */) != HVN_SUCCESS) {
                     LOG(HVN_LOG_ERR, "Failed to send a hook vote message.");
                     taskexit(EXIT_FAILURE);
                 }
@@ -113,7 +113,7 @@ int HVN_hook_prepare(char* address, int port, int* fd, uint32_t mode)
         return HVN_ERROR;
     }
 
-    if(HVN_proto_send_control_msg(*fd, mode) != HVN_SUCCESS) {
+    if(HVN_proto_send_control_msg(*fd /* TODO: , mode */) != HVN_SUCCESS) {
         LOG(HVN_LOG_ERR, "Failed to send a hook connect message.");
         return HVN_ERROR;
     }
