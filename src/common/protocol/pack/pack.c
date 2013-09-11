@@ -22,33 +22,12 @@ extern FILE* HVN_debug_stream;
 /** The log level to write messages for. */
 extern HVN_loglevel HVN_debug_level;
 
-int HVN_msg_data_send(int fd, HVN_msg_data_t* msg_in)
-{
-  msgpack_sbuffer sbuf;
-  msgpack_sbuffer_init(&sbuf);
-  msgpack_packer pck;
-  msgpack_packer_init(&pck, &sbuf, msgpack_sbuffer_write);
-
-
-
-// A data message contains one or more ordered operations to perform on the
-// database state machine.
-typedef struct HVN_msg_data_t {
-    UT_array* ops; // HVN_db_op_t[]
-} HVN_msg_data_t;
-
-}
-
-int HVN_msg_data_recv(HVN_msg_data_t** msg_out, int fd)
+int HVN_msg_pack_init()
 {
 
 }
 
-int HVN_msg_resp_data_send(int fd, HVN_msg_resp_data_t* msg_in)
-{
-}
-
-int HVN_msg_resp_data_recv(HVN_msg_data_t** msg_out, int fd)
+int HVN_msg_unpack_init()
 {
 
 }
