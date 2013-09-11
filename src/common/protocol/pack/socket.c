@@ -22,6 +22,9 @@ extern FILE* HVN_debug_stream;
 /** The log level to write messages for. */
 extern HVN_loglevel HVN_debug_level;
 
+int HVN_fdwriten(int fd, char* buf, size_t len);
+int HVN_fdreadn(int fd, char* buf, size_t len);
+
 int HVN_msg_fdwrite(int fd, size_t len, char* msg)
 {
     size_t net_len = htonl(len);

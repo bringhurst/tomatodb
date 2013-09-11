@@ -1,5 +1,5 @@
-#ifndef __HVN__COMMON_PROTOCOL_MSG_IMPL_H_
-#define __HVN__COMMON_PROTOCOL_MSG_IMPL_H_
+#ifndef __HVN__COMMON_PROTOCOL_MSG_PACK_SOCKET_H_
+#define __HVN__COMMON_PROTOCOL_MSG_PACK_SOCKET_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -22,7 +22,4 @@
 int HVN_msg_fdwrite(int fd, size_t len, char* msg);
 int HVN_msg_fdread(int fd, size_t* len, char** msg);
 
-int HVN_fdwriten(int fd, char* buf, size_t len);
-int HVN_fdreadn(int fd, char* buf, size_t len);
-
-#endif /* __HVN__COMMON_PROTOCOL_MSG_IMPL_H_ */
+#endif /* __HVN__COMMON_PROTOCOL_MSG_PACK_SOCKET_H_ */
