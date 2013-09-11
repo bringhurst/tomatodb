@@ -28,18 +28,18 @@
 #define HVN_MSG_MAGIC             0xDECAFBAD
 
 /* Client request msg types. */
-#define HVN_MSG_TYPE_BOOTSTRAP    0x01
-#define HVN_MSG_TYPE_CONNECT      0x03
-#define HVN_MSG_TYPE_CONSENSUS    0x05
-#define HVN_MSG_TYPE_CONTROL      0x07
-#define HVN_MSG_TYPE_DATA         0x09
+#define HVN_MSG_TYPE_BOOTSTRAP    0xA1
+#define HVN_MSG_TYPE_CONNECT      0xB1
+#define HVN_MSG_TYPE_CONSENSUS    0xC1
+#define HVN_MSG_TYPE_CONTROL      0xD1
+#define HVN_MSG_TYPE_DATA         0xE1
 
 /* Server response msg types. */
-#define HVN_MSG_TYPE_BOOTSTRAP_R  0x02
-#define HVN_MSG_TYPE_CONNECT_R    0x04
-#define HVN_MSG_TYPE_CONSENSUS_R  0x06
-#define HVN_MSG_TYPE_CONTROL_R    0x08
-#define HVN_MSG_TYPE_DATA_R       0x0A
+#define HVN_MSG_TYPE_BOOTSTRAP_R  0xA2
+#define HVN_MSG_TYPE_CONNECT_R    0xB2
+#define HVN_MSG_TYPE_CONSENSUS_R  0xC2
+#define HVN_MSG_TYPE_CONTROL_R    0xD2
+#define HVN_MSG_TYPE_DATA_R       0xE2
 
 /*
  * Bootstrap msg definition.
@@ -73,9 +73,13 @@ int HVN_msg_resp_bootstrap_recv(HVN_msg_bootstrap_t** msg_out, int fd);
  */
 
 typedef struct HVN_msg_connect_t {
+    uint32_t magic;
+    uint32_t version;
 } HVN_msg_connect_t;
 
 typedef struct HVN_msg_resp_connect_t {
+    bool success;
+    uint32_t version;
 } HVN_msg_resp_connect_t;
 
 int HVN_msg_connect_send(int fd, HVN_msg_connect_t* msg_in);
@@ -121,10 +125,29 @@ int HVN_msg_resp_consensus_recv(HVN_msg_consensus_t** msg_out, int fd);
  * Control msg definition.
  */
 
+// Actions to control socket state.
+#define HVN_MSG_CNTL_ACTION_ATTACH_APPEND  0xD2
+#define HVN_MSG_CNTL_ACTION_ATTACH_DATA    0xD3
+#define HVN_MSG_CNTL_ACTION_ATTACH_VOTE    0xD4
+
+// Action to put a replica into an idle follower bootstrap state.
+#define HVN_MSG_CNTL_ACTION_IDLE_FOLLOWER  0xD5
+
+// Actions to shut down an existing replica.
+#define HVN_MSG_CTRL_ACTION_DESTROY        0xD6
+#define HVN_MSG_CTRL_ACTION_EXIT           0xD7
+
+// Control messages contain an action and the UUID of the replica to apply the
+// action to.
 typedef struct HVN_msg_control_t {
+    uint32_t action;
+    uuid_t uuid;
 } HVN_msg_control_t;
 
+// A control message response contains a success field to determine if the
+// control action was successful.
 typedef struct HVN_msg_resp_control_t {
+    bool success;
 } HVN_msg_resp_control_t;
 
 int HVN_msg_control_send(int fd, HVN_msg_control_t* msg_in);
@@ -137,10 +160,30 @@ int HVN_msg_resp_control_recv(HVN_msg_control_t** msg_out, int fd);
  * Data msg definition.
  */
 
+// The primary type of data operation.
+#define HVN_MSG_DATA_VERB_READ     0xE1
+#define HVN_MSG_DATA_VERB_WRITE    0xE2
+#define HVN_MSG_DATA_VERB_DELETE   0xE3
+#define HVN_MSG_DATA_VERB_WATCH    0xE4
+#define HVN_MSG_DATA_VERB_UNWATCH  0xE5
+#define HVN_MSG_DATA_TRANSACTION   0xE6
+
+// The mode of the primary operation type.
+#define HVN_MSG_DATA_MODE_RW       0xE7
+#define HVN_MSG_DATA_MODE_RO       0xE8
+#define HVN_MSG_DATA_MODE_RB       0xE9
+#define HVN_MSG_DATA_MODE_RT       0xEA
+
+// A data message contains one or more ordered operations to perform on the
+// database state machine.
 typedef struct HVN_msg_data_t {
+    UT_array* ops; // HVN_db_op_t[]
 } HVN_msg_data_t;
 
+// A data response message contains a success field to determine if the data
+// message was successful.
 typedef struct HVN_msg_resp_data_t {
+    bool success;
 } HVN_msg_resp_data_t;
 
 int HVN_msg_data_send(int fd, HVN_msg_data_t* msg_in);

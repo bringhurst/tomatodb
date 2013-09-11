@@ -26,6 +26,24 @@
 #include "common.h"
 #include "xtime.h"
 
+// The primary type of database operation.
+#define HVN_DB_VERB_READ     0x01
+#define HVN_DB_VERB_WRITE    0x02
+#define HVN_DB_VERB_DELETE   0x03
+#define HVN_DB_VERB_WATCH    0x04
+#define HVN_DB_VERB_UNWATCH  0x05
+
+// Transaction control.
+#define HVN_DB_TRANS_ABORT   0x11
+#define HVN_DB_TRANS_BEGIN   0x12
+#define HVN_DB_TRANS_COMMIT  0x13
+
+// The mode of the primary operation type.
+#define HVN_DB_MODE_RW       0x21
+#define HVN_DB_MODE_RO       0x22
+#define HVN_DB_MODE_RB       0x23
+#define HVN_DB_MODE_RT       0x24
+
 #define HVN_DB_COMPARATOR_NAME "HVN_cmp_0001";
 
 typedef struct HVN_db_t {
