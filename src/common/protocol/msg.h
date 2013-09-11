@@ -43,10 +43,21 @@
  * Bootstrap msg definition.
  */
 
-typedef struct HVN_msg_bootstrap_t {
+// A bootstrap message is a request to tell a remote idle follower that it
+// wishes to join a group of replicas which have yet to achieve 2f+1 :: f==1.
+// Fields in the struct coorespond to requestor identification so the remote
+// replica may add the new replica to its hook array.
+typedef struct HVN_msg_bootstrap_t 
+    uuid_t uuid;
+    char* address;
+    int port;
 } HVN_msg_bootstrap_t;
 
+// A bootstrap response message contains the list of replicas that the remote
+// replica currently knows as existing in the current quorum group.
 typedef struct HVN_msg_resp_bootstrap_t {
+    bool success;
+    UT_array* known_replicas
 } HVN_msg_resp_bootstrap_t;
 
 int HVN_msg_bootstrap_send(int fd, HVN_msg_bootstrap_t* msg_in);
@@ -59,7 +70,12 @@ int HVN_msg_resp_bootstrap_recv(HVN_msg_bootstrap_t** msg_out, int fd);
  * Consensus msg definitions.
  */
 
+// A consensus message is a consolidated RequestVote and AppendEntries message.
+// To construct a RequestVote message, simply exclude log entries and a commit
+// index and enable is_vote. To construct an AppendEntries, set is_vote to
+// false and include relevant log entries and a commit index.
 typedef struct HVN_msg_consensus_t {
+    bool is_vote;
     uint64_t term;
     uuid_t id;
     uint64_t log_index;
@@ -68,6 +84,10 @@ typedef struct HVN_msg_consensus_t {
     UT_array* log_entries;
 } HVN_msg_consensus_t;
 
+// A consensus response message is a reply to consensus messages in all cases.
+// When the initial request is a vote, the success response determines if the
+// vote was granted or not. If the request was an append entries, then the
+// response cooresponds to the follower's log state.
 typedef struct HVN_msg_resp_consensus_t {
     uint64_t term;
     bool success;
