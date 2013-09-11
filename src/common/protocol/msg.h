@@ -29,15 +29,17 @@
 
 /* Client request msg types. */
 #define HVN_MSG_TYPE_BOOTSTRAP    0x01
-#define HVN_MSG_TYPE_CONSENSUS    0x03
-#define HVN_MSG_TYPE_CONTROL      0x05
-#define HVN_MSG_TYPE_DATA         0x07
+#define HVN_MSG_TYPE_CONNECT      0x03
+#define HVN_MSG_TYPE_CONSENSUS    0x05
+#define HVN_MSG_TYPE_CONTROL      0x07
+#define HVN_MSG_TYPE_DATA         0x09
 
 /* Server response msg types. */
 #define HVN_MSG_TYPE_BOOTSTRAP_R  0x02
-#define HVN_MSG_TYPE_CONSENSUS_R  0x04
-#define HVN_MSG_TYPE_CONTROL_R    0x06
-#define HVN_MSG_TYPE_DATA_R       0x08
+#define HVN_MSG_TYPE_CONNECT_R    0x04
+#define HVN_MSG_TYPE_CONSENSUS_R  0x06
+#define HVN_MSG_TYPE_CONTROL_R    0x08
+#define HVN_MSG_TYPE_DATA_R       0x0A
 
 /*
  * Bootstrap msg definition.
@@ -65,6 +67,22 @@ int HVN_msg_bootstrap_recv(HVN_msg_bootstrap_t** msg_out, int fd);
 
 int HVN_msg_resp_bootstrap_send(int fd, HVN_msg_resp_bootstrap_t* msg_in);
 int HVN_msg_resp_bootstrap_recv(HVN_msg_bootstrap_t** msg_out, int fd);
+
+/*
+ * Connect msg definition.
+ */
+
+typedef struct HVN_msg_connect_t {
+} HVN_msg_connect_t;
+
+typedef struct HVN_msg_resp_connect_t {
+} HVN_msg_resp_connect_t;
+
+int HVN_msg_connect_send(int fd, HVN_msg_connect_t* msg_in);
+int HVN_msg_connect_recv(HVN_msg_connect_t** msg_out, int fd);
+
+int HVN_msg_resp_connect_send(int fd, HVN_msg_resp_connect_t* msg_in);
+int HVN_msg_resp_connect_recv(HVN_msg_connect_t** msg_out, int fd);
 
 /*
  * Consensus msg definitions.
