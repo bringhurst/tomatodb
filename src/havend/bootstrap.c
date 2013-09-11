@@ -30,38 +30,19 @@ extern FILE* HVN_debug_stream;
 /** The log level to output. */
 extern HVN_loglevel HVN_debug_level;
 
-// Bootstrap a new location leader replica in the specified context. Set the
-// UUID of the new replica to the uuid pointer.
-int HVN_bootstrap_location(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t* uuid)
+// Bootstrap a new follower replica in the specified context.
+int HVN_bootstrap_follower(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t* uuid)
 {
-    char* key = (char*) malloc(sizeof(char) * HVN_MAX_KEY_SIZE);
-    strncpy(key, HVN_REPLICA_KEY_DEFAULT_LOCATION, HVN_MAX_KEY_SIZE);
-
-    return HVN_bootstrap_leader(replica, ctx, uuid, key);
-}
-
-// Bootstrap a new leader replica in the specified context. Set the UUID of
-// the new replica to the uuid pointer.
-int HVN_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t* uuid, char* path_key)
-{
-    char state = HVN_CONSENSUS_MD_STATE_LEADER;
+    char state = HVN_CONSENSUS_MD_STATE_FOLLOWER;
 
     uint64_t bootstrap_term = 0;
     uint64_t bootstrap_index = 0;
 
-    LOG(HVN_LOG_INFO, "Bootstrapping a replica leader on interface `%s:%d'.", \
+    LOG(HVN_LOG_INFO, "Bootstrapping a replica follower on interface `%s:%d'.", \
         ctx->listen_addr, ctx->listen_port);
 
-    if(HVN_db_validate_key(path_key) != true) {
-        LOG(HVN_LOG_ERR, "Invalid leader base key format `%s'.", path_key);
-        return HVN_ERROR;
-    }
-    else {
-        LOG(HVN_LOG_DBG, "Using leader base key `%s'.", path_key);
-    }
-
     if(HVN_generate_uuid(&replica->uuid) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Failed to generate a new replica UUID.");
+        LOG(HVN_LOG_ERR, "Failed to generate a new follower replica UUID.");
         return HVN_ERROR;
     }
     else {
@@ -69,25 +50,25 @@ int HVN_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t* uuid, c
     }
 
     if(HVN_bootstrap_replica_db(replica) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Failed to bootstrap a new replica database.");
+        LOG(HVN_LOG_ERR, "Failed to bootstrap a new follower replica database.");
         return HVN_ERROR;
     }
 
     if(HVN_db_unsafe_put_char(replica->db, HVN_CONSENSUS_MD_STATE,
                               strlen(HVN_CONSENSUS_MD_STATE), state) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Failed to set the state for bootstrapping a leader.");
+        LOG(HVN_LOG_ERR, "Failed to set the state for bootstrapping a follower.");
         return HVN_ERROR;
     }
 
     if(HVN_db_unsafe_put_uint64(replica->db, HVN_CONSENSUS_MD_TERM,
                                 strlen(HVN_CONSENSUS_MD_TERM), bootstrap_term) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Failed to set the state for bootstrapping a leader.");
+        LOG(HVN_LOG_ERR, "Failed to set the state for bootstrapping a follower.");
         return HVN_ERROR;
     }
 
     if(HVN_db_unsafe_put_uint64(replica->db, HVN_CONSENSUS_MD_LAST_LOG_INDEX,
                                 strlen(HVN_CONSENSUS_MD_LAST_LOG_INDEX), bootstrap_index) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Failed to set the initial log index for bootstrapping a leader.");
+        LOG(HVN_LOG_ERR, "Failed to set the initial log index for bootstrapping a follower.");
         return HVN_ERROR;
     }
 
@@ -97,16 +78,6 @@ int HVN_bootstrap_leader(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t* uuid, c
     HASH_ADD(hh, ctx->replicas, uuid, sizeof(uuid_t), replica);
 
     return HVN_SUCCESS;
-}
-
-int HVN_bootstrap_follower()
-{
-    // TODO: query location quorum to find location leader.
-    // TODO: create key value store.
-    // TODO: create replica task.
-
-    LOG(HVN_LOG_ERR, "Bootstrap follower is not implemented.");
-    return HVN_ERROR;
 }
 
 int HVN_bootstrap_replica_db(HVN_replica_t* replica)

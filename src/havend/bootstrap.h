@@ -21,14 +21,9 @@
 
 #include "replica.h"
 
-int HVN_bootstrap_location(HVN_replica_t* replica, \
+int HVN_bootstrap_follower(HVN_replica_t* replica, \
                            HVN_ctx_t* ctx, \
                            uuid_t* uuid);
-int HVN_bootstrap_leader(HVN_replica_t* replica, \
-                         HVN_ctx_t* ctx, \
-                         uuid_t* uuid, \
-                         char* path_key);
-int HVN_bootstrap_follower(void);
 
 int HVN_bootstrap_replica_db(HVN_replica_t* replica);
 int HVN_bootstrap_replicas_from_disk(HVN_ctx_t* ctx);

@@ -31,6 +31,8 @@ extern HVN_loglevel HVN_debug_level;
 
 int HVN_replica_follower(HVN_replica_t* replica)
 {
+    UT_array* replica_hooks;
+
     HVN_msg_append_t append_msg;
     HVN_msg_vote_t vote_msg;
 

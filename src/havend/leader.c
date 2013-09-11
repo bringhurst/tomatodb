@@ -30,15 +30,10 @@ extern HVN_loglevel HVN_debug_level;
 
 int HVN_replica_leader(HVN_replica_t* replica)
 {
-    UT_array* replicas;
+    UT_array* replica_hooks;
     UT_array* log;
     HVN_addr_t* vote;
     uint64_t term;
-
-    HVN_INTENTIONALLY_UNUSED_VARIABLE(replicas);
-    HVN_INTENTIONALLY_UNUSED_VARIABLE(log);
-    HVN_INTENTIONALLY_UNUSED_VARIABLE(vote);
-    HVN_INTENTIONALLY_UNUSED_VARIABLE(term);
 
     uint32_t heartbeat_result = 0;
     int default_leader_heartbeat = 5000;
