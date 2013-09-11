@@ -1,3 +1,6 @@
+#ifndef __HVN__COMMON_PROTOCOL_IMPL_BOOTSTRAP_H_
+#define __HVN__COMMON_PROTOCOL_IMPL_BOOTSTRAP_H_
+
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
  *
@@ -16,29 +19,4 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
-/** The debug stream to write log messages to. */
-extern FILE* HVN_debug_stream;
-
-/** The log level to write messages for. */
-extern HVN_loglevel HVN_debug_level;
-
-int HVN_msg_bootstrap_send(int fd, HVN_msg_bootstrap_t* msg_in)
-{
-
-}
-
-int HVN_msg_bootstrap_recv(HVN_msg_bootstrap_t** msg_out, int fd)
-{
-
-}
-
-int HVN_msg_resp_bootstrap_send(int fd, HVN_msg_resp_bootstrap_t* msg_in)
-{
-}
-
-int HVN_msg_resp_bootstrap_recv(HVN_msg_bootstrap_t** msg_out, int fd)
-{
-
-}
-
-/* EOF */
+#endif /* __HVN__COMMON_PROTOCOL_IMPL_BOOTSTRAP_H_ */
