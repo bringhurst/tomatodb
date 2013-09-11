@@ -24,19 +24,24 @@ extern HVN_loglevel HVN_debug_level;
 
 int HVN_msg_data_send(int fd, HVN_msg_data_t* msg_in)
 {
-  msgpack_sbuffer sbuf;
-  msgpack_sbuffer_init(&sbuf);
-  msgpack_packer pck;
-  msgpack_packer_init(&pck, &sbuf, msgpack_sbuffer_write);
+    msgpack_sbuffer sbuf;
+    msgpack_packer pck;
 
+    msgpack_sbuffer_init(&sbuf);
+    msgpack_packer_init(&pck, &sbuf, msgpack_sbuffer_write);
 
+    if(HVN_msg_pack_array(&pck, msg_in->ops, HVN_msg_pack_dbop) == HVN_SUCCESS) {
+        if(HVN_msg_fdwrite(fd, sbuf.size, sbuf.data) != HVN_SUCCESS) {
+            LOG(HVN_LOG_ERR, "Failed to send a packed data message.");
+            return HVN_ERROR;
+        }
+    } else {
+        LOG(HVN_LOG_ERR, "Failed to pack a data message.");
+        return HVN_ERROR;
+    }
 
-// A data message contains one or more ordered operations to perform on the
-// database state machine.
-typedef struct HVN_msg_data_t {
-    UT_array* ops; // HVN_db_op_t[]
-} HVN_msg_data_t;
-
+    msgpack_sbuffer_destroy(&sbuf);
+    return HVN_SUCCESS;
 }
 
 int HVN_msg_data_recv(HVN_msg_data_t** msg_out, int fd)
