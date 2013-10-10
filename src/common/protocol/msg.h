@@ -160,23 +160,35 @@ int HVN_msg_resp_control_recv(HVN_msg_control_t** msg_out, int fd);
  * Data msg definition.
  */
 
+// Protocol map keys.
+#define HVN_MSG_DATA_KEY_TYPE            "type"
+#define HVN_MSG_DATA_KEY_TRANSACTION     "transaction"
+#define HVN_MSG_DATA_KEY_OPERATIONS      "operations"
+
+// Transaction control.
+#define HVN_MSG_DATA_TRANSACTION_SINGLE  0xE1 // Not associated with a transaction
+#define HVN_MSG_DATA_TRANSACTION_BEGIN   0xE2
+#define HVN_MSG_DATA_TRANSACTION_COMMIT  0xE3
+#define HVN_MSG_DATA_TRANSACTION_ABORT   0xE4
+
 // The primary type of data operation.
-#define HVN_MSG_DATA_VERB_READ     0xE1
-#define HVN_MSG_DATA_VERB_WRITE    0xE2
-#define HVN_MSG_DATA_VERB_DELETE   0xE3
-#define HVN_MSG_DATA_VERB_WATCH    0xE4
-#define HVN_MSG_DATA_VERB_UNWATCH  0xE5
-#define HVN_MSG_DATA_TRANSACTION   0xE6
+#define HVN_MSG_DATA_VERB_PUT            0xE5
+#define HVN_MSG_DATA_VERB_GET            0xE6
+#define HVN_MSG_DATA_VERB_DELETE         0xE7
+#define HVN_MSG_DATA_VERB_WATCH          0xE8
+#define HVN_MSG_DATA_VERB_UNWATCH        0xE9
 
 // The mode of the primary operation type.
-#define HVN_MSG_DATA_MODE_RW       0xE7
-#define HVN_MSG_DATA_MODE_RO       0xE8
-#define HVN_MSG_DATA_MODE_RB       0xE9
-#define HVN_MSG_DATA_MODE_RT       0xEA
+#define HVN_MSG_DATA_MODE_RW             0xEA // Read-write
+#define HVN_MSG_DATA_MODE_RO             0xEB // Read-only
+#define HVN_MSG_DATA_MODE_RB             0xEC // Read-bounded
+#define HVN_MSG_DATA_MODE_RT             0xED // Read-timestamp
 
 // A data message contains one or more ordered operations to perform on the
 // database state machine.
 typedef struct HVN_msg_data_t {
+    uint32_t mode;
+    uint32_t transaction;
     UT_array* ops; // HVN_db_op_t[]
 } HVN_msg_data_t;
 

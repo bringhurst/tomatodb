@@ -56,8 +56,6 @@ typedef struct HVN_db_t {
 
 typedef struct HVN_db_op_t {
     uint16_t action;
-    uint16_t mode;
-    HVN_time_interval_t time_stamp;
     char* key;
     size_t key_len;
     char* value;
