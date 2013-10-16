@@ -46,7 +46,7 @@ Is uuid-dev installed? Try running 'sudo apt-get install uuid-dev'.])])
 AC_CHECK_HEADER_STDBOOL
 AC_CHECK_HEADERS([arpa/inet.h fcntl.h inttypes.h limits.h netdb.h \
                   netinet/in.h stdlib.h string.h strings.h sys/socket.h \
-                  sys/time.h unistd.h malloc.h stddef.h Python.h])
+                  sys/time.h unistd.h malloc.h stddef.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_CHECK_TYPES([ptrdiff_t])
@@ -83,21 +83,14 @@ AC_FUNC_REALLOC
 AC_CHECK_FUNCS([bzero gethostbyname gettimeofday memmove memset mkdir socket \
                 strcasecmp strerror strrchr strtoul strdup])
 
-# Generate the config files.
-AC_CONFIG_FILES([src/tomato/setup.py], \
-                [chmod +x src/tomato/setup.py])
-
 AC_CONFIG_FILES([Makefile                            \
                  src/Makefile                        \
                  src/common/Makefile                 \
                  src/common/halloc/Makefile          \
                  src/common/task/Makefile            \
                  src/common/xdr/Makefile             \
-                 src/tomato/Makefile               \
-                 src/tomatod/Makefile                 \
-                 doc/Makefile                        \
-                 doc/man/Makefile                    \
-                 doc/man/man1/Makefile               \
+                 src/tomato/Makefile                 \
+                 src/tomatod/Makefile                \
 ])
 
 AC_OUTPUT

@@ -1,27 +1,27 @@
 include $(top_srcdir)/common.mk
 
-SUBDIRS = halloc pack task
+SUBDIRS = halloc task xdr
 
 AM_CPPFLAGS += \
            -I$(top_srcdir) \
            -I$(top_srcdir)/src/common
 
-noinst_LTLIBRARIES = libhaven_common.la
+noinst_LTLIBRARIES = libtomato_common.la
 
-libhaven_common_la_LDFLAGS = $(LIB_LDFLAGS)
+libtomato_common_la_LDFLAGS = $(LIB_LDFLAGS)
 
-libhaven_common_la_SOURCES = \
+libtomato_common_la_SOURCES = \
                              common.c \
                              database.c \
                              xtime.c
 
-libhaven_common_la_LIBADD = \
-                             halloc/libhaven_common_halloc.la \
-                             task/libhaven_common_task.la \
-                             pack/libhaven_common_pack.la \
+libtomato_common_la_LIBADD = \
+                             halloc/libtomato_common_halloc.la \
+                             task/libtomato_common_task.la \
+                             xdr/libtomato_common_xdr.la \
                              $(leveldb_LIBS) \
                              $(uuid_LIBS)
 
-libhaven_common_la_CFLAGS = \
+libtomato_common_la_CFLAGS = \
                             $(leveldb_CFLAGS) \
                             $(uuid_CFLAGS)

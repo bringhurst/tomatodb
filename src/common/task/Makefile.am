@@ -2,11 +2,11 @@ AM_CPPFLAGS = \
               -I$(top_srcdir) \
               -I$(top_srcdir)/src/common/task
 
-noinst_LTLIBRARIES = libhaven_common_task.la
+noinst_LTLIBRARIES = libtomato_common_task.la
 
-libhaven_common_task_la_LDFLAGS = $(LIB_LDFLAGS)
+libtomato_common_task_la_LDFLAGS = $(LIB_LDFLAGS)
 
-libhaven_common_task_la_SOURCES = \
+libtomato_common_task_la_SOURCES = \
                                   asm.S \
                                   channel.c \
                                   context.c \

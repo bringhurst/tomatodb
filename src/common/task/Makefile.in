@@ -65,17 +65,17 @@ CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
-libhaven_common_task_la_LIBADD =
-am_libhaven_common_task_la_OBJECTS = asm.lo channel.lo context.lo \
+libtomato_common_task_la_LIBADD =
+am_libtomato_common_task_la_OBJECTS = asm.lo channel.lo context.lo \
 	fd.lo net.lo print.lo qlock.lo rendez.lo task.lo
-libhaven_common_task_la_OBJECTS =  \
-	$(am_libhaven_common_task_la_OBJECTS)
+libtomato_common_task_la_OBJECTS =  \
+	$(am_libtomato_common_task_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
-libhaven_common_task_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+libtomato_common_task_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
-	$(AM_CFLAGS) $(CFLAGS) $(libhaven_common_task_la_LDFLAGS) \
+	$(AM_CFLAGS) $(CFLAGS) $(libtomato_common_task_la_LDFLAGS) \
 	$(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/auxdir/depcomp
@@ -112,8 +112,8 @@ am__v_CCLD_0 = @echo "  CCLD  " $@;
 AM_V_GEN = $(am__v_GEN_@AM_V@)
 am__v_GEN_ = $(am__v_GEN_@AM_DEFAULT_V@)
 am__v_GEN_0 = @echo "  GEN   " $@;
-SOURCES = $(libhaven_common_task_la_SOURCES)
-DIST_SOURCES = $(libhaven_common_task_la_SOURCES)
+SOURCES = $(libtomato_common_task_la_SOURCES)
+DIST_SOURCES = $(libtomato_common_task_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -190,7 +190,6 @@ PYTHON_EXEC_PREFIX = @PYTHON_EXEC_PREFIX@
 PYTHON_PLATFORM = @PYTHON_PLATFORM@
 PYTHON_PREFIX = @PYTHON_PREFIX@
 PYTHON_VERSION = @PYTHON_VERSION@
-RAGEL_CHECK = @RAGEL_CHECK@
 RANLIB = @RANLIB@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
@@ -259,9 +258,9 @@ AM_CPPFLAGS = \
               -I$(top_srcdir) \
               -I$(top_srcdir)/src/common/task
 
-noinst_LTLIBRARIES = libhaven_common_task.la
-libhaven_common_task_la_LDFLAGS = $(LIB_LDFLAGS)
-libhaven_common_task_la_SOURCES = \
+noinst_LTLIBRARIES = libtomato_common_task.la
+libtomato_common_task_la_LDFLAGS = $(LIB_LDFLAGS)
+libtomato_common_task_la_SOURCES = \
                                   asm.S \
                                   channel.c \
                                   context.c \
@@ -315,8 +314,8 @@ clean-noinstLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-libhaven_common_task.la: $(libhaven_common_task_la_OBJECTS) $(libhaven_common_task_la_DEPENDENCIES) $(EXTRA_libhaven_common_task_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(libhaven_common_task_la_LINK)  $(libhaven_common_task_la_OBJECTS) $(libhaven_common_task_la_LIBADD) $(LIBS)
+libtomato_common_task.la: $(libtomato_common_task_la_OBJECTS) $(libtomato_common_task_la_DEPENDENCIES) $(EXTRA_libtomato_common_task_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(libtomato_common_task_la_LINK)  $(libtomato_common_task_la_OBJECTS) $(libtomato_common_task_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)

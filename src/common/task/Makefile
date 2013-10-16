@@ -33,10 +33,10 @@ am__make_dryrun = \
     esac; \
     test $$am__dry = yes; \
   }
-pkgdatadir = $(datadir)/haven
-pkgincludedir = $(includedir)/haven
-pkglibdir = $(libdir)/haven
-pkglibexecdir = $(libexecdir)/haven
+pkgdatadir = $(datadir)/TomatoDB
+pkgincludedir = $(includedir)/TomatoDB
+pkglibdir = $(libdir)/TomatoDB
+pkglibexecdir = $(libexecdir)/TomatoDB
 am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 install_sh_DATA = $(install_sh) -c -m 644
 install_sh_PROGRAM = $(install_sh) -c
@@ -65,17 +65,17 @@ CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
-libhaven_common_task_la_LIBADD =
-am_libhaven_common_task_la_OBJECTS = asm.lo channel.lo context.lo \
+libtomato_common_task_la_LIBADD =
+am_libtomato_common_task_la_OBJECTS = asm.lo channel.lo context.lo \
 	fd.lo net.lo print.lo qlock.lo rendez.lo task.lo
-libhaven_common_task_la_OBJECTS =  \
-	$(am_libhaven_common_task_la_OBJECTS)
+libtomato_common_task_la_OBJECTS =  \
+	$(am_libtomato_common_task_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
-libhaven_common_task_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+libtomato_common_task_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
-	$(AM_CFLAGS) $(CFLAGS) $(libhaven_common_task_la_LDFLAGS) \
+	$(AM_CFLAGS) $(CFLAGS) $(libtomato_common_task_la_LDFLAGS) \
 	$(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I. -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/auxdir/depcomp
@@ -112,8 +112,8 @@ am__v_CCLD_0 = @echo "  CCLD  " $@;
 AM_V_GEN = $(am__v_GEN_$(V))
 am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
 am__v_GEN_0 = @echo "  GEN   " $@;
-SOURCES = $(libhaven_common_task_la_SOURCES)
-DIST_SOURCES = $(libhaven_common_task_la_SOURCES)
+SOURCES = $(libtomato_common_task_la_SOURCES)
+DIST_SOURCES = $(libtomato_common_task_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -122,21 +122,21 @@ am__can_run_installinfo = \
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /home/jonb/haven/auxdir/missing --run aclocal-1.11
+ACLOCAL = ${SHELL} /home/jonb/tomatodb/auxdir/missing --run aclocal-1.11
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 0
 AR = ar
-AUTOCONF = ${SHELL} /home/jonb/haven/auxdir/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/jonb/haven/auxdir/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/jonb/haven/auxdir/missing --run automake-1.11
+AUTOCONF = ${SHELL} /home/jonb/tomatodb/auxdir/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/jonb/tomatodb/auxdir/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/jonb/tomatodb/auxdir/missing --run automake-1.11
 AWK = gawk
-CC = clang
-CCAS = clang
+CC = gcc
+CCAS = gcc
 CCASDEPMODE = depmode=gcc3
 CCASFLAGS = -g -O2
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
-CPP = clang -E
+CPP = gcc -E
 CPPFLAGS = 
 CXX = g++
 CXXCPP = g++ -E
@@ -163,12 +163,12 @@ INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
 LD = /usr/bin/ld -m elf_x86_64
 LDFLAGS = 
 LIBOBJS = 
-LIBS = -luuid -lmsgpack -lleveldb -lfuse 
+LIBS = -luuid -lleveldb -lfuse 
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LIPO = 
 LN_S = ln -s
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} /home/jonb/haven/auxdir/missing --run makeinfo
+MAKEINFO = ${SHELL} /home/jonb/tomatodb/auxdir/missing --run makeinfo
 MANIFEST_TOOL = :
 MKDIR_P = /bin/mkdir -p
 NM = /usr/bin/nm -B
@@ -177,12 +177,12 @@ OBJDUMP = objdump
 OBJEXT = o
 OTOOL = 
 OTOOL64 = 
-PACKAGE = haven
-PACKAGE_BUGREPORT = jonb@lanl.gov
-PACKAGE_NAME = haven
-PACKAGE_STRING = haven 0.0.1-alpha.1
-PACKAGE_TARNAME = haven
-PACKAGE_URL = http://bringhurst.org/haven
+PACKAGE = TomatoDB
+PACKAGE_BUGREPORT = jon@bringhurst.org
+PACKAGE_NAME = TomatoDB
+PACKAGE_STRING = TomatoDB 0.0.1-alpha.1
+PACKAGE_TARNAME = TomatoDB
+PACKAGE_URL = http://tomato.sx/
 PACKAGE_VERSION = 0.0.1-alpha.1
 PATH_SEPARATOR = :
 PYTHON = /usr/bin/python
@@ -190,7 +190,6 @@ PYTHON_EXEC_PREFIX = ${exec_prefix}
 PYTHON_PLATFORM = linux2
 PYTHON_PREFIX = ${prefix}
 PYTHON_VERSION = 2.7
-RAGEL_CHECK = yes
 RANLIB = ranlib
 SED = /bin/sed
 SET_MAKE = 
@@ -198,12 +197,12 @@ SHELL = /bin/bash
 STRIP = strip
 UUIDD_CHECK = yes
 VERSION = 0.0.1-alpha.1
-abs_builddir = /home/jonb/haven/src/common/task
-abs_srcdir = /home/jonb/haven/src/common/task
-abs_top_builddir = /home/jonb/haven
-abs_top_srcdir = /home/jonb/haven
+abs_builddir = /home/jonb/tomatodb/src/common/task
+abs_srcdir = /home/jonb/tomatodb/src/common/task
+abs_top_builddir = /home/jonb/tomatodb
+abs_top_srcdir = /home/jonb/tomatodb
 ac_ct_AR = ar
-ac_ct_CC = clang
+ac_ct_CC = gcc
 ac_ct_CXX = g++
 ac_ct_DUMPBIN = 
 am__include = include
@@ -231,7 +230,7 @@ host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/jonb/haven/auxdir/install-sh
+install_sh = ${SHELL} /home/jonb/tomatodb/auxdir/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -240,8 +239,8 @@ mandir = ${datarootdir}/man
 mkdir_p = /bin/mkdir -p
 oldincludedir = /usr/include
 pdfdir = ${docdir}
-pkgpyexecdir = ${pyexecdir}/haven
-pkgpythondir = ${pythondir}/haven
+pkgpyexecdir = ${pyexecdir}/TomatoDB
+pkgpythondir = ${pythondir}/TomatoDB
 prefix = /usr/local
 program_transform_name = s,x,x,
 psdir = ${docdir}
@@ -259,9 +258,9 @@ AM_CPPFLAGS = \
               -I$(top_srcdir) \
               -I$(top_srcdir)/src/common/task
 
-noinst_LTLIBRARIES = libhaven_common_task.la
-libhaven_common_task_la_LDFLAGS = $(LIB_LDFLAGS)
-libhaven_common_task_la_SOURCES = \
+noinst_LTLIBRARIES = libtomato_common_task.la
+libtomato_common_task_la_LDFLAGS = $(LIB_LDFLAGS)
+libtomato_common_task_la_SOURCES = \
                                   asm.S \
                                   channel.c \
                                   context.c \
@@ -315,8 +314,8 @@ clean-noinstLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-libhaven_common_task.la: $(libhaven_common_task_la_OBJECTS) $(libhaven_common_task_la_DEPENDENCIES) $(EXTRA_libhaven_common_task_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(libhaven_common_task_la_LINK)  $(libhaven_common_task_la_OBJECTS) $(libhaven_common_task_la_LIBADD) $(LIBS)
+libtomato_common_task.la: $(libtomato_common_task_la_OBJECTS) $(libtomato_common_task_la_DEPENDENCIES) $(EXTRA_libtomato_common_task_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(libtomato_common_task_la_LINK)  $(libtomato_common_task_la_OBJECTS) $(libtomato_common_task_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)

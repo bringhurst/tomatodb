@@ -1,1 +1,1 @@
-SUBDIRS = common havend haven havenctl
+SUBDIRS = common tomato
