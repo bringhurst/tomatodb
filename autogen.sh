@@ -104,4 +104,4 @@ if [ -e config.log    ]; then
    rm -f config.log
 fi
 
-echo "now run ./configure to configure haven for your environment."
+echo "now run ./configure to configure TomatoDB for your environment."
