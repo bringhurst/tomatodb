@@ -28,12 +28,12 @@
 #include "xtime.h"
 
 /** The stream to send log messages to. */
-extern FILE* HVN_debug_stream;
+extern FILE* TDB_debug_stream;
 
 /** The log level to output. */
-extern HVN_loglevel HVN_debug_level;
+extern TDB_loglevel TDB_debug_level;
 
-int HVN_time_now(HVN_time_interval_t* interval)
+int TDB_time_now(TDB_time_interval_t* interval)
 {
     struct ntptimeval tv;
     struct timeval delta;
@@ -62,58 +62,58 @@ int HVN_time_now(HVN_time_interval_t* interval)
         timersub(now_p, delta_p, earliest_p);
     }
     else {
-        LOG(HVN_LOG_ERR, "Error on ntp_gettime. %s", strerror(errno));
-        return HVN_ERROR;
+        LOG(TDB_LOG_ERR, "Error on ntp_gettime. %s", strerror(errno));
+        return TDB_ERROR;
     }
 
-    return HVN_SUCCESS;
+    return TDB_SUCCESS;
 }
 
-int HVN_time_before(HVN_time_interval_t* interval, bool* before)
+int TDB_time_before(TDB_time_interval_t* interval, bool* before)
 {
-    return HVN_time_check(interval, before, HVN_TIME_CHECK_BEFORE);
+    return TDB_time_check(interval, before, TDB_TIME_CHECK_BEFORE);
 }
 
-int HVN_time_after(HVN_time_interval_t* interval, bool* after)
+int TDB_time_after(TDB_time_interval_t* interval, bool* after)
 {
-    return HVN_time_check(interval, after, HVN_TIME_CHECK_AFTER);
+    return TDB_time_check(interval, after, TDB_TIME_CHECK_AFTER);
 }
 
-int HVN_time_check(HVN_time_interval_t* interval, bool* success, int mode)
+int TDB_time_check(TDB_time_interval_t* interval, bool* success, int mode)
 {
     struct timeval* latest_p;
     struct timeval* earliest_p;
-    HVN_time_interval_t now;
+    TDB_time_interval_t now;
 
-    if(HVN_time_now(&now) != HVN_SUCCESS) {
-        return HVN_ERROR;
+    if(TDB_time_now(&now) != TDB_SUCCESS) {
+        return TDB_ERROR;
     }
 
-    if(mode == HVN_TIME_CHECK_AFTER) {
+    if(mode == TDB_TIME_CHECK_AFTER) {
         earliest_p = &(interval->latest);
         latest_p = &(now.earliest);
     }
-    else if(mode == HVN_TIME_CHECK_BEFORE) {
+    else if(mode == TDB_TIME_CHECK_BEFORE) {
         latest_p = &(interval->latest);
         earliest_p = &(now.earliest);
     }
     else {
-        return HVN_ERROR;
+        return TDB_ERROR;
     }
 
     if(timercmp(latest_p, earliest_p, <) != 0) {
         *success = true;
-        return HVN_SUCCESS;
+        return TDB_SUCCESS;
     }
     else {
         *success = false;
-        return HVN_SUCCESS;
+        return TDB_SUCCESS;
     }
 
-    return HVN_ERROR;
+    return TDB_ERROR;
 }
 
-void HVN_time_interval_print(HVN_time_interval_t* interval)
+void TDB_time_interval_print(TDB_time_interval_t* interval)
 {
     char fmt_earliest[64], buf_earliest[64];
     char fmt_latest[64], buf_latest[64];
@@ -130,21 +130,21 @@ void HVN_time_interval_print(HVN_time_interval_t* interval)
     strftime(fmt_latest, sizeof(fmt_latest), "%Y-%m-%d %H:%M:%S.%%06u %z", tm_latest);
     snprintf(buf_latest, sizeof(buf_latest), fmt_latest, interval->latest.tv_usec);
 
-    LOG(HVN_LOG_INFO, "HVN_time_interval:['%s', '%s']", buf_earliest, buf_latest);
+    LOG(TDB_LOG_INFO, "TDB_time_interval:['%s', '%s']", buf_earliest, buf_latest);
 }
 
-int HVN_time_interval_validate(HVN_time_interval_t* interval)
+int TDB_time_interval_validate(TDB_time_interval_t* interval)
 {
     struct timeval* earliest_p = &(interval->earliest);
     struct timeval* latest_p = &(interval->latest);
 
     if(timercmp(earliest_p, latest_p, <) != 0) {
-        LOG(HVN_LOG_INFO, "PASSED: Basic time interval validation.");
-        return HVN_SUCCESS;
+        LOG(TDB_LOG_INFO, "PASSED: Basic time interval validation.");
+        return TDB_SUCCESS;
     }
 
-    LOG(HVN_LOG_ERR, "FAILED: Basic time interval validation.");
-    return HVN_ERROR;
+    LOG(TDB_LOG_ERR, "FAILED: Basic time interval validation.");
+    return TDB_ERROR;
 }
 
 /* EOF */

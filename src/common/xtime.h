@@ -1,5 +1,5 @@
-#ifndef __HVN__ONTIME_H_
-#define __HVN__ONTIME_H_
+#ifndef __TDB__COMMON_XTIME_H_
+#define __TDB__COMMON_XTIME_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -22,21 +22,21 @@
 #include <stdbool.h>
 #include <sys/time.h>
 
-#define HVN_TIME_CHECK_BEFORE 0x01
-#define HVN_TIME_CHECK_AFTER  0x03
+#define TDB_TIME_CHECK_BEFORE 0x01
+#define TDB_TIME_CHECK_AFTER  0x03
 
-typedef struct HVN_time_interval_t {
+typedef struct TDB_time_interval_t {
     struct timeval earliest;
     struct timeval latest;
-} HVN_time_interval_t;
+} TDB_time_interval_t;
 
-int HVN_time_now(HVN_time_interval_t* interval);
+int TDB_time_now(TDB_time_interval_t* interval);
 
-int HVN_time_after(HVN_time_interval_t* interval, bool* after);
-int HVN_time_before(HVN_time_interval_t* interval, bool* before);
-int HVN_time_check(HVN_time_interval_t* interval, bool* success, int mode);
+int TDB_time_after(TDB_time_interval_t* interval, bool* after);
+int TDB_time_before(TDB_time_interval_t* interval, bool* before);
+int TDB_time_check(TDB_time_interval_t* interval, bool* success, int mode);
 
-void HVN_time_interval_print(HVN_time_interval_t* interval);
-int HVN_time_interval_validate(HVN_time_interval_t* interval);
+void TDB_time_interval_print(TDB_time_interval_t* interval);
+int TDB_time_interval_validate(TDB_time_interval_t* interval);
 
-#endif /* __HVN__ONTIME_H_ */
+#endif /* __TDB__ONTIME_H_ */

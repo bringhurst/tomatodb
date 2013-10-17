@@ -16,9 +16,14 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
+#include <getopt.h>
 #include <stdlib.h>
+#include <string.h>
 
+#include "config.h"
 #include "log.h"
+#include "repl.h"
+#include "tomato.h"
 
 /** The loglevel that this instance will output. */
 TDB_loglevel TDB_debug_level;
@@ -29,7 +34,7 @@ FILE* TDB_debug_stream;
 /**
  * Print the current version.
  */
-void TDB_print_version()
+void TDB_print_version(void)
 {
     fprintf(stdout, "%s-%s\n", PACKAGE_NAME, PACKAGE_VERSION);
 }
@@ -125,6 +130,8 @@ int main(int argc, \
                 break;
         }
     }
+
+    TDB_repl_start();
 
     return EXIT_SUCCESS;
 }

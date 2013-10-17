@@ -1,5 +1,5 @@
-#ifndef __HVN_COMMON_COMMON_H
-#define __HVN_COMMON_COMMON_H
+#ifndef __TDB__COMMON_COMMON_H
+#define __TDB__COMMON_COMMON_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -20,12 +20,12 @@
  */
 
 // FIXME: make this configurable.
-#define HVN_BASE_STATE_DIR "/var/lib/haven"
+#define TDB_BASE_STATE_DIR "/var/lib/haven"
 
 #define UUID_STR_LEN (36 + 1)
 
-#define HVN_SUCCESS (1)
-#define HVN_ERROR (-1)
+#define TDB_SUCCESS (1)
+#define TDB_ERROR (-1)
 
 #ifndef _POSIX_HOST_NAME_MAX
 #define _POSIX_HOST_NAME_MAX 255
@@ -35,10 +35,10 @@
 #define _POSIX_PATH_MAX 4096
 #endif
 
-#define HVN_INTENTIONALLY_UNUSED_VARIABLE(x) (void)(x)
+#define TDB_INTENTIONALLY_UNUSED_VARIABLE(x) (void)(x)
 
-#define HVN_MAX_KEY_SIZE _POSIX_PATH_MAX
+#define TDB_MAX_KEY_SIZE _POSIX_PATH_MAX
 
-int HVN_ensure_directory_exists(char* path);
+int TDB_ensure_directory_exists(char* path);
 
-#endif /* __HVN_COMMON_COMMON_H */
+#endif /* __TDB__COMMON_COMMON_H */

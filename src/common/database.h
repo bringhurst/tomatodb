@@ -1,5 +1,5 @@
-#ifndef __HVN_DATABASE_H
-#define __HVN_DATABASE_H
+#ifndef __TDB__COMMON_DATABASE_H
+#define __TDB__COMMON_DATABASE_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -27,71 +27,71 @@
 #include "xtime.h"
 
 // The primary type of database operation.
-#define HVN_DB_VERB_READ     0x01
-#define HVN_DB_VERB_WRITE    0x02
-#define HVN_DB_VERB_DELETE   0x03
-#define HVN_DB_VERB_WATCH    0x04
-#define HVN_DB_VERB_UNWATCH  0x05
+#define TDB_DB_VERB_READ     0x01
+#define TDB_DB_VERB_WRITE    0x02
+#define TDB_DB_VERB_DELETE   0x03
+#define TDB_DB_VERB_WATCH    0x04
+#define TDB_DB_VERB_UNWATCH  0x05
 
 // Transaction control.
-#define HVN_DB_TRANS_ABORT   0x11
-#define HVN_DB_TRANS_BEGIN   0x12
-#define HVN_DB_TRANS_COMMIT  0x13
+#define TDB_DB_TRANS_ABORT   0x11
+#define TDB_DB_TRANS_BEGIN   0x12
+#define TDB_DB_TRANS_COMMIT  0x13
 
 // The mode of the primary operation type.
-#define HVN_DB_MODE_RW       0x21
-#define HVN_DB_MODE_RO       0x22
-#define HVN_DB_MODE_RB       0x23
-#define HVN_DB_MODE_RT       0x24
+#define TDB_DB_MODE_RW       0x21
+#define TDB_DB_MODE_RO       0x22
+#define TDB_DB_MODE_RB       0x23
+#define TDB_DB_MODE_RT       0x24
 
-#define HVN_DB_COMPARATOR_NAME "HVN_cmp_0001";
+#define TDB_DB_COMPARATOR_NAME "TDB_cmp_0001";
 
-typedef struct HVN_db_t {
+typedef struct TDB_db_t {
     char* path;
     leveldb_t* handle;
     leveldb_options_t* options;
     leveldb_readoptions_t* read_options;
     leveldb_writeoptions_t* write_options;
-} HVN_db_t;
+} TDB_db_t;
 
-typedef struct HVN_db_op_t {
+typedef struct TDB_db_op_t {
     uint16_t action;
     char* key;
     size_t key_len;
     char* value;
     size_t value_len;
-} HVN_db_op_t;
+} TDB_db_op_t;
 
-int HVN_db_init(HVN_db_t** db, char* path);
-void HVN_db_close(HVN_db_t* db);
-int HVN_db_destroy(HVN_db_t* db);
+int TDB_db_init(TDB_db_t** db, char* path);
+void TDB_db_close(TDB_db_t* db);
+int TDB_db_destroy(TDB_db_t* db);
 
-int HVN_db_unsafe_get(HVN_db_t* db, \
+int TDB_db_unsafe_get(TDB_db_t* db, \
                       const char* key, \
                       size_t key_len, \
                       char** value, \
                       size_t* value_len);
-int HVN_db_unsafe_put(HVN_db_t* db, \
+int TDB_db_unsafe_put(TDB_db_t* db, \
                       const char* key, \
                       size_t key_len, \
                       char* value, \
                       size_t value_len);
-int HVN_db_unsafe_delete(HVN_db_t* db, \
+int TDB_db_unsafe_delete(TDB_db_t* db, \
                          const char* key, \
                          size_t key_len);
 
-int HVN_db_unsafe_put_uint64(HVN_db_t* db, const char* key, size_t key_len, uint64_t value);
-int HVN_db_unsafe_get_uint64(HVN_db_t* db, const char* key, size_t key_len, uint64_t** value);
-int HVN_db_unsafe_put_char(HVN_db_t* db, const char* key, size_t key_len, char value);
-int HVN_db_unsafe_get_char(HVN_db_t* db, const char* key, size_t key_len, char** value);
-int HVN_db_unsafe_put_string(HVN_db_t* db, const char* key, size_t key_len, char* value, size_t value_len);
-int HVN_db_unsafe_get_string(HVN_db_t* db, const char* key, size_t key_len, char** value, size_t* value_len);
+int TDB_db_unsafe_put_uint64(TDB_db_t* db, const char* key, size_t key_len, uint64_t value);
+int TDB_db_unsafe_get_uint64(TDB_db_t* db, const char* key, size_t key_len, uint64_t** value);
+int TDB_db_unsafe_put_char(TDB_db_t* db, const char* key, size_t key_len, char value);
+int TDB_db_unsafe_get_char(TDB_db_t* db, const char* key, size_t key_len, char** value);
+int TDB_db_unsafe_put_string(TDB_db_t* db, const char* key, size_t key_len, char* value, size_t value_len);
+int TDB_db_unsafe_get_string(TDB_db_t* db, const char* key, size_t key_len, char** value, size_t* value_len);
 
-void HVN_db_comparator_destroy(void* arg);
-const char* HVN_db_comparator_name(void* arg);
-int HVN_db_comparator_compare(void* arg, const char* a, size_t alen,
+void TDB_db_comparator_destroy(void* arg);
+const char* TDB_db_comparator_name(void* arg);
+int TDB_db_comparator_compare(void* arg, const char* a, size_t alen,
                               const char* b, size_t blen);
 
-bool HVN_db_validate_key(const char* key);
+bool TDB_db_validate_key(const char* key);
 
-#endif /* __HVN_DATABASE_H */
+#endif /* __TDB__COMMON_DATABASE_H */

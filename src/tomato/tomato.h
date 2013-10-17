@@ -1,5 +1,5 @@
-#ifndef __TDB__TOMATO_REPL_H
-#define __TDB__TOMATO_REPL_H
+#ifndef __TDB__TOMATO_TOMATO_H
+#define __TDB__TOMATO_TOMATO_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -19,9 +19,7 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
-#include "linenoise.h"
+void TDB_print_version(void);
+void TDB_print_usage(char** argv);
 
-void TDB_repl_completion(const char *buf, linenoiseCompletions *lc);
-void TDB_repl_start(void);
-
-#endif /* __TDB__TOMATO_REPL_H */
+#endif /* __TDB__TOMATO_TOMATO_H */

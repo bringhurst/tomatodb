@@ -26,12 +26,12 @@
 #include <string.h>
 
 /** The debug stream to write log messages to. */
-extern FILE* HVN_debug_stream;
+extern FILE* TDB_debug_stream;
 
 /** The log level to write messages for. */
-extern HVN_loglevel HVN_debug_level;
+extern TDB_loglevel TDB_debug_level;
 
-int HVN_ensure_directory_exists(char* path)
+int TDB_ensure_directory_exists(char* path)
 {
     struct stat s;
     int err = stat(path, &s);
@@ -39,26 +39,26 @@ int HVN_ensure_directory_exists(char* path)
     if(-1 == err) {
         if(ENOENT == errno) {
             if(mkdir(path, 0755) == 0) {
-                return HVN_SUCCESS;
+                return TDB_SUCCESS;
             }
             else {
-                LOG(HVN_LOG_ERR, "Creating a directory at `%s' failed. %s", path, strerror(errno));
-                return HVN_ERROR;
+                LOG(TDB_LOG_ERR, "Creating a directory at `%s' failed. %s", path, strerror(errno));
+                return TDB_ERROR;
             }
         }
         else {
-            LOG(HVN_LOG_ERR, "Viewing the directory at `%s' failed. %s", path, strerror(errno));
-            return HVN_ERROR;
+            LOG(TDB_LOG_ERR, "Viewing the directory at `%s' failed. %s", path, strerror(errno));
+            return TDB_ERROR;
         }
     }
 
     if(S_ISDIR(s.st_mode)) {
-        return HVN_SUCCESS;
+        return TDB_SUCCESS;
     }
 
     /* The path already exists, but is not a directory. */
-    LOG(HVN_LOG_ERR, "Creating a directory at `%s' failed. The path already exists.", path);
-    return HVN_ERROR;
+    LOG(TDB_LOG_ERR, "Creating a directory at `%s' failed. The path already exists.", path);
+    return TDB_ERROR;
 }
 
 /* EOF */

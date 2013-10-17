@@ -12,14 +12,7 @@
 Makefile
 *.o
 *.pyc
-/src/haven/haven
-/src/havenctl/build
-/src/havenctl/dist
-/src/havenctl/havenctl.egg-info
-/src/havend/havend
-!/src/havend/task/Makefile
-/src/havend/task/primes
-/src/havend/task/tcpproxy
-/src/havend/task/testdelay
+/src/tomato/tomato
+/src/tomatod/tomatod
 stamp-h1
 *.swp
