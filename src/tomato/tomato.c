@@ -64,7 +64,7 @@ int main(int argc, \
     };
 
     /* Parse options */
-    while((c = getopt_long(argc, argv, "d:hs:p:v", \
+    while((c = getopt_long(argc, argv, "+d:hs:p:v", \
                            long_options, &option_index)) != -1) {
         switch(c) {
 
