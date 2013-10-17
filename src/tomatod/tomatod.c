@@ -25,7 +25,7 @@
 #include <string.h>
 
 #include "config.h"
-#include "havend.h"
+#include "tomatod.h"
 #include "log.h"
 
 #include "context.h"
@@ -36,14 +36,14 @@
 #include "task/task.h"
 
 /** The debug stream to write log messages to. */
-FILE* HVN_debug_stream;
+FILE* TDB_debug_stream;
 
 /** The log level to write messages for. */
-HVN_loglevel HVN_debug_level;
+TDB_loglevel TDB_debug_level;
 
 // This is where we'll listen and accept for connections so we can launch
 // routing tasks.
-int HVN_listen_and_accept(HVN_ctx_t* ctx)
+int TDB_listen_and_accept(TDB_ctx_t* ctx)
 {
     int remote_port, accept_fd = 0;
     bool* is_running = (bool*) malloc(sizeof(bool));
@@ -54,52 +54,52 @@ int HVN_listen_and_accept(HVN_ctx_t* ctx)
     ctx->listen_fd = netannounce(TCP, ctx->listen_addr, ctx->listen_port);
 
     if(fdnoblock(ctx->listen_fd) < 0) {
-        LOG(HVN_LOG_ERR, "Failed to set the listening socket to non-blocking. %s", strerror(errno));
-        return HVN_ERROR;
+        LOG(TDB_LOG_ERR, "Failed to set the listening socket to non-blocking. %s", strerror(errno));
+        return TDB_ERROR;
     }
 
-    LOG(HVN_LOG_INFO, "Listening on `%s:%d'.", ctx->listen_addr, ctx->listen_port);
+    LOG(TDB_LOG_INFO, "Listening on `%s:%d'.", ctx->listen_addr, ctx->listen_port);
 
     while(*is_running) {
         accept_fd = netaccept(ctx->listen_fd, remote_addr, &remote_port);
-        HVN_router_t* router = NULL;
+        TDB_router_t* router = NULL;
 
         if(accept_fd < 0) {
-            LOG(HVN_LOG_ERR, "Failed to accept a new connection. Attempting to shut down.");
+            LOG(TDB_LOG_ERR, "Failed to accept a new connection. Attempting to shut down.");
             *is_running = false;
             break;
         }
 
-        if(HVN_init_router(&router, ctx, remote_addr, remote_port, accept_fd) != HVN_SUCCESS) {
-            LOG(HVN_LOG_ERR, "Could not proper initialize a new connection router. Attempting to shut down.");
+        if(TDB_init_router(&router, ctx, remote_addr, remote_port, accept_fd) != TDB_SUCCESS) {
+            LOG(TDB_LOG_ERR, "Could not proper initialize a new connection router. Attempting to shut down.");
             *is_running = false;
             break;
         }
 
-        taskcreate((void (*)(void*))HVN_routing_task, router, HVN_ROUTER_STACK_SIZE);
+        taskcreate((void (*)(void*))TDB_routing_task, router, TDB_ROUTER_STACK_SIZE);
     }
 
     free(is_running);
-    return HVN_SUCCESS;
+    return TDB_SUCCESS;
 }
 
 // Print the current version.
-void HVN_print_version()
+void TDB_print_version()
 {
     fprintf(stdout, "%s-%s\n", PACKAGE_NAME, PACKAGE_VERSION);
 }
 
 // Print a usage message.
-void HVN_print_usage()
+void TDB_print_usage()
 {
-    printf("usage: havend [-adhpv] [--help] [--version]\n"
-           "              [--debug=<fatal,err,warn,info,dbg>]\n"
-           "              [-a <addr> | --listen-address=<addr>]\n"
-           "              [-p <port> | --listen-port=<port>]\n");
+    printf("usage: tomatod [-adhpv] [--help] [--version]\n"
+           "               [--debug=<fatal,err,warn,info,dbg>]\n"
+           "               [-a <addr> | --listen-address=<addr>]\n"
+           "               [-p <port> | --listen-port=<port>]\n");
     fflush(stdout);
 }
 
-void HVN_signal_handle_SIGINT(int sig)
+void TDB_signal_handle_SIGINT(int sig)
 {
     char  c;
 
@@ -113,24 +113,24 @@ void HVN_signal_handle_SIGINT(int sig)
         exit(EXIT_FAILURE);
     }
     else {
-        signal(SIGINT, HVN_signal_handle_SIGINT);
+        signal(SIGINT, TDB_signal_handle_SIGINT);
     }
 
     getchar(); // Get new line character
 }
 
-void HVN_install_signal_handlers(void)
+void TDB_install_signal_handlers(void)
 {
     struct sigaction sa;
 
-    signal(SIGINT, HVN_signal_handle_SIGINT);
+    signal(SIGINT, TDB_signal_handle_SIGINT);
 
     memset(&sa, 0, sizeof sa);
     sa.sa_handler = SIG_IGN;
     sigaction(SIGPIPE, &sa, NULL);
 }
 
-int HVN_handle_havend_cli_args(HVN_ctx_t* ctx, int argc, char* argv[])
+int TDB_handle_tomatod_cli_args(TDB_ctx_t* ctx, int argc, char* argv[])
 {
     int c, option_index = 0;
 
@@ -150,33 +150,33 @@ int HVN_handle_havend_cli_args(HVN_ctx_t* ctx, int argc, char* argv[])
 
             case 'a':
                 strncpy(ctx->listen_addr, optarg, _POSIX_HOST_NAME_MAX);
-                LOG(HVN_LOG_INFO, "Listen address set to `%s'.", ctx->listen_addr);
+                LOG(TDB_LOG_INFO, "Listen address set to `%s'.", ctx->listen_addr);
                 break;
 
             case 'd':
 
                 if(strncmp(optarg, "fatal", 5) == 0) {
-                    HVN_debug_level = HVN_LOG_FATAL;
-                    LOG(HVN_LOG_INFO, "Debug level set to: fatal");
+                    TDB_debug_level = TDB_LOG_FATAL;
+                    LOG(TDB_LOG_INFO, "Debug level set to: fatal");
                 }
                 else if(strncmp(optarg, "err", 3) == 0) {
-                    HVN_debug_level = HVN_LOG_ERR;
-                    LOG(HVN_LOG_INFO, "Debug level set to: errors");
+                    TDB_debug_level = TDB_LOG_ERR;
+                    LOG(TDB_LOG_INFO, "Debug level set to: errors");
                 }
                 else if(strncmp(optarg, "warn", 4) == 0) {
-                    HVN_debug_level = HVN_LOG_WARN;
-                    LOG(HVN_LOG_INFO, "Debug level set to: warnings");
+                    TDB_debug_level = TDB_LOG_WARN;
+                    LOG(TDB_LOG_INFO, "Debug level set to: warnings");
                 }
                 else if(strncmp(optarg, "info", 4) == 0) {
-                    HVN_debug_level = HVN_LOG_INFO;
-                    LOG(HVN_LOG_INFO, "Debug level set to: info");
+                    TDB_debug_level = TDB_LOG_INFO;
+                    LOG(TDB_LOG_INFO, "Debug level set to: info");
                 }
                 else if(strncmp(optarg, "dbg", 3) == 0) {
-                    HVN_debug_level = HVN_LOG_DBG;
-                    LOG(HVN_LOG_INFO, "Debug level set to: debug");
+                    TDB_debug_level = TDB_LOG_DBG;
+                    LOG(TDB_LOG_INFO, "Debug level set to: debug");
                 }
                 else {
-                    LOG(HVN_LOG_INFO, "Debug level `%s' not recognized. " \
+                    LOG(TDB_LOG_INFO, "Debug level `%s' not recognized. " \
                         "Defaulting to `info'.", optarg);
                 }
 
@@ -184,16 +184,16 @@ int HVN_handle_havend_cli_args(HVN_ctx_t* ctx, int argc, char* argv[])
 
             case 'p':
                 ctx->listen_port = atoi(optarg);
-                LOG(HVN_LOG_INFO, "Listen port set to `%d'.", ctx->listen_port);
+                LOG(TDB_LOG_INFO, "Listen port set to `%d'.", ctx->listen_port);
                 break;
 
             case 'h':
-                HVN_print_usage();
+                TDB_print_usage();
                 taskexit(EXIT_SUCCESS);
                 break;
 
             case 'v':
-                HVN_print_version();
+                TDB_print_version();
                 taskexit(EXIT_SUCCESS);
                 break;
 
@@ -201,16 +201,16 @@ int HVN_handle_havend_cli_args(HVN_ctx_t* ctx, int argc, char* argv[])
             default:
 
                 if(optopt == 'd' || optopt == 'a' || optopt == 'p') {
-                    HVN_print_usage();
+                    TDB_print_usage();
                     fprintf(stderr, "Option -%c requires an argument.\n", \
                             optopt);
                 }
                 else if(isprint(optopt)) {
-                    HVN_print_usage();
+                    TDB_print_usage();
                     fprintf(stderr, "Unknown option `-%c'.\n", optopt);
                 }
                 else {
-                    HVN_print_usage();
+                    TDB_print_usage();
                     fprintf(stderr,
                             "Unknown option character `\\x%x'.\n",
                             optopt);
@@ -221,55 +221,55 @@ int HVN_handle_havend_cli_args(HVN_ctx_t* ctx, int argc, char* argv[])
         }
     }
 
-    return HVN_SUCCESS;
+    return TDB_SUCCESS;
 }
 
 void taskmain(int argc, char* argv[])
 {
-    HVN_ctx_t* ctx = NULL;
+    TDB_ctx_t* ctx = NULL;
 
-    HVN_debug_stream = stdout;
-    HVN_debug_level = HVN_LOG_INFO;
+    TDB_debug_stream = stdout;
+    TDB_debug_level = TDB_LOG_INFO;
 
-    if(HVN_ctx_init(&ctx) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Could not allocate the primary context.");
+    if(TDB_ctx_init(&ctx) != TDB_SUCCESS) {
+        LOG(TDB_LOG_ERR, "Could not allocate the primary context.");
         taskexit(EXIT_FAILURE);
     }
 
-    if(HVN_handle_havend_cli_args(ctx, argc, argv) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Failed to properly handle command line arguments.");
+    if(TDB_handle_tomatod_cli_args(ctx, argc, argv) != TDB_SUCCESS) {
+        LOG(TDB_LOG_ERR, "Failed to properly handle command line arguments.");
         taskexit(EXIT_FAILURE);
     }
 
-    LOG(HVN_LOG_INFO, "Hello! %s-%s is starting up.", \
+    LOG(TDB_LOG_INFO, "Hello! %s-%s is starting up.", \
         PACKAGE_NAME, PACKAGE_VERSION);
 
-    HVN_install_signal_handlers();
+    TDB_install_signal_handlers();
 
-    if(HVN_set_process_uuid(ctx) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Could not create or determine local machine UUID.");
+    if(TDB_set_process_uuid(ctx) != TDB_SUCCESS) {
+        LOG(TDB_LOG_ERR, "Could not create or determine local machine UUID.");
         taskexit(EXIT_FAILURE);
     }
 
-    if(HVN_prepare_settings_db(ctx) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Could not prepare the local settings database.");
+    if(TDB_prepare_settings_db(ctx) != TDB_SUCCESS) {
+        LOG(TDB_LOG_ERR, "Could not prepare the local settings database.");
         taskexit(EXIT_FAILURE);
     }
 
-    if(HVN_bootstrap_replicas_from_disk(ctx) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Could not read existing replicas from disk.");
+    if(TDB_bootstrap_replicas_from_disk(ctx) != TDB_SUCCESS) {
+        LOG(TDB_LOG_ERR, "Could not read existing replicas from disk.");
         taskexit(EXIT_FAILURE);
     }
 
-    if(HVN_listen_and_accept(ctx) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "The primary server loop failed.");
+    if(TDB_listen_and_accept(ctx) != TDB_SUCCESS) {
+        LOG(TDB_LOG_ERR, "The primary server loop failed.");
         taskexit(EXIT_FAILURE);
     }
 
-    HVN_db_close(ctx->settings_db);
-    HVN_ctx_free(ctx);
+    TDB_db_close(ctx->settings_db);
+    TDB_ctx_free(ctx);
 
-    LOG(HVN_LOG_INFO, "Goodbye! %s-%s is shutting down.", \
+    LOG(TDB_LOG_INFO, "Goodbye! %s-%s is shutting down.", \
         PACKAGE_NAME, PACKAGE_VERSION);
 
     taskexit(EXIT_SUCCESS);

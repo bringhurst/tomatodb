@@ -4,21 +4,21 @@ AM_CPPFLAGS += \
                -I$(top_srcdir) \
                -I$(top_srcdir)/src/common
 
-bin_PROGRAMS = havend
+bin_PROGRAMS = tomatod
 
-havend_SOURCES = \
-                 attach.c \
-                 bootstrap.c \
-                 candidate.c \
-                 consensus.c \
-                 context.c \
-                 follower.c \
-                 havend.c \
-                 hook.c \
-                 leader.c \
-                 replica.c \
-                 routing.c \
-                 settings.c \
-                 timer.c
+tomatod_SOURCES = \
+                  attach.c \
+                  bootstrap.c \
+                  candidate.c \
+                  consensus.c \
+                  context.c \
+                  follower.c \
+                  tomatod.c \
+                  hook.c \
+                  leader.c \
+                  replica.c \
+                  routing.c \
+                  settings.c \
+                  timer.c
 
-havend_LDADD = ../common/libhaven_common.la
+tomatod_LDADD = ../common/libtomato_common.la

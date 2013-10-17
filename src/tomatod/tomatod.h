@@ -1,5 +1,5 @@
-#ifndef __HVN__HAVEND_HAVEND_H_
-#define __HVN__HAVEND_HAVEND_H_
+#ifndef __TDB__TOMATOD_TOMATOD_H_
+#define __TDB__TOMATOD_TOMATOD_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -21,16 +21,16 @@
 
 #include "context.h"
 
-#define HVN_SETTINGS_DB_PREFIX "/settings"
-#define HVN_DATA_DB_PREFIX     "/data"
+#define TDB_SETTINGS_DB_PREFIX "/settings"
+#define TDB_DATA_DB_PREFIX     "/data"
 
-void HVN_print_version(void);
-void HVN_print_usage(void);
+void TDB_print_version(void);
+void TDB_print_usage(void);
 
-int HVN_handle_havend_cli_args(HVN_ctx_t* ctx, int argc, char* argv[]);
+int TDB_handle_tomatod_cli_args(TDB_ctx_t* ctx, int argc, char* argv[]);
 
-int HVN_listen_and_accept(HVN_ctx_t* ctx);
-void HVN_install_signal_handlers(void);
-void HVN_signal_handle_SIGINT(int sig);
+int TDB_listen_and_accept(TDB_ctx_t* ctx);
+void TDB_install_signal_handlers(void);
+void TDB_signal_handle_SIGINT(int sig);
 
-#endif /* __HVN__HAVEND_HAVEND_H_ */
+#endif /* __TDB__TOMATOD_TOMATOD_H_ */
