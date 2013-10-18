@@ -1,1 +1,1 @@
-SUBDIRS = common tomato tomatod
+SUBDIRS = common tomato
