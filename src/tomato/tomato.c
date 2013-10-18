@@ -131,6 +131,9 @@ int main(int argc, \
         }
     }
 
+    // TODO: if server info specified, connect to server.
+
+    // TODO: if cmd specified, run command, else, run the repl.
     TDB_repl_start();
 
     return EXIT_SUCCESS;
