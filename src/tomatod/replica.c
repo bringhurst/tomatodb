@@ -34,111 +34,111 @@
 #include "replica.h"
 
 /** The stream to send log messages to. */
-extern FILE* HVN_debug_stream;
+extern FILE* TDB_debug_stream;
 
 /** The log level to output. */
-extern HVN_loglevel HVN_debug_level;
+extern TDB_loglevel TDB_debug_level;
 
-int HVN_replica_persist_state(HVN_replica_t* replica, \
+int TDB_replica_persist_state(TDB_replica_t* replica, \
                               UT_array* log, \
-                              HVN_addr_t* term_vote, \
+                              TDB_addr_t* term_vote, \
                               uint64_t current_term)
 {
-    HVN_INTENTIONALLY_UNUSED_VARIABLE(replica);
-    HVN_INTENTIONALLY_UNUSED_VARIABLE(log);
-    HVN_INTENTIONALLY_UNUSED_VARIABLE(term_vote);
-    HVN_INTENTIONALLY_UNUSED_VARIABLE(current_term);
+    TDB_INTENTIONALLY_UNUSED_VARIABLE(replica);
+    TDB_INTENTIONALLY_UNUSED_VARIABLE(log);
+    TDB_INTENTIONALLY_UNUSED_VARIABLE(term_vote);
+    TDB_INTENTIONALLY_UNUSED_VARIABLE(current_term);
 
     //TODO persist log, vote, and term to leveldb.
 
-    return HVN_ERROR;
+    return TDB_ERROR;
 }
 
-void HVN_replica_task(HVN_replica_t* replica)
+void TDB_replica_task(TDB_replica_t* replica)
 {
     bool is_active = true;
 
     taskname("replica");
     taskstate("new");
-    LOG(HVN_LOG_DBG, "Entered replica task.");
+    LOG(TDB_LOG_DBG, "Entered replica task.");
 
     while(is_active) {
 
-        if(HVN_db_unsafe_get_char(replica->db, HVN_CONSENSUS_MD_STATE,
-                                  strlen(HVN_CONSENSUS_MD_STATE), &(replica->target_role)) != HVN_SUCCESS) {
-            LOG(HVN_LOG_ERR, "Not loading this replica. Failed to read consensus state.");
+        if(TDB_db_unsafe_get_char(replica->db, TDB_CONSENSUS_MD_STATE,
+                                  strlen(TDB_CONSENSUS_MD_STATE), &(replica->target_role)) != TDB_SUCCESS) {
+            LOG(TDB_LOG_ERR, "Not loading this replica. Failed to read consensus state.");
             return;
         }
 
         switch(*(replica->target_role)) {
-            case HVN_CONSENSUS_MD_STATE_LEADER:
+            case TDB_CONSENSUS_MD_STATE_LEADER:
                 taskstate("leader");
 
-                if(HVN_replica_leader(replica) != HVN_SUCCESS) {
-                    LOG(HVN_LOG_ERR, "Replica encountered an error while in the leader state.");
+                if(TDB_replica_leader(replica) != TDB_SUCCESS) {
+                    LOG(TDB_LOG_ERR, "Replica encountered an error while in the leader state.");
                     taskexit(EXIT_FAILURE);
                 }
 
                 break;
 
-            case HVN_CONSENSUS_MD_STATE_FOLLOWER:
+            case TDB_CONSENSUS_MD_STATE_FOLLOWER:
                 taskstate("follower");
 
-                if(HVN_replica_follower(replica) != HVN_SUCCESS) {
-                    LOG(HVN_LOG_ERR, "Replica encountered an error while in the follower state.");
+                if(TDB_replica_follower(replica) != TDB_SUCCESS) {
+                    LOG(TDB_LOG_ERR, "Replica encountered an error while in the follower state.");
                     taskexit(EXIT_FAILURE);
                 }
 
                 break;
 
-            case HVN_CONSENSUS_MD_STATE_CANDIDATE:
+            case TDB_CONSENSUS_MD_STATE_CANDIDATE:
                 taskstate("candidate");
 
-                if(HVN_replica_candidate(replica) != HVN_SUCCESS) {
-                    LOG(HVN_LOG_ERR, "Replica encountered an error while in the candidate state.");
+                if(TDB_replica_candidate(replica) != TDB_SUCCESS) {
+                    LOG(TDB_LOG_ERR, "Replica encountered an error while in the candidate state.");
                     taskexit(EXIT_FAILURE);
                 }
 
                 break;
 
-            case HVN_CONSENSUS_MD_STATE_HALT:
+            case TDB_CONSENSUS_MD_STATE_HALT:
                 taskstate("halting");
-                LOG(HVN_LOG_ERR, "Replica is preparing to shut down.");
+                LOG(TDB_LOG_ERR, "Replica is preparing to shut down.");
                 is_active = false;
                 break;
 
             default:
                 taskstate("unknown");
-                LOG(HVN_LOG_ERR, "Encountered unknown replica state. Exiting task.");
+                LOG(TDB_LOG_ERR, "Encountered unknown replica state. Exiting task.");
                 taskexit(EXIT_FAILURE);
                 break;
         }
     }
 
-    LOG(HVN_LOG_INFO, "Replica task is ending.");
+    LOG(TDB_LOG_INFO, "Replica task is ending.");
     taskexit(EXIT_SUCCESS);
 }
 
-int HVN_replica_init(HVN_replica_t** replica)
+int TDB_replica_init(TDB_replica_t** replica)
 {
-    *replica = (HVN_replica_t*) malloc(sizeof(HVN_replica_t));
+    *replica = (TDB_replica_t*) malloc(sizeof(TDB_replica_t));
 
     if(*replica == NULL) {
-        LOG(HVN_LOG_ERR, "Failed to allocate memory for a new replica.");
-        return HVN_ERROR;
+        LOG(TDB_LOG_ERR, "Failed to allocate memory for a new replica.");
+        return TDB_ERROR;
     }
 
     (*replica)->last_log_index = 0;
     (*replica)->current_term = 0;
 
-    (*replica)->append_chan = chancreate(sizeof(HVN_attach_msg_t*), 0);
-    (*replica)->data_chan = chancreate(sizeof(HVN_attach_msg_t*), 0);
-    (*replica)->vote_chan = chancreate(sizeof(HVN_attach_msg_t*), 0);
+    (*replica)->append_chan = chancreate(sizeof(TDB_attach_msg_t*), 0);
+    (*replica)->data_chan = chancreate(sizeof(TDB_attach_msg_t*), 0);
+    (*replica)->vote_chan = chancreate(sizeof(TDB_attach_msg_t*), 0);
 
-    return HVN_SUCCESS;
+    return TDB_SUCCESS;
 }
 
-void HVN_replica_free(HVN_replica_t* replica)
+void TDB_replica_free(TDB_replica_t* replica)
 {
     free(replica);
 }

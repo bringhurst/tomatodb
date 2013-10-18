@@ -23,63 +23,63 @@
 #include "leader.h"
 
 /** The stream to send log messages to. */
-extern FILE* HVN_debug_stream;
+extern FILE* TDB_debug_stream;
 
 /** The log level to output. */
-extern HVN_loglevel HVN_debug_level;
+extern TDB_loglevel TDB_debug_level;
 
-int HVN_replica_leader(HVN_replica_t* replica)
+int TDB_replica_leader(TDB_replica_t* replica)
 {
     UT_array* replica_hooks;
     UT_array* log;
-    HVN_addr_t* vote;
+    TDB_addr_t* vote;
     uint64_t term;
 
     uint32_t heartbeat_result = 0;
     int default_leader_heartbeat = 5000;
-    static Alt alts[HVN_REPLICA_LEADER_ALT_NK + 1];
+    static Alt alts[TDB_REPLICA_LEADER_ALT_NK + 1];
 
-    HVN_attach_msg_t data_attach_msg;
+    TDB_attach_msg_t data_attach_msg;
     data_attach_msg.msg = NULL;
 
-    HVN_msg_data_t* data_msg;
-    HVN_msg_data_resp_t* data_msg_resp = (HVN_msg_data_resp_t*) malloc(sizeof(HVN_msg_data_resp_t));
+    TDB_msg_data_t* data_msg;
+    TDB_msg_data_resp_t* data_msg_resp = (TDB_msg_data_resp_t*) malloc(sizeof(TDB_msg_data_resp_t));
 
-    //LOG(HVN_LOG_INFO, "Replica has entered leader state.");
+    //LOG(TDB_LOG_INFO, "Replica has entered leader state.");
 
     // TODO: Initialize nextIndex for each follower to the local last log index + 1.
 
-    if(HVN_timer_init(&(replica->election_timer)) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Could not allocate a heartbeat timer for this leader replica.");
-        return HVN_ERROR;
+    if(TDB_timer_init(&(replica->election_timer)) != TDB_SUCCESS) {
+        LOG(TDB_LOG_ERR, "Could not allocate a heartbeat timer for this leader replica.");
+        return TDB_ERROR;
     }
 
-    alts[HVN_REPLICA_LEADER_ALT_DATA_KEY].c = replica->data_chan;
-    alts[HVN_REPLICA_LEADER_ALT_DATA_KEY].v = &data_attach_msg;
-    alts[HVN_REPLICA_LEADER_ALT_DATA_KEY].op = CHANRCV;
+    alts[TDB_REPLICA_LEADER_ALT_DATA_KEY].c = replica->data_chan;
+    alts[TDB_REPLICA_LEADER_ALT_DATA_KEY].v = &data_attach_msg;
+    alts[TDB_REPLICA_LEADER_ALT_DATA_KEY].op = CHANRCV;
 
-    alts[HVN_REPLICA_LEADER_ALT_TIMER_KEY].c = replica->election_timer->alarm_chan;
-    alts[HVN_REPLICA_LEADER_ALT_TIMER_KEY].v = &heartbeat_result;
-    alts[HVN_REPLICA_LEADER_ALT_TIMER_KEY].op = CHANRCV;
+    alts[TDB_REPLICA_LEADER_ALT_TIMER_KEY].c = replica->election_timer->alarm_chan;
+    alts[TDB_REPLICA_LEADER_ALT_TIMER_KEY].v = &heartbeat_result;
+    alts[TDB_REPLICA_LEADER_ALT_TIMER_KEY].op = CHANRCV;
 
     // TODO: Send initial empty AppendEntries RPCs (heartbeat) to each follower.
 
-    HVN_timer_start(replica->election_timer, default_leader_heartbeat);
+    TDB_timer_start(replica->election_timer, default_leader_heartbeat);
 
     switch(chanalt(alts)) {
 
-        case HVN_REPLICA_LEADER_ALT_DATA_KEY:
-            LOG(HVN_LOG_DBG, "This leader received a data message.");
+        case TDB_REPLICA_LEADER_ALT_DATA_KEY:
+            LOG(TDB_LOG_DBG, "This leader received a data message.");
 
             if(data_attach_msg.msg == NULL) {
-                LOG(HVN_LOG_DBG, "Received an attach wrapper without a valid message.");
+                LOG(TDB_LOG_DBG, "Received an attach wrapper without a valid message.");
                 break;
             }
 
             data_msg = data_attach_msg.msg;
-            HVN_proto_print_data_msg(data_msg);
+            TDB_proto_print_data_msg(data_msg);
 
-            data_msg_resp->success = HVN_PROTO_DATA_R_OK;
+            data_msg_resp->success = TDB_PROTO_DATA_R_OK;
             data_msg_resp->err_code = 0;
 
             chansendp(data_attach_msg.data_reply_chan, data_msg_resp);
@@ -87,8 +87,8 @@ int HVN_replica_leader(HVN_replica_t* replica)
             // TODO: Append data messages to local log.
 
             // Pack and append to local log.
-            //HVN_clnt_proto_pack_data_msgpack(client_data_msg, &op_packed_len, &op_packed);
-            //HVN_replica_append_to_log(replica, op_packed, op_packed_len);
+            //TDB_clnt_proto_pack_data_msgpack(client_data_msg, &op_packed_len, &op_packed);
+            //TDB_replica_append_to_log(replica, op_packed, op_packed_len);
 
             // TODO: Whenever last log index is greater or equal to nextIndex for a follower:
             //           1. Send AppendEntries RPC with log entries starting at nextIndex.
@@ -103,17 +103,17 @@ int HVN_replica_leader(HVN_replica_t* replica)
             // TODO: Step down if currentTerm changes.
             break;
 
-        case HVN_REPLICA_LEADER_ALT_TIMER_KEY:
-            LOG(HVN_LOG_DBG, "This leader received a heartbeat alarm.");
+        case TDB_REPLICA_LEADER_ALT_TIMER_KEY:
+            LOG(TDB_LOG_DBG, "This leader received a heartbeat alarm.");
             // TODO: Send empty append messages (heartbeat) to each follower.
             break;
 
         default:
-            LOG(HVN_LOG_ERR, "Unknown index received for leader alt array.");
+            LOG(TDB_LOG_ERR, "Unknown index received for leader alt array.");
             break;
     }
 
-    return HVN_SUCCESS;
+    return TDB_SUCCESS;
 }
 
 /* EOF */

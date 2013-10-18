@@ -1,5 +1,5 @@
-#ifndef __HVN__HAVEND_ATTACH_H_
-#define __HVN__HAVEND_ATTACH_H_
+#ifndef __TDB__TOMATOD_ATTACH_H_
+#define __TDB__TOMATOD_ATTACH_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -24,18 +24,18 @@
 #include "replica.h"
 #include "routing.h"
 
-#define HVN_ATTACH_STACK_SIZE       32768
-#define HVN_ATTACH_CHANNEL_BACKLOG  10
+#define TDB_ATTACH_STACK_SIZE       32768
+#define TDB_ATTACH_CHANNEL_BACKLOG  10
 
-#define HVN_ATTACH_SEND_ALT_NK  4
+#define TDB_ATTACH_SEND_ALT_NK  4
 
-#define HVN_ATTACH_SEND_ALT_APPEND_KEY  0
-#define HVN_ATTACH_SEND_ALT_DATA_KEY    1
-#define HVN_ATTACH_SEND_ALT_EXIT_KEY    2
-#define HVN_ATTACH_SEND_ALT_VOTE_KEY    3
+#define TDB_ATTACH_SEND_ALT_APPEND_KEY  0
+#define TDB_ATTACH_SEND_ALT_DATA_KEY    1
+#define TDB_ATTACH_SEND_ALT_EXIT_KEY    2
+#define TDB_ATTACH_SEND_ALT_VOTE_KEY    3
 
-typedef struct HVN_attach_t {
-    HVN_replica_t* replica;
+typedef struct TDB_attach_t {
+    TDB_replica_t* replica;
     Channel* append_reply_chan;
     Channel* data_reply_chan;
     Channel* vote_reply_chan;
@@ -44,30 +44,30 @@ typedef struct HVN_attach_t {
     int remote_port;
     uint32_t mode;
     int fd;
-} HVN_attach_t;
+} TDB_attach_t;
 
-typedef struct HVN_attach_msg_t {
+typedef struct TDB_attach_msg_t {
     Channel* append_reply_chan;
     Channel* data_reply_chan;
     Channel* vote_reply_chan;
     void* msg;
-} HVN_attach_msg_t;
+} TDB_attach_msg_t;
 
-void HVN_attach_task(HVN_attach_t* client);
-void HVN_attach_recv(HVN_attach_t* client);
-void HVN_attach_send_task(HVN_attach_t* client);
+void TDB_attach_task(TDB_attach_t* client);
+void TDB_attach_recv(TDB_attach_t* client);
+void TDB_attach_send_task(TDB_attach_t* client);
 
-void HVN_attach_recv_append(HVN_attach_t* client);
-void HVN_attach_recv_vote(HVN_attach_t* client);
-void HVN_attach_recv_data(HVN_attach_t* client);
+void TDB_attach_recv_append(TDB_attach_t* client);
+void TDB_attach_recv_vote(TDB_attach_t* client);
+void TDB_attach_recv_data(TDB_attach_t* client);
 
-int HVN_replica_attach(HVN_router_t* router, \
+int TDB_replica_attach(TDB_router_t* router, \
                        uuid_t uuid, \
                        uint32_t mode);
-int HVN_attach_init(HVN_attach_t** client, \
-                    HVN_router_t* router, \
-                    HVN_replica_t* replica, \
+int TDB_attach_init(TDB_attach_t** client, \
+                    TDB_router_t* router, \
+                    TDB_replica_t* replica, \
                     uint32_t mode);
-void HVN_attach_free(HVN_attach_t* client);
+void TDB_attach_free(TDB_attach_t* client);
 
-#endif /* __HVN__HAVEND_ATTACH_H_ */
+#endif /* __TDB__TOMATOD_ATTACH_H_ */

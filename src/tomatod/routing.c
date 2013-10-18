@@ -31,30 +31,30 @@
 #include "routing.h"
 
 /** The debug stream to write log messages to. */
-extern FILE* HVN_debug_stream;
+extern FILE* TDB_debug_stream;
 
 /** The log level to write messages for. */
-extern HVN_loglevel HVN_debug_level;
+extern TDB_loglevel TDB_debug_level;
 
-int HVN_init_router(HVN_router_t** router, \
-                    HVN_ctx_t* ctx, \
+int TDB_init_router(TDB_router_t** router, \
+                    TDB_ctx_t* ctx, \
                     char* remote_addr, \
                     int remote_port,
                     int accept_fd)
 {
-    *router = (HVN_router_t*) malloc(sizeof(HVN_router_t));
+    *router = (TDB_router_t*) malloc(sizeof(TDB_router_t));
 
     if(*router == NULL) {
-        LOG(HVN_LOG_ERR, "Failed to allocate memory for a connection router.");
-        return HVN_ERROR;
+        LOG(TDB_LOG_ERR, "Failed to allocate memory for a connection router.");
+        return TDB_ERROR;
     }
 
     (*router)->remote_addr = (char*) malloc(sizeof(char) * _POSIX_HOST_NAME_MAX);
 
     if((*router)->remote_addr == NULL) {
-        LOG(HVN_LOG_ERR, "Failed to allocate memory within a connection router.");
+        LOG(TDB_LOG_ERR, "Failed to allocate memory within a connection router.");
         free(*router);
-        return HVN_ERROR;
+        return TDB_ERROR;
     }
 
     strncpy((*router)->remote_addr, remote_addr, _POSIX_HOST_NAME_MAX);
@@ -63,10 +63,10 @@ int HVN_init_router(HVN_router_t** router, \
     (*router)->remote_port = remote_port;
     (*router)->accept_fd = accept_fd;
 
-    return HVN_SUCCESS;
+    return TDB_SUCCESS;
 }
 
-void HVN_free_router(HVN_router_t* router)
+void TDB_free_router(TDB_router_t* router)
 {
     free(router->remote_addr);
     free(router);
@@ -98,110 +98,110 @@ void HVN_free_router(HVN_router_t* router)
 //      location quorum member if the leader is not known).
 //   3. Create a new location quorum by becoming a location quorum leader.
 //
-void HVN_routing_task(HVN_router_t* router)
+void TDB_routing_task(TDB_router_t* router)
 {
-    HVN_msg_client_control_t control_msg_data;
+    TDB_msg_client_control_t control_msg_data;
     char new_uuid_string[UUID_STR_LEN];
     uuid_t new_uuid;
-    HVN_replica_t* new_replica;
+    TDB_replica_t* new_replica;
 
     taskname("router");
 
-    if(HVN_proto_handle_connect_msg(router->accept_fd) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Did not receive a valid connect message while routing.");
-        taskexit(HVN_ERROR);
+    if(TDB_proto_handle_connect_msg(router->accept_fd) != TDB_SUCCESS) {
+        LOG(TDB_LOG_ERR, "Did not receive a valid connect message while routing.");
+        taskexit(TDB_ERROR);
     }
 
-    if(HVN_proto_receive_control_msg(router->accept_fd, &control_msg_data) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Did not receive a valid control message while routing.");
-        taskexit(HVN_ERROR);
+    if(TDB_proto_receive_control_msg(router->accept_fd, &control_msg_data) != TDB_SUCCESS) {
+        LOG(TDB_LOG_ERR, "Did not receive a valid control message while routing.");
+        taskexit(TDB_ERROR);
     }
     else {
-        if(HVN_proto_send_control_resp_msg(router->accept_fd) != HVN_SUCCESS) {
-            LOG(HVN_LOG_ERR, "Failed to send a response to the control message.");
-            taskexit(HVN_ERROR);
+        if(TDB_proto_send_control_resp_msg(router->accept_fd) != TDB_SUCCESS) {
+            LOG(TDB_LOG_ERR, "Failed to send a response to the control message.");
+            taskexit(TDB_ERROR);
         }
         else {
-            LOG(HVN_LOG_DBG, "Sent response to control message.");
+            LOG(TDB_LOG_DBG, "Sent response to control message.");
         }
     }
 
     switch(control_msg_data.action) {
 
-        case HVN_PROTO_CTRL_ATTACH_APPEND:
-        case HVN_PROTO_CTRL_ATTACH_DATA:
-        case HVN_PROTO_CTRL_ATTACH_VOTE:
+        case TDB_PROTO_CTRL_ATTACH_APPEND:
+        case TDB_PROTO_CTRL_ATTACH_DATA:
+        case TDB_PROTO_CTRL_ATTACH_VOTE:
 
-            if(HVN_replica_attach(router, control_msg_data.uuid, control_msg_data.action) != HVN_SUCCESS) {
+            if(TDB_replica_attach(router, control_msg_data.uuid, control_msg_data.action) != TDB_SUCCESS) {
                 uuid_unparse(control_msg_data.uuid, new_uuid_string);
-                LOG(HVN_LOG_ERR, "Failed to attach to UUID `%s'.", new_uuid_string);
+                LOG(TDB_LOG_ERR, "Failed to attach to UUID `%s'.", new_uuid_string);
             }
             else {
-                LOG(HVN_LOG_DBG, "Attach completed.");
+                LOG(TDB_LOG_DBG, "Attach completed.");
             }
 
             break;
 
-        case HVN_PROTO_CTRL_PROXY:
-            LOG(HVN_LOG_DBG, "Handling control proxy message.");
-            LOG(HVN_LOG_ERR, "Not implemented yet.");
+        case TDB_PROTO_CTRL_PROXY:
+            LOG(TDB_LOG_DBG, "Handling control proxy message.");
+            LOG(TDB_LOG_ERR, "Not implemented yet.");
             break;
 
-        case HVN_PROTO_CTRL_FOLLOWER:
-            LOG(HVN_LOG_DBG, "Handling control follower message.");
-            LOG(HVN_LOG_ERR, "Not implemented yet.");
+        case TDB_PROTO_CTRL_FOLLOWER:
+            LOG(TDB_LOG_DBG, "Handling control follower message.");
+            LOG(TDB_LOG_ERR, "Not implemented yet.");
             break;
 
-        case HVN_PROTO_CTRL_LEADER:
-            HVN_replica_init(&new_replica);
+        case TDB_PROTO_CTRL_LEADER:
+            TDB_replica_init(&new_replica);
 
-            if(HVN_bootstrap_leader(new_replica, router->ctx, \
-                                    &new_uuid, control_msg_data.path) == HVN_SUCCESS) {
+            if(TDB_bootstrap_leader(new_replica, router->ctx, \
+                                    &new_uuid, control_msg_data.path) == TDB_SUCCESS) {
                 uuid_unparse(new_uuid, new_uuid_string);
-                LOG(HVN_LOG_ERR, "Quorum leader created with UUID `%s'.", new_uuid_string);
+                LOG(TDB_LOG_ERR, "Quorum leader created with UUID `%s'.", new_uuid_string);
                 //TODO: return uuid to requestor?
             }
             else {
-                LOG(HVN_LOG_ERR, "Failed to bootstrap a quorum leader.");
+                LOG(TDB_LOG_ERR, "Failed to bootstrap a quorum leader.");
             }
 
             break;
 
-        case HVN_PROTO_CTRL_LOCATION:
-            HVN_replica_init(&new_replica);
+        case TDB_PROTO_CTRL_LOCATION:
+            TDB_replica_init(&new_replica);
 
-            if(HVN_bootstrap_location(new_replica, router->ctx, \
-                                      &new_uuid) == HVN_SUCCESS) {
+            if(TDB_bootstrap_location(new_replica, router->ctx, \
+                                      &new_uuid) == TDB_SUCCESS) {
                 uuid_unparse(new_uuid, new_uuid_string);
-                LOG(HVN_LOG_ERR, "Location quorum leader created with UUID `%s'.", new_uuid_string);
+                LOG(TDB_LOG_ERR, "Location quorum leader created with UUID `%s'.", new_uuid_string);
                 //TODO: return uuid to requestor?
             }
             else {
-                LOG(HVN_LOG_ERR, "Failed to bootstrap a location quorum leader.");
+                LOG(TDB_LOG_ERR, "Failed to bootstrap a location quorum leader.");
             }
 
             break;
 
-        case HVN_PROTO_CTRL_EXIT:
-            LOG(HVN_LOG_DBG, "Handling control exit message.");
-            LOG(HVN_LOG_ERR, "Not implemented yet.");
+        case TDB_PROTO_CTRL_EXIT:
+            LOG(TDB_LOG_DBG, "Handling control exit message.");
+            LOG(TDB_LOG_ERR, "Not implemented yet.");
             break;
 
-        case HVN_PROTO_CTRL_DESTROY:
-            LOG(HVN_LOG_DBG, "Handling control destroy message.");
-            LOG(HVN_LOG_ERR, "Not implemented yet.");
+        case TDB_PROTO_CTRL_DESTROY:
+            LOG(TDB_LOG_DBG, "Handling control destroy message.");
+            LOG(TDB_LOG_ERR, "Not implemented yet.");
             break;
 
         default:
-            LOG(HVN_LOG_ERR, "Encountered unrecognized control message type of `%d'.", \
+            LOG(TDB_LOG_ERR, "Encountered unrecognized control message type of `%d'.", \
                 control_msg_data.action);
-            taskexit(HVN_ERROR);
+            taskexit(TDB_ERROR);
     }
 
-    LOG(HVN_LOG_DBG, "Completed routing. Exiting task.");
-    HVN_free_router(router);
+    LOG(TDB_LOG_DBG, "Completed routing. Exiting task.");
+    TDB_free_router(router);
 
-    taskexit(HVN_SUCCESS);
+    taskexit(TDB_SUCCESS);
 }
 
 /* EOF */

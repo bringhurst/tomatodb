@@ -21,18 +21,18 @@
 #include "log.h"
 
 /** The stream to send log messages to. */
-extern FILE* HVN_debug_stream;
+extern FILE* TDB_debug_stream;
 
 /** The log level to output. */
-extern HVN_loglevel HVN_debug_level;
+extern TDB_loglevel TDB_debug_level;
 
-int HVN_consensus_exec(HVN_attach_t* client, HVN_db_op_t* op)
+int TDB_consensus_exec(TDB_attach_t* client, TDB_db_op_t* op)
 {
-    HVN_INTENTIONALLY_UNUSED_VARIABLE(client);
-    HVN_INTENTIONALLY_UNUSED_VARIABLE(op);
+    TDB_INTENTIONALLY_UNUSED_VARIABLE(client);
+    TDB_INTENTIONALLY_UNUSED_VARIABLE(op);
 
     // TODO: determine how many replicas are in the quorum.
-    return HVN_ERROR;
+    return TDB_ERROR;
 }
 
 /* EOF */

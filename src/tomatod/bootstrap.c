@@ -25,78 +25,78 @@
 #include "bootstrap.h"
 
 /** The stream to send log messages to. */
-extern FILE* HVN_debug_stream;
+extern FILE* TDB_debug_stream;
 
 /** The log level to output. */
-extern HVN_loglevel HVN_debug_level;
+extern TDB_loglevel TDB_debug_level;
 
 // Bootstrap a new follower replica in the specified context.
-int HVN_bootstrap_follower(HVN_replica_t* replica, HVN_ctx_t* ctx, uuid_t* uuid)
+int TDB_bootstrap_follower(TDB_replica_t* replica, TDB_ctx_t* ctx, uuid_t* uuid)
 {
-    char state = HVN_CONSENSUS_MD_STATE_FOLLOWER;
+    char state = TDB_CONSENSUS_MD_STATE_FOLLOWER;
 
     uint64_t bootstrap_term = 0;
     uint64_t bootstrap_index = 0;
 
-    LOG(HVN_LOG_INFO, "Bootstrapping a replica follower on interface `%s:%d'.", \
+    LOG(TDB_LOG_INFO, "Bootstrapping a replica follower on interface `%s:%d'.", \
         ctx->listen_addr, ctx->listen_port);
 
-    if(HVN_generate_uuid(&replica->uuid) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Failed to generate a new follower replica UUID.");
-        return HVN_ERROR;
+    if(TDB_generate_uuid(&replica->uuid) != TDB_SUCCESS) {
+        LOG(TDB_LOG_ERR, "Failed to generate a new follower replica UUID.");
+        return TDB_ERROR;
     }
     else {
         uuid_copy(*uuid, replica->uuid);
     }
 
-    if(HVN_bootstrap_replica_db(replica) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Failed to bootstrap a new follower replica database.");
-        return HVN_ERROR;
+    if(TDB_bootstrap_replica_db(replica) != TDB_SUCCESS) {
+        LOG(TDB_LOG_ERR, "Failed to bootstrap a new follower replica database.");
+        return TDB_ERROR;
     }
 
-    if(HVN_db_unsafe_put_char(replica->db, HVN_CONSENSUS_MD_STATE,
-                              strlen(HVN_CONSENSUS_MD_STATE), state) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Failed to set the state for bootstrapping a follower.");
-        return HVN_ERROR;
+    if(TDB_db_unsafe_put_char(replica->db, TDB_CONSENSUS_MD_STATE,
+                              strlen(TDB_CONSENSUS_MD_STATE), state) != TDB_SUCCESS) {
+        LOG(TDB_LOG_ERR, "Failed to set the state for bootstrapping a follower.");
+        return TDB_ERROR;
     }
 
-    if(HVN_db_unsafe_put_uint64(replica->db, HVN_CONSENSUS_MD_TERM,
-                                strlen(HVN_CONSENSUS_MD_TERM), bootstrap_term) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Failed to set the state for bootstrapping a follower.");
-        return HVN_ERROR;
+    if(TDB_db_unsafe_put_uint64(replica->db, TDB_CONSENSUS_MD_TERM,
+                                strlen(TDB_CONSENSUS_MD_TERM), bootstrap_term) != TDB_SUCCESS) {
+        LOG(TDB_LOG_ERR, "Failed to set the state for bootstrapping a follower.");
+        return TDB_ERROR;
     }
 
-    if(HVN_db_unsafe_put_uint64(replica->db, HVN_CONSENSUS_MD_LAST_LOG_INDEX,
-                                strlen(HVN_CONSENSUS_MD_LAST_LOG_INDEX), bootstrap_index) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Failed to set the initial log index for bootstrapping a follower.");
-        return HVN_ERROR;
+    if(TDB_db_unsafe_put_uint64(replica->db, TDB_CONSENSUS_MD_LAST_LOG_INDEX,
+                                strlen(TDB_CONSENSUS_MD_LAST_LOG_INDEX), bootstrap_index) != TDB_SUCCESS) {
+        LOG(TDB_LOG_ERR, "Failed to set the initial log index for bootstrapping a follower.");
+        return TDB_ERROR;
     }
 
     // TODO: bootstrap the addr list with this node only.
 
-    taskcreate((void (*)(void*))HVN_replica_task, replica, HVN_REPLICA_STACK_SIZE);
+    taskcreate((void (*)(void*))TDB_replica_task, replica, TDB_REPLICA_STACK_SIZE);
     HASH_ADD(hh, ctx->replicas, uuid, sizeof(uuid_t), replica);
 
-    return HVN_SUCCESS;
+    return TDB_SUCCESS;
 }
 
-int HVN_bootstrap_replica_db(HVN_replica_t* replica)
+int TDB_bootstrap_replica_db(TDB_replica_t* replica)
 {
     char* db_path = (char*) malloc(sizeof(char) * _POSIX_PATH_MAX);
     char* uuid_string = (char*) malloc(sizeof(char) * UUID_STR_LEN);
     int offset, result;
 
     offset = sprintf(db_path, "%s%s", \
-                     HVN_BASE_STATE_DIR, HVN_DATA_DB_PREFIX);
+                     TDB_BASE_STATE_DIR, TDB_DATA_DB_PREFIX);
 
-    if(HVN_ensure_directory_exists(db_path) != HVN_SUCCESS) {
-        LOG(HVN_LOG_ERR, "Failed to create directory structure when preparing a replica DB.");
-        return HVN_ERROR;
+    if(TDB_ensure_directory_exists(db_path) != TDB_SUCCESS) {
+        LOG(TDB_LOG_ERR, "Failed to create directory structure when preparing a replica DB.");
+        return TDB_ERROR;
     }
 
     uuid_unparse(replica->uuid, uuid_string);
     sprintf(db_path + offset, "/%s", uuid_string);
-    result = HVN_db_init(&replica->db, db_path);
+    result = TDB_db_init(&replica->db, db_path);
 
     free(db_path);
     free(uuid_string);
@@ -104,44 +104,44 @@ int HVN_bootstrap_replica_db(HVN_replica_t* replica)
     return result;
 }
 
-int HVN_bootstrap_replicas_from_disk(HVN_ctx_t* ctx)
+int TDB_bootstrap_replicas_from_disk(TDB_ctx_t* ctx)
 {
     DIR* dir;
     struct dirent* ent;
-    HVN_replica_t* replica;
+    TDB_replica_t* replica;
 
     char* db_base_path = (char*) malloc(sizeof(char) * _POSIX_PATH_MAX);
     char* db_absolute_path = (char*) malloc(sizeof(char) * _POSIX_PATH_MAX);
 
     sprintf(db_base_path, "%s%s", \
-            HVN_BASE_STATE_DIR, HVN_DATA_DB_PREFIX);
+            TDB_BASE_STATE_DIR, TDB_DATA_DB_PREFIX);
 
     if((dir = opendir(db_base_path)) != NULL) {
         while((ent = readdir(dir)) != NULL) {
             if(strlen(ent->d_name) == UUID_STR_LEN - 1) {
                 sprintf(db_absolute_path, "%s/%s", db_base_path, ent->d_name);
-                LOG(HVN_LOG_INFO, "Loading existing replica from `%s'.", db_absolute_path);
+                LOG(TDB_LOG_INFO, "Loading existing replica from `%s'.", db_absolute_path);
 
-                if(HVN_replica_init(&replica) != HVN_SUCCESS) {
-                    LOG(HVN_LOG_ERR, "Failed to allocate memory for replica `%s'.", ent->d_name);
-                    return HVN_ERROR;
+                if(TDB_replica_init(&replica) != TDB_SUCCESS) {
+                    LOG(TDB_LOG_ERR, "Failed to allocate memory for replica `%s'.", ent->d_name);
+                    return TDB_ERROR;
                 }
 
                 replica->ctx = ctx;
 
-                if(HVN_db_init(&(replica->db), db_absolute_path) != HVN_SUCCESS) {
-                    LOG(HVN_LOG_INFO, "Failed to open replica DB with UUID of `%s'.", ent->d_name);
+                if(TDB_db_init(&(replica->db), db_absolute_path) != TDB_SUCCESS) {
+                    LOG(TDB_LOG_INFO, "Failed to open replica DB with UUID of `%s'.", ent->d_name);
                     free(replica);
-                    return HVN_ERROR;
+                    return TDB_ERROR;
                 }
 
                 if(uuid_parse(ent->d_name, replica->uuid) != 0) {
-                    LOG(HVN_LOG_INFO, "Failed to parse replica with UUID of `%s'.", ent->d_name);
+                    LOG(TDB_LOG_INFO, "Failed to parse replica with UUID of `%s'.", ent->d_name);
                     free(replica);
-                    return HVN_ERROR;
+                    return TDB_ERROR;
                 }
 
-                taskcreate((void (*)(void*))HVN_replica_task, replica, HVN_REPLICA_STACK_SIZE);
+                taskcreate((void (*)(void*))TDB_replica_task, replica, TDB_REPLICA_STACK_SIZE);
                 HASH_ADD(hh, ctx->replicas, uuid, sizeof(uuid_t), replica);
             }
         }
@@ -149,10 +149,10 @@ int HVN_bootstrap_replicas_from_disk(HVN_ctx_t* ctx)
         closedir(dir);
     }
     else {
-        LOG(HVN_LOG_INFO, "Replica state directory can not be read. Server is starting empty.");
+        LOG(TDB_LOG_INFO, "Replica state directory can not be read. Server is starting empty.");
     }
 
-    return HVN_SUCCESS;
+    return TDB_SUCCESS;
 }
 
 /* EOF */

@@ -1,5 +1,5 @@
-#ifndef __HVN__HAVEND_TIMER_H_
-#define __HVN__HAVEND_TIMER_H_
+#ifndef __TDB__TOMATOD_TIMER_H_
+#define __TDB__TOMATOD_TIMER_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -25,26 +25,26 @@
 #include "task/task.h"
 #include "ut/utarray.h"
 
-#define HVN_TIMER_STACK_SIZE       32768
-#define HVN_TIMER_CHANNEL_BACKLOG  10
+#define TDB_TIMER_STACK_SIZE       32768
+#define TDB_TIMER_CHANNEL_BACKLOG  10
 
-#define HVN_TIMER_ALARM_MAGIC      0xDEADBEEF
+#define TDB_TIMER_ALARM_MAGIC      0xDEADBEEF
 
-typedef struct HVN_timer_t {
+typedef struct TDB_timer_t {
     Channel* timer_chan;
     Channel* alarm_chan;
     uint32_t r;
     UT_array* t;
     bool cancel;
-} HVN_timer_t;
+} TDB_timer_t;
 
-int HVN_timer_init(HVN_timer_t** timer);
-void HVN_timer_start(HVN_timer_t* timer, int ms);
-void HVN_timer_task(HVN_timer_t* timer);
+int TDB_timer_init(TDB_timer_t** timer);
+void TDB_timer_start(TDB_timer_t* timer, int ms);
+void TDB_timer_task(TDB_timer_t* timer);
 
-void HVN_timer_reset(HVN_timer_t* timer, int ms);
-void HVN_timer_cancel(HVN_timer_t* timer);
+void TDB_timer_reset(TDB_timer_t* timer, int ms);
+void TDB_timer_cancel(TDB_timer_t* timer);
 
-void HVN_timer_free(HVN_timer_t* timer);
+void TDB_timer_free(TDB_timer_t* timer);
 
-#endif /* __HVN__HAVEND_TIMER_H_ */
+#endif /* __TDB__TOMATOD_TIMER_H_ */

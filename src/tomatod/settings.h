@@ -1,5 +1,5 @@
-#ifndef __HVN_SETTINGS_H
-#define __HVN_SETTINGS_H
+#ifndef __TDB__TOMATOD_SETTINGS_H
+#define __TDB__TOMATOD_SETTINGS_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -23,10 +23,10 @@
 
 #define PROCESS_UUID_SETTINGS_PATH "/process_uuid"
 
-int HVN_set_process_uuid(HVN_ctx_t* ctx);
-int HVN_get_uuid_from_file(HVN_ctx_t* ctx, char* uuid_file_path);
-int HVN_generate_uuid(uuid_t* uuid);
-int HVN_configure_new_process_uuid(HVN_ctx_t* ctx, char* uuid_file_path);
-int HVN_prepare_settings_db(HVN_ctx_t* ctx);
+int TDB_set_process_uuid(TDB_ctx_t* ctx);
+int TDB_get_uuid_from_file(TDB_ctx_t* ctx, char* uuid_file_path);
+int TDB_generate_uuid(uuid_t* uuid);
+int TDB_configure_new_process_uuid(TDB_ctx_t* ctx, char* uuid_file_path);
+int TDB_prepare_settings_db(TDB_ctx_t* ctx);
 
-#endif /* __HVN_SETTINGS_H */
+#endif /* __TDB__TOMATOD_SETTINGS_H */

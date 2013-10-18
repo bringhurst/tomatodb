@@ -1,5 +1,5 @@
-#ifndef __HVN__HAVEND_BOOTSTRAP_H
-#define __HVN__HAVEND_BOOTSTRAP_H
+#ifndef __TDB__TOMATOD_BOOTSTRAP_H
+#define __TDB__TOMATOD_BOOTSTRAP_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -21,11 +21,11 @@
 
 #include "replica.h"
 
-int HVN_bootstrap_follower(HVN_replica_t* replica, \
-                           HVN_ctx_t* ctx, \
+int TDB_bootstrap_follower(TDB_replica_t* replica, \
+                           TDB_ctx_t* ctx, \
                            uuid_t* uuid);
 
-int HVN_bootstrap_replica_db(HVN_replica_t* replica);
-int HVN_bootstrap_replicas_from_disk(HVN_ctx_t* ctx);
+int TDB_bootstrap_replica_db(TDB_replica_t* replica);
+int TDB_bootstrap_replicas_from_disk(TDB_ctx_t* ctx);
 
-#endif /* __HVN__HAVEND_BOOTSTRAP_H */
+#endif /* __TDB__TOMATOD_BOOTSTRAP_H */

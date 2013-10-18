@@ -1,5 +1,5 @@
-#ifndef __HVN__HAVEND_HOOK_H
-#define __HVN__HAVEND_HOOK_H
+#ifndef __TDB__TOMATOD_HOOK_H
+#define __TDB__TOMATOD_HOOK_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -24,18 +24,18 @@
 #include "log.h"
 #include "task/task.h"
 
-#define HVN_HOOK_STACK_SIZE  32768
+#define TDB_HOOK_STACK_SIZE  32768
 
-#define HVN_HOOK_ALT_NK  3
+#define TDB_HOOK_ALT_NK  3
 
-#define HVN_HOOK_ALT_APPEND_KEY  0
-#define HVN_HOOK_ALT_EXIT_KEY    1
-#define HVN_HOOK_ALT_VOTE_KEY    2
+#define TDB_HOOK_ALT_APPEND_KEY  0
+#define TDB_HOOK_ALT_EXIT_KEY    1
+#define TDB_HOOK_ALT_VOTE_KEY    2
 
-#define HVN_HOOK_APPEND_CHANNEL_BACKLOG  10
-#define HVN_HOOK_VOTE_CHANNEL_BACKLOG  10
+#define TDB_HOOK_APPEND_CHANNEL_BACKLOG  10
+#define TDB_HOOK_VOTE_CHANNEL_BACKLOG  10
 
-typedef struct HVN_hook_t {
+typedef struct TDB_hook_t {
     uuid_t remote_uuid;
 
     int remote_port;
@@ -47,12 +47,12 @@ typedef struct HVN_hook_t {
     Channel* append_chan;
     Channel* vote_chan;
     Channel* exit_chan;
-} HVN_hook_t;
+} TDB_hook_t;
 
-void HVN_hook_task(HVN_hook_t* hook);
-int HVN_hook_prepare(char* address, int port, int* fd, uint32_t mode);
+void TDB_hook_task(TDB_hook_t* hook);
+int TDB_hook_prepare(char* address, int port, int* fd, uint32_t mode);
 
-int HVN_hook_init(HVN_hook_t** hook, uuid_t uuid, int port, char* address);
-void HVN_hook_free(HVN_hook_t* hook);
+int TDB_hook_init(TDB_hook_t** hook, uuid_t uuid, int port, char* address);
+void TDB_hook_free(TDB_hook_t* hook);
 
-#endif /* __HVN__HAVEND_HOOK_H */
+#endif /* __TDB__TOMATOD_HOOK_H */

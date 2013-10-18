@@ -1,5 +1,5 @@
-#ifndef __HVN__HAVEND_LEADER_H
-#define __HVN__HAVEND_LEADER_H
+#ifndef __TDB__TOMATOD_LEADER_H
+#define __TDB__TOMATOD_LEADER_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -21,11 +21,11 @@
 
 #include "replica.h"
 
-#define HVN_REPLICA_LEADER_ALT_NK  2
+#define TDB_REPLICA_LEADER_ALT_NK  2
 
-#define HVN_REPLICA_LEADER_ALT_DATA_KEY  0
-#define HVN_REPLICA_LEADER_ALT_TIMER_KEY   1
+#define TDB_REPLICA_LEADER_ALT_DATA_KEY  0
+#define TDB_REPLICA_LEADER_ALT_TIMER_KEY   1
 
-int HVN_replica_leader(HVN_replica_t* replica);
+int TDB_replica_leader(TDB_replica_t* replica);
 
-#endif /* __HVN__HAVEND_LEADER_H */
+#endif /* __TDB__TOMATOD_LEADER_H */

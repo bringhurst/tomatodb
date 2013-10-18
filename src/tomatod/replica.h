@@ -1,5 +1,5 @@
-#ifndef __HVN__HAVEND_REPLICA_H
-#define __HVN__HAVEND_REPLICA_H
+#ifndef __TDB__TOMATOD_REPLICA_H
+#define __TDB__TOMATOD_REPLICA_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -25,15 +25,15 @@
 #include "timer.h"
 #include "ut/uthash.h"
 
-#define HVN_REPLICA_STACK_SIZE 32768
+#define TDB_REPLICA_STACK_SIZE 32768
 
-#define HVN_REPLICA_KEY_DEFAULT_LOCATION "/location"
+#define TDB_REPLICA_KEY_DEFAULT_LOCATION "/location"
 
-typedef struct HVN_replica_t {
-    HVN_db_t* db;
-    HVN_ctx_t* ctx;
+typedef struct TDB_replica_t {
+    TDB_db_t* db;
+    TDB_ctx_t* ctx;
 
-    HVN_timer_t* election_timer;
+    TDB_timer_t* election_timer;
     struct timeval* election_timeout;
 
     Channel* data_chan;
@@ -48,16 +48,16 @@ typedef struct HVN_replica_t {
     uint64_t last_log_index;
 
     UT_hash_handle hh;
-} HVN_replica_t;
+} TDB_replica_t;
 
-void HVN_replica_task(HVN_replica_t* replica);
+void TDB_replica_task(TDB_replica_t* replica);
 
-int HVN_replica_init(HVN_replica_t** replica);
-void HVN_replica_free(HVN_replica_t* replica);
+int TDB_replica_init(TDB_replica_t** replica);
+void TDB_replica_free(TDB_replica_t* replica);
 
-int HVN_replica_persist_state(HVN_replica_t* replica, \
+int TDB_replica_persist_state(TDB_replica_t* replica, \
                               UT_array* log, \
-                              HVN_addr_t* term_vote, \
+                              TDB_addr_t* term_vote, \
                               uint64_t current_term);
 
-#endif /* __HVN__HAVEND_REPLICA_H */
+#endif /* __TDB__TOMATOD_REPLICA_H */

@@ -1,5 +1,5 @@
-#ifndef __HVN__HAVEND_CANDIDATE_H
-#define __HVN__HAVEND_CANDIDATE_H
+#ifndef __TDB__TOMATOD_CANDIDATE_H
+#define __TDB__TOMATOD_CANDIDATE_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -21,12 +21,12 @@
 
 #include "replica.h"
 
-#define HVN_REPLICA_CANDIDATE_ALT_NK  3
+#define TDB_REPLICA_CANDIDATE_ALT_NK  3
 
-#define HVN_REPLICA_CANDIDATE_ALT_APPEND_KEY  0
-#define HVN_REPLICA_CANDIDATE_ALT_TIMER_KEY   1
-#define HVN_REPLICA_CANDIDATE_ALT_VOTE_KEY    2
+#define TDB_REPLICA_CANDIDATE_ALT_APPEND_KEY  0
+#define TDB_REPLICA_CANDIDATE_ALT_TIMER_KEY   1
+#define TDB_REPLICA_CANDIDATE_ALT_VOTE_KEY    2
 
-int HVN_replica_candidate(HVN_replica_t* replica);
+int TDB_replica_candidate(TDB_replica_t* replica);
 
-#endif /* __HVN__HAVEND_CANDIDATE_H */
+#endif /* __TDB__TOMATOD_CANDIDATE_H */

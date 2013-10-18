@@ -1,5 +1,5 @@
-#ifndef __HVN__HAVEND_ROUTING_H_
-#define __HVN__HAVEND_ROUTING_H_
+#ifndef __TDB__TOMATOD_ROUTING_H_
+#define __TDB__TOMATOD_ROUTING_H_
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -21,23 +21,23 @@
 
 #include "havend.h"
 
-#define HVN_ROUTER_STACK_SIZE (32768)
+#define TDB_ROUTER_STACK_SIZE (32768)
 
-typedef struct HVN_router_t {
-    HVN_ctx_t* ctx;
+typedef struct TDB_router_t {
+    TDB_ctx_t* ctx;
     char* remote_addr;
     int remote_port;
     int accept_fd;
-} HVN_router_t;
+} TDB_router_t;
 
-void HVN_routing_task(HVN_router_t* router);
+void TDB_routing_task(TDB_router_t* router);
 
-int HVN_init_router(HVN_router_t** router, \
-                    HVN_ctx_t* ctx, \
+int TDB_init_router(TDB_router_t** router, \
+                    TDB_ctx_t* ctx, \
                     char* remote_addr, \
                     int accept_port, \
                     int accept_fd);
 
-void HVN_free_router(HVN_router_t* router);
+void TDB_free_router(TDB_router_t* router);
 
-#endif /* __HVN__HAVEND_ROUTING_H_ */
+#endif /* __TDB__TOMATOD_ROUTING_H_ */

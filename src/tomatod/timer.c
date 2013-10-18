@@ -23,46 +23,46 @@
 #include "timer.h"
 
 /** The stream to send log messages to. */
-extern FILE* HVN_debug_stream;
+extern FILE* TDB_debug_stream;
 
 /** The log level to output. */
-extern HVN_loglevel HVN_debug_level;
+extern TDB_loglevel TDB_debug_level;
 
-int HVN_timer_init(HVN_timer_t** timer)
+int TDB_timer_init(TDB_timer_t** timer)
 {
-    *timer = (HVN_timer_t*) malloc(sizeof(HVN_timer_t));
+    *timer = (TDB_timer_t*) malloc(sizeof(TDB_timer_t));
 
     if(*timer == NULL) {
-        LOG(HVN_LOG_ERR, "Failed to allocate a new timer.");
-        return HVN_ERROR;
+        LOG(TDB_LOG_ERR, "Failed to allocate a new timer.");
+        return TDB_ERROR;
     }
 
     (*timer)->cancel = false;
 
-    (*timer)->timer_chan = chancreate(sizeof(HVN_timer_t*), HVN_TIMER_CHANNEL_BACKLOG);
-    (*timer)->alarm_chan = chancreate(sizeof(uint32_t), HVN_TIMER_CHANNEL_BACKLOG);
+    (*timer)->timer_chan = chancreate(sizeof(TDB_timer_t*), TDB_TIMER_CHANNEL_BACKLOG);
+    (*timer)->alarm_chan = chancreate(sizeof(uint32_t), TDB_TIMER_CHANNEL_BACKLOG);
 
     utarray_new((*timer)->t, &ut_int_icd);
 
-    return HVN_SUCCESS;
+    return TDB_SUCCESS;
 }
 
-void HVN_timer_start(HVN_timer_t* timer, int ms)
+void TDB_timer_start(TDB_timer_t* timer, int ms)
 {
-    HVN_timer_reset(timer, ms);
-    taskcreate((void (*)(void*)) HVN_timer_task, (void*) timer, HVN_TIMER_STACK_SIZE);
+    TDB_timer_reset(timer, ms);
+    taskcreate((void (*)(void*)) TDB_timer_task, (void*) timer, TDB_TIMER_STACK_SIZE);
 }
 
-void HVN_timer_task(HVN_timer_t* timer)
+void TDB_timer_task(TDB_timer_t* timer)
 {
-    HVN_timer_t* next = NULL;
+    TDB_timer_t* next = NULL;
 
     int* front_time;
     int* ele_time;
     int elapsed_time = 0;
     int recv_time = 0;
 
-    //LOG(HVN_LOG_DBG, "Entering timer task.");
+    //LOG(TDB_LOG_DBG, "Entering timer task.");
 
     taskname("timer");
     taskstate("new");
@@ -72,13 +72,13 @@ void HVN_timer_task(HVN_timer_t* timer)
             next = chanrecvp(timer->timer_chan);
 
             if(next->cancel == true) {
-                LOG(HVN_LOG_DBG, "A timer was canceled. Exiting timer task.");
+                LOG(TDB_LOG_DBG, "A timer was canceled. Exiting timer task.");
                 taskstate("exiting");
-                HVN_timer_free(timer);
+                TDB_timer_free(timer);
                 break;
             }
 
-            //LOG(HVN_LOG_DBG, "Appending `%d' ms to this timer task.", next->r);
+            //LOG(TDB_LOG_DBG, "Appending `%d' ms to this timer task.", next->r);
             recv_time = next->r;
             utarray_push_back(timer->t, &recv_time);
             free(next);
@@ -103,33 +103,33 @@ void HVN_timer_task(HVN_timer_t* timer)
             }
         }
         else {
-            //LOG(HVN_LOG_DBG, "A timer was triggered. Sending alarm, then exiting timer task.");
-            chansendul(timer->alarm_chan, HVN_TIMER_ALARM_MAGIC);
+            //LOG(TDB_LOG_DBG, "A timer was triggered. Sending alarm, then exiting timer task.");
+            chansendul(timer->alarm_chan, TDB_TIMER_ALARM_MAGIC);
             break;
         }
     }
 
-    //LOG(HVN_LOG_DBG, "Leaving timer task.");
+    //LOG(TDB_LOG_DBG, "Leaving timer task.");
     taskexit(EXIT_SUCCESS);
 }
 
-void HVN_timer_reset(HVN_timer_t* timer, int ms)
+void TDB_timer_reset(TDB_timer_t* timer, int ms)
 {
-    HVN_timer_t* nt = (HVN_timer_t*) malloc(sizeof(HVN_timer_t));
+    TDB_timer_t* nt = (TDB_timer_t*) malloc(sizeof(TDB_timer_t));
     nt->r = ms;
     nt->cancel = false;
     chansendp(timer->timer_chan, nt);
 }
 
-void HVN_timer_cancel(HVN_timer_t* timer)
+void TDB_timer_cancel(TDB_timer_t* timer)
 {
-    HVN_timer_t* nt = (HVN_timer_t*) malloc(sizeof(HVN_timer_t));
+    TDB_timer_t* nt = (TDB_timer_t*) malloc(sizeof(TDB_timer_t));
     nt->r = 0;
     nt->cancel = true;
     chansendp(timer->timer_chan, nt);
 }
 
-void HVN_timer_free(HVN_timer_t* timer)
+void TDB_timer_free(TDB_timer_t* timer)
 {
     chanfree(timer->timer_chan);
     chanfree(timer->alarm_chan);

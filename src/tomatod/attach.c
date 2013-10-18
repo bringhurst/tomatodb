@@ -28,241 +28,241 @@
 #include "log.h"
 
 /** The stream to send log messages to. */
-extern FILE* HVN_debug_stream;
+extern FILE* TDB_debug_stream;
 
 /** The log level to output. */
-extern HVN_loglevel HVN_debug_level;
+extern TDB_loglevel TDB_debug_level;
 
-void HVN_attach_task(HVN_attach_t* client)
+void TDB_attach_task(TDB_attach_t* client)
 {
     taskname("attach");
-    taskcreate((void (*)(void*))HVN_attach_send_task, client, HVN_ATTACH_STACK_SIZE);
-    HVN_attach_recv(client);
+    taskcreate((void (*)(void*))TDB_attach_send_task, client, TDB_ATTACH_STACK_SIZE);
+    TDB_attach_recv(client);
 }
 
-void HVN_attach_recv(HVN_attach_t* client)
+void TDB_attach_recv(TDB_attach_t* client)
 {
     switch(client->mode) {
-        case HVN_PROTO_CTRL_ATTACH_DATA:
+        case TDB_PROTO_CTRL_ATTACH_DATA:
             taskstate("receive/data");
-            HVN_attach_recv_data(client);
+            TDB_attach_recv_data(client);
             break;
 
-        case HVN_PROTO_CTRL_ATTACH_VOTE:
+        case TDB_PROTO_CTRL_ATTACH_VOTE:
             taskstate("receive/vote");
-            HVN_attach_recv_vote(client);
+            TDB_attach_recv_vote(client);
             break;
 
-        case HVN_PROTO_CTRL_ATTACH_APPEND:
+        case TDB_PROTO_CTRL_ATTACH_APPEND:
             taskstate("receive/append");
-            HVN_attach_recv_append(client);
+            TDB_attach_recv_append(client);
             break;
 
         default:
-            LOG(HVN_LOG_ERR, "Encountered an unrecognized attach mode.");
+            LOG(TDB_LOG_ERR, "Encountered an unrecognized attach mode.");
             break;
     }
 
     //TODO: send a message to attach-send-task to let it shutdown
 }
 
-void HVN_attach_send_task(HVN_attach_t* client)
+void TDB_attach_send_task(TDB_attach_t* client)
 {
-    static Alt alts[HVN_ATTACH_SEND_ALT_NK + 1];
+    static Alt alts[TDB_ATTACH_SEND_ALT_NK + 1];
     uint32_t exit_msg;
 
-    HVN_msg_append_resp_t append_msg;
-    HVN_msg_data_resp_t data_msg;
-    HVN_msg_vote_resp_t vote_msg;
+    TDB_msg_append_resp_t append_msg;
+    TDB_msg_data_resp_t data_msg;
+    TDB_msg_vote_resp_t vote_msg;
 
     taskstate("send");
 
-    alts[HVN_ATTACH_SEND_ALT_APPEND_KEY].c = client->append_reply_chan;
-    alts[HVN_ATTACH_SEND_ALT_APPEND_KEY].v = &append_msg;
-    alts[HVN_ATTACH_SEND_ALT_APPEND_KEY].op = CHANRCV;
+    alts[TDB_ATTACH_SEND_ALT_APPEND_KEY].c = client->append_reply_chan;
+    alts[TDB_ATTACH_SEND_ALT_APPEND_KEY].v = &append_msg;
+    alts[TDB_ATTACH_SEND_ALT_APPEND_KEY].op = CHANRCV;
 
-    alts[HVN_ATTACH_SEND_ALT_DATA_KEY].c = client->data_reply_chan;
-    alts[HVN_ATTACH_SEND_ALT_DATA_KEY].v = &data_msg;
-    alts[HVN_ATTACH_SEND_ALT_DATA_KEY].op = CHANRCV;
+    alts[TDB_ATTACH_SEND_ALT_DATA_KEY].c = client->data_reply_chan;
+    alts[TDB_ATTACH_SEND_ALT_DATA_KEY].v = &data_msg;
+    alts[TDB_ATTACH_SEND_ALT_DATA_KEY].op = CHANRCV;
 
-    alts[HVN_ATTACH_SEND_ALT_EXIT_KEY].c = client->exit_chan;
-    alts[HVN_ATTACH_SEND_ALT_EXIT_KEY].v = &exit_msg;
-    alts[HVN_ATTACH_SEND_ALT_EXIT_KEY].op = CHANRCV;
+    alts[TDB_ATTACH_SEND_ALT_EXIT_KEY].c = client->exit_chan;
+    alts[TDB_ATTACH_SEND_ALT_EXIT_KEY].v = &exit_msg;
+    alts[TDB_ATTACH_SEND_ALT_EXIT_KEY].op = CHANRCV;
 
-    alts[HVN_ATTACH_SEND_ALT_VOTE_KEY].c = client->vote_reply_chan;
-    alts[HVN_ATTACH_SEND_ALT_VOTE_KEY].v = &vote_msg;
-    alts[HVN_ATTACH_SEND_ALT_VOTE_KEY].op = CHANRCV;
+    alts[TDB_ATTACH_SEND_ALT_VOTE_KEY].c = client->vote_reply_chan;
+    alts[TDB_ATTACH_SEND_ALT_VOTE_KEY].v = &vote_msg;
+    alts[TDB_ATTACH_SEND_ALT_VOTE_KEY].op = CHANRCV;
 
     for(;;) {
         switch(chanalt(alts)) {
 
-            case HVN_ATTACH_SEND_ALT_APPEND_KEY:
+            case TDB_ATTACH_SEND_ALT_APPEND_KEY:
                 taskstate("send/append");
-                if(HVN_proto_send_append_resp_msg(client->fd, &append_msg) != HVN_SUCCESS) {
-                    LOG(HVN_LOG_ERR, "Could not send a append message response while attached to a replica.");
-                    taskexit(HVN_ERROR);
+                if(TDB_proto_send_append_resp_msg(client->fd, &append_msg) != TDB_SUCCESS) {
+                    LOG(TDB_LOG_ERR, "Could not send a append message response while attached to a replica.");
+                    taskexit(TDB_ERROR);
                 }
 
                 break;
 
-            case HVN_ATTACH_SEND_ALT_DATA_KEY:
+            case TDB_ATTACH_SEND_ALT_DATA_KEY:
                 taskstate("send/data");
-                if(HVN_proto_send_data_resp_msg(client->fd, &data_msg) != HVN_SUCCESS) {
-                    LOG(HVN_LOG_ERR, "Could not send a data message response while attached to a replica.");
-                    taskexit(HVN_ERROR);
+                if(TDB_proto_send_data_resp_msg(client->fd, &data_msg) != TDB_SUCCESS) {
+                    LOG(TDB_LOG_ERR, "Could not send a data message response while attached to a replica.");
+                    taskexit(TDB_ERROR);
                 }
 
                 break;
 
-            case HVN_ATTACH_SEND_ALT_EXIT_KEY:
+            case TDB_ATTACH_SEND_ALT_EXIT_KEY:
                 taskstate("send/exit");
-                LOG(HVN_LOG_DBG, "Exiting attach send task.");
-                taskexit(HVN_ERROR);
+                LOG(TDB_LOG_DBG, "Exiting attach send task.");
+                taskexit(TDB_ERROR);
                 break;
 
-            case HVN_ATTACH_SEND_ALT_VOTE_KEY:
+            case TDB_ATTACH_SEND_ALT_VOTE_KEY:
                 taskstate("send/vote");
-                if(HVN_proto_send_vote_resp_msg(client->fd, &vote_msg) != HVN_SUCCESS) {
-                    LOG(HVN_LOG_ERR, "Could not send a vote message response while attached to a replica.");
-                    taskexit(HVN_ERROR);
+                if(TDB_proto_send_vote_resp_msg(client->fd, &vote_msg) != TDB_SUCCESS) {
+                    LOG(TDB_LOG_ERR, "Could not send a vote message response while attached to a replica.");
+                    taskexit(TDB_ERROR);
                 }
 
                 break;
 
             default:
-                LOG(HVN_LOG_DBG, "This attach task eceived an unknown message type from a replica.");
+                LOG(TDB_LOG_DBG, "This attach task eceived an unknown message type from a replica.");
                 break;
         }
     }
 }
 
-void HVN_attach_recv_append(HVN_attach_t* client)
+void TDB_attach_recv_append(TDB_attach_t* client)
 {
-    HVN_msg_append_t* append_msg_data = (HVN_msg_append_t*) malloc(sizeof(HVN_msg_append_t));
-    HVN_attach_msg_t* attach_msg = (HVN_attach_msg_t*) malloc(sizeof(HVN_attach_msg_t));
+    TDB_msg_append_t* append_msg_data = (TDB_msg_append_t*) malloc(sizeof(TDB_msg_append_t));
+    TDB_attach_msg_t* attach_msg = (TDB_attach_msg_t*) malloc(sizeof(TDB_attach_msg_t));
 
     if(append_msg_data != NULL && attach_msg != NULL) {
-        LOG(HVN_LOG_ERR, "Could not allocate memory to send an append msg to a replica.");
-        taskexit(HVN_ERROR);
+        LOG(TDB_LOG_ERR, "Could not allocate memory to send an append msg to a replica.");
+        taskexit(TDB_ERROR);
     }
 
     attach_msg->msg = append_msg_data;
     attach_msg->append_reply_chan = client->append_reply_chan;
 
     for(;;) {
-        if(HVN_proto_receive_append_msg(client->fd, append_msg_data) != HVN_SUCCESS) {
-            LOG(HVN_LOG_ERR, "Did not receive a valid append message while attached to a replica.");
-            taskexit(HVN_ERROR);
+        if(TDB_proto_receive_append_msg(client->fd, append_msg_data) != TDB_SUCCESS) {
+            LOG(TDB_LOG_ERR, "Did not receive a valid append message while attached to a replica.");
+            taskexit(TDB_ERROR);
         }
 
         if(chansendp(client->replica->append_chan, attach_msg) != 1) {
-            LOG(HVN_LOG_ERR, "Failed to send the append message to the appropriate replica.");
-            taskexit(HVN_ERROR);
+            LOG(TDB_LOG_ERR, "Failed to send the append message to the appropriate replica.");
+            taskexit(TDB_ERROR);
         }
         else {
-            LOG(HVN_LOG_DBG, "Successfully sent the append message to the appropriate replica.");
+            LOG(TDB_LOG_DBG, "Successfully sent the append message to the appropriate replica.");
         }
     }
 }
 
-void HVN_attach_recv_vote(HVN_attach_t* client)
+void TDB_attach_recv_vote(TDB_attach_t* client)
 {
-    HVN_msg_vote_t* vote_msg_data = (HVN_msg_vote_t*) malloc(sizeof(HVN_msg_vote_t));
-    HVN_attach_msg_t* attach_msg = (HVN_attach_msg_t*) malloc(sizeof(HVN_attach_msg_t));
+    TDB_msg_vote_t* vote_msg_data = (TDB_msg_vote_t*) malloc(sizeof(TDB_msg_vote_t));
+    TDB_attach_msg_t* attach_msg = (TDB_attach_msg_t*) malloc(sizeof(TDB_attach_msg_t));
 
     if(vote_msg_data != NULL && attach_msg != NULL) {
-        LOG(HVN_LOG_ERR, "Could not allocate memory to send a vote msg to a replica.");
-        taskexit(HVN_ERROR);
+        LOG(TDB_LOG_ERR, "Could not allocate memory to send a vote msg to a replica.");
+        taskexit(TDB_ERROR);
     }
 
     attach_msg->msg = vote_msg_data;
     attach_msg->vote_reply_chan = client->vote_reply_chan;
 
     for(;;) {
-        if(HVN_proto_receive_vote_msg(client->fd, vote_msg_data) != HVN_SUCCESS) {
-            LOG(HVN_LOG_ERR, "Did not receive a valid vote message while attached to a replica.");
-            taskexit(HVN_ERROR);
+        if(TDB_proto_receive_vote_msg(client->fd, vote_msg_data) != TDB_SUCCESS) {
+            LOG(TDB_LOG_ERR, "Did not receive a valid vote message while attached to a replica.");
+            taskexit(TDB_ERROR);
         }
 
         if(chansendp(client->replica->vote_chan, attach_msg) != 1) {
-            LOG(HVN_LOG_ERR, "Failed to send the vote message to the appropriate replica.");
-            taskexit(HVN_ERROR);
+            LOG(TDB_LOG_ERR, "Failed to send the vote message to the appropriate replica.");
+            taskexit(TDB_ERROR);
         }
         else {
-            LOG(HVN_LOG_DBG, "Successfully sent the vote message to the appropriate replica.");
+            LOG(TDB_LOG_DBG, "Successfully sent the vote message to the appropriate replica.");
         }
     }
 }
 
-void HVN_attach_recv_data(HVN_attach_t* client)
+void TDB_attach_recv_data(TDB_attach_t* client)
 {
-    HVN_msg_data_t* data_msg_data = (HVN_msg_data_t*) malloc(sizeof(HVN_msg_data_t));
-    HVN_attach_msg_t* attach_msg = (HVN_attach_msg_t*) malloc(sizeof(HVN_attach_msg_t));
+    TDB_msg_data_t* data_msg_data = (TDB_msg_data_t*) malloc(sizeof(TDB_msg_data_t));
+    TDB_attach_msg_t* attach_msg = (TDB_attach_msg_t*) malloc(sizeof(TDB_attach_msg_t));
 
     if(data_msg_data == NULL || attach_msg == NULL) {
-        LOG(HVN_LOG_ERR, "Could not allocate memory to send a data msg to a replica.");
-        taskexit(HVN_ERROR);
+        LOG(TDB_LOG_ERR, "Could not allocate memory to send a data msg to a replica.");
+        taskexit(TDB_ERROR);
     }
 
     attach_msg->data_reply_chan = client->data_reply_chan;
 
     for(;;) {
-        if(HVN_proto_receive_data_msg(client->fd, data_msg_data) != HVN_SUCCESS) {
-            LOG(HVN_LOG_ERR, "Did not receive a valid data message while attached to a replica.");
-            taskexit(HVN_ERROR);
+        if(TDB_proto_receive_data_msg(client->fd, data_msg_data) != TDB_SUCCESS) {
+            LOG(TDB_LOG_ERR, "Did not receive a valid data message while attached to a replica.");
+            taskexit(TDB_ERROR);
         }
 
         attach_msg->msg = data_msg_data;
 
         if(chansendp(client->replica->data_chan, attach_msg) != 1) {
-            LOG(HVN_LOG_ERR, "Failed to send the data message to the appropriate replica.");
-            taskexit(HVN_ERROR);
+            LOG(TDB_LOG_ERR, "Failed to send the data message to the appropriate replica.");
+            taskexit(TDB_ERROR);
         }
         else {
-            LOG(HVN_LOG_DBG, "Successfully sent the data message to the appropriate replica.");
+            LOG(TDB_LOG_DBG, "Successfully sent the data message to the appropriate replica.");
         }
     }
 }
 
-int HVN_replica_attach(HVN_router_t* router, uuid_t uuid, uint32_t mode)
+int TDB_replica_attach(TDB_router_t* router, uuid_t uuid, uint32_t mode)
 {
-    HVN_attach_t* client;
-    HVN_replica_t* replica;
+    TDB_attach_t* client;
+    TDB_replica_t* replica;
 
     HASH_FIND(hh, router->ctx->replicas, uuid, sizeof(uuid_t), replica);
 
     if(replica == NULL) {
-        LOG(HVN_LOG_ERR, "Attempted to attach to a replica which doesn't exist in this instance.");
-        return HVN_ERROR;
+        LOG(TDB_LOG_ERR, "Attempted to attach to a replica which doesn't exist in this instance.");
+        return TDB_ERROR;
     }
 
-    LOG(HVN_LOG_DBG, "Client attached to a replica. Preparing to handle commands.");
+    LOG(TDB_LOG_DBG, "Client attached to a replica. Preparing to handle commands.");
 
-    if(HVN_attach_init(&client, router, replica, mode) != HVN_SUCCESS) {
-        LOG(HVN_LOG_INFO, "Failed to allocate memory to attach a new client.");
+    if(TDB_attach_init(&client, router, replica, mode) != TDB_SUCCESS) {
+        LOG(TDB_LOG_INFO, "Failed to allocate memory to attach a new client.");
     }
 
-    taskcreate((void (*)(void*))HVN_attach_task, client, HVN_ATTACH_STACK_SIZE);
-    return HVN_SUCCESS;
+    taskcreate((void (*)(void*))TDB_attach_task, client, TDB_ATTACH_STACK_SIZE);
+    return TDB_SUCCESS;
 }
 
-int HVN_attach_init(HVN_attach_t** client, \
-                    HVN_router_t* router, \
-                    HVN_replica_t* replica, \
+int TDB_attach_init(TDB_attach_t** client, \
+                    TDB_router_t* router, \
+                    TDB_replica_t* replica, \
                     uint32_t mode)
 {
-    *client = (HVN_attach_t*) malloc(sizeof(HVN_attach_t));
+    *client = (TDB_attach_t*) malloc(sizeof(TDB_attach_t));
 
     if(*client == NULL) {
-        LOG(HVN_LOG_ERR, "Failed to allocate memory for a new client attach.");
-        return HVN_ERROR;
+        LOG(TDB_LOG_ERR, "Failed to allocate memory for a new client attach.");
+        return TDB_ERROR;
     }
 
     (*client)->remote_addr = (char*) malloc(sizeof(char) * _POSIX_HOST_NAME_MAX);
 
     if((*client)->remote_addr == NULL) {
-        LOG(HVN_LOG_ERR, "Failed to allocate memory for the address of a new client attach.");
-        return HVN_ERROR;
+        LOG(TDB_LOG_ERR, "Failed to allocate memory for the address of a new client attach.");
+        return TDB_ERROR;
     }
 
     strncpy((*client)->remote_addr, router->remote_addr, _POSIX_HOST_NAME_MAX);
@@ -271,20 +271,20 @@ int HVN_attach_init(HVN_attach_t** client, \
     (*client)->replica = replica;
     (*client)->mode = mode;
 
-    (*client)->append_reply_chan = chancreate(sizeof(HVN_msg_append_resp_t*), \
-                                   HVN_ATTACH_CHANNEL_BACKLOG);
-    (*client)->data_reply_chan = chancreate(sizeof(HVN_msg_data_resp_t*), \
-                                            HVN_ATTACH_CHANNEL_BACKLOG);
-    (*client)->vote_reply_chan = chancreate(sizeof(HVN_msg_vote_resp_t*), \
-                                            HVN_ATTACH_CHANNEL_BACKLOG);
+    (*client)->append_reply_chan = chancreate(sizeof(TDB_msg_append_resp_t*), \
+                                   TDB_ATTACH_CHANNEL_BACKLOG);
+    (*client)->data_reply_chan = chancreate(sizeof(TDB_msg_data_resp_t*), \
+                                            TDB_ATTACH_CHANNEL_BACKLOG);
+    (*client)->vote_reply_chan = chancreate(sizeof(TDB_msg_vote_resp_t*), \
+                                            TDB_ATTACH_CHANNEL_BACKLOG);
 
     (*client)->exit_chan = chancreate(sizeof(uint32_t), \
-                                      HVN_ATTACH_CHANNEL_BACKLOG);
+                                      TDB_ATTACH_CHANNEL_BACKLOG);
 
-    return HVN_SUCCESS;
+    return TDB_SUCCESS;
 }
 
-void HVN_attach_free(HVN_attach_t* client)
+void TDB_attach_free(TDB_attach_t* client)
 {
     free(client->remote_addr);
     free(client);

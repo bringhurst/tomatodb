@@ -1,5 +1,5 @@
-#ifndef __HVN__HAVEND_FOLLOWER_H
-#define __HVN__HAVEND_FOLLOWER_H
+#ifndef __TDB__TOMATOD_FOLLOWER_H
+#define __TDB__TOMATOD_FOLLOWER_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -21,12 +21,12 @@
 
 #include "replica.h"
 
-#define HVN_REPLICA_FOLLOWER_ALT_NK  3
+#define TDB_REPLICA_FOLLOWER_ALT_NK  3
 
-#define HVN_REPLICA_FOLLOWER_ALT_APPEND_KEY  0
-#define HVN_REPLICA_FOLLOWER_ALT_TIMER_KEY   1
-#define HVN_REPLICA_FOLLOWER_ALT_VOTE_KEY    2
+#define TDB_REPLICA_FOLLOWER_ALT_APPEND_KEY  0
+#define TDB_REPLICA_FOLLOWER_ALT_TIMER_KEY   1
+#define TDB_REPLICA_FOLLOWER_ALT_VOTE_KEY    2
 
-int HVN_replica_follower(HVN_replica_t* replica);
+int TDB_replica_follower(TDB_replica_t* replica);
 
-#endif /* __HVN__HAVEND_FOLLOWER_H */
+#endif /* __TDB__TOMATOD_FOLLOWER_H */

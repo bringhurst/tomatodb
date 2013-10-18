@@ -1,5 +1,5 @@
-#ifndef __HVN__HAVEND_CONTEXT_H
-#define __HVN__HAVEND_CONTEXT_H
+#ifndef __TDB__TOMATOD_CONTEXT_H
+#define __TDB__TOMATOD_CONTEXT_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -27,17 +27,17 @@
 #define DEFAULT_LISTEN_ADDRESS "127.0.0.1"
 #define DEFAULT_LISTEN_PORT    (7854)
 
-typedef struct HVN_ctx_t {
-    HVN_db_t* settings_db;
+typedef struct TDB_ctx_t {
+    TDB_db_t* settings_db;
     char* local_state_path;
     char* listen_addr;
     int listen_port;
     int listen_fd;
-    struct HVN_replica_t* replicas;
+    struct TDB_replica_t* replicas;
     uuid_t process_uuid;
-} HVN_ctx_t;
+} TDB_ctx_t;
 
-int HVN_ctx_init(HVN_ctx_t** ctx);
-void HVN_ctx_free(HVN_ctx_t* ctx);
+int TDB_ctx_init(TDB_ctx_t** ctx);
+void TDB_ctx_free(TDB_ctx_t* ctx);
 
-#endif /* __HVN__HAVEND_CONTEXT_H */
+#endif /* __TDB__TOMATOD_CONTEXT_H */

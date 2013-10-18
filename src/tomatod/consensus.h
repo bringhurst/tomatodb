@@ -1,5 +1,5 @@
-#ifndef __HVN__HAVEND_CONSENSUS_H
-#define __HVN__HAVEND_CONSENSUS_H
+#ifndef __TDB__TOMATOD_CONSENSUS_H
+#define __TDB__TOMATOD_CONSENSUS_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -23,25 +23,25 @@
 #include "database.h"
 
 /* Consistently replicated keys. */
-#define HVN_CONSENSUS_MD_REPLICA_LIST       "/.consensus/replica_list"
-#define HVN_CONSENSUS_MD_ELECTION_TIMEOUT   "/.consensus/election_timeout"
+#define TDB_CONSENSUS_MD_REPLICA_LIST       "/.consensus/replica_list"
+#define TDB_CONSENSUS_MD_ELECTION_TIMEOUT   "/.consensus/election_timeout"
 
 /* Non-replicated local persistent keys. */
-#define HVN_CONSENSUS_MD_LEADER             "/.consensus/local/leader"
-#define HVN_CONSENSUS_MD_LAST_LOG_INDEX     "/.consensus/local/last_log_index"
-#define HVN_CONSENSUS_MD_STATE              "/.consensus/local/state"
-#define HVN_CONSENSUS_MD_TERM               "/.consensus/local/term"
+#define TDB_CONSENSUS_MD_LEADER             "/.consensus/local/leader"
+#define TDB_CONSENSUS_MD_LAST_LOG_INDEX     "/.consensus/local/last_log_index"
+#define TDB_CONSENSUS_MD_STATE              "/.consensus/local/state"
+#define TDB_CONSENSUS_MD_TERM               "/.consensus/local/term"
 
 /* Common log fmt keys. */
-#define HVN_CONSENSUS_MD_LOG_FMT_TERM       "/.consensus/local/log/%zu/term"
-#define HVN_CONSENSUS_MD_LOG_FMT_CMD        "/.consensus/local/log/%zu/command"
+#define TDB_CONSENSUS_MD_LOG_FMT_TERM       "/.consensus/local/log/%zu/term"
+#define TDB_CONSENSUS_MD_LOG_FMT_CMD        "/.consensus/local/log/%zu/command"
 
 /* Possible values for local state. */
-#define HVN_CONSENSUS_MD_STATE_LEADER       'L'
-#define HVN_CONSENSUS_MD_STATE_FOLLOWER     'F'
-#define HVN_CONSENSUS_MD_STATE_CANDIDATE    'C'
-#define HVN_CONSENSUS_MD_STATE_HALT         'H'
+#define TDB_CONSENSUS_MD_STATE_LEADER       'L'
+#define TDB_CONSENSUS_MD_STATE_FOLLOWER     'F'
+#define TDB_CONSENSUS_MD_STATE_CANDIDATE    'C'
+#define TDB_CONSENSUS_MD_STATE_HALT         'H'
 
-int HVN_consensus_exec(HVN_attach_t* client, HVN_db_op_t* op);
+int TDB_consensus_exec(TDB_attach_t* client, TDB_db_op_t* op);
 
-#endif /* __HVN__HAVEND_CONSENSUS_H */
+#endif /* __TDB__TOMATOD_CONSENSUS_H */
