@@ -21,7 +21,10 @@
 
 #include "linenoise.h"
 
-void TDB_repl_completion(const char *buf, linenoiseCompletions *lc);
+#define TDB_CMD_STACK_SIZE 32768
+
+void TDB_repl_cmd_task(char* cmd);
+void TDB_repl_completion(const char* buf, linenoiseCompletions* lc);
 void TDB_repl_start(void);
 
 #endif /* __TDB__TOMATO_REPL_H */

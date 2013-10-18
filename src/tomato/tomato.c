@@ -23,6 +23,7 @@
 #include "config.h"
 #include "log.h"
 #include "repl.h"
+#include "task/task.h"
 #include "tomato.h"
 
 /** The loglevel that this instance will output. */
@@ -48,8 +49,7 @@ void TDB_print_usage(char** argv)
     fflush(stdout);
 }
 
-int main(int argc, \
-         char** argv)
+void taskmain(int argc, char* argv[])
 {
     int c;
     int option_index = 0;
@@ -122,8 +122,8 @@ int main(int argc, \
                 else {
                     TDB_print_usage(argv);
                     fprintf(stderr,
-                        "Unknown option character `\\x%x'.\n",
-                        optopt);
+                            "Unknown option character `\\x%x'.\n",
+                            optopt);
                 }
 
                 exit(EXIT_FAILURE);
@@ -135,8 +135,6 @@ int main(int argc, \
 
     // TODO: if cmd specified, run command, else, run the repl.
     TDB_repl_start();
-
-    return EXIT_SUCCESS;
 }
 
 /* EOF */

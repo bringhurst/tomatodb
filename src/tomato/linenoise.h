@@ -9,18 +9,18 @@
  * Copyright (c) 2010, Pieter Noordhuis <pcnoordhuis at gmail dot com>
  *
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  *  *  Redistributions of source code must retain the above copyright
  *     notice, this list of conditions and the following disclaimer.
  *
  *  *  Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in the
  *     documentation and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -38,19 +38,19 @@
 #define __LINENOISE_H
 
 typedef struct linenoiseCompletions {
-  size_t len;
-  char **cvec;
+    size_t len;
+    char** cvec;
 } linenoiseCompletions;
 
-typedef void(linenoiseCompletionCallback)(const char *, linenoiseCompletions *);
-void linenoiseSetCompletionCallback(linenoiseCompletionCallback *);
-void linenoiseAddCompletion(linenoiseCompletions *, char *);
+typedef void(linenoiseCompletionCallback)(const char*, linenoiseCompletions*);
+void linenoiseSetCompletionCallback(linenoiseCompletionCallback*);
+void linenoiseAddCompletion(linenoiseCompletions*, char*);
 
-char *linenoise(const char *prompt);
-int linenoiseHistoryAdd(const char *line);
+char* linenoise(const char* prompt);
+int linenoiseHistoryAdd(const char* line);
 int linenoiseHistorySetMaxLen(int len);
-int linenoiseHistorySave(char *filename);
-int linenoiseHistoryLoad(char *filename);
+int linenoiseHistorySave(char* filename);
+int linenoiseHistoryLoad(char* filename);
 void linenoiseClearScreen(void);
 void linenoiseSetMultiLine(int ml);
 
