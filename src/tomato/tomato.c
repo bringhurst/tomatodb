@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "cmd.h"
 #include "config.h"
 #include "log.h"
 #include "repl.h"
@@ -37,7 +38,7 @@ FILE* TDB_debug_stream;
  */
 void TDB_print_version(void)
 {
-    fprintf(stdout, "%s-%s\n", PACKAGE_NAME, PACKAGE_VERSION);
+    fprintf(stdout, "%s-%s (client)\n", PACKAGE_NAME, PACKAGE_VERSION);
 }
 
 /**
@@ -53,6 +54,12 @@ void taskmain(int argc, char* argv[])
 {
     int c;
     int option_index = 0;
+
+    char line_buffer[TDB_MAX_CMD_LEN];
+    int line_offset;
+    int line_to_write;
+    int line_written;
+
 
     static struct option long_options[] = {
         {"debug"                , required_argument, 0, 'd'},
@@ -102,6 +109,14 @@ void taskmain(int argc, char* argv[])
                 exit(EXIT_SUCCESS);
                 break;
 
+            case 'p':
+                printf("Option p is not implemented yet.\n");
+                break;
+
+            case 's':
+                printf("Option s is not implemented yet.\n");
+                break;
+
             case 'v':
                 TDB_print_version();
                 exit(EXIT_SUCCESS);
@@ -110,7 +125,7 @@ void taskmain(int argc, char* argv[])
             case '?':
             default:
 
-                if(optopt == 'd') {
+                if(optopt == 'd' || optopt == 'p' || optopt == 's') {
                     TDB_print_usage(argv);
                     fprintf(stderr, "Option -%c requires an argument.\n", \
                             optopt);
@@ -133,8 +148,26 @@ void taskmain(int argc, char* argv[])
 
     // TODO: if server info specified, connect to server.
 
-    // TODO: if cmd specified, run command, else, run the repl.
-    TDB_repl_start();
+    if(argv[optind] != NULL) {
+        line_buffer[0] = 0;
+        line_offset = 0;
+
+        while(argv++,--argc) {
+            line_to_write = TDB_MAX_CMD_LEN - line_offset;
+            line_written = snprintf(line_buffer + line_offset, line_to_write, "%s ", *argv);
+
+            if(line_to_write < line_written) {
+                break;
+            }
+
+            line_offset += line_written;
+        }
+
+        taskcreate((void (*)(void*)) TDB_cmd_task, (void*) line_buffer, TDB_CMD_STACK_SIZE);
+        taskyield();
+    } else {
+        TDB_repl_start();
+    }
 }
 
 /* EOF */

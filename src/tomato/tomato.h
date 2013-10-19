@@ -19,6 +19,8 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
+#define TDB_MAX_CMD_LEN 32768
+
 void TDB_print_version(void);
 void TDB_print_usage(char** argv);
 

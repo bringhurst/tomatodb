@@ -16,6 +16,7 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
+#include <getopt.h>
 #include <stdio.h>
 
 #include "cmd.h"
@@ -25,6 +26,7 @@
 void TDB_cmd_task(char* cmd)
 {
     printf("task echo: '%s'\n", cmd);
+
     // TODO: process cmd
 }
 
