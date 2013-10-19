@@ -7,6 +7,7 @@ AM_CPPFLAGS += \
 bin_PROGRAMS = tomato
 
 tomato_SOURCES = \
+                 cmd.c \
                  linenoise.c \
                  repl.c \
                  tomato.c

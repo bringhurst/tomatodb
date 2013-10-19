@@ -68,7 +68,7 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_tomato_OBJECTS = linenoise.$(OBJEXT) repl.$(OBJEXT) \
+am_tomato_OBJECTS = cmd.$(OBJEXT) linenoise.$(OBJEXT) repl.$(OBJEXT) \
 	tomato.$(OBJEXT)
 tomato_OBJECTS = $(am_tomato_OBJECTS)
 tomato_DEPENDENCIES = ../common/libtomato_common.la
@@ -250,6 +250,7 @@ AM_CPPFLAGS = -std=gnu99 -ggdb -W -Wall -Wextra -Winit-self \
 	-Wredundant-decls -Winline -Wdisabled-optimization -Wshadow \
 	-I$(top_srcdir) -I$(top_srcdir)/src/common
 tomato_SOURCES = \
+                 cmd.c \
                  linenoise.c \
                  repl.c \
                  tomato.c
@@ -346,6 +347,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmd.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/linenoise.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/repl.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tomato.Po@am__quote@

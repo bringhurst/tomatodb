@@ -1,3 +1,21 @@
+/*
+ * Copyright 2013 Los Alamos National Security, LLC.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Author: Jon Bringhurst <jon@bringhurst.org>
+ */
+
 #include <pwd.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -6,15 +24,10 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#include <cmd.h>
 #include "common.h"
 #include "repl.h"
 #include "task/task.h"
-
-void TDB_repl_cmd_task(char* cmd)
-{
-    printf("task echo: '%s'\n", cmd);
-    // TODO: process cmd
-}
 
 void TDB_repl_completion(const char* buf, linenoiseCompletions* lc)
 {
@@ -73,7 +86,7 @@ void TDB_repl_start(void)
 
     while((line = linenoise("tomato> ")) != NULL) {
         if(line[0] != '\0' && line[0] != '/') {
-            taskcreate((void (*)(void*)) TDB_repl_cmd_task, (void*) line, TDB_CMD_STACK_SIZE);
+            taskcreate((void (*)(void*)) TDB_cmd_task, (void*) line, TDB_CMD_STACK_SIZE);
             taskyield();
 
             if(history_enabled) {
