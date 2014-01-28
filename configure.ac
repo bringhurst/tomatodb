@@ -18,7 +18,6 @@ AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 AC_PROG_RANLIB
-AM_PATH_PYTHON([2.7])
 
 # Check for the uuidd command.
 AC_CHECK_PROG(UUIDD_CHECK,uuidd,yes)
@@ -30,10 +29,6 @@ fi
 LT_INIT
 
 # Checks for required libraries.
-AC_CHECK_LIB([fuse], [fuse_main_compat2], [], \
-             [AC_MSG_ERROR([Function fuse_main_compat2 was not found in FUSE.
-Is libfuse-dev installed? Try running 'sudo apt-get install libfuse-dev'.])])
-
 AC_CHECK_LIB([leveldb], [leveldb_open], [], \
              [AC_MSG_ERROR([Function leveldb_open was not found in LevelDB.
 Is libleveldb-dev installed? Try running 'sudo apt-get install libleveldb-dev'.])])
@@ -43,7 +38,6 @@ AC_CHECK_LIB([uuid], [uuid_generate_time_safe], [], \
 Is uuid-dev installed? Try running 'sudo apt-get install uuid-dev'.])])
 
 # Checks for header files.
-AC_CHECK_HEADER_STDBOOL
 AC_CHECK_HEADERS([arpa/inet.h fcntl.h inttypes.h limits.h netdb.h \
                   netinet/in.h stdlib.h string.h strings.h sys/socket.h \
                   sys/time.h unistd.h malloc.h stddef.h])
