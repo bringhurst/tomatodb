@@ -43,6 +43,22 @@ void TDB_repl_completion(const char* buf, linenoiseCompletions* lc)
         case 'd':
             linenoiseAddCompletion(lc, "data");
             break;
+        case 'h':
+            switch(buf[5]) {
+                case 'b':
+                    linenoiseAddCompletion(lc, "help bootstrap");
+                    break;
+                case 'c':
+                    linenoiseAddCompletion(lc, "help connect");
+                    linenoiseAddCompletion(lc, "help consensus");
+                    linenoiseAddCompletion(lc, "help control");
+                    break;
+                case 'd':
+                    linenoiseAddCompletion(lc, "help data");
+                    break;
+            }
+            linenoiseAddCompletion(lc, "help");
+            break;
     }
 }
 

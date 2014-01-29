@@ -8,6 +8,7 @@ bin_PROGRAMS = tomato
 
 tomato_SOURCES = \
                  cmd.c \
+                 cmd_help.c \
                  linenoise.c \
                  repl.c \
                  tomato.c

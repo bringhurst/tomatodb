@@ -1,3 +1,6 @@
+#ifndef TDB_TOMATO_CMD_HELP_H
+#define TDB_TOMATO_CMD_HELP_H
+
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
  *
@@ -16,25 +19,13 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+void TDB_cmd_help_print_bootstrap(void);
+void TDB_cmd_help_print_connect(void);
+void TDB_cmd_help_print_consensus(void);
+void TDB_cmd_help_print_control(void);
+void TDB_cmd_help_print_data(void);
+void TDB_cmd_help_print_general(void);
 
-#include "cmd.h"
-#include "common.h"
-#include "task/task.h"
+void TDB_cmd_help(char* cmd);
 
-#include "cmd_help.h"
-
-void TDB_cmd_task(char* cmd)
-{
-    if(strncmp(cmd, "help", 4) == 0) {
-        TDB_cmd_help(cmd);
-    } else if(strncmp(cmd, "exit", 4) == 0) {
-        exit(EXIT_SUCCESS); 
-    } else {
-        printf("Unknown command. Try 'help'.\n");
-    }
-}
-
-/* EOF */
+#endif /* TDB_TOMATO_CMD_HELP_H */
