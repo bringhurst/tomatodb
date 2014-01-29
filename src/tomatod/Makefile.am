@@ -19,6 +19,7 @@ tomatod_SOURCES = \
                   replica.c \
                   routing.c \
                   settings.c \
-                  timer.c
+                  timer.c \
+                  memlog.c
 
 tomatod_LDADD = ../common/libtomato_common.la

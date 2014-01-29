@@ -55,7 +55,7 @@ am_tomatod_OBJECTS = attach.$(OBJEXT) bootstrap.$(OBJEXT) \
 	candidate.$(OBJEXT) consensus.$(OBJEXT) context.$(OBJEXT) \
 	follower.$(OBJEXT) tomatod.$(OBJEXT) hook.$(OBJEXT) \
 	leader.$(OBJEXT) replica.$(OBJEXT) routing.$(OBJEXT) \
-	settings.$(OBJEXT) timer.$(OBJEXT)
+	settings.$(OBJEXT) timer.$(OBJEXT) memlog.$(OBJEXT)
 tomatod_OBJECTS = $(am_tomatod_OBJECTS)
 tomatod_DEPENDENCIES = ../common/libtomato_common.la
 AM_V_lt = $(am__v_lt_$(V))
@@ -231,7 +231,8 @@ tomatod_SOURCES = \
                   replica.c \
                   routing.c \
                   settings.c \
-                  timer.c
+                  timer.c \
+                  memlog.c
 
 tomatod_LDADD = ../common/libtomato_common.la
 all: all-am
@@ -329,6 +330,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/follower.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hook.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/leader.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/memlog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/replica.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/routing.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/settings.Po@am__quote@
