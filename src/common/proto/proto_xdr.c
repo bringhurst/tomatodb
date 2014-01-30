@@ -68,11 +68,11 @@ xdr_msg_connect (XDR *xdrs, msg_connect *objp)
 	register int32_t *buf;
 
 	int i;
+	 if (!xdr_proto_msg_type (xdrs, &objp->type))
+		 return FALSE;
 	 if (!xdr_opaque (xdrs, objp->magic, 4))
 		 return FALSE;
 	 if (!xdr_opaque (xdrs, objp->api_version, 4))
-		 return FALSE;
-	 if (!xdr_proto_msg_type (xdrs, &objp->type))
 		 return FALSE;
 	return TRUE;
 }
@@ -83,9 +83,9 @@ xdr_msg_resp_connect (XDR *xdrs, msg_resp_connect *objp)
 	register int32_t *buf;
 
 	int i;
-	 if (!xdr_opaque (xdrs, objp->api_version, 4))
-		 return FALSE;
 	 if (!xdr_proto_msg_type (xdrs, &objp->type))
+		 return FALSE;
+	 if (!xdr_opaque (xdrs, objp->api_version, 4))
 		 return FALSE;
 	 if (!xdr_bool (xdrs, &objp->success))
 		 return FALSE;
@@ -192,6 +192,8 @@ xdr_msg_resp_consensus (XDR *xdrs, msg_resp_consensus *objp)
 {
 	register int32_t *buf;
 
+	 if (!xdr_proto_msg_type (xdrs, &objp->type))
+		 return FALSE;
 	 if (!xdr_u_long (xdrs, &objp->term))
 		 return FALSE;
 	 if (!xdr_bool (xdrs, &objp->success))
@@ -215,6 +217,8 @@ xdr_msg_control (XDR *xdrs, msg_control *objp)
 	register int32_t *buf;
 
 	int i;
+	 if (!xdr_proto_msg_type (xdrs, &objp->type))
+		 return FALSE;
 	 if (!xdr_msg_control_action_type (xdrs, &objp->action))
 		 return FALSE;
 	 if (!xdr_opaque (xdrs, objp->uuid, 16))
@@ -227,6 +231,8 @@ xdr_msg_resp_control (XDR *xdrs, msg_resp_control *objp)
 {
 	register int32_t *buf;
 
+	 if (!xdr_proto_msg_type (xdrs, &objp->type))
+		 return FALSE;
 	 if (!xdr_bool (xdrs, &objp->success))
 		 return FALSE;
 	return TRUE;
@@ -279,6 +285,8 @@ xdr_msg_data (XDR *xdrs, msg_data *objp)
 {
 	register int32_t *buf;
 
+	 if (!xdr_proto_msg_type (xdrs, &objp->type))
+		 return FALSE;
 	 if (!xdr_msg_data_mode (xdrs, &objp->mode))
 		 return FALSE;
 	 if (!xdr_msg_data_transaction (xdrs, &objp->transaction))
@@ -294,6 +302,8 @@ xdr_msg_resp_data (XDR *xdrs, msg_resp_data *objp)
 {
 	register int32_t *buf;
 
+	 if (!xdr_proto_msg_type (xdrs, &objp->type))
+		 return FALSE;
 	 if (!xdr_bool (xdrs, &objp->success))
 		 return FALSE;
 	return TRUE;

@@ -72,14 +72,14 @@ struct msg_resp_bootstrap {
  */
 
 struct msg_connect {
+    proto_msg_type type;
     opaque magic[4];
     opaque api_version[4];
-    proto_msg_type type;
 };
 
 struct msg_resp_connect {
-    opaque api_version[4];
     proto_msg_type type;
+    opaque api_version[4];
     bool success;
 };
 
@@ -113,6 +113,7 @@ struct msg_consensus {
  * response cooresponds to the follower's log state.
  */
 struct msg_resp_consensus {
+    proto_msg_type type;
     u_long term;
     bool success;
 };
@@ -139,6 +140,7 @@ enum msg_control_action_type {
  * action to.
  */
 struct msg_control {
+    proto_msg_type type;
     msg_control_action_type action;
     opaque uuid[16];
 };
@@ -147,6 +149,7 @@ struct msg_control {
  * control action was successful.
  */
 struct msg_resp_control {
+    proto_msg_type type;
     bool success;
 };
 
@@ -189,6 +192,7 @@ struct msg_data_op {
  * database state machine.
  */
 struct msg_data {
+    proto_msg_type type;
     msg_data_mode mode;
     msg_data_transaction transaction;
     msg_data_op ops<>;
@@ -198,6 +202,7 @@ struct msg_data {
  * message was successful.
  */
 struct msg_resp_data {
+    proto_msg_type type;
     bool success;
 };
 

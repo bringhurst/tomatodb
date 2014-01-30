@@ -54,15 +54,15 @@ struct msg_resp_bootstrap {
 typedef struct msg_resp_bootstrap msg_resp_bootstrap;
 
 struct msg_connect {
+	proto_msg_type type;
 	char magic[4];
 	char api_version[4];
-	proto_msg_type type;
 };
 typedef struct msg_connect msg_connect;
 
 struct msg_resp_connect {
-	char api_version[4];
 	proto_msg_type type;
+	char api_version[4];
 	bool_t success;
 };
 typedef struct msg_resp_connect msg_resp_connect;
@@ -91,6 +91,7 @@ struct msg_consensus {
 typedef struct msg_consensus msg_consensus;
 
 struct msg_resp_consensus {
+	proto_msg_type type;
 	u_long term;
 	bool_t success;
 };
@@ -107,12 +108,14 @@ enum msg_control_action_type {
 typedef enum msg_control_action_type msg_control_action_type;
 
 struct msg_control {
+	proto_msg_type type;
 	msg_control_action_type action;
 	char uuid[16];
 };
 typedef struct msg_control msg_control;
 
 struct msg_resp_control {
+	proto_msg_type type;
 	bool_t success;
 };
 typedef struct msg_resp_control msg_resp_control;
@@ -152,6 +155,7 @@ struct msg_data_op {
 typedef struct msg_data_op msg_data_op;
 
 struct msg_data {
+	proto_msg_type type;
 	msg_data_mode mode;
 	msg_data_transaction transaction;
 	struct {
@@ -162,6 +166,7 @@ struct msg_data {
 typedef struct msg_data msg_data;
 
 struct msg_resp_data {
+	proto_msg_type type;
 	bool_t success;
 };
 typedef struct msg_resp_data msg_resp_data;
