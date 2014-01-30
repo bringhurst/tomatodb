@@ -1,5 +1,5 @@
-#ifndef TDB__COMMON_PROTO_SOCKET_H
-#define TDB__COMMON_PROTO_SOCKET_H
+#ifndef TDB__COMMON_PROTO_STREAM_H
+#define TDB__COMMON_PROTO_STREAM_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -20,10 +20,15 @@
  */
 
 #include <stddef.h>
+#include <rpc/xdr.h>
 
-int TDB_msg_fdwrite(int fd, size_t len, char* msg);
-int TDB_msg_fdread(int fd, size_t* len, char** msg);
-int TDB_fdwriten(int fd, char* buf, size_t len);
-int TDB_fdreadn(int fd, char* buf, size_t len);
+typedef struct TDB_stream_ctx {
+    int fd;
+    XDR xdrs;
+} TDB_stream_ctx;
 
-#endif /* TDB__COMMON_PROTO_SOCKET_H */
+int TDB_fdwriten(TDB_stream_ctx* stream_ctx, char* buf, int len);
+int TDB_fdreadn(TDB_stream_ctx* stream_ctx, char* buf, int len);
+int TDB_init_xdr_stream(TDB_stream_ctx* stream_ctx);
+
+#endif /* TDB__COMMON_PROTO_STREAM_H */

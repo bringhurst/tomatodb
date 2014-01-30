@@ -16,15 +16,13 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <arpa/inet.h>
 #include <errno.h>
+#include <stdio.h>
 #include <string.h>
 
 #include "common.h"
 #include "log.h"
-#include "socket.h"
+#include "stream.h"
 #include "task/task.h"
 
 /** The debug stream to write log messages to. */
@@ -33,51 +31,14 @@ extern FILE* TDB_debug_stream;
 /** The log level to write messages for. */
 extern TDB_loglevel TDB_debug_level;
 
-int TDB_msg_fdwrite(int fd, size_t len, char* msg)
-{
-    size_t net_len = htonl(len);
-
-    if(TDB_fdwriten(fd, (char*) &net_len, sizeof(uint32_t)) != TDB_SUCCESS) {
-        LOG(TDB_LOG_ERR, "Failed to write the length of a message.");
-        return TDB_ERROR;
-    }
-
-    if(TDB_fdwriten(fd, msg, len) != TDB_SUCCESS) {
-        LOG(TDB_LOG_ERR, "Failed to write a message.");
-        return TDB_ERROR;
-    }
-
-    return TDB_SUCCESS;
-}
-
-int TDB_msg_fdread(int fd, size_t* len, char** msg)
-{
-    if(TDB_fdreadn(fd, (char*) len, sizeof(uint32_t)) != TDB_SUCCESS) {
-        LOG(TDB_LOG_ERR, "Failed to read the length of a message.");
-        return TDB_ERROR;
-    }
-
-    *len = ntohl(*len);
-    LOG(TDB_LOG_DBG, "Length of incoming message is `%zu'+4.", *len);
-
-    *msg = (char*) malloc(sizeof(char) * *len);
-
-    if(TDB_fdreadn(fd, *msg, *len) != TDB_SUCCESS) {
-        LOG(TDB_LOG_ERR, "Failed to read a message.");
-        return TDB_ERROR;
-    }
-
-    return TDB_SUCCESS;
-}
-
-int TDB_fdwriten(int fd, char* buf, size_t len)
+int TDB_fdwriten(TDB_stream_ctx* stream_ctx, char* buf, int len)
 {
     int rc;
 
-    LOG(TDB_LOG_INFO, "Entered TDB_fdwriten fd=%d, buf=`%s', len=`%zu'.", fd, buf, len);
+    LOG(TDB_LOG_INFO, "Entered TDB_fdwriten fd=%d, buf=`%s', len=`%d'.", stream_ctx->fd, buf, len);
 
     while(len > 0) {
-        if((rc = fdwrite(fd, buf, len)) <= 0) {
+        if((rc = fdwrite(stream_ctx->fd, buf, len)) <= 0) {
             if(rc < 0 && errno == EINTR) {
                 rc = 0;
             }
@@ -99,12 +60,12 @@ int TDB_fdwriten(int fd, char* buf, size_t len)
     return TDB_SUCCESS;
 }
 
-int TDB_fdreadn(int fd, char* buf, size_t len)
+int TDB_fdreadn(TDB_stream_ctx* stream_ctx, char* buf, int len)
 {
     int rc;
 
     while(len > 0) {
-        rc = fdread(fd, buf, len);
+        rc = fdread(stream_ctx->fd, buf, len);
 
         if(rc < 0) {
             if(errno == EINTR) {
@@ -124,6 +85,16 @@ int TDB_fdreadn(int fd, char* buf, size_t len)
         buf += rc;
         len -= rc;
     }
+
+    return TDB_SUCCESS;
+}
+
+int TDB_init_xdr_stream(TDB_stream_ctx* stream_ctx)
+{
+    /* FIXME: Handle memory allocation failures in xdrrec_create. */
+    xdrrec_create(&(stream_ctx->xdrs), 0, 0, (void*) stream_ctx, \
+        (int (*)(char*,char*,int)) TDB_fdreadn, \
+        (int (*)(char*,char*,int)) TDB_fdwriten);
 
     return TDB_SUCCESS;
 }

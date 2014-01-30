@@ -52,7 +52,7 @@ LTLIBRARIES = $(noinst_LTLIBRARIES)
 libtomato_common_proto_la_DEPENDENCIES =
 am_libtomato_common_proto_la_OBJECTS =  \
 	libtomato_common_proto_la-proto_xdr.lo \
-	libtomato_common_proto_la-socket.lo
+	libtomato_common_proto_la-stream.lo
 libtomato_common_proto_la_OBJECTS =  \
 	$(am_libtomato_common_proto_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
@@ -225,7 +225,7 @@ noinst_LTLIBRARIES = libtomato_common_proto.la
 libtomato_common_proto_la_LDFLAGS = $(LIB_LDFLAGS)
 libtomato_common_proto_la_SOURCES = \
                                     proto_xdr.c \
-                                    socket.c
+                                    stream.c
 
 libtomato_common_proto_la_LIBADD = 
 libtomato_common_proto_la_CFLAGS = 
@@ -282,7 +282,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libtomato_common_proto_la-proto_xdr.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libtomato_common_proto_la-socket.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libtomato_common_proto_la-stream.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -316,13 +316,13 @@ libtomato_common_proto_la-proto_xdr.lo: proto_xdr.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libtomato_common_proto_la_CFLAGS) $(CFLAGS) -c -o libtomato_common_proto_la-proto_xdr.lo `test -f 'proto_xdr.c' || echo '$(srcdir)/'`proto_xdr.c
 
-libtomato_common_proto_la-socket.lo: socket.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libtomato_common_proto_la_CFLAGS) $(CFLAGS) -MT libtomato_common_proto_la-socket.lo -MD -MP -MF $(DEPDIR)/libtomato_common_proto_la-socket.Tpo -c -o libtomato_common_proto_la-socket.lo `test -f 'socket.c' || echo '$(srcdir)/'`socket.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libtomato_common_proto_la-socket.Tpo $(DEPDIR)/libtomato_common_proto_la-socket.Plo
+libtomato_common_proto_la-stream.lo: stream.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libtomato_common_proto_la_CFLAGS) $(CFLAGS) -MT libtomato_common_proto_la-stream.lo -MD -MP -MF $(DEPDIR)/libtomato_common_proto_la-stream.Tpo -c -o libtomato_common_proto_la-stream.lo `test -f 'stream.c' || echo '$(srcdir)/'`stream.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libtomato_common_proto_la-stream.Tpo $(DEPDIR)/libtomato_common_proto_la-stream.Plo
 @am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='socket.c' object='libtomato_common_proto_la-socket.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='stream.c' object='libtomato_common_proto_la-stream.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libtomato_common_proto_la_CFLAGS) $(CFLAGS) -c -o libtomato_common_proto_la-socket.lo `test -f 'socket.c' || echo '$(srcdir)/'`socket.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libtomato_common_proto_la_CFLAGS) $(CFLAGS) -c -o libtomato_common_proto_la-stream.lo `test -f 'stream.c' || echo '$(srcdir)/'`stream.c
 
 mostlyclean-libtool:
 	-rm -f *.lo

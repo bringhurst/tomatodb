@@ -17,7 +17,7 @@ libtomato_common_proto_la_LDFLAGS = $(LIB_LDFLAGS)
 
 libtomato_common_proto_la_SOURCES = \
                                     proto_xdr.c \
-                                    socket.c
+                                    stream.c
 
 libtomato_common_proto_la_LIBADD =
 libtomato_common_proto_la_CFLAGS =
