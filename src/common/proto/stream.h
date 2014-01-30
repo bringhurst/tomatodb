@@ -22,13 +22,13 @@
 #include <stddef.h>
 #include <rpc/xdr.h>
 
-typedef struct TDB_stream_ctx {
+typedef struct TDB_xdr_stream_t {
     int fd;
     XDR xdrs;
-} TDB_stream_ctx;
+} TDB_xdr_stream_t;
 
-int TDB_fdwriten(TDB_stream_ctx* stream_ctx, char* buf, int len);
-int TDB_fdreadn(TDB_stream_ctx* stream_ctx, char* buf, int len);
-int TDB_init_xdr_stream(TDB_stream_ctx* stream_ctx);
+int TDB_fdwriten(TDB_xdr_stream_t* xdr_stream, char* buf, int len);
+int TDB_fdreadn(TDB_xdr_stream_t* xdr_stream, char* buf, int len);
+int TDB_init_xdr_stream(TDB_xdr_stream_t* xdr_stream);
 
 #endif /* TDB__COMMON_PROTO_STREAM_H */

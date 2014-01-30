@@ -31,14 +31,14 @@ extern FILE* TDB_debug_stream;
 /** The log level to write messages for. */
 extern TDB_loglevel TDB_debug_level;
 
-int TDB_fdwriten(TDB_stream_ctx* stream_ctx, char* buf, int len)
+int TDB_fdwriten(TDB_xdr_stream_t* xdr_stream, char* buf, int len)
 {
     int rc = -1;
 
-    LOG(TDB_LOG_INFO, "Entered TDB_fdwriten fd=%d, buf=`%s', len=`%d'.", stream_ctx->fd, buf, len);
+    LOG(TDB_LOG_INFO, "Entered TDB_fdwriten fd=%d, buf=`%s', len=`%d'.", xdr_stream->fd, buf, len);
 
     while(len > 0) {
-        if((rc = fdwrite(stream_ctx->fd, buf, len)) <= 0) {
+        if((rc = fdwrite(xdr_stream->fd, buf, len)) <= 0) {
             if(rc < 0 && errno == EINTR) {
                 rc = 0;
             }
@@ -60,12 +60,12 @@ int TDB_fdwriten(TDB_stream_ctx* stream_ctx, char* buf, int len)
     return rc;
 }
 
-int TDB_fdreadn(TDB_stream_ctx* stream_ctx, char* buf, int len)
+int TDB_fdreadn(TDB_xdr_stream_t* xdr_stream, char* buf, int len)
 {
     int rc = -1;
 
     while(len > 0) {
-        rc = fdread(stream_ctx->fd, buf, len);
+        rc = fdread(xdr_stream->fd, buf, len);
 
         if(rc < 0) {
             if(errno == EINTR) {
@@ -89,10 +89,10 @@ int TDB_fdreadn(TDB_stream_ctx* stream_ctx, char* buf, int len)
     return rc;
 }
 
-int TDB_init_xdr_stream(TDB_stream_ctx* stream_ctx)
+int TDB_init_xdr_stream(TDB_xdr_stream_t* xdr_stream)
 {
     /* FIXME: Handle memory allocation failures in xdrrec_create. */
-    xdrrec_create(&(stream_ctx->xdrs), 0, 0, (void*) stream_ctx, \
+    xdrrec_create(&(xdr_stream->xdrs), 0, 0, (void*) xdr_stream, \
         (int (*)(char*,char*,int)) TDB_fdreadn, \
         (int (*)(char*,char*,int)) TDB_fdwriten);
 
