@@ -20,7 +20,7 @@
  *  General protocol definitions.
  */
 
-enum proto_msg_type {
+enum TDB_proto_msg_type {
     /* Client request msg types. */
     BOOTSTRAP   = 1,
     CONNECT     = 2,
@@ -36,7 +36,7 @@ enum proto_msg_type {
     DATA_R      = 10
 };
 
-struct replica_info {
+struct TDB_replica_info {
     opaque uuid[16];
     int port;
     string address<>;
@@ -51,8 +51,8 @@ struct replica_info {
  * Fields in the struct coorespond to requestor identification so the remote
  * replica may add the new replica to its hook array.
  */
-struct msg_bootstrap {
-    proto_msg_type type;
+struct TDB_msg_bootstrap {
+    TDB_proto_msg_type type;
     opaque uuid[16];
     int port;
     string address<>;
@@ -61,24 +61,24 @@ struct msg_bootstrap {
 /* A bootstrap response message contains the list of replicas that the remote
  * replica currently knows as existing in the current quorum group.
  */
-struct msg_resp_bootstrap {
-    proto_msg_type type;
+struct TDB_msg_resp_bootstrap {
+    TDB_proto_msg_type type;
     bool success;
-    replica_info known_replicas<>;
+    TDB_replica_info known_replicas<>;
 };
 
 /*
  * Connect msg definition.
  */
 
-struct msg_connect {
-    proto_msg_type type;
+struct TDB_msg_connect {
+    TDB_proto_msg_type type;
     opaque magic[4];
     opaque api_version[4];
 };
 
-struct msg_resp_connect {
-    proto_msg_type type;
+struct TDB_msg_resp_connect {
+    TDB_proto_msg_type type;
     opaque api_version[4];
     bool success;
 };
@@ -87,7 +87,7 @@ struct msg_resp_connect {
  * Consensus msg definitions.
  */
 
-struct msg_consensus_log_entry {
+struct TDB_msg_consensus_log_entry {
     opaque data<>;
 };
 
@@ -96,15 +96,15 @@ struct msg_consensus_log_entry {
  * index and enable is_vote. To construct an AppendEntries, set is_vote to
  * false and include relevant log entries and a commit index.
  */
-struct msg_consensus {
-    proto_msg_type type;
+struct TDB_msg_consensus {
+    TDB_proto_msg_type type;
     bool is_vote;
     opaque uuid_id[16];
     u_long term;
     u_long log_index;
     u_long log_term;
     u_long commit_index;
-    msg_consensus_log_entry log_entries<>;
+    TDB_msg_consensus_log_entry log_entries<>;
 };
 
 /* A consensus response message is a reply to consensus messages in all cases.
@@ -112,8 +112,8 @@ struct msg_consensus {
  * vote was granted or not. If the request was an append entries, then the
  * response cooresponds to the follower's log state.
  */
-struct msg_resp_consensus {
-    proto_msg_type type;
+struct TDB_msg_resp_consensus {
+    TDB_proto_msg_type type;
     u_long term;
     bool success;
 };
@@ -122,7 +122,7 @@ struct msg_resp_consensus {
  * Control msg definition.
  */
 
-enum msg_control_action_type {
+enum TDB_msg_control_action_type {
     /* Actions to control socket state. */
     ATTACH_APPEND = 1,
     ATTACH_DATA   = 2,
@@ -139,17 +139,17 @@ enum msg_control_action_type {
 /* Control messages contain an action and the UUID of the replica to apply the
  * action to.
  */
-struct msg_control {
-    proto_msg_type type;
-    msg_control_action_type action;
+struct TDB_msg_control {
+    TDB_proto_msg_type type;
+    TDB_msg_control_action_type action;
     opaque uuid[16];
 };
 
 /* A control message response contains a success field to determine if the
  * control action was successful.
  */
-struct msg_resp_control {
-    proto_msg_type type;
+struct TDB_msg_resp_control {
+    TDB_proto_msg_type type;
     bool success;
 };
 
@@ -158,7 +158,7 @@ struct msg_resp_control {
  */
 
 /* Transaction control. */
-enum msg_data_transaction {
+enum TDB_msg_data_transaction {
     SINGLE = 1, /* Not associated with a transaction */
     BEGIN  = 2,
     COMMIT = 3,
@@ -166,7 +166,7 @@ enum msg_data_transaction {
 };
 
 /* The primary type of data operation. */
-enum msg_data_verb {
+enum TDB_msg_data_verb {
     PUT     = 1,
     GET     = 2,
     DELETE  = 3,
@@ -175,7 +175,7 @@ enum msg_data_verb {
 };
 
 /* The mode of the primary operation type. */
-enum msg_data_mode {
+enum TDB_msg_data_mode {
     READ_WRITE     = 1,
     READ_ONLY      = 2,
     READ_BOUNDED   = 3,
@@ -183,26 +183,26 @@ enum msg_data_mode {
 };
 
 /* A data message operation. */
-struct msg_data_op {
-    msg_data_verb verb;
+struct TDB_msg_data_op {
+    TDB_msg_data_verb verb;
     opaque data<>;
 };
 
 /* A data message contains one or more ordered operations to perform on the
  * database state machine.
  */
-struct msg_data {
-    proto_msg_type type;
-    msg_data_mode mode;
-    msg_data_transaction transaction;
-    msg_data_op ops<>;
+struct TDB_msg_data {
+    TDB_proto_msg_type type;
+    TDB_msg_data_mode mode;
+    TDB_msg_data_transaction transaction;
+    TDB_msg_data_op ops<>;
 };
 
 /* A data response message contains a success field to determine if the data
  * message was successful.
  */
-struct msg_resp_data {
-    proto_msg_type type;
+struct TDB_msg_resp_data {
+    TDB_proto_msg_type type;
     bool success;
 };
 
