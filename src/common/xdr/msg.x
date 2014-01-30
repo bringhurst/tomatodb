@@ -45,45 +45,37 @@ enum HVN_msg_type_e {
  * Fields in the struct coorespond to requestor identification so the remote
  * replica may add the new replica to its hook array.
  */
-typedef struct HVN_msg_bootstrap_t 
-    opaque uuid[16]
-    char* address;
+struct HVN_msg_bootstrap_t 
+    HVN_msg_type_e type;
+    opaque uuid[16];
     int port;
-} HVN_msg_bootstrap_t;
+    opaque address<254>;
+};
 
 /* A bootstrap response message contains the list of replicas that the remote
  * replica currently knows as existing in the current quorum group.
  */
-typedef struct HVN_msg_resp_bootstrap_t {
+struct HVN_msg_resp_bootstrap_t {
+    HVN_msg_type_e type;
     bool success;
     UT_array* known_replicas
-} HVN_msg_resp_bootstrap_t;
-
-int HVN_msg_bootstrap_send(int fd, HVN_msg_bootstrap_t* msg_in);
-int HVN_msg_bootstrap_recv(HVN_msg_bootstrap_t** msg_out, int fd);
-
-int HVN_msg_resp_bootstrap_send(int fd, HVN_msg_resp_bootstrap_t* msg_in);
-int HVN_msg_resp_bootstrap_recv(HVN_msg_bootstrap_t** msg_out, int fd);
+};
 
 /*
  * Connect msg definition.
  */
 
-typedef struct HVN_msg_connect_t {
-    uint32_t magic;
-    uint32_t version;
-} HVN_msg_connect_t;
+struct HVN_msg_connect_t {
+    opaque magic[4];
+    opaque version[4];
+    HVN_msg_type_e type;
+};
 
-typedef struct HVN_msg_resp_connect_t {
+struct HVN_msg_resp_connect_t {
+    HVN_msg_type_e type;
+    opaque version[4];
     bool success;
-    uint32_t version;
-} HVN_msg_resp_connect_t;
-
-int HVN_msg_connect_send(int fd, HVN_msg_connect_t* msg_in);
-int HVN_msg_connect_recv(HVN_msg_connect_t** msg_out, int fd);
-
-int HVN_msg_resp_connect_send(int fd, HVN_msg_resp_connect_t* msg_in);
-int HVN_msg_resp_connect_recv(HVN_msg_connect_t** msg_out, int fd);
+};
 
 /*
  * Consensus msg definitions.
@@ -94,15 +86,16 @@ int HVN_msg_resp_connect_recv(HVN_msg_connect_t** msg_out, int fd);
  * index and enable is_vote. To construct an AppendEntries, set is_vote to
  * false and include relevant log entries and a commit index.
  */
-typedef struct HVN_msg_consensus_t {
+struct HVN_msg_consensus_t {
+    HVN_msg_type_e type;
     bool is_vote;
-    uint64_t term;
-    uuid_t id;
-    uint64_t log_index;
-    uint64_t log_term;
-    uint64_t commit_index;
+    opaque uuid_id[16];
+    u_long term;
+    u_long log_index;
+    u_long log_term;
+    u_long commit_index;
     UT_array* log_entries;
-} HVN_msg_consensus_t;
+};
 
 /* A consensus response message is a reply to consensus messages in all cases.
  * When the initial request is a vote, the success response determines if the
