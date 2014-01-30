@@ -1,6 +1,6 @@
 include $(top_srcdir)/common.mk
 
-SUBDIRS = halloc task xdr
+SUBDIRS = halloc task proto
 
 AM_CPPFLAGS += \
            -I$(top_srcdir) \
@@ -18,7 +18,7 @@ libtomato_common_la_SOURCES = \
 libtomato_common_la_LIBADD = \
                              halloc/libtomato_common_halloc.la \
                              task/libtomato_common_task.la \
-                             xdr/libtomato_common_xdr.la \
+                             proto/libtomato_common_proto.la \
                              $(leveldb_LIBS) \
                              $(uuid_LIBS)
 

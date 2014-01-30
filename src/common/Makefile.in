@@ -50,7 +50,7 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 libtomato_common_la_DEPENDENCIES = halloc/libtomato_common_halloc.la \
-	task/libtomato_common_task.la xdr/libtomato_common_xdr.la
+	task/libtomato_common_task.la proto/libtomato_common_proto.la
 am_libtomato_common_la_OBJECTS = libtomato_common_la-common.lo \
 	libtomato_common_la-database.lo libtomato_common_la-xtime.lo
 libtomato_common_la_OBJECTS = $(am_libtomato_common_la_OBJECTS)
@@ -256,7 +256,7 @@ AM_CPPFLAGS = -std=gnu99 -ggdb -W -Wall -Wextra -Winit-self \
 	-Wbad-function-cast -Wstrict-prototypes -Wmissing-prototypes \
 	-Wredundant-decls -Winline -Wdisabled-optimization -Wshadow \
 	-I$(top_srcdir) -I$(top_srcdir)/src/common
-SUBDIRS = halloc task xdr
+SUBDIRS = halloc task proto
 noinst_LTLIBRARIES = libtomato_common.la
 libtomato_common_la_LDFLAGS = $(LIB_LDFLAGS)
 libtomato_common_la_SOURCES = \
@@ -267,7 +267,7 @@ libtomato_common_la_SOURCES = \
 libtomato_common_la_LIBADD = \
                              halloc/libtomato_common_halloc.la \
                              task/libtomato_common_task.la \
-                             xdr/libtomato_common_xdr.la \
+                             proto/libtomato_common_proto.la \
                              $(leveldb_LIBS) \
                              $(uuid_LIBS)
 

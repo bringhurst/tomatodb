@@ -1,5 +1,5 @@
-#ifndef __HVN__COMMON_PROTOCOL_MSG_PACK_SOCKET_H_
-#define __HVN__COMMON_PROTOCOL_MSG_PACK_SOCKET_H_
+#ifndef TDB__COMMON_PROTO_SOCKET_H
+#define TDB__COMMON_PROTO_SOCKET_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -19,7 +19,11 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
-int HVN_msg_fdwrite(int fd, size_t len, char* msg);
-int HVN_msg_fdread(int fd, size_t* len, char** msg);
+#include <stddef.h>
 
-#endif /* __HVN__COMMON_PROTOCOL_MSG_PACK_SOCKET_H_ */
+int TDB_msg_fdwrite(int fd, size_t len, char* msg);
+int TDB_msg_fdread(int fd, size_t* len, char** msg);
+int TDB_fdwriten(int fd, char* buf, size_t len);
+int TDB_fdreadn(int fd, char* buf, size_t len);
+
+#endif /* TDB__COMMON_PROTO_SOCKET_H */

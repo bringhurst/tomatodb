@@ -82,7 +82,7 @@ AC_CONFIG_FILES([Makefile                            \
                  src/common/Makefile                 \
                  src/common/halloc/Makefile          \
                  src/common/task/Makefile            \
-                 src/common/xdr/Makefile             \
+                 src/common/proto/Makefile           \
                  src/tomato/Makefile                 \
                  src/tomatod/Makefile                \
 ])

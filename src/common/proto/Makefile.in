@@ -36,7 +36,7 @@ build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/common.mk
-subdir = src/common/xdr
+subdir = src/common/proto
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
 	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
@@ -49,18 +49,19 @@ CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
-libtomato_common_xdr_la_DEPENDENCIES =
-am_libtomato_common_xdr_la_OBJECTS =  \
-	libtomato_common_xdr_la-proto_xdr.lo
-libtomato_common_xdr_la_OBJECTS =  \
-	$(am_libtomato_common_xdr_la_OBJECTS)
+libtomato_common_proto_la_DEPENDENCIES =
+am_libtomato_common_proto_la_OBJECTS =  \
+	libtomato_common_proto_la-proto_xdr.lo \
+	libtomato_common_proto_la-socket.lo
+libtomato_common_proto_la_OBJECTS =  \
+	$(am_libtomato_common_proto_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
-libtomato_common_xdr_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+libtomato_common_proto_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
-	$(libtomato_common_xdr_la_CFLAGS) $(CFLAGS) \
-	$(libtomato_common_xdr_la_LDFLAGS) $(LDFLAGS) -o $@
+	$(libtomato_common_proto_la_CFLAGS) $(CFLAGS) \
+	$(libtomato_common_proto_la_LDFLAGS) $(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/auxdir/depcomp
 am__depfiles_maybe = depfiles
@@ -87,8 +88,8 @@ am__v_CCLD_0 = @echo "  CCLD  " $@;
 AM_V_GEN = $(am__v_GEN_$(V))
 am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
 am__v_GEN_0 = @echo "  GEN   " $@;
-SOURCES = $(libtomato_common_xdr_la_SOURCES)
-DIST_SOURCES = $(libtomato_common_xdr_la_SOURCES)
+SOURCES = $(libtomato_common_proto_la_SOURCES)
+DIST_SOURCES = $(libtomato_common_proto_la_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -218,11 +219,14 @@ AM_CPPFLAGS = -std=gnu99 -ggdb -W -Wall -Wextra -Winit-self \
 	-Wbad-function-cast -Wstrict-prototypes -Wmissing-prototypes \
 	-Wredundant-decls -Winline -Wdisabled-optimization -Wshadow \
 	-I$(top_srcdir) -I$(top_srcdir)/src/common
-noinst_LTLIBRARIES = libtomato_common_xdr.la
-libtomato_common_xdr_la_LDFLAGS = $(LIB_LDFLAGS)
-libtomato_common_xdr_la_SOURCES = proto_xdr.c
-libtomato_common_xdr_la_LIBADD = 
-libtomato_common_xdr_la_CFLAGS = 
+noinst_LTLIBRARIES = libtomato_common_proto.la
+libtomato_common_proto_la_LDFLAGS = $(LIB_LDFLAGS)
+libtomato_common_proto_la_SOURCES = \
+                                    proto_xdr.c \
+                                    socket.c
+
+libtomato_common_proto_la_LIBADD = 
+libtomato_common_proto_la_CFLAGS = 
 all: all-am
 
 .SUFFIXES:
@@ -236,9 +240,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(top_srcdir)/common.mk $(am__conf
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign src/common/xdr/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign src/common/proto/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign src/common/xdr/Makefile
+	  $(AUTOMAKE) --foreign src/common/proto/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -266,8 +270,8 @@ clean-noinstLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-libtomato_common_xdr.la: $(libtomato_common_xdr_la_OBJECTS) $(libtomato_common_xdr_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(libtomato_common_xdr_la_LINK)  $(libtomato_common_xdr_la_OBJECTS) $(libtomato_common_xdr_la_LIBADD) $(LIBS)
+libtomato_common_proto.la: $(libtomato_common_proto_la_OBJECTS) $(libtomato_common_proto_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(libtomato_common_proto_la_LINK)  $(libtomato_common_proto_la_OBJECTS) $(libtomato_common_proto_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -275,7 +279,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libtomato_common_xdr_la-proto_xdr.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libtomato_common_proto_la-proto_xdr.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libtomato_common_proto_la-socket.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -301,13 +306,21 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
 
-libtomato_common_xdr_la-proto_xdr.lo: proto_xdr.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libtomato_common_xdr_la_CFLAGS) $(CFLAGS) -MT libtomato_common_xdr_la-proto_xdr.lo -MD -MP -MF $(DEPDIR)/libtomato_common_xdr_la-proto_xdr.Tpo -c -o libtomato_common_xdr_la-proto_xdr.lo `test -f 'proto_xdr.c' || echo '$(srcdir)/'`proto_xdr.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libtomato_common_xdr_la-proto_xdr.Tpo $(DEPDIR)/libtomato_common_xdr_la-proto_xdr.Plo
+libtomato_common_proto_la-proto_xdr.lo: proto_xdr.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libtomato_common_proto_la_CFLAGS) $(CFLAGS) -MT libtomato_common_proto_la-proto_xdr.lo -MD -MP -MF $(DEPDIR)/libtomato_common_proto_la-proto_xdr.Tpo -c -o libtomato_common_proto_la-proto_xdr.lo `test -f 'proto_xdr.c' || echo '$(srcdir)/'`proto_xdr.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libtomato_common_proto_la-proto_xdr.Tpo $(DEPDIR)/libtomato_common_proto_la-proto_xdr.Plo
 @am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='proto_xdr.c' object='libtomato_common_xdr_la-proto_xdr.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='proto_xdr.c' object='libtomato_common_proto_la-proto_xdr.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libtomato_common_xdr_la_CFLAGS) $(CFLAGS) -c -o libtomato_common_xdr_la-proto_xdr.lo `test -f 'proto_xdr.c' || echo '$(srcdir)/'`proto_xdr.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libtomato_common_proto_la_CFLAGS) $(CFLAGS) -c -o libtomato_common_proto_la-proto_xdr.lo `test -f 'proto_xdr.c' || echo '$(srcdir)/'`proto_xdr.c
+
+libtomato_common_proto_la-socket.lo: socket.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libtomato_common_proto_la_CFLAGS) $(CFLAGS) -MT libtomato_common_proto_la-socket.lo -MD -MP -MF $(DEPDIR)/libtomato_common_proto_la-socket.Tpo -c -o libtomato_common_proto_la-socket.lo `test -f 'socket.c' || echo '$(srcdir)/'`socket.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libtomato_common_proto_la-socket.Tpo $(DEPDIR)/libtomato_common_proto_la-socket.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='socket.c' object='libtomato_common_proto_la-socket.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libtomato_common_proto_la_CFLAGS) $(CFLAGS) -c -o libtomato_common_proto_la-socket.lo `test -f 'socket.c' || echo '$(srcdir)/'`socket.c
 
 mostlyclean-libtool:
 	-rm -f *.lo
