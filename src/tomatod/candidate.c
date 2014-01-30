@@ -17,8 +17,6 @@
  */
 
 #include "log.h"
-#include "pack/append_msg.h"
-#include "pack/vote_msg.h"
 
 #include "candidate.h"
 

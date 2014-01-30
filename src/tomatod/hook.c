@@ -19,10 +19,6 @@
 #include <stdlib.h>
 
 #include "common.h"
-#include "pack/append_msg.h"
-#include "pack/connect_msg.h"
-#include "pack/control_msg.h"
-#include "pack/vote_msg.h"
 
 #include "hook.h"
 

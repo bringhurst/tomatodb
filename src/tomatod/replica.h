@@ -20,7 +20,6 @@
  */
 
 #include "context.h"
-#include "pack/addr_struct.h"
 #include "task/task.h"
 #include "timer.h"
 #include "ut/uthash.h"

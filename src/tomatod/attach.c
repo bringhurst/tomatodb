@@ -17,10 +17,6 @@
  */
 
 #include "consensus.h"
-#include "pack/append_msg.h"
-#include "pack/control_msg.h"
-#include "pack/data_msg.h"
-#include "pack/vote_msg.h"
 #include "replica.h"
 #include "task/task.h"
 
