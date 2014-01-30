@@ -39,17 +39,17 @@ void TDB_attach_task(TDB_attach_t* client)
 void TDB_attach_recv(TDB_attach_t* client)
 {
     switch(client->mode) {
-        case TDB_PROTO_CTRL_ATTACH_DATA:
+        case ATTACH_DATA:
             taskstate("receive/data");
             TDB_attach_recv_data(client);
             break;
 
-        case TDB_PROTO_CTRL_ATTACH_VOTE:
+        case ATTACH_VOTE:
             taskstate("receive/vote");
             TDB_attach_recv_vote(client);
             break;
 
-        case TDB_PROTO_CTRL_ATTACH_APPEND:
+        case ATTACH_APPEND:
             taskstate("receive/append");
             TDB_attach_recv_append(client);
             break;

@@ -37,7 +37,7 @@ extern TDB_loglevel TDB_debug_level;
 
 int TDB_replica_persist_state(TDB_replica_t* replica, \
                               UT_array* log, \
-                              TDB_addr_t* term_vote, \
+                              TDB_replica_info_t* term_vote, \
                               uint64_t current_term)
 {
     TDB_INTENTIONALLY_UNUSED_VARIABLE(replica);

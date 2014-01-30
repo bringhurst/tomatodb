@@ -22,6 +22,7 @@
 #include "context.h"
 #include "task/task.h"
 #include "timer.h"
+#include "proto/proto.h"
 #include "ut/uthash.h"
 
 #define TDB_REPLICA_STACK_SIZE 32768
@@ -56,7 +57,7 @@ void TDB_replica_free(TDB_replica_t* replica);
 
 int TDB_replica_persist_state(TDB_replica_t* replica, \
                               UT_array* log, \
-                              TDB_addr_t* term_vote, \
+                              TDB_replica_info_t* term_vote, \
                               uint64_t current_term);
 
 #endif /* __TDB__TOMATOD_REPLICA_H */
