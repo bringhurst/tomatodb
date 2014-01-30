@@ -27,8 +27,10 @@ typedef struct TDB_xdr_stream_t {
     XDR xdrs;
 } TDB_xdr_stream_t;
 
+int TDB_init_xdr_stream(TDB_xdr_stream_t** xdr_stream, int fd);
+void TDB_free_xdr_stream(TDB_xdr_stream_t* xdr_stream);
+
 int TDB_fdwriten(TDB_xdr_stream_t* xdr_stream, char* buf, int len);
 int TDB_fdreadn(TDB_xdr_stream_t* xdr_stream, char* buf, int len);
-int TDB_init_xdr_stream(TDB_xdr_stream_t* xdr_stream);
 
 #endif /* TDB__COMMON_PROTO_STREAM_H */

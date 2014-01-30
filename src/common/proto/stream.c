@@ -89,14 +89,28 @@ int TDB_fdreadn(TDB_xdr_stream_t* xdr_stream, char* buf, int len)
     return rc;
 }
 
-int TDB_init_xdr_stream(TDB_xdr_stream_t* xdr_stream)
+int TDB_init_xdr_stream(TDB_xdr_stream_t** xdr_stream, int fd)
 {
+    *xdr_stream = (TDB_xdr_stream_t*) malloc(sizeof(TDB_xdr_stream_t));
+
+    if(*xdr_stream == NULL) {
+        LOG(TDB_LOG_ERR, "Failed to allocate memory for a new XDR stream.");
+        return TDB_ERROR;
+    }
+
+    (*xdr_stream)->fd = fd;
+
     /* FIXME: Handle memory allocation failures in xdrrec_create. */
-    xdrrec_create(&(xdr_stream->xdrs), 0, 0, (void*) xdr_stream, \
+    xdrrec_create(&((*xdr_stream)->xdrs), 0, 0, (void*) *xdr_stream, \
         (int (*)(char*,char*,int)) TDB_fdreadn, \
         (int (*)(char*,char*,int)) TDB_fdwriten);
 
     return TDB_SUCCESS;
+}
+
+void TDB_free_xdr_stream(TDB_xdr_stream_t* xdr_stream)
+{
+    free(xdr_stream);
 }
 
 /* EOF */
