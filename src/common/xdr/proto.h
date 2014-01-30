@@ -3,8 +3,8 @@
  * It was generated using rpcgen.
  */
 
-#ifndef _MSG_H_RPCGEN
-#define _MSG_H_RPCGEN
+#ifndef _PROTO_H_RPCGEN
+#define _PROTO_H_RPCGEN
 
 #include <rpc/rpc.h>
 
@@ -67,6 +67,14 @@ struct msg_resp_connect {
 };
 typedef struct msg_resp_connect msg_resp_connect;
 
+struct msg_consensus_log_entry {
+	struct {
+		u_int data_len;
+		char *data_val;
+	} data;
+};
+typedef struct msg_consensus_log_entry msg_consensus_log_entry;
+
 struct msg_consensus {
 	msg_type type;
 	bool_t is_vote;
@@ -75,7 +83,10 @@ struct msg_consensus {
 	u_long log_index;
 	u_long log_term;
 	u_long commit_index;
-	UT_array *log_entries;
+	struct {
+		u_int log_entries_len;
+		msg_consensus_log_entry *log_entries_val;
+	} log_entries;
 };
 typedef struct msg_consensus msg_consensus;
 
@@ -164,6 +175,7 @@ extern  bool_t xdr_msg_bootstrap (XDR *, msg_bootstrap*);
 extern  bool_t xdr_msg_resp_bootstrap (XDR *, msg_resp_bootstrap*);
 extern  bool_t xdr_msg_connect (XDR *, msg_connect*);
 extern  bool_t xdr_msg_resp_connect (XDR *, msg_resp_connect*);
+extern  bool_t xdr_msg_consensus_log_entry (XDR *, msg_consensus_log_entry*);
 extern  bool_t xdr_msg_consensus (XDR *, msg_consensus*);
 extern  bool_t xdr_msg_resp_consensus (XDR *, msg_resp_consensus*);
 extern  bool_t xdr_msg_control_action_type (XDR *, msg_control_action_type*);
@@ -183,6 +195,7 @@ extern bool_t xdr_msg_bootstrap ();
 extern bool_t xdr_msg_resp_bootstrap ();
 extern bool_t xdr_msg_connect ();
 extern bool_t xdr_msg_resp_connect ();
+extern bool_t xdr_msg_consensus_log_entry ();
 extern bool_t xdr_msg_consensus ();
 extern bool_t xdr_msg_resp_consensus ();
 extern bool_t xdr_msg_control_action_type ();
@@ -201,4 +214,4 @@ extern bool_t xdr_msg_resp_data ();
 }
 #endif
 
-#endif /* !_MSG_H_RPCGEN */
+#endif /* !_PROTO_H_RPCGEN */

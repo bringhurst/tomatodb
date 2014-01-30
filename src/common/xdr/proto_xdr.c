@@ -3,7 +3,7 @@
  * It was generated using rpcgen.
  */
 
-#include "msg.h"
+#include "proto.h"
 
 bool_t
 xdr_msg_type (XDR *xdrs, msg_type *objp)
@@ -93,6 +93,16 @@ xdr_msg_resp_connect (XDR *xdrs, msg_resp_connect *objp)
 }
 
 bool_t
+xdr_msg_consensus_log_entry (XDR *xdrs, msg_consensus_log_entry *objp)
+{
+	register int32_t *buf;
+
+	 if (!xdr_bytes (xdrs, (char **)&objp->data.data_val, (u_int *) &objp->data.data_len, ~0))
+		 return FALSE;
+	return TRUE;
+}
+
+bool_t
 xdr_msg_consensus (XDR *xdrs, msg_consensus *objp)
 {
 	register int32_t *buf;
@@ -123,7 +133,8 @@ xdr_msg_consensus (XDR *xdrs, msg_consensus *objp)
 		IXDR_PUT_U_LONG(buf, objp->log_term);
 		IXDR_PUT_U_LONG(buf, objp->commit_index);
 		}
-		 if (!xdr_pointer (xdrs, (char **)&objp->log_entries, sizeof (UT_array), (xdrproc_t) xdr_UT_array))
+		 if (!xdr_array (xdrs, (char **)&objp->log_entries.log_entries_val, (u_int *) &objp->log_entries.log_entries_len, ~0,
+			sizeof (msg_consensus_log_entry), (xdrproc_t) xdr_msg_consensus_log_entry))
 			 return FALSE;
 		return TRUE;
 	} else if (xdrs->x_op == XDR_DECODE) {
@@ -150,7 +161,8 @@ xdr_msg_consensus (XDR *xdrs, msg_consensus *objp)
 		objp->log_term = IXDR_GET_U_LONG(buf);
 		objp->commit_index = IXDR_GET_U_LONG(buf);
 		}
-		 if (!xdr_pointer (xdrs, (char **)&objp->log_entries, sizeof (UT_array), (xdrproc_t) xdr_UT_array))
+		 if (!xdr_array (xdrs, (char **)&objp->log_entries.log_entries_val, (u_int *) &objp->log_entries.log_entries_len, ~0,
+			sizeof (msg_consensus_log_entry), (xdrproc_t) xdr_msg_consensus_log_entry))
 			 return FALSE;
 	 return TRUE;
 	}
@@ -169,7 +181,8 @@ xdr_msg_consensus (XDR *xdrs, msg_consensus *objp)
 		 return FALSE;
 	 if (!xdr_u_long (xdrs, &objp->commit_index))
 		 return FALSE;
-	 if (!xdr_pointer (xdrs, (char **)&objp->log_entries, sizeof (UT_array), (xdrproc_t) xdr_UT_array))
+	 if (!xdr_array (xdrs, (char **)&objp->log_entries.log_entries_val, (u_int *) &objp->log_entries.log_entries_len, ~0,
+		sizeof (msg_consensus_log_entry), (xdrproc_t) xdr_msg_consensus_log_entry))
 		 return FALSE;
 	return TRUE;
 }

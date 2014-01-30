@@ -87,6 +87,10 @@ struct msg_resp_connect {
  * Consensus msg definitions.
  */
 
+struct msg_consensus_log_entry {
+    opaque data<>;
+};
+
 /* A consensus message is a consolidated RequestVote and AppendEntries message.
  * To construct a RequestVote message, simply exclude log entries and a commit
  * index and enable is_vote. To construct an AppendEntries, set is_vote to
@@ -100,7 +104,7 @@ struct msg_consensus {
     u_long log_index;
     u_long log_term;
     u_long commit_index;
-    UT_array* log_entries;
+    msg_consensus_log_entry log_entries<>;
 };
 
 /* A consensus response message is a reply to consensus messages in all cases.

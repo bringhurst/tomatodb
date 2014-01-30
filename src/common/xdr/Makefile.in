@@ -51,7 +51,7 @@ CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 libtomato_common_xdr_la_DEPENDENCIES =
 am_libtomato_common_xdr_la_OBJECTS =  \
-	libtomato_common_xdr_la-msg_xdr.lo
+	libtomato_common_xdr_la-proto_xdr.lo
 libtomato_common_xdr_la_OBJECTS =  \
 	$(am_libtomato_common_xdr_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
@@ -220,7 +220,7 @@ AM_CPPFLAGS = -std=gnu99 -ggdb -W -Wall -Wextra -Winit-self \
 	-I$(top_srcdir) -I$(top_srcdir)/src/common
 noinst_LTLIBRARIES = libtomato_common_xdr.la
 libtomato_common_xdr_la_LDFLAGS = $(LIB_LDFLAGS)
-libtomato_common_xdr_la_SOURCES = msg_xdr.c
+libtomato_common_xdr_la_SOURCES = proto_xdr.c
 libtomato_common_xdr_la_LIBADD = 
 libtomato_common_xdr_la_CFLAGS = 
 all: all-am
@@ -275,7 +275,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libtomato_common_xdr_la-msg_xdr.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libtomato_common_xdr_la-proto_xdr.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -301,13 +301,13 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
 
-libtomato_common_xdr_la-msg_xdr.lo: msg_xdr.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libtomato_common_xdr_la_CFLAGS) $(CFLAGS) -MT libtomato_common_xdr_la-msg_xdr.lo -MD -MP -MF $(DEPDIR)/libtomato_common_xdr_la-msg_xdr.Tpo -c -o libtomato_common_xdr_la-msg_xdr.lo `test -f 'msg_xdr.c' || echo '$(srcdir)/'`msg_xdr.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libtomato_common_xdr_la-msg_xdr.Tpo $(DEPDIR)/libtomato_common_xdr_la-msg_xdr.Plo
+libtomato_common_xdr_la-proto_xdr.lo: proto_xdr.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libtomato_common_xdr_la_CFLAGS) $(CFLAGS) -MT libtomato_common_xdr_la-proto_xdr.lo -MD -MP -MF $(DEPDIR)/libtomato_common_xdr_la-proto_xdr.Tpo -c -o libtomato_common_xdr_la-proto_xdr.lo `test -f 'proto_xdr.c' || echo '$(srcdir)/'`proto_xdr.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libtomato_common_xdr_la-proto_xdr.Tpo $(DEPDIR)/libtomato_common_xdr_la-proto_xdr.Plo
 @am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='msg_xdr.c' object='libtomato_common_xdr_la-msg_xdr.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='proto_xdr.c' object='libtomato_common_xdr_la-proto_xdr.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libtomato_common_xdr_la_CFLAGS) $(CFLAGS) -c -o libtomato_common_xdr_la-msg_xdr.lo `test -f 'msg_xdr.c' || echo '$(srcdir)/'`msg_xdr.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libtomato_common_xdr_la_CFLAGS) $(CFLAGS) -c -o libtomato_common_xdr_la-proto_xdr.lo `test -f 'proto_xdr.c' || echo '$(srcdir)/'`proto_xdr.c
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -514,11 +514,11 @@ uninstall-am:
 	tags uninstall uninstall-am
 
 
-msg_xdr.c:
-	rpcgen -CN msg.x
+proto_xdr.c:
+	rpcgen -CN proto.x
 
 clean-local:
-	-(rm -f msg.h msg_xdr.c)
+	-(rm -f proto.h proto_xdr.c)
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
