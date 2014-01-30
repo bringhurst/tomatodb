@@ -14,7 +14,7 @@ extern "C" {
 #endif
 
 
-enum TDB_proto_msg_type {
+enum TDB_proto_msg_type_enum {
 	BOOTSTRAP = 1,
 	CONNECT = 2,
 	CONSENSUS = 3,
@@ -26,57 +26,57 @@ enum TDB_proto_msg_type {
 	CONTROL_R = 9,
 	DATA_R = 10,
 };
-typedef enum TDB_proto_msg_type TDB_proto_msg_type;
+typedef enum TDB_proto_msg_type_enum TDB_proto_msg_type_enum;
 
-struct TDB_replica_info {
+struct TDB_replica_info_t {
 	char uuid[16];
 	int port;
 	char *address;
 };
-typedef struct TDB_replica_info TDB_replica_info;
+typedef struct TDB_replica_info_t TDB_replica_info_t;
 
-struct TDB_msg_bootstrap {
-	TDB_proto_msg_type type;
+struct TDB_msg_bootstrap_t {
+	TDB_proto_msg_type_enum type;
 	char uuid[16];
 	int port;
 	char *address;
 };
-typedef struct TDB_msg_bootstrap TDB_msg_bootstrap;
+typedef struct TDB_msg_bootstrap_t TDB_msg_bootstrap_t;
 
-struct TDB_msg_resp_bootstrap {
-	TDB_proto_msg_type type;
+struct TDB_msg_resp_bootstrap_t {
+	TDB_proto_msg_type_enum type;
 	bool_t success;
 	struct {
 		u_int known_replicas_len;
-		TDB_replica_info *known_replicas_val;
+		TDB_replica_info_t *known_replicas_val;
 	} known_replicas;
 };
-typedef struct TDB_msg_resp_bootstrap TDB_msg_resp_bootstrap;
+typedef struct TDB_msg_resp_bootstrap_t TDB_msg_resp_bootstrap_t;
 
-struct TDB_msg_connect {
-	TDB_proto_msg_type type;
+struct TDB_msg_connect_t {
+	TDB_proto_msg_type_enum type;
 	char magic[4];
 	char api_version[4];
 };
-typedef struct TDB_msg_connect TDB_msg_connect;
+typedef struct TDB_msg_connect_t TDB_msg_connect_t;
 
-struct TDB_msg_resp_connect {
-	TDB_proto_msg_type type;
+struct TDB_msg_resp_connect_t {
+	TDB_proto_msg_type_enum type;
 	char api_version[4];
 	bool_t success;
 };
-typedef struct TDB_msg_resp_connect TDB_msg_resp_connect;
+typedef struct TDB_msg_resp_connect_t TDB_msg_resp_connect_t;
 
-struct TDB_msg_consensus_log_entry {
+struct TDB_msg_consensus_log_entry_t {
 	struct {
 		u_int data_len;
 		char *data_val;
 	} data;
 };
-typedef struct TDB_msg_consensus_log_entry TDB_msg_consensus_log_entry;
+typedef struct TDB_msg_consensus_log_entry_t TDB_msg_consensus_log_entry_t;
 
-struct TDB_msg_consensus {
-	TDB_proto_msg_type type;
+struct TDB_msg_consensus_t {
+	TDB_proto_msg_type_enum type;
 	bool_t is_vote;
 	char uuid_id[16];
 	u_long term;
@@ -85,19 +85,19 @@ struct TDB_msg_consensus {
 	u_long commit_index;
 	struct {
 		u_int log_entries_len;
-		TDB_msg_consensus_log_entry *log_entries_val;
+		TDB_msg_consensus_log_entry_t *log_entries_val;
 	} log_entries;
 };
-typedef struct TDB_msg_consensus TDB_msg_consensus;
+typedef struct TDB_msg_consensus_t TDB_msg_consensus_t;
 
-struct TDB_msg_resp_consensus {
-	TDB_proto_msg_type type;
+struct TDB_msg_resp_consensus_t {
+	TDB_proto_msg_type_enum type;
 	u_long term;
 	bool_t success;
 };
-typedef struct TDB_msg_resp_consensus TDB_msg_resp_consensus;
+typedef struct TDB_msg_resp_consensus_t TDB_msg_resp_consensus_t;
 
-enum TDB_msg_control_action_type {
+enum TDB_msg_control_action_type_enum {
 	ATTACH_APPEND = 1,
 	ATTACH_DATA = 2,
 	ATTACH_VOTE = 3,
@@ -105,113 +105,113 @@ enum TDB_msg_control_action_type {
 	DESTROY = 5,
 	EXIT = 6,
 };
-typedef enum TDB_msg_control_action_type TDB_msg_control_action_type;
+typedef enum TDB_msg_control_action_type_enum TDB_msg_control_action_type_enum;
 
 struct TDB_msg_control {
-	TDB_proto_msg_type type;
-	TDB_msg_control_action_type action;
+	TDB_proto_msg_type_enum type;
+	TDB_msg_control_action_type_enum action;
 	char uuid[16];
 };
 typedef struct TDB_msg_control TDB_msg_control;
 
-struct TDB_msg_resp_control {
-	TDB_proto_msg_type type;
+struct TDB_msg_resp_control_t {
+	TDB_proto_msg_type_enum type;
 	bool_t success;
 };
-typedef struct TDB_msg_resp_control TDB_msg_resp_control;
+typedef struct TDB_msg_resp_control_t TDB_msg_resp_control_t;
 
-enum TDB_msg_data_transaction {
+enum TDB_msg_data_transaction_enum {
 	SINGLE = 1,
 	BEGIN = 2,
 	COMMIT = 3,
 	ABORT = 4,
 };
-typedef enum TDB_msg_data_transaction TDB_msg_data_transaction;
+typedef enum TDB_msg_data_transaction_enum TDB_msg_data_transaction_enum;
 
-enum TDB_msg_data_verb {
+enum TDB_msg_data_verb_enum {
 	PUT = 1,
 	GET = 2,
 	DELETE = 3,
 	WATCH = 4,
 	UNWATCH = 5,
 };
-typedef enum TDB_msg_data_verb TDB_msg_data_verb;
+typedef enum TDB_msg_data_verb_enum TDB_msg_data_verb_enum;
 
-enum TDB_msg_data_mode {
+enum TDB_msg_data_mode_enum {
 	READ_WRITE = 1,
 	READ_ONLY = 2,
 	READ_BOUNDED = 3,
 	READ_TIMESTAMP = 4,
 };
-typedef enum TDB_msg_data_mode TDB_msg_data_mode;
+typedef enum TDB_msg_data_mode_enum TDB_msg_data_mode_enum;
 
-struct TDB_msg_data_op {
-	TDB_msg_data_verb verb;
+struct TDB_msg_data_op_t {
+	TDB_msg_data_verb_enum verb;
 	struct {
 		u_int data_len;
 		char *data_val;
 	} data;
 };
-typedef struct TDB_msg_data_op TDB_msg_data_op;
+typedef struct TDB_msg_data_op_t TDB_msg_data_op_t;
 
-struct TDB_msg_data {
-	TDB_proto_msg_type type;
-	TDB_msg_data_mode mode;
-	TDB_msg_data_transaction transaction;
+struct TDB_msg_data_t {
+	TDB_proto_msg_type_enum type;
+	TDB_msg_data_mode_enum mode;
+	TDB_msg_data_transaction_enum transaction;
 	struct {
 		u_int ops_len;
-		TDB_msg_data_op *ops_val;
+		TDB_msg_data_op_t *ops_val;
 	} ops;
 };
-typedef struct TDB_msg_data TDB_msg_data;
+typedef struct TDB_msg_data_t TDB_msg_data_t;
 
-struct TDB_msg_resp_data {
-	TDB_proto_msg_type type;
+struct TDB_msg_resp_data_t {
+	TDB_proto_msg_type_enum type;
 	bool_t success;
 };
-typedef struct TDB_msg_resp_data TDB_msg_resp_data;
+typedef struct TDB_msg_resp_data_t TDB_msg_resp_data_t;
 
 /* the xdr functions */
 
 #if defined(__STDC__) || defined(__cplusplus)
-extern  bool_t xdr_TDB_proto_msg_type (XDR *, TDB_proto_msg_type*);
-extern  bool_t xdr_TDB_replica_info (XDR *, TDB_replica_info*);
-extern  bool_t xdr_TDB_msg_bootstrap (XDR *, TDB_msg_bootstrap*);
-extern  bool_t xdr_TDB_msg_resp_bootstrap (XDR *, TDB_msg_resp_bootstrap*);
-extern  bool_t xdr_TDB_msg_connect (XDR *, TDB_msg_connect*);
-extern  bool_t xdr_TDB_msg_resp_connect (XDR *, TDB_msg_resp_connect*);
-extern  bool_t xdr_TDB_msg_consensus_log_entry (XDR *, TDB_msg_consensus_log_entry*);
-extern  bool_t xdr_TDB_msg_consensus (XDR *, TDB_msg_consensus*);
-extern  bool_t xdr_TDB_msg_resp_consensus (XDR *, TDB_msg_resp_consensus*);
-extern  bool_t xdr_TDB_msg_control_action_type (XDR *, TDB_msg_control_action_type*);
+extern  bool_t xdr_TDB_proto_msg_type_enum (XDR *, TDB_proto_msg_type_enum*);
+extern  bool_t xdr_TDB_replica_info_t (XDR *, TDB_replica_info_t*);
+extern  bool_t xdr_TDB_msg_bootstrap_t (XDR *, TDB_msg_bootstrap_t*);
+extern  bool_t xdr_TDB_msg_resp_bootstrap_t (XDR *, TDB_msg_resp_bootstrap_t*);
+extern  bool_t xdr_TDB_msg_connect_t (XDR *, TDB_msg_connect_t*);
+extern  bool_t xdr_TDB_msg_resp_connect_t (XDR *, TDB_msg_resp_connect_t*);
+extern  bool_t xdr_TDB_msg_consensus_log_entry_t (XDR *, TDB_msg_consensus_log_entry_t*);
+extern  bool_t xdr_TDB_msg_consensus_t (XDR *, TDB_msg_consensus_t*);
+extern  bool_t xdr_TDB_msg_resp_consensus_t (XDR *, TDB_msg_resp_consensus_t*);
+extern  bool_t xdr_TDB_msg_control_action_type_enum (XDR *, TDB_msg_control_action_type_enum*);
 extern  bool_t xdr_TDB_msg_control (XDR *, TDB_msg_control*);
-extern  bool_t xdr_TDB_msg_resp_control (XDR *, TDB_msg_resp_control*);
-extern  bool_t xdr_TDB_msg_data_transaction (XDR *, TDB_msg_data_transaction*);
-extern  bool_t xdr_TDB_msg_data_verb (XDR *, TDB_msg_data_verb*);
-extern  bool_t xdr_TDB_msg_data_mode (XDR *, TDB_msg_data_mode*);
-extern  bool_t xdr_TDB_msg_data_op (XDR *, TDB_msg_data_op*);
-extern  bool_t xdr_TDB_msg_data (XDR *, TDB_msg_data*);
-extern  bool_t xdr_TDB_msg_resp_data (XDR *, TDB_msg_resp_data*);
+extern  bool_t xdr_TDB_msg_resp_control_t (XDR *, TDB_msg_resp_control_t*);
+extern  bool_t xdr_TDB_msg_data_transaction_enum (XDR *, TDB_msg_data_transaction_enum*);
+extern  bool_t xdr_TDB_msg_data_verb_enum (XDR *, TDB_msg_data_verb_enum*);
+extern  bool_t xdr_TDB_msg_data_mode_enum (XDR *, TDB_msg_data_mode_enum*);
+extern  bool_t xdr_TDB_msg_data_op_t (XDR *, TDB_msg_data_op_t*);
+extern  bool_t xdr_TDB_msg_data_t (XDR *, TDB_msg_data_t*);
+extern  bool_t xdr_TDB_msg_resp_data_t (XDR *, TDB_msg_resp_data_t*);
 
 #else /* K&R C */
-extern bool_t xdr_TDB_proto_msg_type ();
-extern bool_t xdr_TDB_replica_info ();
-extern bool_t xdr_TDB_msg_bootstrap ();
-extern bool_t xdr_TDB_msg_resp_bootstrap ();
-extern bool_t xdr_TDB_msg_connect ();
-extern bool_t xdr_TDB_msg_resp_connect ();
-extern bool_t xdr_TDB_msg_consensus_log_entry ();
-extern bool_t xdr_TDB_msg_consensus ();
-extern bool_t xdr_TDB_msg_resp_consensus ();
-extern bool_t xdr_TDB_msg_control_action_type ();
+extern bool_t xdr_TDB_proto_msg_type_enum ();
+extern bool_t xdr_TDB_replica_info_t ();
+extern bool_t xdr_TDB_msg_bootstrap_t ();
+extern bool_t xdr_TDB_msg_resp_bootstrap_t ();
+extern bool_t xdr_TDB_msg_connect_t ();
+extern bool_t xdr_TDB_msg_resp_connect_t ();
+extern bool_t xdr_TDB_msg_consensus_log_entry_t ();
+extern bool_t xdr_TDB_msg_consensus_t ();
+extern bool_t xdr_TDB_msg_resp_consensus_t ();
+extern bool_t xdr_TDB_msg_control_action_type_enum ();
 extern bool_t xdr_TDB_msg_control ();
-extern bool_t xdr_TDB_msg_resp_control ();
-extern bool_t xdr_TDB_msg_data_transaction ();
-extern bool_t xdr_TDB_msg_data_verb ();
-extern bool_t xdr_TDB_msg_data_mode ();
-extern bool_t xdr_TDB_msg_data_op ();
-extern bool_t xdr_TDB_msg_data ();
-extern bool_t xdr_TDB_msg_resp_data ();
+extern bool_t xdr_TDB_msg_resp_control_t ();
+extern bool_t xdr_TDB_msg_data_transaction_enum ();
+extern bool_t xdr_TDB_msg_data_verb_enum ();
+extern bool_t xdr_TDB_msg_data_mode_enum ();
+extern bool_t xdr_TDB_msg_data_op_t ();
+extern bool_t xdr_TDB_msg_data_t ();
+extern bool_t xdr_TDB_msg_resp_data_t ();
 
 #endif /* K&R C */
 

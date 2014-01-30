@@ -6,7 +6,7 @@
 #include "proto.h"
 
 bool_t
-xdr_TDB_proto_msg_type (XDR *xdrs, TDB_proto_msg_type *objp)
+xdr_TDB_proto_msg_type_enum (XDR *xdrs, TDB_proto_msg_type_enum *objp)
 {
 	register int32_t *buf;
 
@@ -16,7 +16,7 @@ xdr_TDB_proto_msg_type (XDR *xdrs, TDB_proto_msg_type *objp)
 }
 
 bool_t
-xdr_TDB_replica_info (XDR *xdrs, TDB_replica_info *objp)
+xdr_TDB_replica_info_t (XDR *xdrs, TDB_replica_info_t *objp)
 {
 	register int32_t *buf;
 
@@ -31,12 +31,12 @@ xdr_TDB_replica_info (XDR *xdrs, TDB_replica_info *objp)
 }
 
 bool_t
-xdr_TDB_msg_bootstrap (XDR *xdrs, TDB_msg_bootstrap *objp)
+xdr_TDB_msg_bootstrap_t (XDR *xdrs, TDB_msg_bootstrap_t *objp)
 {
 	register int32_t *buf;
 
 	int i;
-	 if (!xdr_TDB_proto_msg_type (xdrs, &objp->type))
+	 if (!xdr_TDB_proto_msg_type_enum (xdrs, &objp->type))
 		 return FALSE;
 	 if (!xdr_opaque (xdrs, objp->uuid, 16))
 		 return FALSE;
@@ -48,27 +48,27 @@ xdr_TDB_msg_bootstrap (XDR *xdrs, TDB_msg_bootstrap *objp)
 }
 
 bool_t
-xdr_TDB_msg_resp_bootstrap (XDR *xdrs, TDB_msg_resp_bootstrap *objp)
+xdr_TDB_msg_resp_bootstrap_t (XDR *xdrs, TDB_msg_resp_bootstrap_t *objp)
 {
 	register int32_t *buf;
 
-	 if (!xdr_TDB_proto_msg_type (xdrs, &objp->type))
+	 if (!xdr_TDB_proto_msg_type_enum (xdrs, &objp->type))
 		 return FALSE;
 	 if (!xdr_bool (xdrs, &objp->success))
 		 return FALSE;
 	 if (!xdr_array (xdrs, (char **)&objp->known_replicas.known_replicas_val, (u_int *) &objp->known_replicas.known_replicas_len, ~0,
-		sizeof (TDB_replica_info), (xdrproc_t) xdr_TDB_replica_info))
+		sizeof (TDB_replica_info_t), (xdrproc_t) xdr_TDB_replica_info_t))
 		 return FALSE;
 	return TRUE;
 }
 
 bool_t
-xdr_TDB_msg_connect (XDR *xdrs, TDB_msg_connect *objp)
+xdr_TDB_msg_connect_t (XDR *xdrs, TDB_msg_connect_t *objp)
 {
 	register int32_t *buf;
 
 	int i;
-	 if (!xdr_TDB_proto_msg_type (xdrs, &objp->type))
+	 if (!xdr_TDB_proto_msg_type_enum (xdrs, &objp->type))
 		 return FALSE;
 	 if (!xdr_opaque (xdrs, objp->magic, 4))
 		 return FALSE;
@@ -78,12 +78,12 @@ xdr_TDB_msg_connect (XDR *xdrs, TDB_msg_connect *objp)
 }
 
 bool_t
-xdr_TDB_msg_resp_connect (XDR *xdrs, TDB_msg_resp_connect *objp)
+xdr_TDB_msg_resp_connect_t (XDR *xdrs, TDB_msg_resp_connect_t *objp)
 {
 	register int32_t *buf;
 
 	int i;
-	 if (!xdr_TDB_proto_msg_type (xdrs, &objp->type))
+	 if (!xdr_TDB_proto_msg_type_enum (xdrs, &objp->type))
 		 return FALSE;
 	 if (!xdr_opaque (xdrs, objp->api_version, 4))
 		 return FALSE;
@@ -93,7 +93,7 @@ xdr_TDB_msg_resp_connect (XDR *xdrs, TDB_msg_resp_connect *objp)
 }
 
 bool_t
-xdr_TDB_msg_consensus_log_entry (XDR *xdrs, TDB_msg_consensus_log_entry *objp)
+xdr_TDB_msg_consensus_log_entry_t (XDR *xdrs, TDB_msg_consensus_log_entry_t *objp)
 {
 	register int32_t *buf;
 
@@ -103,14 +103,14 @@ xdr_TDB_msg_consensus_log_entry (XDR *xdrs, TDB_msg_consensus_log_entry *objp)
 }
 
 bool_t
-xdr_TDB_msg_consensus (XDR *xdrs, TDB_msg_consensus *objp)
+xdr_TDB_msg_consensus_t (XDR *xdrs, TDB_msg_consensus_t *objp)
 {
 	register int32_t *buf;
 
 	int i;
 
 	if (xdrs->x_op == XDR_ENCODE) {
-		 if (!xdr_TDB_proto_msg_type (xdrs, &objp->type))
+		 if (!xdr_TDB_proto_msg_type_enum (xdrs, &objp->type))
 			 return FALSE;
 		 if (!xdr_bool (xdrs, &objp->is_vote))
 			 return FALSE;
@@ -134,11 +134,11 @@ xdr_TDB_msg_consensus (XDR *xdrs, TDB_msg_consensus *objp)
 		IXDR_PUT_U_LONG(buf, objp->commit_index);
 		}
 		 if (!xdr_array (xdrs, (char **)&objp->log_entries.log_entries_val, (u_int *) &objp->log_entries.log_entries_len, ~0,
-			sizeof (TDB_msg_consensus_log_entry), (xdrproc_t) xdr_TDB_msg_consensus_log_entry))
+			sizeof (TDB_msg_consensus_log_entry_t), (xdrproc_t) xdr_TDB_msg_consensus_log_entry_t))
 			 return FALSE;
 		return TRUE;
 	} else if (xdrs->x_op == XDR_DECODE) {
-		 if (!xdr_TDB_proto_msg_type (xdrs, &objp->type))
+		 if (!xdr_TDB_proto_msg_type_enum (xdrs, &objp->type))
 			 return FALSE;
 		 if (!xdr_bool (xdrs, &objp->is_vote))
 			 return FALSE;
@@ -162,12 +162,12 @@ xdr_TDB_msg_consensus (XDR *xdrs, TDB_msg_consensus *objp)
 		objp->commit_index = IXDR_GET_U_LONG(buf);
 		}
 		 if (!xdr_array (xdrs, (char **)&objp->log_entries.log_entries_val, (u_int *) &objp->log_entries.log_entries_len, ~0,
-			sizeof (TDB_msg_consensus_log_entry), (xdrproc_t) xdr_TDB_msg_consensus_log_entry))
+			sizeof (TDB_msg_consensus_log_entry_t), (xdrproc_t) xdr_TDB_msg_consensus_log_entry_t))
 			 return FALSE;
 	 return TRUE;
 	}
 
-	 if (!xdr_TDB_proto_msg_type (xdrs, &objp->type))
+	 if (!xdr_TDB_proto_msg_type_enum (xdrs, &objp->type))
 		 return FALSE;
 	 if (!xdr_bool (xdrs, &objp->is_vote))
 		 return FALSE;
@@ -182,17 +182,17 @@ xdr_TDB_msg_consensus (XDR *xdrs, TDB_msg_consensus *objp)
 	 if (!xdr_u_long (xdrs, &objp->commit_index))
 		 return FALSE;
 	 if (!xdr_array (xdrs, (char **)&objp->log_entries.log_entries_val, (u_int *) &objp->log_entries.log_entries_len, ~0,
-		sizeof (TDB_msg_consensus_log_entry), (xdrproc_t) xdr_TDB_msg_consensus_log_entry))
+		sizeof (TDB_msg_consensus_log_entry_t), (xdrproc_t) xdr_TDB_msg_consensus_log_entry_t))
 		 return FALSE;
 	return TRUE;
 }
 
 bool_t
-xdr_TDB_msg_resp_consensus (XDR *xdrs, TDB_msg_resp_consensus *objp)
+xdr_TDB_msg_resp_consensus_t (XDR *xdrs, TDB_msg_resp_consensus_t *objp)
 {
 	register int32_t *buf;
 
-	 if (!xdr_TDB_proto_msg_type (xdrs, &objp->type))
+	 if (!xdr_TDB_proto_msg_type_enum (xdrs, &objp->type))
 		 return FALSE;
 	 if (!xdr_u_long (xdrs, &objp->term))
 		 return FALSE;
@@ -202,7 +202,7 @@ xdr_TDB_msg_resp_consensus (XDR *xdrs, TDB_msg_resp_consensus *objp)
 }
 
 bool_t
-xdr_TDB_msg_control_action_type (XDR *xdrs, TDB_msg_control_action_type *objp)
+xdr_TDB_msg_control_action_type_enum (XDR *xdrs, TDB_msg_control_action_type_enum *objp)
 {
 	register int32_t *buf;
 
@@ -217,9 +217,9 @@ xdr_TDB_msg_control (XDR *xdrs, TDB_msg_control *objp)
 	register int32_t *buf;
 
 	int i;
-	 if (!xdr_TDB_proto_msg_type (xdrs, &objp->type))
+	 if (!xdr_TDB_proto_msg_type_enum (xdrs, &objp->type))
 		 return FALSE;
-	 if (!xdr_TDB_msg_control_action_type (xdrs, &objp->action))
+	 if (!xdr_TDB_msg_control_action_type_enum (xdrs, &objp->action))
 		 return FALSE;
 	 if (!xdr_opaque (xdrs, objp->uuid, 16))
 		 return FALSE;
@@ -227,11 +227,11 @@ xdr_TDB_msg_control (XDR *xdrs, TDB_msg_control *objp)
 }
 
 bool_t
-xdr_TDB_msg_resp_control (XDR *xdrs, TDB_msg_resp_control *objp)
+xdr_TDB_msg_resp_control_t (XDR *xdrs, TDB_msg_resp_control_t *objp)
 {
 	register int32_t *buf;
 
-	 if (!xdr_TDB_proto_msg_type (xdrs, &objp->type))
+	 if (!xdr_TDB_proto_msg_type_enum (xdrs, &objp->type))
 		 return FALSE;
 	 if (!xdr_bool (xdrs, &objp->success))
 		 return FALSE;
@@ -239,7 +239,7 @@ xdr_TDB_msg_resp_control (XDR *xdrs, TDB_msg_resp_control *objp)
 }
 
 bool_t
-xdr_TDB_msg_data_transaction (XDR *xdrs, TDB_msg_data_transaction *objp)
+xdr_TDB_msg_data_transaction_enum (XDR *xdrs, TDB_msg_data_transaction_enum *objp)
 {
 	register int32_t *buf;
 
@@ -249,7 +249,7 @@ xdr_TDB_msg_data_transaction (XDR *xdrs, TDB_msg_data_transaction *objp)
 }
 
 bool_t
-xdr_TDB_msg_data_verb (XDR *xdrs, TDB_msg_data_verb *objp)
+xdr_TDB_msg_data_verb_enum (XDR *xdrs, TDB_msg_data_verb_enum *objp)
 {
 	register int32_t *buf;
 
@@ -259,7 +259,7 @@ xdr_TDB_msg_data_verb (XDR *xdrs, TDB_msg_data_verb *objp)
 }
 
 bool_t
-xdr_TDB_msg_data_mode (XDR *xdrs, TDB_msg_data_mode *objp)
+xdr_TDB_msg_data_mode_enum (XDR *xdrs, TDB_msg_data_mode_enum *objp)
 {
 	register int32_t *buf;
 
@@ -269,11 +269,11 @@ xdr_TDB_msg_data_mode (XDR *xdrs, TDB_msg_data_mode *objp)
 }
 
 bool_t
-xdr_TDB_msg_data_op (XDR *xdrs, TDB_msg_data_op *objp)
+xdr_TDB_msg_data_op_t (XDR *xdrs, TDB_msg_data_op_t *objp)
 {
 	register int32_t *buf;
 
-	 if (!xdr_TDB_msg_data_verb (xdrs, &objp->verb))
+	 if (!xdr_TDB_msg_data_verb_enum (xdrs, &objp->verb))
 		 return FALSE;
 	 if (!xdr_bytes (xdrs, (char **)&objp->data.data_val, (u_int *) &objp->data.data_len, ~0))
 		 return FALSE;
@@ -281,28 +281,28 @@ xdr_TDB_msg_data_op (XDR *xdrs, TDB_msg_data_op *objp)
 }
 
 bool_t
-xdr_TDB_msg_data (XDR *xdrs, TDB_msg_data *objp)
+xdr_TDB_msg_data_t (XDR *xdrs, TDB_msg_data_t *objp)
 {
 	register int32_t *buf;
 
-	 if (!xdr_TDB_proto_msg_type (xdrs, &objp->type))
+	 if (!xdr_TDB_proto_msg_type_enum (xdrs, &objp->type))
 		 return FALSE;
-	 if (!xdr_TDB_msg_data_mode (xdrs, &objp->mode))
+	 if (!xdr_TDB_msg_data_mode_enum (xdrs, &objp->mode))
 		 return FALSE;
-	 if (!xdr_TDB_msg_data_transaction (xdrs, &objp->transaction))
+	 if (!xdr_TDB_msg_data_transaction_enum (xdrs, &objp->transaction))
 		 return FALSE;
 	 if (!xdr_array (xdrs, (char **)&objp->ops.ops_val, (u_int *) &objp->ops.ops_len, ~0,
-		sizeof (TDB_msg_data_op), (xdrproc_t) xdr_TDB_msg_data_op))
+		sizeof (TDB_msg_data_op_t), (xdrproc_t) xdr_TDB_msg_data_op_t))
 		 return FALSE;
 	return TRUE;
 }
 
 bool_t
-xdr_TDB_msg_resp_data (XDR *xdrs, TDB_msg_resp_data *objp)
+xdr_TDB_msg_resp_data_t (XDR *xdrs, TDB_msg_resp_data_t *objp)
 {
 	register int32_t *buf;
 
-	 if (!xdr_TDB_proto_msg_type (xdrs, &objp->type))
+	 if (!xdr_TDB_proto_msg_type_enum (xdrs, &objp->type))
 		 return FALSE;
 	 if (!xdr_bool (xdrs, &objp->success))
 		 return FALSE;
