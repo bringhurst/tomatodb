@@ -20,7 +20,7 @@
  *  General protocol definitions.
  */
 
-enum msg_type {
+enum proto_msg_type {
     /* Client request msg types. */
     BOOTSTRAP   = 1,
     CONNECT     = 2,
@@ -52,7 +52,7 @@ struct replica_info {
  * replica may add the new replica to its hook array.
  */
 struct msg_bootstrap {
-    msg_type type;
+    proto_msg_type type;
     opaque uuid[16];
     int port;
     string address<>;
@@ -62,7 +62,7 @@ struct msg_bootstrap {
  * replica currently knows as existing in the current quorum group.
  */
 struct msg_resp_bootstrap {
-    msg_type type;
+    proto_msg_type type;
     bool success;
     replica_info known_replicas<>;
 };
@@ -74,12 +74,12 @@ struct msg_resp_bootstrap {
 struct msg_connect {
     opaque magic[4];
     opaque api_version[4];
-    msg_type type;
+    proto_msg_type type;
 };
 
 struct msg_resp_connect {
     opaque api_version[4];
-    msg_type type;
+    proto_msg_type type;
     bool success;
 };
 
@@ -97,7 +97,7 @@ struct msg_consensus_log_entry {
  * false and include relevant log entries and a commit index.
  */
 struct msg_consensus {
-    msg_type type;
+    proto_msg_type type;
     bool is_vote;
     opaque uuid_id[16];
     u_long term;

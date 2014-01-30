@@ -14,7 +14,7 @@ extern "C" {
 #endif
 
 
-enum msg_type {
+enum proto_msg_type {
 	BOOTSTRAP = 1,
 	CONNECT = 2,
 	CONSENSUS = 3,
@@ -26,7 +26,7 @@ enum msg_type {
 	CONTROL_R = 9,
 	DATA_R = 10,
 };
-typedef enum msg_type msg_type;
+typedef enum proto_msg_type proto_msg_type;
 
 struct replica_info {
 	char uuid[16];
@@ -36,7 +36,7 @@ struct replica_info {
 typedef struct replica_info replica_info;
 
 struct msg_bootstrap {
-	msg_type type;
+	proto_msg_type type;
 	char uuid[16];
 	int port;
 	char *address;
@@ -44,7 +44,7 @@ struct msg_bootstrap {
 typedef struct msg_bootstrap msg_bootstrap;
 
 struct msg_resp_bootstrap {
-	msg_type type;
+	proto_msg_type type;
 	bool_t success;
 	struct {
 		u_int known_replicas_len;
@@ -56,13 +56,13 @@ typedef struct msg_resp_bootstrap msg_resp_bootstrap;
 struct msg_connect {
 	char magic[4];
 	char api_version[4];
-	msg_type type;
+	proto_msg_type type;
 };
 typedef struct msg_connect msg_connect;
 
 struct msg_resp_connect {
 	char api_version[4];
-	msg_type type;
+	proto_msg_type type;
 	bool_t success;
 };
 typedef struct msg_resp_connect msg_resp_connect;
@@ -76,7 +76,7 @@ struct msg_consensus_log_entry {
 typedef struct msg_consensus_log_entry msg_consensus_log_entry;
 
 struct msg_consensus {
-	msg_type type;
+	proto_msg_type type;
 	bool_t is_vote;
 	char uuid_id[16];
 	u_long term;
@@ -169,7 +169,7 @@ typedef struct msg_resp_data msg_resp_data;
 /* the xdr functions */
 
 #if defined(__STDC__) || defined(__cplusplus)
-extern  bool_t xdr_msg_type (XDR *, msg_type*);
+extern  bool_t xdr_proto_msg_type (XDR *, proto_msg_type*);
 extern  bool_t xdr_replica_info (XDR *, replica_info*);
 extern  bool_t xdr_msg_bootstrap (XDR *, msg_bootstrap*);
 extern  bool_t xdr_msg_resp_bootstrap (XDR *, msg_resp_bootstrap*);
@@ -189,7 +189,7 @@ extern  bool_t xdr_msg_data (XDR *, msg_data*);
 extern  bool_t xdr_msg_resp_data (XDR *, msg_resp_data*);
 
 #else /* K&R C */
-extern bool_t xdr_msg_type ();
+extern bool_t xdr_proto_msg_type ();
 extern bool_t xdr_replica_info ();
 extern bool_t xdr_msg_bootstrap ();
 extern bool_t xdr_msg_resp_bootstrap ();

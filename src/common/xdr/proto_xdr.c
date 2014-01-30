@@ -6,7 +6,7 @@
 #include "proto.h"
 
 bool_t
-xdr_msg_type (XDR *xdrs, msg_type *objp)
+xdr_proto_msg_type (XDR *xdrs, proto_msg_type *objp)
 {
 	register int32_t *buf;
 
@@ -36,7 +36,7 @@ xdr_msg_bootstrap (XDR *xdrs, msg_bootstrap *objp)
 	register int32_t *buf;
 
 	int i;
-	 if (!xdr_msg_type (xdrs, &objp->type))
+	 if (!xdr_proto_msg_type (xdrs, &objp->type))
 		 return FALSE;
 	 if (!xdr_opaque (xdrs, objp->uuid, 16))
 		 return FALSE;
@@ -52,7 +52,7 @@ xdr_msg_resp_bootstrap (XDR *xdrs, msg_resp_bootstrap *objp)
 {
 	register int32_t *buf;
 
-	 if (!xdr_msg_type (xdrs, &objp->type))
+	 if (!xdr_proto_msg_type (xdrs, &objp->type))
 		 return FALSE;
 	 if (!xdr_bool (xdrs, &objp->success))
 		 return FALSE;
@@ -72,7 +72,7 @@ xdr_msg_connect (XDR *xdrs, msg_connect *objp)
 		 return FALSE;
 	 if (!xdr_opaque (xdrs, objp->api_version, 4))
 		 return FALSE;
-	 if (!xdr_msg_type (xdrs, &objp->type))
+	 if (!xdr_proto_msg_type (xdrs, &objp->type))
 		 return FALSE;
 	return TRUE;
 }
@@ -85,7 +85,7 @@ xdr_msg_resp_connect (XDR *xdrs, msg_resp_connect *objp)
 	int i;
 	 if (!xdr_opaque (xdrs, objp->api_version, 4))
 		 return FALSE;
-	 if (!xdr_msg_type (xdrs, &objp->type))
+	 if (!xdr_proto_msg_type (xdrs, &objp->type))
 		 return FALSE;
 	 if (!xdr_bool (xdrs, &objp->success))
 		 return FALSE;
@@ -110,7 +110,7 @@ xdr_msg_consensus (XDR *xdrs, msg_consensus *objp)
 	int i;
 
 	if (xdrs->x_op == XDR_ENCODE) {
-		 if (!xdr_msg_type (xdrs, &objp->type))
+		 if (!xdr_proto_msg_type (xdrs, &objp->type))
 			 return FALSE;
 		 if (!xdr_bool (xdrs, &objp->is_vote))
 			 return FALSE;
@@ -138,7 +138,7 @@ xdr_msg_consensus (XDR *xdrs, msg_consensus *objp)
 			 return FALSE;
 		return TRUE;
 	} else if (xdrs->x_op == XDR_DECODE) {
-		 if (!xdr_msg_type (xdrs, &objp->type))
+		 if (!xdr_proto_msg_type (xdrs, &objp->type))
 			 return FALSE;
 		 if (!xdr_bool (xdrs, &objp->is_vote))
 			 return FALSE;
@@ -167,7 +167,7 @@ xdr_msg_consensus (XDR *xdrs, msg_consensus *objp)
 	 return TRUE;
 	}
 
-	 if (!xdr_msg_type (xdrs, &objp->type))
+	 if (!xdr_proto_msg_type (xdrs, &objp->type))
 		 return FALSE;
 	 if (!xdr_bool (xdrs, &objp->is_vote))
 		 return FALSE;
