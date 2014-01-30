@@ -20,7 +20,7 @@
  *  General protocol definitions.
  */
 
-enum HVN_msg_type {
+enum msg_type {
     /* Client request msg types. */
     BOOTSTRAP   = 1,
     CONNECT     = 2,
@@ -36,7 +36,7 @@ enum HVN_msg_type {
     DATA_R      = 10
 };
 
-struct HVN_replica_info {
+struct replica_info {
     opaque uuid[16];
     int port;
     string address<>;
@@ -51,8 +51,8 @@ struct HVN_replica_info {
  * Fields in the struct coorespond to requestor identification so the remote
  * replica may add the new replica to its hook array.
  */
-struct HVN_msg_bootstrap_t {
-    HVN_msg_type type;
+struct msg_bootstrap {
+    msg_type type;
     opaque uuid[16];
     int port;
     string address<>;
@@ -61,25 +61,25 @@ struct HVN_msg_bootstrap_t {
 /* A bootstrap response message contains the list of replicas that the remote
  * replica currently knows as existing in the current quorum group.
  */
-struct HVN_msg_resp_bootstrap_t {
-    HVN_msg_type type;
+struct msg_resp_bootstrap {
+    msg_type type;
     bool success;
-    HVN_replica_info known_replicas<>;
+    replica_info known_replicas<>;
 };
 
 /*
  * Connect msg definition.
  */
 
-struct HVN_msg_connect_t {
+struct msg_connect {
     opaque magic[4];
     opaque api_version[4];
-    HVN_msg_type type;
+    msg_type type;
 };
 
-struct HVN_msg_resp_connect_t {
+struct msg_resp_connect {
     opaque api_version[4];
-    HVN_msg_type type;
+    msg_type type;
     bool success;
 };
 
@@ -92,8 +92,8 @@ struct HVN_msg_resp_connect_t {
  * index and enable is_vote. To construct an AppendEntries, set is_vote to
  * false and include relevant log entries and a commit index.
  */
-struct HVN_msg_consensus_t {
-    HVN_msg_type_e type;
+struct msg_consensus {
+    msg_type type;
     bool is_vote;
     opaque uuid_id[16];
     u_long term;
@@ -108,7 +108,7 @@ struct HVN_msg_consensus_t {
  * vote was granted or not. If the request was an append entries, then the
  * response cooresponds to the follower's log state.
  */
-struct HVN_msg_resp_consensus_t {
+struct msg_resp_consensus {
     u_long term;
     bool success;
 };
@@ -117,7 +117,7 @@ struct HVN_msg_resp_consensus_t {
  * Control msg definition.
  */
 
-enum HVN_msg_control_action_type {
+enum msg_control_action_type {
     /* Actions to control socket state. */
     ATTACH_APPEND = 1,
     ATTACH_DATA   = 2,
@@ -134,15 +134,15 @@ enum HVN_msg_control_action_type {
 /* Control messages contain an action and the UUID of the replica to apply the
  * action to.
  */
-struct HVN_msg_control_t {
-    HVN_msg_control_action_type action;
+struct msg_control {
+    msg_control_action_type action;
     opaque uuid[16];
 };
 
 /* A control message response contains a success field to determine if the
  * control action was successful.
  */
-struct HVN_msg_resp_control_t {
+struct msg_resp_control {
     bool success;
 };
 
@@ -151,7 +151,7 @@ struct HVN_msg_resp_control_t {
  */
 
 /* Transaction control. */
-enum HVN_msg_data_transaction {
+enum msg_data_transaction {
     SINGLE = 1, /* Not associated with a transaction */
     BEGIN  = 2,
     COMMIT = 3,
@@ -159,7 +159,7 @@ enum HVN_msg_data_transaction {
 };
 
 /* The primary type of data operation. */
-enum HVN_msg_data_verb {
+enum msg_data_verb {
     PUT     = 1,
     GET     = 2,
     DELETE  = 3,
@@ -168,7 +168,7 @@ enum HVN_msg_data_verb {
 };
 
 /* The mode of the primary operation type. */
-enum HVN_msg_data_mode {
+enum msg_data_mode {
     READ_WRITE     = 1,
     READ_ONLY      = 2,
     READ_BOUNDED   = 3,
@@ -176,24 +176,24 @@ enum HVN_msg_data_mode {
 };
 
 /* A data message operation. */
-struct HVN_msg_data_op_t {
-    HVN_msg_data_verb verb;
+struct msg_data_op {
+    msg_data_verb verb;
     opaque data<>;
 };
 
 /* A data message contains one or more ordered operations to perform on the
  * database state machine.
  */
-struct HVN_msg_data_t {
-    HVN_msg_data_mode mode;
-    HVN_msg_data_transaction transaction;
-    HVN_msg_data_op_t ops<>;
+struct msg_data {
+    msg_data_mode mode;
+    msg_data_transaction transaction;
+    msg_data_op ops<>;
 };
 
 /* A data response message contains a success field to determine if the data
  * message was successful.
  */
-struct HVN_msg_resp_data_t {
+struct msg_resp_data {
     bool success;
 };
 
