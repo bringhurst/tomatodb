@@ -20,7 +20,7 @@
  *  General protocol definitions.
  */
 
-enum HVN_msg_type_e {
+enum HVN_msg_type {
     /* Client request msg types. */
     BOOTSTRAP   = 1,
     CONNECT     = 2,
@@ -36,6 +36,12 @@ enum HVN_msg_type_e {
     DATA_R      = 10
 };
 
+struct HVN_replica_info {
+    opaque uuid[16];
+    int port;
+    string address<>;
+};
+
 /*
  * Bootstrap msg definition.
  */
@@ -45,20 +51,20 @@ enum HVN_msg_type_e {
  * Fields in the struct coorespond to requestor identification so the remote
  * replica may add the new replica to its hook array.
  */
-struct HVN_msg_bootstrap_t 
-    HVN_msg_type_e type;
+struct HVN_msg_bootstrap_t {
+    HVN_msg_type type;
     opaque uuid[16];
     int port;
-    opaque address<254>;
+    string address<>;
 };
 
 /* A bootstrap response message contains the list of replicas that the remote
  * replica currently knows as existing in the current quorum group.
  */
 struct HVN_msg_resp_bootstrap_t {
-    HVN_msg_type_e type;
+    HVN_msg_type type;
     bool success;
-    UT_array* known_replicas
+    HVN_replica_info known_replicas<>;
 };
 
 /*
@@ -67,13 +73,13 @@ struct HVN_msg_resp_bootstrap_t {
 
 struct HVN_msg_connect_t {
     opaque magic[4];
-    opaque version[4];
-    HVN_msg_type_e type;
+    opaque api_version[4];
+    HVN_msg_type type;
 };
 
 struct HVN_msg_resp_connect_t {
-    HVN_msg_type_e type;
-    opaque version[4];
+    opaque api_version[4];
+    HVN_msg_type type;
     bool success;
 };
 
@@ -102,16 +108,10 @@ struct HVN_msg_consensus_t {
  * vote was granted or not. If the request was an append entries, then the
  * response cooresponds to the follower's log state.
  */
-typedef struct HVN_msg_resp_consensus_t {
-    uint64_t term;
+struct HVN_msg_resp_consensus_t {
+    u_long term;
     bool success;
-} HVN_msg_resp_consensus_t;
-
-int HVN_msg_consensus_send(int fd, HVN_msg_consensus_t* msg_in);
-int HVN_msg_consensus_recv(HVN_msg_consensus_t** msg_out, int fd);
-
-int HVN_msg_resp_consensus_send(int fd, HVN_msg_resp_consensus_t* msg_in);
-int HVN_msg_resp_consensus_recv(HVN_msg_consensus_t** msg_out, int fd);
+};
 
 /*
  * Control msg definition.
