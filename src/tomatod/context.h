@@ -22,6 +22,7 @@
 #include <uuid/uuid.h>
 
 #include "database.h"
+#include "proto/stream.h"
 #include "ut/utarray.h"
 
 #define DEFAULT_LISTEN_ADDRESS "127.0.0.1"
@@ -33,6 +34,7 @@ typedef struct TDB_ctx_t {
     char* listen_addr;
     int listen_port;
     int listen_fd;
+    TDB_xdr_stream_t* xdr_stream;
     struct TDB_replica_t* replicas;
     uuid_t process_uuid;
 } TDB_ctx_t;

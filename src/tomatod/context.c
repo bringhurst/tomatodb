@@ -37,6 +37,11 @@ int TDB_ctx_init(TDB_ctx_t** ctx)
         return TDB_ERROR;
     }
 
+    if(TDB_SUCCESS != TDB_init_xdr_stream(&(ctx->xdr_stream), &(ctx->listen_fd))) {
+        LOG(TDB_LOG_ERR, "Failed to allocate a XDR stream context.");
+        return TDB_ERROR;
+    }
+
     (*ctx)->listen_addr = (char*) malloc(sizeof(char) * _POSIX_HOST_NAME_MAX);
     strcpy((*ctx)->listen_addr, DEFAULT_LISTEN_ADDRESS);
     (*ctx)->replicas = NULL;
@@ -49,6 +54,7 @@ int TDB_ctx_init(TDB_ctx_t** ctx)
 void TDB_ctx_free(TDB_ctx_t* ctx)
 {
     /* FIXME: properly free this thing. */
+    TDB_free_xdr_stream(ctx->xdr_stream);
     free(ctx);
 }
 
