@@ -11,7 +11,7 @@ xdr_msg.c:
 
 libtomato_common_xdr_la_LDFLAGS = $(LIB_LDFLAGS)
 
-libtomato_common_xdr_la_SOURCES = xdr_msg.c
+libtomato_common_xdr_la_SOURCES = msg_xdr.c
 
 libtomato_common_xdr_la_LIBADD =
 libtomato_common_xdr_la_CFLAGS =

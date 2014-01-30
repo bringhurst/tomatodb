@@ -117,81 +117,84 @@ struct HVN_msg_resp_consensus_t {
  * Control msg definition.
  */
 
-/* Actions to control socket state. */
-#define HVN_MSG_CNTL_ACTION_ATTACH_APPEND  0xD2
-#define HVN_MSG_CNTL_ACTION_ATTACH_DATA    0xD3
-#define HVN_MSG_CNTL_ACTION_ATTACH_VOTE    0xD4
+enum HVN_msg_control_action_type {
+    /* Actions to control socket state. */
+    ATTACH_APPEND = 1,
+    ATTACH_DATA   = 2,
+    ATTACH_VOTE   = 3,
 
-/* Action to put a replica into an idle follower bootstrap state. */
-#define HVN_MSG_CNTL_ACTION_IDLE_FOLLOWER  0xD5
+    /* Action to put a replica into an idle follower bootstrap state. */
+    IDLE_FOLLOWER = 4,
 
-/* Actions to shut down an existing replica. */
-#define HVN_MSG_CTRL_ACTION_DESTROY        0xD6
-#define HVN_MSG_CTRL_ACTION_EXIT           0xD7
+    /* Actions to shut down an existing replica. */
+    DESTROY       = 5,
+    EXIT          = 6
+};
 
 /* Control messages contain an action and the UUID of the replica to apply the
  * action to.
  */
-typedef struct HVN_msg_control_t {
-    uint32_t action;
-    uuid_t uuid;
-} HVN_msg_control_t;
+struct HVN_msg_control_t {
+    HVN_msg_control_action_type action;
+    opaque uuid[16];
+};
 
 /* A control message response contains a success field to determine if the
  * control action was successful.
  */
-typedef struct HVN_msg_resp_control_t {
+struct HVN_msg_resp_control_t {
     bool success;
-} HVN_msg_resp_control_t;
-
-int HVN_msg_control_send(int fd, HVN_msg_control_t* msg_in);
-int HVN_msg_control_recv(HVN_msg_control_t** msg_out, int fd);
-
-int HVN_msg_resp_control_send(int fd, HVN_msg_resp_control_t* msg_in);
-int HVN_msg_resp_control_recv(HVN_msg_control_t** msg_out, int fd);
+};
 
 /*
  * Data msg definition.
  */
 
-/* Protocol map keys. */
-#define HVN_MSG_DATA_KEY_TYPE            "type"
-#define HVN_MSG_DATA_KEY_TRANSACTION     "transaction"
-#define HVN_MSG_DATA_KEY_OPERATIONS      "operations"
-
 /* Transaction control. */
-#define HVN_MSG_DATA_TRANSACTION_SINGLE  0xE1 /* Not associated with a transaction */
-#define HVN_MSG_DATA_TRANSACTION_BEGIN   0xE2
-#define HVN_MSG_DATA_TRANSACTION_COMMIT  0xE3
-#define HVN_MSG_DATA_TRANSACTION_ABORT   0xE4
+enum HVN_msg_data_transaction {
+    SINGLE = 1, /* Not associated with a transaction */
+    BEGIN  = 2,
+    COMMIT = 3,
+    ABORT  = 4
+};
 
 /* The primary type of data operation. */
-#define HVN_MSG_DATA_VERB_PUT            0xE5
-#define HVN_MSG_DATA_VERB_GET            0xE6
-#define HVN_MSG_DATA_VERB_DELETE         0xE7
-#define HVN_MSG_DATA_VERB_WATCH          0xE8
-#define HVN_MSG_DATA_VERB_UNWATCH        0xE9
+enum HVN_msg_data_verb {
+    PUT     = 1,
+    GET     = 2,
+    DELETE  = 3,
+    WATCH   = 4,
+    UNWATCH = 5
+};
 
 /* The mode of the primary operation type. */
-#define HVN_MSG_DATA_MODE_RW             0xEA /* Read-write */
-#define HVN_MSG_DATA_MODE_RO             0xEB /* Read-only */
-#define HVN_MSG_DATA_MODE_RB             0xEC /* Read-bounded */
-#define HVN_MSG_DATA_MODE_RT             0xED /* Read-timestamp */
+enum HVN_msg_data_mode {
+    READ_WRITE     = 1,
+    READ_ONLY      = 2,
+    READ_BOUNDED   = 3,
+    READ_TIMESTAMP = 4
+};
+
+/* A data message operation. */
+struct HVN_msg_data_op_t {
+    HVN_msg_data_verb verb;
+    opaque data<>;
+};
 
 /* A data message contains one or more ordered operations to perform on the
  * database state machine.
  */
-typedef struct HVN_msg_data_t {
-    uint32_t mode;
-    uint32_t transaction;
-    UT_array* ops; /* HVN_db_op_t[] */
-} HVN_msg_data_t;
+struct HVN_msg_data_t {
+    HVN_msg_data_mode mode;
+    HVN_msg_data_transaction transaction;
+    HVN_msg_data_op_t ops<>;
+};
 
 /* A data response message contains a success field to determine if the data
  * message was successful.
  */
-typedef struct HVN_msg_resp_data_t {
+struct HVN_msg_resp_data_t {
     bool success;
-} HVN_msg_resp_data_t;
+};
 
 /* EOF */
