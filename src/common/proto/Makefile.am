@@ -1,6 +1,7 @@
 include $(top_srcdir)/common.mk
 
 AM_CPPFLAGS += \
+           -Wno-unused-variable \
            -I$(top_srcdir) \
            -I$(top_srcdir)/src/common
 

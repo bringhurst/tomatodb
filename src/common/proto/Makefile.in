@@ -218,7 +218,8 @@ AM_CPPFLAGS = -std=gnu99 -ggdb -W -Wall -Wextra -Winit-self \
 	-Wunknown-pragmas -Wstrict-aliasing -Wfloat-equal -Wundef \
 	-Wbad-function-cast -Wstrict-prototypes -Wmissing-prototypes \
 	-Wredundant-decls -Winline -Wdisabled-optimization -Wshadow \
-	-I$(top_srcdir) -I$(top_srcdir)/src/common
+	-Wno-unused-variable -I$(top_srcdir) \
+	-I$(top_srcdir)/src/common
 PROTO_GEN = proto.h proto_xdr.c
 noinst_LTLIBRARIES = libtomato_common_proto.la
 libtomato_common_proto_la_LDFLAGS = $(LIB_LDFLAGS)
