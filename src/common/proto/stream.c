@@ -33,7 +33,7 @@ extern TDB_loglevel TDB_debug_level;
 
 int TDB_fdwriten(TDB_stream_ctx* stream_ctx, char* buf, int len)
 {
-    int rc;
+    int rc = -1;
 
     LOG(TDB_LOG_INFO, "Entered TDB_fdwriten fd=%d, buf=`%s', len=`%d'.", stream_ctx->fd, buf, len);
 
@@ -44,12 +44,12 @@ int TDB_fdwriten(TDB_stream_ctx* stream_ctx, char* buf, int len)
             }
             else if(rc < 0 && errno == EPIPE) {
                 LOG(TDB_LOG_ERR, "The client unexpectedly disconnected.");
-                return TDB_ERROR;
+                return -1;
             }
             else {
                 LOG(TDB_LOG_ERR, "An error occurred while writing to the socket (errno=%d). %s", \
                     errno, strerror(errno));
-                return TDB_ERROR;
+                return -1;
             }
         }
 
@@ -57,12 +57,12 @@ int TDB_fdwriten(TDB_stream_ctx* stream_ctx, char* buf, int len)
         buf += rc;
     }
 
-    return TDB_SUCCESS;
+    return rc;
 }
 
 int TDB_fdreadn(TDB_stream_ctx* stream_ctx, char* buf, int len)
 {
-    int rc;
+    int rc = -1;
 
     while(len > 0) {
         rc = fdread(stream_ctx->fd, buf, len);
@@ -74,19 +74,19 @@ int TDB_fdreadn(TDB_stream_ctx* stream_ctx, char* buf, int len)
 
             LOG(TDB_LOG_ERR, "An error occurred while reading from the socket (errno=%d). %s", \
                 errno, strerror(errno));
-            return TDB_ERROR;
+            return -1;
         }
 
         if(rc == 0) {
             LOG(TDB_LOG_ERR, "An error occurred while reading from the socket. Unexpected EOF.");
-            return TDB_ERROR;
+            return -1;
         }
 
         buf += rc;
         len -= rc;
     }
 
-    return TDB_SUCCESS;
+    return rc;
 }
 
 int TDB_init_xdr_stream(TDB_stream_ctx* stream_ctx)
