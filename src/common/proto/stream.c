@@ -35,10 +35,10 @@ int TDB_fdwriten(TDB_xdr_stream_t* xdr_stream, char* buf, int len)
 {
     int rc = -1;
 
-    LOG(TDB_LOG_INFO, "Entered TDB_fdwriten fd=%d, buf=`%s', len=`%d'.", xdr_stream->fd, buf, len);
+    LOG(TDB_LOG_INFO, "Entered TDB_fdwriten fd=%d, buf=`%s', len=`%d'.", *(xdr_stream->fd), buf, len);
 
     while(len > 0) {
-        if((rc = fdwrite(xdr_stream->fd, buf, len)) <= 0) {
+        if((rc = fdwrite(*(xdr_stream->fd), buf, len)) <= 0) {
             if(rc < 0 && errno == EINTR) {
                 rc = 0;
             }
@@ -65,7 +65,7 @@ int TDB_fdreadn(TDB_xdr_stream_t* xdr_stream, char* buf, int len)
     int rc = -1;
 
     while(len > 0) {
-        rc = fdread(xdr_stream->fd, buf, len);
+        rc = fdread(*(xdr_stream->fd), buf, len);
 
         if(rc < 0) {
             if(errno == EINTR) {
@@ -89,7 +89,7 @@ int TDB_fdreadn(TDB_xdr_stream_t* xdr_stream, char* buf, int len)
     return rc;
 }
 
-int TDB_init_xdr_stream(TDB_xdr_stream_t** xdr_stream, int fd)
+int TDB_init_xdr_stream(TDB_xdr_stream_t** xdr_stream, int* fd)
 {
     *xdr_stream = (TDB_xdr_stream_t*) malloc(sizeof(TDB_xdr_stream_t));
 

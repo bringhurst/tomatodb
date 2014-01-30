@@ -23,11 +23,11 @@
 #include <rpc/xdr.h>
 
 typedef struct TDB_xdr_stream_t {
-    int fd;
+    int* fd;
     XDR xdrs;
 } TDB_xdr_stream_t;
 
-int TDB_init_xdr_stream(TDB_xdr_stream_t** xdr_stream, int fd);
+int TDB_init_xdr_stream(TDB_xdr_stream_t** xdr_stream, int* fd);
 void TDB_free_xdr_stream(TDB_xdr_stream_t* xdr_stream);
 
 int TDB_fdwriten(TDB_xdr_stream_t* xdr_stream, char* buf, int len);
