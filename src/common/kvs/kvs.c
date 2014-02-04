@@ -16,6 +16,8 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
+#include <stdlib.h>
+
 #include "log.h"
 #include "kvs.h"
 #include "batch.h"
@@ -26,7 +28,7 @@ extern FILE* TDB_debug_stream;
 /** The log level to output. */
 extern TDB_loglevel TDB_debug_level;
 
-int TDB_kvs_init(TDB_kvs_t** kvs, char* path, int storage_type)
+int TDB_kvs_init(TDB_kvs_t** kvs, char* path, uint32_t type)
 {
     *kvs = (TDB_kvs_t*) malloc(sizeof(TDB_kvs_t));
 
@@ -35,8 +37,8 @@ int TDB_kvs_init(TDB_kvs_t** kvs, char* path, int storage_type)
         return TDB_ERROR;
     }
 
-    if(storage_type == KVS_TYPE_LEVELDB) {
-        (*kvs)->storage_type = KVS_TYPE_LEVELDB;
+    if(type == KVS_TYPE_LEVELDB) {
+        (*kvs)->type = KVS_TYPE_LEVELDB;
         return TDB_kvs_leveldb_init(*kvs, path);
     } else {
         LOG(TDB_LOG_ERR, "Could not initialize memory for a new KVS.");
@@ -47,7 +49,7 @@ int TDB_kvs_init(TDB_kvs_t** kvs, char* path, int storage_type)
 int TDB_kvs_get(TDB_kvs_t* kvs, char* key, size_t key_len, \
                 void* result, size_t* result_len)
 {
-    int result;
+    uint32_t result;
 
     switch(kvs->storage_type) {
         case KVS_TYPE_LEVELDB:

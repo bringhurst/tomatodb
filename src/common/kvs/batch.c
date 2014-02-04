@@ -16,6 +16,8 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
+#include <stdlib.h>
+
 #include "log.h"
 #include "batch.h"
 
@@ -27,18 +29,10 @@ extern TDB_loglevel TDB_debug_level;
 
 int TDB_kvs_batch_init(TDB_kvs_batch_t** batch)
 {
-    *kvs = (TDB_kvs_t*) malloc(sizeof(TDB_kvs_t));
+    *batch = (TDB_kvs_batch_t*) malloc(sizeof(TDB_kvs_batch_t));
 
-    if(!(*kvs)) {
-        LOG(TDB_LOG_ERR, "Could not initialize memory for a new KVS.");
-        return TDB_ERROR;
-    }
-
-    if(storage_type == KVS_TYPE_LEVELDB) {
-        (*kvs)->storage_type = KVS_TYPE_LEVELDB;
-        return TDB_kvs_leveldb_init(*kvs, path);
-    } else {
-        LOG(TDB_LOG_ERR, "Could not initialize memory for a new KVS.");
+    if(!(*batch)) {
+        LOG(TDB_LOG_ERR, "Could not initialize memory for a new KVS batch.");
         return TDB_ERROR;
     }
 }
@@ -50,9 +44,10 @@ void TDB_kvs_batch_free(TDB_kvs_batch_t* batch)
 
 int TDB_kvs_batch_append(TDB_kvs_batch_t* kvs, \
                          char* key, size_t key_len, \
-                         void* value, size_t* value_len)
+                         void* value, size_t value_len)
 {
     // TODO: append to utarray
+    return TDB_ERROR;
 }
 
 /* EOF */

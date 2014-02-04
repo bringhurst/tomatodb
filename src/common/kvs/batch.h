@@ -30,6 +30,6 @@ void TDB_kvs_batch_free(TDB_kvs_batch_t* batch);
 
 int TDB_kvs_batch_append(TDB_kvs_batch_t* kvs, \
                          char* key, size_t key_len, \
-                         void* value, size_t* value_len);
+                         void* value, size_t value_len);
 
 #endif /* TDB__COMMON_KVS_BATCH_H */

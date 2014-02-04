@@ -19,6 +19,8 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
+#include <stdint.h>
+
 #include "common.h"
 #include "batch.h"
 
@@ -27,10 +29,10 @@
 typedef struct TDB_kvs_t {
     char* path;
     void* db;
-    uint8_t storage_type;
+    uint32_t type;
 } TDB_kvs_t;
 
-int TDB_kvs_init(TDB_kvs_t** kvs, char* path, int storage_type);
+int TDB_kvs_init(TDB_kvs_t** kvs, char* path, uint32_t storage_type);
 
 int TDB_kvs_get(TDB_kvs_t* kvs, char* key, size_t key_len, \
                 void* result, size_t* result_len);
