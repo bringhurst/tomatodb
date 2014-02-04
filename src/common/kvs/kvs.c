@@ -16,11 +16,6 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
-#include <limits.h>
-#include <stdlib.h>
-#include <string.h>
-#include <netdb.h>
-
 #include "log.h"
 #include "kvs.h"
 

@@ -1,5 +1,5 @@
-#ifndef __TDB__COMMON_DATABASE_H
-#define __TDB__COMMON_DATABASE_H
+#ifndef TDB__COMMON_KVS_H
+#define TDB__COMMON_KVS_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -19,79 +19,20 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
-#include <stdbool.h>
-#include <stdio.h>
-#include <leveldb/c.h>
-
 #include "common.h"
-#include "xtime.h"
 
-// The primary type of database operation.
-#define TDB_DB_VERB_READ     0x01
-#define TDB_DB_VERB_WRITE    0x02
-#define TDB_DB_VERB_DELETE   0x03
-#define TDB_DB_VERB_WATCH    0x04
-#define TDB_DB_VERB_UNWATCH  0x05
+int TDB_kvs_init(TDB_kvs_t** kvs, char* path, int storage_type);
 
-// Transaction control.
-#define TDB_DB_TRANS_ABORT   0x11
-#define TDB_DB_TRANS_BEGIN   0x12
-#define TDB_DB_TRANS_COMMIT  0x13
+int TDB_kvs_get(TDB_kvs_t* kvs, char* key, size_t key_len, \
+                void* result, size_t* result_len);
 
-// The mode of the primary operation type.
-#define TDB_DB_MODE_RW       0x21
-#define TDB_DB_MODE_RO       0x22
-#define TDB_DB_MODE_RB       0x23
-#define TDB_DB_MODE_RT       0x24
+int TDB_kvs_put_batch(TDB_kvs_t* kvs, TDB_kvs_batch_t* batch);
+int TDB_kvs_put(TDB_kvs_t* kvs, char* key, size_t key_len, \
+                void* value, size_t value_len);
 
-#define TDB_DB_COMPARATOR_NAME "TDB_cmp_0001";
+int TDB_kvs_delete(TDB_kvs_t* kvs, char* key);
 
-typedef struct TDB_db_t {
-    char* path;
-    leveldb_t* handle;
-    leveldb_options_t* options;
-    leveldb_readoptions_t* read_options;
-    leveldb_writeoptions_t* write_options;
-} TDB_db_t;
+void TDB_kvs_close(TDB_kvs_t* kvs);
+void TDB_kvs_destroy(TDB_kvs_t* kvs);
 
-typedef struct TDB_db_op_t {
-    uint16_t action;
-    char* key;
-    size_t key_len;
-    char* value;
-    size_t value_len;
-} TDB_db_op_t;
-
-int TDB_db_init(TDB_db_t** db, char* path);
-void TDB_db_close(TDB_db_t* db);
-int TDB_db_destroy(TDB_db_t* db);
-
-int TDB_db_unsafe_get(TDB_db_t* db, \
-                      const char* key, \
-                      size_t key_len, \
-                      char** value, \
-                      size_t* value_len);
-int TDB_db_unsafe_put(TDB_db_t* db, \
-                      const char* key, \
-                      size_t key_len, \
-                      char* value, \
-                      size_t value_len);
-int TDB_db_unsafe_delete(TDB_db_t* db, \
-                         const char* key, \
-                         size_t key_len);
-
-int TDB_db_unsafe_put_uint64(TDB_db_t* db, const char* key, size_t key_len, uint64_t value);
-int TDB_db_unsafe_get_uint64(TDB_db_t* db, const char* key, size_t key_len, uint64_t** value);
-int TDB_db_unsafe_put_char(TDB_db_t* db, const char* key, size_t key_len, char value);
-int TDB_db_unsafe_get_char(TDB_db_t* db, const char* key, size_t key_len, char** value);
-int TDB_db_unsafe_put_string(TDB_db_t* db, const char* key, size_t key_len, char* value, size_t value_len);
-int TDB_db_unsafe_get_string(TDB_db_t* db, const char* key, size_t key_len, char** value, size_t* value_len);
-
-void TDB_db_comparator_destroy(void* arg);
-const char* TDB_db_comparator_name(void* arg);
-int TDB_db_comparator_compare(void* arg, const char* a, size_t alen,
-                              const char* b, size_t blen);
-
-bool TDB_db_validate_key(const char* key);
-
-#endif /* __TDB__COMMON_DATABASE_H */
+#endif /* TDB__COMMON_KVS_H */
