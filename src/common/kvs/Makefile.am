@@ -11,7 +11,7 @@ libtomato_common_kvs_la_LDFLAGS = $(LIB_LDFLAGS)
 
 libtomato_common_kvs_la_SOURCES = \
                                   kvs.c \
-                                  kvs_bangdb.c
+                                  kvs_leveldb.c
 
 libtomato_common_kvs_la_LIBADD =
 libtomato_common_kvs_la_CFLAGS =

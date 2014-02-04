@@ -51,7 +51,7 @@ CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 libtomato_common_kvs_la_DEPENDENCIES =
 am_libtomato_common_kvs_la_OBJECTS = libtomato_common_kvs_la-kvs.lo \
-	libtomato_common_kvs_la-kvs_bangdb.lo
+	libtomato_common_kvs_la-kvs_leveldb.lo
 libtomato_common_kvs_la_OBJECTS =  \
 	$(am_libtomato_common_kvs_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
@@ -223,7 +223,7 @@ noinst_LTLIBRARIES = libtomato_common_kvs.la
 libtomato_common_kvs_la_LDFLAGS = $(LIB_LDFLAGS)
 libtomato_common_kvs_la_SOURCES = \
                                   kvs.c \
-                                  kvs_bangdb.c
+                                  kvs_leveldb.c
 
 libtomato_common_kvs_la_LIBADD = 
 libtomato_common_kvs_la_CFLAGS = 
@@ -280,7 +280,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libtomato_common_kvs_la-kvs.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libtomato_common_kvs_la-kvs_bangdb.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libtomato_common_kvs_la-kvs_leveldb.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -314,13 +314,13 @@ libtomato_common_kvs_la-kvs.lo: kvs.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libtomato_common_kvs_la_CFLAGS) $(CFLAGS) -c -o libtomato_common_kvs_la-kvs.lo `test -f 'kvs.c' || echo '$(srcdir)/'`kvs.c
 
-libtomato_common_kvs_la-kvs_bangdb.lo: kvs_bangdb.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libtomato_common_kvs_la_CFLAGS) $(CFLAGS) -MT libtomato_common_kvs_la-kvs_bangdb.lo -MD -MP -MF $(DEPDIR)/libtomato_common_kvs_la-kvs_bangdb.Tpo -c -o libtomato_common_kvs_la-kvs_bangdb.lo `test -f 'kvs_bangdb.c' || echo '$(srcdir)/'`kvs_bangdb.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libtomato_common_kvs_la-kvs_bangdb.Tpo $(DEPDIR)/libtomato_common_kvs_la-kvs_bangdb.Plo
+libtomato_common_kvs_la-kvs_leveldb.lo: kvs_leveldb.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libtomato_common_kvs_la_CFLAGS) $(CFLAGS) -MT libtomato_common_kvs_la-kvs_leveldb.lo -MD -MP -MF $(DEPDIR)/libtomato_common_kvs_la-kvs_leveldb.Tpo -c -o libtomato_common_kvs_la-kvs_leveldb.lo `test -f 'kvs_leveldb.c' || echo '$(srcdir)/'`kvs_leveldb.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libtomato_common_kvs_la-kvs_leveldb.Tpo $(DEPDIR)/libtomato_common_kvs_la-kvs_leveldb.Plo
 @am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='kvs_bangdb.c' object='libtomato_common_kvs_la-kvs_bangdb.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='kvs_leveldb.c' object='libtomato_common_kvs_la-kvs_leveldb.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libtomato_common_kvs_la_CFLAGS) $(CFLAGS) -c -o libtomato_common_kvs_la-kvs_bangdb.lo `test -f 'kvs_bangdb.c' || echo '$(srcdir)/'`kvs_bangdb.c
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libtomato_common_kvs_la_CFLAGS) $(CFLAGS) -c -o libtomato_common_kvs_la-kvs_leveldb.lo `test -f 'kvs_leveldb.c' || echo '$(srcdir)/'`kvs_leveldb.c
 
 mostlyclean-libtool:
 	-rm -f *.lo
