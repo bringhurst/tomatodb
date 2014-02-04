@@ -1,6 +1,6 @@
 include $(top_srcdir)/common.mk
 
-SUBDIRS = halloc task proto
+SUBDIRS = halloc task proto kvs
 
 AM_CPPFLAGS += \
            -I$(top_srcdir) \
@@ -12,16 +12,14 @@ libtomato_common_la_LDFLAGS = $(LIB_LDFLAGS)
 
 libtomato_common_la_SOURCES = \
                              common.c \
-                             database.c \
                              xtime.c
 
 libtomato_common_la_LIBADD = \
                              halloc/libtomato_common_halloc.la \
-                             task/libtomato_common_task.la \
+                             kvs/libtomato_common_kvs.la \
                              proto/libtomato_common_proto.la \
-                             $(leveldb_LIBS) \
+                             task/libtomato_common_task.la \
                              $(uuid_LIBS)
 
 libtomato_common_la_CFLAGS = \
-                            $(leveldb_CFLAGS) \
                             $(uuid_CFLAGS)

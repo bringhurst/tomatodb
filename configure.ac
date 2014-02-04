@@ -81,8 +81,9 @@ AC_CONFIG_FILES([Makefile                            \
                  src/Makefile                        \
                  src/common/Makefile                 \
                  src/common/halloc/Makefile          \
-                 src/common/task/Makefile            \
+                 src/common/kvs/Makefile             \
                  src/common/proto/Makefile           \
+                 src/common/task/Makefile            \
                  src/tomato/Makefile                 \
                  src/tomatod/Makefile                \
 ])

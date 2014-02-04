@@ -22,7 +22,7 @@
 #include <netdb.h>
 
 #include "log.h"
-#include "database.h"
+#include "kvs.h"
 
 #define TDB_CONFIG_DB_PREFIX "/config"
 #define TDB_LOG_DB_PREFIX    "/log"
