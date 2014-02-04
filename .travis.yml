@@ -2,7 +2,7 @@ language: c
 
 before_install:
  - sudo apt-get update -qq
- - sudo apt-get install -qq uuid-runtime
+ - sudo apt-get install -qq uuid-runtime libleveldb-dev
 
 script: ./autogen.sh && ./configure && make
 
