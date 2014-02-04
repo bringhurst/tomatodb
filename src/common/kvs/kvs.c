@@ -18,6 +18,7 @@
 
 #include "log.h"
 #include "kvs.h"
+#include "batch.h"
 
 /** The stream to send log messages to. */
 extern FILE* TDB_debug_stream;
@@ -84,9 +85,7 @@ int TDB_kvs_put(TDB_kvs_t* kvs, char* key, size_t key_len, \
     TDB_kvs_batch_t* batch;
 
     TDB_kvs_create_batch(kvs, &batch);
-
-    batch->append(key, key_len, value, value_len);
-
+    TDB_kvs_batch_append(batch, key, key_len, value, value_len);
     TDB_kvs_put_batch(kvs, batch);
 }
 

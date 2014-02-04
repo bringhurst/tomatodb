@@ -50,7 +50,8 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 libtomato_common_kvs_la_DEPENDENCIES =
-am_libtomato_common_kvs_la_OBJECTS = libtomato_common_kvs_la-kvs.lo \
+am_libtomato_common_kvs_la_OBJECTS = libtomato_common_kvs_la-batch.lo \
+	libtomato_common_kvs_la-kvs.lo \
 	libtomato_common_kvs_la-kvs_leveldb.lo
 libtomato_common_kvs_la_OBJECTS =  \
 	$(am_libtomato_common_kvs_la_OBJECTS)
@@ -222,6 +223,7 @@ AM_CPPFLAGS = -std=gnu99 -ggdb -W -Wall -Wextra -Winit-self \
 noinst_LTLIBRARIES = libtomato_common_kvs.la
 libtomato_common_kvs_la_LDFLAGS = $(LIB_LDFLAGS)
 libtomato_common_kvs_la_SOURCES = \
+                                  batch.c \
                                   kvs.c \
                                   kvs_leveldb.c
 
@@ -279,6 +281,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libtomato_common_kvs_la-batch.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libtomato_common_kvs_la-kvs.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libtomato_common_kvs_la-kvs_leveldb.Plo@am__quote@
 
@@ -305,6 +308,14 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
+
+libtomato_common_kvs_la-batch.lo: batch.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libtomato_common_kvs_la_CFLAGS) $(CFLAGS) -MT libtomato_common_kvs_la-batch.lo -MD -MP -MF $(DEPDIR)/libtomato_common_kvs_la-batch.Tpo -c -o libtomato_common_kvs_la-batch.lo `test -f 'batch.c' || echo '$(srcdir)/'`batch.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libtomato_common_kvs_la-batch.Tpo $(DEPDIR)/libtomato_common_kvs_la-batch.Plo
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='batch.c' object='libtomato_common_kvs_la-batch.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libtomato_common_kvs_la_CFLAGS) $(CFLAGS) -c -o libtomato_common_kvs_la-batch.lo `test -f 'batch.c' || echo '$(srcdir)/'`batch.c
 
 libtomato_common_kvs_la-kvs.lo: kvs.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libtomato_common_kvs_la_CFLAGS) $(CFLAGS) -MT libtomato_common_kvs_la-kvs.lo -MD -MP -MF $(DEPDIR)/libtomato_common_kvs_la-kvs.Tpo -c -o libtomato_common_kvs_la-kvs.lo `test -f 'kvs.c' || echo '$(srcdir)/'`kvs.c

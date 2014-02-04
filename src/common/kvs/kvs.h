@@ -1,5 +1,5 @@
-#ifndef TDB__COMMON_KVS_H
-#define TDB__COMMON_KVS_H
+#ifndef TDB__COMMON_KVS_KVS_H
+#define TDB__COMMON_KVS_KVS_H
 
 /*
  * Copyright 2013 Los Alamos National Security, LLC.
@@ -20,6 +20,15 @@
  */
 
 #include "common.h"
+#include "batch.h"
+
+#define KVS_TYPE_LEVELDB 1
+
+typedef struct TDB_kvs_t {
+    char* path;
+    void* db;
+    uint8_t storage_type;
+} TDB_kvs_t;
 
 int TDB_kvs_init(TDB_kvs_t** kvs, char* path, int storage_type);
 
@@ -35,4 +44,4 @@ int TDB_kvs_delete(TDB_kvs_t* kvs, char* key);
 void TDB_kvs_close(TDB_kvs_t* kvs);
 void TDB_kvs_destroy(TDB_kvs_t* kvs);
 
-#endif /* TDB__COMMON_KVS_H */
+#endif /* TDB__COMMON_KVS_KVS_H */

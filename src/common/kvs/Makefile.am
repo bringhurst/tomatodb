@@ -10,6 +10,7 @@ noinst_LTLIBRARIES = libtomato_common_kvs.la
 libtomato_common_kvs_la_LDFLAGS = $(LIB_LDFLAGS)
 
 libtomato_common_kvs_la_SOURCES = \
+                                  batch.c \
                                   kvs.c \
                                   kvs_leveldb.c
 
