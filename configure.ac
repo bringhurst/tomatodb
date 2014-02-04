@@ -31,7 +31,7 @@ LT_INIT
 # Checks for required libraries.
 AC_CHECK_LIB([leveldb], [leveldb_open], [], \
              [AC_MSG_ERROR([Function leveldb_open was not found in LevelDB.
-Is libleveldb-dev installed? Try running 'sudo apt-get install libleveldb-dev'.])])
+Is libleveldb-dev installed? Try running 'sudo apt-get install libleveldb-dev leveldb'.])])
 
 AC_CHECK_LIB([uuid], [uuid_generate_time_safe], [], \
              [AC_MSG_ERROR([Function uuid_generate_time_safe was not found in libuuid.
