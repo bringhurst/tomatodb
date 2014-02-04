@@ -16,17 +16,8 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
-#include <limits.h>
-#include <stdlib.h>
-#include <string.h>
-#include <netdb.h>
-
 #include "log.h"
-#include "kvs.h"
-
-#define TDB_CONFIG_DB_PREFIX "/config"
-#define TDB_LOG_DB_PREFIX    "/log"
-#define TDB_GROUP_DB_PREFIX  "/group"
+#include "kvs_leveldb.h"
 
 /** The stream to send log messages to. */
 extern FILE* TDB_debug_stream;
@@ -34,7 +25,7 @@ extern FILE* TDB_debug_stream;
 /** The log level to output. */
 extern TDB_loglevel TDB_debug_level;
 
-int TDB_db_init(TDB_db_t** db, char* path)
+int TDB_kvs_leveldb_init(TDB_kvs_t** db, char* path)
 {
     char* db_err = NULL;
     leveldb_comparator_t* comparator;
@@ -74,12 +65,12 @@ int TDB_db_init(TDB_db_t** db, char* path)
     return TDB_SUCCESS;
 }
 
-void TDB_db_close(TDB_db_t* db)
+void TDB_kvs_leveldb_close(TDB_db_t* db)
 {
     leveldb_close(db->handle);
 }
 
-int TDB_db_destroy(TDB_db_t* db)
+int TDB_kvs_leveldb_destroy(TDB_db_t* db)
 {
     char* db_err = NULL;
 
@@ -122,7 +113,10 @@ const char* TDB_db_comparator_name(void* arg)
     return TDB_DB_COMPARATOR_NAME;
 }
 
-int TDB_db_unsafe_get(TDB_db_t* db, \
+kvs.c:73: warning: implicit declaration of function ‘TDB_kvs_leveldb_put_batch’
+kvs.c:100: warning: implicit declaration of function ‘TDB_kvs_leveldb_delete’
+
+int TDB_kvs_leveldb_get(TDB_db_t* db, \
                       const char* key, \
                       size_t key_len, \
                       char** value, \
@@ -147,11 +141,11 @@ int TDB_db_unsafe_get(TDB_db_t* db, \
     return TDB_SUCCESS;
 }
 
-int TDB_db_unsafe_put(TDB_db_t* db, \
-                      const char* key, \
-                      size_t key_len, \
-                      char* value, \
-                      size_t value_len)
+int TDB_kvs_leveldb_put_batch(TDB_db_t* db, \
+                              const char* key, \
+                              size_t key_len, \
+                              char* value, \
+                              size_t value_len)
 {
     char* err = NULL;
 
@@ -170,7 +164,7 @@ int TDB_db_unsafe_put(TDB_db_t* db, \
     return TDB_SUCCESS;
 }
 
-int TDB_db_unsafe_delete(TDB_db_t* db, \
+int TDB_kvs_leveldb_delete(TDB_db_t* db, \
                          const char* key, \
                          size_t key_len)
 {
@@ -189,75 +183,9 @@ int TDB_db_unsafe_delete(TDB_db_t* db, \
     return TDB_SUCCESS;
 }
 
-int TDB_db_unsafe_put_uint64(TDB_db_t* db, const char* key, size_t key_len, uint64_t value)
-{
-    if(TDB_db_unsafe_put(db, key, key_len, (char*) &value, sizeof(uint64_t)) != TDB_SUCCESS) {
-        LOG(TDB_LOG_ERR, "Could not write a uint64 to the database.");
-        return TDB_ERROR;
-    }
-
-    return TDB_SUCCESS;
-}
-
-int TDB_db_unsafe_get_uint64(TDB_db_t* db, const char* key, size_t key_len, uint64_t** value)
-{
-    size_t value_len;
-
-    if(TDB_db_unsafe_get(db, key, key_len, (char**) value,  &value_len) != TDB_SUCCESS) {
-        LOG(TDB_LOG_ERR, "Could not read a uint64 from the database.");
-        return TDB_ERROR;
-    }
-
-    return TDB_SUCCESS;
-}
-
-int TDB_db_unsafe_put_char(TDB_db_t* db, const char* key, size_t key_len, char value)
-{
-    if(TDB_db_unsafe_put(db, key, key_len, &value, sizeof(char)) != TDB_SUCCESS) {
-        LOG(TDB_LOG_ERR, "Could not write a char to the database.");
-        return TDB_ERROR;
-    }
-
-    return TDB_SUCCESS;
-}
-
-int TDB_db_unsafe_get_char(TDB_db_t* db, const char* key, size_t key_len, char** value)
-{
-    size_t value_len;
-
-    if(TDB_db_unsafe_get(db, key, key_len, value,  &value_len) != TDB_SUCCESS) {
-        LOG(TDB_LOG_ERR, "Could not read a char from the database.");
-        return TDB_ERROR;
-    }
-
-    return TDB_SUCCESS;
-}
-
-int TDB_db_unsafe_put_string(TDB_db_t* db, const char* key, size_t key_len, char* value, size_t value_len)
-{
-    if(TDB_db_unsafe_put(db, key, key_len, (char*) &value, sizeof(char) * value_len) != TDB_SUCCESS) {
-        LOG(TDB_LOG_ERR, "Could not write a string to the database.");
-        return TDB_ERROR;
-    }
-
-    return TDB_SUCCESS;
-}
-
-int TDB_db_unsafe_get_string(TDB_db_t* db, const char* key, size_t key_len, char** value, size_t* value_len)
-{
-    if(TDB_db_unsafe_get(db, key, key_len, value,  value_len) != TDB_SUCCESS) {
-        LOG(TDB_LOG_ERR, "Could not read a string from the database.");
-        return TDB_ERROR;
-    }
-
-    return TDB_SUCCESS;
-}
-
 bool TDB_db_validate_key(const char* key)
 {
     const char* p = key;
-
-    // FIXME: not designed for malicious intent.
 
     while(*p++) {
         if(*p == '\0') { break; }
