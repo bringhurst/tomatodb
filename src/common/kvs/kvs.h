@@ -28,8 +28,10 @@
 
 typedef struct TDB_kvs_t {
     char* path;
-    void* db;
     uint32_t type;
+    union {
+        struct TDB_kvs_leveldb_t* leveldb;
+    } db;
 } TDB_kvs_t;
 
 int TDB_kvs_init(TDB_kvs_t** kvs, char* path, uint32_t storage_type);
@@ -41,7 +43,7 @@ int TDB_kvs_put_batch(TDB_kvs_t* kvs, TDB_kvs_batch_t* batch);
 int TDB_kvs_put(TDB_kvs_t* kvs, char* key, size_t key_len, \
                 void* value, size_t value_len);
 
-int TDB_kvs_delete(TDB_kvs_t* kvs, char* key);
+int TDB_kvs_delete(TDB_kvs_t* kvs, char* key, size_t key_len);
 
 void TDB_kvs_close(TDB_kvs_t* kvs);
 void TDB_kvs_destroy(TDB_kvs_t* kvs);

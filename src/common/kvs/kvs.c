@@ -22,6 +22,8 @@
 #include "kvs.h"
 #include "batch.h"
 
+#include "kvs_leveldb.h"
+
 /** The stream to send log messages to. */
 extern FILE* TDB_debug_stream;
 
@@ -49,26 +51,26 @@ int TDB_kvs_init(TDB_kvs_t** kvs, char* path, uint32_t type)
 int TDB_kvs_get(TDB_kvs_t* kvs, char* key, size_t key_len, \
                 void* result, size_t* result_len)
 {
-    uint32_t result;
+    int status;
 
-    switch(kvs->storage_type) {
+    switch(kvs->type) {
         case KVS_TYPE_LEVELDB:
-            result = TDB_kvs_leveldb_get(kvs, key, key_len, result, result_len);
+            status = TDB_kvs_leveldb_get(kvs, key, key_len, result, result_len);
             break;
         default:
             LOG(TDB_LOG_ERR, "Could not determine KVS type when attempting to close.");
-            result = TDB_ERROR;
+            status = TDB_ERROR;
             break;
     }
 
-    return result;
+    return status;
 }
 
 int TDB_kvs_put_batch(TDB_kvs_t* kvs, TDB_kvs_batch_t* batch)
 {
     int result;
 
-    switch(kvs->storage_type) {
+    switch(kvs->type) {
         case KVS_TYPE_LEVELDB:
             result = TDB_kvs_leveldb_put_batch(kvs, batch);
             break;
@@ -86,18 +88,31 @@ int TDB_kvs_put(TDB_kvs_t* kvs, char* key, size_t key_len, \
 {
     TDB_kvs_batch_t* batch;
 
-    TDB_kvs_create_batch(kvs, &batch);
-    TDB_kvs_batch_append(batch, key, key_len, value, value_len);
-    TDB_kvs_put_batch(kvs, batch);
+    if(TDB_kvs_batch_init(&batch) != TDB_SUCCESS) {
+        LOG(TDB_LOG_ERR, "Could not initialize memory for a new put batch.");
+        return TDB_ERROR;
+    }
+
+    if(TDB_kvs_batch_append(batch, key, key_len, value, value_len) != TDB_SUCCESS) {
+        LOG(TDB_LOG_ERR, "Could not append a new batch operation.");
+        return TDB_ERROR;
+    }
+
+    if(TDB_kvs_put_batch(kvs, batch) != TDB_SUCCESS) {
+        LOG(TDB_LOG_ERR, "Could not apply a new batch operation.");
+        return TDB_ERROR;
+    }
+
+    return TDB_SUCCESS;
 }
 
-int TDB_kvs_delete(TDB_kvs_t* kvs, char* key)
+int TDB_kvs_delete(TDB_kvs_t* kvs, char* key, size_t key_len)
 {
     int result;
 
-    switch(kvs->storage_type) {
+    switch(kvs->type) {
         case KVS_TYPE_LEVELDB:
-            result = TDB_kvs_leveldb_delete(kvs, key);
+            result = TDB_kvs_leveldb_delete(kvs, key, key_len);
             break;
         default:
             LOG(TDB_LOG_ERR, "Could not determine KVS type when attempting to delete a key.");
@@ -110,7 +125,7 @@ int TDB_kvs_delete(TDB_kvs_t* kvs, char* key)
 
 void TDB_kvs_close(TDB_kvs_t* kvs)
 {
-    switch(kvs->storage_type) {
+    switch(kvs->type) {
         case KVS_TYPE_LEVELDB:
             TDB_kvs_leveldb_close(kvs);
             break;
@@ -122,7 +137,7 @@ void TDB_kvs_close(TDB_kvs_t* kvs)
 
 void TDB_kvs_destroy(TDB_kvs_t* kvs)
 {
-    switch(kvs->storage_type) {
+    switch(kvs->type) {
         case KVS_TYPE_LEVELDB:
             TDB_kvs_leveldb_destroy(kvs);
             break;

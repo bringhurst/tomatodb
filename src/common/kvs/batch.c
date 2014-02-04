@@ -35,10 +35,13 @@ int TDB_kvs_batch_init(TDB_kvs_batch_t** batch)
         LOG(TDB_LOG_ERR, "Could not initialize memory for a new KVS batch.");
         return TDB_ERROR;
     }
+
+    return TDB_SUCCESS;
 }
 
 void TDB_kvs_batch_free(TDB_kvs_batch_t* batch)
 {
+    TDB_INTENTIONALLY_UNUSED_VARIABLE(batch);
     // TODO: free utarray, then batch
 }
 
@@ -46,6 +49,12 @@ int TDB_kvs_batch_append(TDB_kvs_batch_t* kvs, \
                          char* key, size_t key_len, \
                          void* value, size_t value_len)
 {
+    TDB_INTENTIONALLY_UNUSED_VARIABLE(kvs);
+    TDB_INTENTIONALLY_UNUSED_VARIABLE(key);
+    TDB_INTENTIONALLY_UNUSED_VARIABLE(key_len);
+    TDB_INTENTIONALLY_UNUSED_VARIABLE(value);
+    TDB_INTENTIONALLY_UNUSED_VARIABLE(value_len);
+
     // TODO: append to utarray
     return TDB_ERROR;
 }

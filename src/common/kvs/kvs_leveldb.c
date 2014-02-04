@@ -16,6 +16,8 @@
  * Author: Jon Bringhurst <jon@bringhurst.org>
  */
 
+#include <stdlib.h>
+
 #include "log.h"
 #include "kvs_leveldb.h"
 
@@ -25,60 +27,58 @@ extern FILE* TDB_debug_stream;
 /** The log level to output. */
 extern TDB_loglevel TDB_debug_level;
 
-int TDB_kvs_leveldb_init(TDB_kvs_t** db, char* path)
+int TDB_kvs_leveldb_init(TDB_kvs_t* kvs, char* path)
 {
     char* db_err = NULL;
     leveldb_comparator_t* comparator;
 
-    TDB_db_t* new_db = \
-                       (TDB_db_t*) malloc(sizeof(TDB_db_t));
+    kvs->db.leveldb = (TDB_kvs_leveldb_t*) malloc(sizeof(TDB_kvs_leveldb_t));
 
-    if(!new_db) {
+    if(!kvs->db.leveldb) {
         LOG(TDB_LOG_ERR, "Could not initialize memory for a new database.");
         return TDB_ERROR;
     }
 
     comparator = leveldb_comparator_create(NULL,
-                                           TDB_db_comparator_destroy,
-                                           TDB_db_comparator_compare,
-                                           TDB_db_comparator_name);
+                                           TDB_kvs_leveldb_comparator_destroy,
+                                           TDB_kvs_leveldb_comparator_compare,
+                                           TDB_kvs_leveldb_comparator_name);
 
-    new_db->options = leveldb_options_create();
+    kvs->db.leveldb->options = leveldb_options_create();
 
-    leveldb_options_set_comparator(new_db->options, comparator);
-    leveldb_options_set_create_if_missing(new_db->options, 1);
+    leveldb_options_set_comparator(kvs->db.leveldb->options, comparator);
+    leveldb_options_set_create_if_missing(kvs->db.leveldb->options, 1);
 
-    new_db->handle = leveldb_open(new_db->options, path, &db_err);
+    kvs->db.leveldb->handle = leveldb_open(kvs->db.leveldb->options, path, &db_err);
 
     if(db_err != NULL) {
         LOG(TDB_LOG_ERR, "Could not open the local database. %s", db_err);
         return TDB_ERROR;
     }
 
-    new_db->read_options = leveldb_readoptions_create();
-    new_db->write_options = leveldb_writeoptions_create();
+    kvs->db.leveldb->read_options = leveldb_readoptions_create();
+    kvs->db.leveldb->write_options = leveldb_writeoptions_create();
 
-    new_db->path = path;
-    *db = new_db;
+    kvs->path = path;
 
     leveldb_free(db_err);
     return TDB_SUCCESS;
 }
 
-void TDB_kvs_leveldb_close(TDB_db_t* db)
+void TDB_kvs_leveldb_close(TDB_kvs_t* kvs)
 {
-    leveldb_close(db->handle);
+    leveldb_close(kvs->db.leveldb->handle);
 }
 
-int TDB_kvs_leveldb_destroy(TDB_db_t* db)
+int TDB_kvs_leveldb_destroy(TDB_kvs_t* kvs)
 {
     char* db_err = NULL;
 
-    leveldb_destroy_db(db->options, db->path, &db_err);
+    leveldb_destroy_db(kvs->db.leveldb->options, kvs->path, &db_err);
 
     if(db_err != NULL) {
         LOG(TDB_LOG_ERR, "Could not destroy the database at `%s'. %s", \
-            db->path, db_err);
+            kvs->path, db_err);
         return TDB_ERROR;
     }
 
@@ -86,14 +86,14 @@ int TDB_kvs_leveldb_destroy(TDB_db_t* db)
     return TDB_SUCCESS;
 }
 
-void TDB_db_comparator_destroy(void* arg)
+void TDB_kvs_leveldb_comparator_destroy(void* arg)
 {
     TDB_INTENTIONALLY_UNUSED_VARIABLE(arg);
     // FIXME: what does this do? Should something be here?
 }
 
-int TDB_db_comparator_compare(void* arg, const char* a, size_t alen,
-                              const char* b, size_t blen)
+int TDB_kvs_leveldb_comparator_compare(void* arg, const char* a, size_t alen,
+                                       const char* b, size_t blen)
 {
     int n = (alen < blen) ? alen : blen;
     TDB_INTENTIONALLY_UNUSED_VARIABLE(arg);
@@ -107,24 +107,21 @@ int TDB_db_comparator_compare(void* arg, const char* a, size_t alen,
     return 0;
 }
 
-const char* TDB_db_comparator_name(void* arg)
+const char* TDB_kvs_leveldb_comparator_name(void* arg)
 {
     TDB_INTENTIONALLY_UNUSED_VARIABLE(arg);
     return TDB_DB_COMPARATOR_NAME;
 }
 
-kvs.c:73: warning: implicit declaration of function ‘TDB_kvs_leveldb_put_batch’
-kvs.c:100: warning: implicit declaration of function ‘TDB_kvs_leveldb_delete’
-
-int TDB_kvs_leveldb_get(TDB_db_t* db, \
-                      const char* key, \
-                      size_t key_len, \
-                      char** value, \
-                      size_t* value_len)
+int TDB_kvs_leveldb_get(TDB_kvs_t* kvs, \
+                        const char* key, \
+                        size_t key_len, \
+                        char** value, \
+                        size_t* value_len)
 {
     char* err = NULL;
 
-    *value = leveldb_get(db->handle, db->read_options,
+    *value = leveldb_get(kvs->db.leveldb->handle, kvs->db.leveldb->read_options,
                          key, key_len, value_len, &err);
 
     if(*value == NULL) {
@@ -141,36 +138,22 @@ int TDB_kvs_leveldb_get(TDB_db_t* db, \
     return TDB_SUCCESS;
 }
 
-int TDB_kvs_leveldb_put_batch(TDB_db_t* db, \
-                              const char* key, \
-                              size_t key_len, \
-                              char* value, \
-                              size_t value_len)
+int TDB_kvs_leveldb_put_batch(TDB_kvs_t* kvs, TDB_kvs_batch_t* batch)
 {
-    char* err = NULL;
+    TDB_INTENTIONALLY_UNUSED_VARIABLE(kvs);
+    TDB_INTENTIONALLY_UNUSED_VARIABLE(batch);
+    // TODO: something
 
-    LOG(TDB_LOG_DBG, "Writing to database key `%s'.", key);
-
-    leveldb_put(db->handle, db->write_options,
-                key, key_len, value, value_len, &err);
-
-    if(err != NULL) {
-        LOG(TDB_LOG_ERR, "LevelDB reports error on put `%s'.", err);
-        free(err);
-
-        return TDB_ERROR;
-    }
-
-    return TDB_SUCCESS;
+    return TDB_ERROR;
 }
 
-int TDB_kvs_leveldb_delete(TDB_db_t* db, \
-                         const char* key, \
-                         size_t key_len)
+int TDB_kvs_leveldb_delete(TDB_kvs_t* kvs, \
+                           const char* key, \
+                           size_t key_len)
 {
     char* err = NULL;
 
-    leveldb_delete(db->handle, db->write_options,
+    leveldb_delete(kvs->db.leveldb->handle, kvs->db.leveldb->write_options,
                    key, key_len, &err);
 
     if(err != NULL) {
@@ -183,7 +166,7 @@ int TDB_kvs_leveldb_delete(TDB_db_t* db, \
     return TDB_SUCCESS;
 }
 
-bool TDB_db_validate_key(const char* key)
+bool TDB_kvs_leveldb_validate_key(const char* key)
 {
     const char* p = key;
 
